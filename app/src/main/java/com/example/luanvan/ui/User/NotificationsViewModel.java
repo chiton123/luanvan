@@ -1,4 +1,4 @@
-package com.example.luanvan.ui.notifications;
+package com.example.luanvan.ui.User;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

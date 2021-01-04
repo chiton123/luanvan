@@ -8,21 +8,21 @@
     tools:context=".ui.DetailedJob.DetailJobActivity">
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="220dp"
         android:background="#FFFFFF"
         android:id="@+id/appbar"
         >
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="170dp"
             app:contentScrim="#FFFFFF"
             android:id="@+id/toolbarcollapse"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="170dp"
                 app:layout_collapseMode="parallax"
                 >
                 <LinearLayout
@@ -53,7 +53,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/tencongviec"
-                    android:textSize="17sp"
+                    android:textSize="16sp"
                     android:text="nhan vien kinh doanh"
                     android:layout_toRightOf="@id/hinhanh"
                     android:textColor="#040404"
@@ -62,7 +62,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/tencongty"
-                    android:textSize="17sp"
+                    android:textSize="13sp"
                     android:text="cong ty abc"
                     android:layout_toRightOf="@id/hinhanh"
                     android:layout_below="@id/tencongviec"
@@ -74,6 +74,8 @@
                     android:orientation="horizontal"
                     android:layout_below="@id/hinhanh"
                     android:gravity="center_vertical"
+                    android:layout_marginTop="10dp"
+
 
                     >
                     <ImageView
