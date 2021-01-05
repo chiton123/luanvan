@@ -11,6 +11,7 @@
         android:layout_height="?attr/actionBarSize"
         android:id="@+id/toolbar"
         app:title="Hồ sơ TopCV"
+        android:background="#fff"
         ></androidx.appcompat.widget.Toolbar>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -48,18 +49,60 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:visibility="gone"
             android:id="@+id/linear2"
+            android:orientation="vertical"
             >
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_marginTop="10dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/user2"
+                android:layout_gravity="center_horizontal"
+                ></de.hdodenhof.circleimageview.CircleImageView>
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:id="@+id/edit"
+                android:src="@drawable/edit"
+                android:layout_gravity="right"
+                android:layout_margin="10dp"
+                ></ImageView>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="hello"
+                android:text="TON"
+                android:textSize="18sp"
+                android:textColor="#040404"
+                android:layout_gravity="center_horizontal"
+                android:textStyle="bold"
+                android:id="@+id/name"
+                ></TextView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chưa cập nhật vị trí công việc"
+                android:textSize="18sp"
+                android:textColor="#040404"
 
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:id="@+id/position"
+                ></TextView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chưa cập nhật công ty"
+                android:textSize="18sp"
+                android:textColor="#040404"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:id="@+id/company"
                 ></TextView>
 
+
         </LinearLayout>
+
+
 
     </RelativeLayout>
 

@@ -1,5 +1,6 @@
 package com.example.luanvan.ui.fragment;
 
+import android.app.DownloadManager;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -23,6 +24,10 @@ import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.login.LoginActivity;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,6 +49,50 @@ public class LoginFragment extends Fragment {
         return view;
     }
 
+    public void getInfo(){
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urluserinfo,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(response != null){
+                            try {
+                                JSONArray jsonArray = new JSONArray(response);
+                                JSONObject object = jsonArray.getJSONObject(0);
+                                MainActivity.user.setAddress(object.getString("address"));
+                                MainActivity.user.setBirthday(object.getString("birthday"));
+                                MainActivity.user.setEmail(object.getString("email"));
+                                MainActivity.user.setGender(object.getInt("gender"));
+                                MainActivity.user.setStatus(object.getInt("status"));
+                                MainActivity.user.setIntroduction(object.getString("introduction"));
+                                MainActivity.user.setId(object.getInt("id"));
+                                MainActivity.user.setName(object.getString("name"));
+                                MainActivity.user.setPosition(object.getString("position"));
+                                MainActivity.user.setPhone(object.getInt("phone"));
+                                MainActivity.username = object.getString("name");
+                                MainActivity.position = object.getString("position");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("iduser", String.valueOf(MainActivity.iduser));
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+
+    }
     private void eventLogin() {
         btnDangnhap.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,11 +107,14 @@ public class LoginFragment extends Fragment {
                             new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
-                                    if(response.equals("success")){
+                                    if(!response.equals("fail")){
                                         Toast.makeText(getActivity(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                                         editEmail.setText("");
                                         editPass.setText("");
+
                                         MainActivity.login = 1;
+                                        MainActivity.iduser = Integer.parseInt(response);
+                                        getInfo();
                                         Intent intent = new Intent();
                                         getActivity().setResult(123);
                                         getActivity().finish();

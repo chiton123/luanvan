@@ -1,0 +1,111 @@
+package com.example.luanvan.ui.Model;
+
+public class User {
+    private int id;
+    private String name;
+    private String birthday;
+    private int gender;
+    private String address;
+    private String email;
+    private String introduction;
+    private String position;
+    private int phone;
+    private int status;
+
+    public User(){
+
+    }
+
+    public User(int id, String name, String birthday, int gender, String address, String email, String introduction, String position, int phone,int status) {
+        this.id = id;
+        this.name = name;
+        this.birthday = birthday;
+        this.gender = gender;
+        this.address = address;
+        this.email = email;
+        this.introduction = introduction;
+        this.position = position;
+        this.phone = phone;
+        this.status = status;
+    }
+
+    public int getPhone() {
+        return phone;
+    }
+
+    public void setPhone(int phone) {
+        this.phone = phone;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public int getGender() {
+        return gender;
+    }
+
+    public void setGender(int gender) {
+        this.gender = gender;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getIntroduction() {
+        return introduction;
+    }
+
+    public void setIntroduction(String introduction) {
+        this.introduction = introduction;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+}

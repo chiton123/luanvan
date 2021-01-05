@@ -3,6 +3,7 @@ package com.example.luanvan;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.example.luanvan.ui.Model.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,13 +14,21 @@ import androidx.navigation.ui.NavigationUI;
 
 public class MainActivity extends AppCompatActivity {
     public static int login = 0;
+    public static int iduser = 0;
+    public static String username = "";
+    public static String position = "";
+    public static User user = new User();
 
 
     public static String host = "http://10.3.74.116:8888/luanvan/";
     public static String urljob1 = host + "job1.php";
     public static String urlcompany = host + "company.php";
+    // dang nhap
     public static String urlRegister = host + "register.php";
     public static String urllogin = host + "login.php";
+    public static String urluserinfo = host + "userinfo.php";
+    public static String urlupdateuser = host + "updateuser.php";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
