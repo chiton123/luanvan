@@ -220,6 +220,12 @@ public class PersonalInfoActivity extends AppCompatActivity {
                 }
             }
         });
+        btnHuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
     }
 

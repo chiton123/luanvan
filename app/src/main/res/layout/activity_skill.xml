@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.UpdateInfo.SkillActivity">
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:id="@+id/toolbar"
+        app:title="Kỹ năng"
+        ></androidx.appcompat.widget.Toolbar>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="5dp"
+        android:weightSum="10"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="9"
+            android:orientation="vertical"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="5dp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tên kỹ năng"
+                    android:textColor="#050505"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:layout_margin="5dp"
+                    ></TextView>
+                <EditText
+                    android:layout_margin="5dp"
+                    android:layout_width="300dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/editskill"
+                    android:hint="VD: Kỹ năng tiếng anh"
+                    android:background="@drawable/edittext_frame"
+                    ></EditText>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="5dp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Đánh giá"
+                    android:textColor="#050505"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:layout_margin="5dp"
+                    ></TextView>
+                <RatingBar
+                    android:layout_width="240dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:id="@+id/rating"
+                    ></RatingBar>
+
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="5dp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mô tả"
+                    android:textColor="#050505"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:layout_margin="5dp"
+                    ></TextView>
+                <EditText
+                    android:layout_margin="5dp"
+                    android:layout_width="300dp"
+                    android:layout_height="100dp"
+                    android:background="@drawable/edittext_frame"
+                    android:id="@+id/editmota"
+                    android:lines="8"
+                    android:hint="Mô tả chi tiết quá trình học tập của bản để nhà tuyển dụng có thể hiểu bạn hơn"
+                    ></EditText>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:gravity="center"
+            >
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="40dp"
+                android:id="@+id/buttonhuy"
+                android:text="Hủy"
+                android:background="@drawable/button_huy"
+                ></Button>
+            <Button
+                android:background="@drawable/button_login"
+                android:textColor="#fff"
+                android:layout_marginLeft="30dp"
+                android:layout_width="150dp"
+                android:layout_height="40dp"
+                android:id="@+id/buttoncapnhat"
+                android:text="Cập nhật"
+                ></Button>
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

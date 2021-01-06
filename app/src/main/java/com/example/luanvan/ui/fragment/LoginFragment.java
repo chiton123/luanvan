@@ -1,11 +1,13 @@
 package com.example.luanvan.ui.fragment;
 
 import android.app.DownloadManager;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +36,8 @@ import java.util.Map;
 public class LoginFragment extends Fragment {
     EditText editEmail, editPass;
     Button btnDangnhap;
+    ProgressDialog progressDialog;
+    Handler handler = new Handler();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,7 +52,13 @@ public class LoginFragment extends Fragment {
 
         return view;
     }
-
+    void loading(){
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Loading");
+        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
+    }
     public void getInfo(){
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urluserinfo,
@@ -112,12 +122,23 @@ public class LoginFragment extends Fragment {
                                         editEmail.setText("");
                                         editPass.setText("");
 
+                                        loading();
                                         MainActivity.login = 1;
                                         MainActivity.iduser = Integer.parseInt(response);
                                         getInfo();
-                                        Intent intent = new Intent();
-                                        getActivity().setResult(123);
-                                        getActivity().finish();
+
+                                        Handler handler = new Handler();
+                                        handler.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+
+                                                progressDialog.dismiss();
+                                                Intent intent = new Intent();
+                                                getActivity().setResult(123);
+                                                getActivity().finish();
+                                            }
+                                        },2000);
+
                                     }else {
                                         Toast.makeText(getActivity(), "Sai tên hoặc mật khẩu", Toast.LENGTH_SHORT).show();
                                     }

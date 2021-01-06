@@ -17,10 +17,16 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
+import com.example.luanvan.ui.Adapter.ProfileAdapter;
+import com.example.luanvan.ui.Model.Profile;
 import com.example.luanvan.ui.login.LoginActivity;
+
+import java.util.ArrayList;
 
 public class NotificationsFragment extends Fragment {
     LinearLayout linearLayout1, linearLayout2;
@@ -29,6 +35,9 @@ public class NotificationsFragment extends Fragment {
     int REQUEST_CODE2 = 234;
     ImageView edit;
     TextView name, positon, company_name;
+    RecyclerView recyclerView;
+    ProfileAdapter profileAdapter;
+    ArrayList<Profile> arrayList;
 
     private NotificationsViewModel notificationsViewModel;
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -43,6 +52,13 @@ public class NotificationsFragment extends Fragment {
         name = (TextView) view.findViewById(R.id.name);
         positon = (TextView) view.findViewById(R.id.position);
         company_name = (TextView) view.findViewById(R.id.company);
+        arrayList = new ArrayList<>();
+        getProfile();
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        profileAdapter = new ProfileAdapter(getActivity(), arrayList, getActivity());
+        recyclerView.setAdapter(profileAdapter);
 
 
         if(MainActivity.login == 0){
@@ -56,14 +72,24 @@ public class NotificationsFragment extends Fragment {
         eventLogin();
         eventUpdateInfo();
         getInfo();
+
         return view;
+    }
+
+
+
+    private void getProfile() {
+        arrayList.add(new Profile(0, "Cập nhật thông tin học vấn", R.drawable.study ));
+        arrayList.add(new Profile(1, "Cập nhật thông tin kinh nghiệm", R.drawable.experience));
+        arrayList.add(new Profile(2, "Cập nhật thông tin kỹ năng", R.drawable.skill));
+
     }
 
     private void getInfo() {
         if(MainActivity.login == 1){
-            //Toast.makeText(getActivity(), MainActivity.username + "username", Toast.LENGTH_SHORT).show();
-            name.setText(MainActivity.user.getName());
+           // Toast.makeText(getActivity(), MainActivity.user.getName() + "username", Toast.LENGTH_SHORT).show();
             try {
+                name.setText(MainActivity.user.getName());
                 if(MainActivity.position.equals("")){
 
                 }else {

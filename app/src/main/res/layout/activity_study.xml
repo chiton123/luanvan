@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.UpdateInfo.StudyActivity">
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:id="@+id/toolbar"
+        app:title="Học vấn"
+        ></androidx.appcompat.widget.Toolbar>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="5dp"
+        android:weightSum="10"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="9"
+            android:orientation="vertical"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="5dp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Trường"
+                    android:textColor="#050505"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:layout_margin="5dp"
+                    ></TextView>
+                <EditText
+                    android:layout_margin="5dp"
+                    android:layout_width="300dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/editschool"
+                    android:hint="Tên trường"
+                    android:background="@drawable/edittext_frame"
+                    ></EditText>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="5dp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Chuyên ngành"
+                    android:textColor="#050505"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:layout_margin="5dp"
+                    ></TextView>
+                <EditText
+                    android:layout_margin="5dp"
+                    android:layout_width="300dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/editmajor"
+                    android:hint="VD: Quản trị kinh doanh"
+                    android:background="@drawable/edittext_frame"
+                    ></EditText>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="5dp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Thời gian"
+                    android:textColor="#050505"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:layout_margin="5dp"
+                    ></TextView>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:orientation="horizontal"
+                    android:weightSum="10"
+                    >
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight="5"
+                        android:padding="5dp"
+                        >
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Bắt đầu"
+                            android:textSize="13sp"
+                            android:layout_gravity="left"
+                            android:layout_marginBottom="2dp"
+                            android:layout_marginLeft="5dp"
+                            android:textColor="#070707"
+                            ></TextView>
+                        <EditText
+                            android:layout_marginTop="5dp"
+                            android:layout_margin="5dp"
+                            android:layout_width="120dp"
+                            android:layout_height="30dp"
+                            android:id="@+id/editstart"
+                            android:hint="Bắt đầu"
+                            android:background="@drawable/edittext_frame"
+                            ></EditText>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight="5"
+                        android:padding="5dp"
+                        >
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Kết thúc"
+                            android:textSize="13sp"
+                            android:layout_gravity="left"
+                            android:layout_marginBottom="2dp"
+                            android:layout_marginLeft="5dp"
+                            android:textColor="#070707"
+                            ></TextView>
+                        <EditText
+                            android:layout_marginTop="5dp"
+                            android:layout_margin="5dp"
+                            android:layout_width="120dp"
+                            android:layout_height="30dp"
+                            android:id="@+id/editend"
+                            android:hint="Kết thúc"
+                            android:background="@drawable/edittext_frame"
+                            ></EditText>
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="5dp"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Mô tả"
+                        android:textColor="#050505"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:layout_margin="5dp"
+                        ></TextView>
+                    <EditText
+                        android:layout_margin="5dp"
+                        android:layout_width="300dp"
+                        android:layout_height="100dp"
+                        android:background="@drawable/edittext_frame"
+                        android:id="@+id/editmota"
+                        android:lines="8"
+                        android:hint="Mô tả chi tiết quá trình học tập của bản để nhà tuyển dụng có thể hiểu bạn hơn"
+                        ></EditText>
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:gravity="center"
+            >
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="40dp"
+                android:id="@+id/buttonhuy"
+                android:text="Hủy"
+                android:background="@drawable/button_huy"
+                ></Button>
+            <Button
+                android:background="@drawable/button_login"
+                android:textColor="#fff"
+                android:layout_marginLeft="30dp"
+                android:layout_width="150dp"
+                android:layout_height="40dp"
+                android:id="@+id/buttoncapnhat"
+                android:text="Cập nhật"
+                ></Button>
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>
