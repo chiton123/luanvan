@@ -52,14 +52,17 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ItemtHol
                 switch (position){
                     case 0:
                         Intent intent = new Intent(context, StudyActivity.class);
+                        intent.putExtra("confirm", 10);
                         activity.startActivityForResult(intent, REQUEST_CODE1);
                         break;
                     case 1:
                         Intent intent1 = new Intent(context, ExperienceActivity.class);
+                        intent1.putExtra("confirm", 10);
                         activity.startActivityForResult(intent1, REQUEST_CODE2);
                         break;
                     case 2:
                         Intent intent2 = new Intent(context, SkillActivity.class);
+                        intent2.putExtra("confirm", 10);
                         activity.startActivityForResult(intent2, REQUEST_CODE3);
                         break;
 

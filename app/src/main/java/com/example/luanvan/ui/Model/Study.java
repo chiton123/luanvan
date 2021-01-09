@@ -1,6 +1,9 @@
 package com.example.luanvan.ui.Model;
 
-public class Study {
+import java.io.Serializable;
+
+public class Study implements Serializable {
+    private int id;
     private String school;
     private String major;
     private String date_start;
@@ -10,12 +13,21 @@ public class Study {
     public Study(){
 
     }
-    public Study(String school, String major, String date_start, String date_end, String description) {
+    public Study(int id, String school, String major, String date_start, String date_end, String description) {
+        this.id = id;
         this.school = school;
         this.major = major;
         this.date_start = date_start;
         this.date_end = date_end;
         this.description = description;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getSchool() {

@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.UpdateInfo.SkillActivity"></activity>
+        <activity android:name=".ui.User.EditCombineActivity"></activity>
+        <activity android:name=".ui.UpdateInfo.SkillActivity" />
         <activity android:name=".ui.UpdateInfo.ExperienceActivity" />
         <activity android:name=".ui.UpdateInfo.StudyActivity" />
         <activity android:name=".ui.User.PersonalInfoActivity" />

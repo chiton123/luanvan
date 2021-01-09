@@ -3,8 +3,10 @@ package com.example.luanvan.ui.UpdateInfo;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,6 +22,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
+import com.example.luanvan.ui.Model.Experience;
 import com.example.luanvan.ui.Model.Skill;
 import com.example.luanvan.ui.Model.Study;
 
@@ -38,6 +41,12 @@ public class SkillActivity extends AppCompatActivity {
     EditText editname, editmota;
     RatingBar ratingBar;
     Button btnhuy, btncapnhat;
+    int id = 0; // id study trên csdl
+    int position = 0; // trên mảng arraylist, thứ tự
+    int update = 0;
+    String url = "";
+    ProgressDialog progressDialog;
+    Handler handler = new Handler();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +58,28 @@ public class SkillActivity extends AppCompatActivity {
 
 
     }
+    void loading(){
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading");
+        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
+    }
     private void getInfo() {
+        // 10: add, 3: update
+        int check = getIntent().getIntExtra("confirm", 0);
+        if(check == 3){
+            update = 1;
+            Skill skill = (Skill) getIntent().getSerializableExtra("skill");
+            position = getIntent().getIntExtra("position", 0);
+            id = skill.getId();
+            editname.setText(skill.getName());
+            editmota.setText(skill.getDescription());
+            ratingBar.setRating(skill.getStar());
+        }
+    }
+
+    private void getInfoSkill() {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlskill,
                 new Response.Listener<String>() {
@@ -60,13 +90,11 @@ public class SkillActivity extends AppCompatActivity {
                             for(int i=0; i < jsonArray.length(); i++){
                                 JSONObject object = jsonArray.getJSONObject(i);
                                 MainActivity.skills.add(new Skill(
+                                        object.getInt("id"),
                                         object.getString("name"),
-                                        object.getInt("star"),
+                                        (float) object.getDouble("star"),
                                         object.getString("description")
                                 ));
-                                editname.setText(object.getString("name"));
-                                editmota.setText(object.getString("description"));
-                                ratingBar.setRating(object.getInt("star"));
                             }
 
                         } catch (JSONException e) {
@@ -90,13 +118,12 @@ public class SkillActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
 
     }
-
-
     private void eventUpdate() {
         btncapnhat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final int star = ratingBar.getNumStars();
+                final float star = ratingBar.getRating();
+              //  Toast.makeText(getApplicationContext(), "Cập nhật :" + star, Toast.LENGTH_SHORT).show();
                 if(editname.getText().equals("") || editmota.getText().equals("")){
                     Toast.makeText(getApplicationContext(), "Vui lòng nhập đủ thông tin" , Toast.LENGTH_SHORT).show();
                 }else if(star == 0){
@@ -104,16 +131,45 @@ public class SkillActivity extends AppCompatActivity {
                 }else {
                     final String name = editname.getText().toString();
                     final String mota = editmota.getText().toString();
+                    final float star1 = ratingBar.getRating();
+                    if(update == 1){
+                        url = MainActivity.urlupdate_old_skill;
+                    }else {
+                        url = MainActivity.urlupdateskill;
+                    }
                     RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                    StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlupdateskill,
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                             new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
                                     if(response.equals("success")){
                                         Toast.makeText(getApplicationContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent();
-                                        setResult(3);
-                                        finish();
+                                        if(update == 1){
+                                            MainActivity.skills.get(position).setDescription(mota);
+                                            MainActivity.skills.get(position).setName(name);
+                                            MainActivity.skills.get(position).setStar(star);
+                                        }else {
+                                            MainActivity.skills.clear();
+                                            getInfoSkill();
+
+                                        }
+
+                                        loading();
+                                        handler = new Handler();
+                                        handler.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                if(update == 0){
+                                                    MainActivity.skillAdapter.notifyDataSetChanged();
+                                                }
+                                                MainActivity.skillAdapter.notifyDataSetChanged();
+                                                progressDialog.dismiss();
+                                                Intent intent = new Intent();
+                                                setResult(3);
+                                                finish();
+                                            }
+                                        }, 3000);
+
                                     }else {
                                         Toast.makeText(getApplicationContext(), "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
                                     }
@@ -128,9 +184,10 @@ public class SkillActivity extends AppCompatActivity {
                         @Override
                         protected Map<String, String> getParams() throws AuthFailureError {
                             Map<String,String> map = new HashMap<>();
+                            map.put("id", String.valueOf(id));
                             map.put("name", name);
                             map.put("mota", mota);
-                            map.put("star", String.valueOf(star));
+                            map.put("star", String.valueOf(star1));
                             map.put("iduser", String.valueOf(MainActivity.iduser));
                             return map;
                         }

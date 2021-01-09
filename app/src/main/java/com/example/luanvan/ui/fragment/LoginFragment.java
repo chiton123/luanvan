@@ -24,6 +24,9 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
+import com.example.luanvan.ui.Model.Experience;
+import com.example.luanvan.ui.Model.Skill;
+import com.example.luanvan.ui.Model.Study;
 import com.example.luanvan.ui.login.LoginActivity;
 
 import org.json.JSONArray;
@@ -103,6 +106,127 @@ public class LoginFragment extends Fragment {
         requestQueue.add(stringRequest);
 
     }
+    private void getInfoStudy() {
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlschool,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            for(int i=0; i < jsonArray.length(); i++){
+                                JSONObject object = jsonArray.getJSONObject(i);
+                                MainActivity.studies.add(new Study(
+                                        object.getInt("id"),
+                                        object.getString("school"),
+                                        object.getString("major"),
+                                        object.getString("start"),
+                                        object.getString("end"),
+                                        object.getString("description")
+                                ));
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("iduser", String.valueOf(MainActivity.iduser));
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+
+    }
+    private void getInfoExperience() {
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlexperience,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            for(int i=0; i < jsonArray.length(); i++){
+                                JSONObject object = jsonArray.getJSONObject(i);
+                                MainActivity.experiences.add(new Experience(
+                                        object.getInt("id"),
+                                        object.getString("company"),
+                                        object.getString("position"),
+                                        object.getString("start"),
+                                        object.getString("end"),
+                                        object.getString("description")
+                                ));
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getActivity(), error.toString() , Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("iduser", String.valueOf(MainActivity.iduser));
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+
+    }
+    private void getInfoSkill() {
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlskill,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            for(int i=0; i < jsonArray.length(); i++){
+                                JSONObject object = jsonArray.getJSONObject(i);
+                                MainActivity.skills.add(new Skill(
+                                        object.getInt("id"),
+                                        object.getString("name"),
+                                        (float) object.getDouble("star"),
+                                        object.getString("description")
+                                ));
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("iduser", String.valueOf(MainActivity.iduser));
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+
+    }
     private void eventLogin() {
         btnDangnhap.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,7 +250,9 @@ public class LoginFragment extends Fragment {
                                         MainActivity.login = 1;
                                         MainActivity.iduser = Integer.parseInt(response);
                                         getInfo();
-
+                                        getInfoSkill();
+                                        getInfoStudy();
+                                        getInfoExperience();
                                         Handler handler = new Handler();
                                         handler.postDelayed(new Runnable() {
                                             @Override
@@ -137,7 +263,7 @@ public class LoginFragment extends Fragment {
                                                 getActivity().setResult(123);
                                                 getActivity().finish();
                                             }
-                                        },2000);
+                                        },4000);
 
                                     }else {
                                         Toast.makeText(getActivity(), "Sai tên hoặc mật khẩu", Toast.LENGTH_SHORT).show();

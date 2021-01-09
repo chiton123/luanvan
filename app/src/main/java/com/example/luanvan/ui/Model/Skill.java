@@ -1,14 +1,26 @@
 package com.example.luanvan.ui.Model;
 
-public class Skill {
+import java.io.Serializable;
+
+public class Skill implements Serializable {
+    private int id;
     private String name;
-    private int star;
+    private float star;
     private String description;
 
-    public Skill(String name, int star, String description) {
+    public Skill(int id, String name, float star, String description) {
+        this.id = id;
         this.name = name;
         this.star = star;
         this.description = description;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -19,11 +31,11 @@ public class Skill {
         this.name = name;
     }
 
-    public int getStar() {
+    public float getStar() {
         return star;
     }
 
-    public void setStar(int star) {
+    public void setStar(float star) {
         this.star = star;
     }
 

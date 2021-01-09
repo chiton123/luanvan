@@ -46,74 +46,216 @@
                 ></Button>
 
         </LinearLayout>
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/linear2"
-            android:orientation="vertical"
+            android:id="@+id/scrollview"
             >
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_marginTop="10dp"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:src="@drawable/user2"
-                android:layout_gravity="center_horizontal"
-                ></de.hdodenhof.circleimageview.CircleImageView>
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:id="@+id/edit"
-                android:src="@drawable/edit"
-                android:layout_gravity="right"
-                android:layout_margin="10dp"
-                ></ImageView>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TON"
-                android:textSize="18sp"
-                android:textColor="#040404"
-                android:layout_gravity="center_horizontal"
-                android:textStyle="bold"
-                android:id="@+id/name"
-                ></TextView>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Chưa cập nhật vị trí công việc"
-                android:textSize="18sp"
-                android:textColor="#040404"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:id="@+id/position"
-                ></TextView>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Chưa cập nhật công ty"
-                android:textSize="18sp"
-                android:textColor="#040404"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:id="@+id/company"
-                ></TextView>
-
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="50dp"
+                android:layout_height="match_parent"
+
                 >
-                <androidx.recyclerview.widget.RecyclerView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/recycleview"
+                    android:id="@+id/linear2"
+                    android:orientation="vertical"
+                    android:padding="5dp"
+                    >
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_marginTop="10dp"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/user2"
+                        android:layout_gravity="center_horizontal"
+                        ></de.hdodenhof.circleimageview.CircleImageView>
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:id="@+id/edit"
+                        android:src="@drawable/edit"
+                        android:layout_gravity="right"
+                        android:layout_margin="10dp"
+                        ></ImageView>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="TON"
+                        android:textSize="18sp"
+                        android:textColor="#040404"
+                        android:layout_gravity="center_horizontal"
+                        android:textStyle="bold"
+                        android:id="@+id/name"
+                        ></TextView>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Chưa cập nhật vị trí công việc"
+                        android:textSize="18sp"
+                        android:textColor="#040404"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="10dp"
+                        android:id="@+id/position"
+                        ></TextView>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Chưa cập nhật công ty"
+                        android:textSize="18sp"
+                        android:textColor="#040404"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="10dp"
+                        android:id="@+id/company"
+                        ></TextView>
 
-                    ></androidx.recyclerview.widget.RecyclerView>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="50dp"
+                        >
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/recycleview"
+                            ></androidx.recyclerview.widget.RecyclerView>
 
-            </LinearLayout>
 
-        </LinearLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="20dp"
+                        >
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            >
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Học vấn"
+                                android:textSize="15sp"
+                                android:textColor="#000000"
+                                android:textStyle="bold"
+                                ></TextView>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical"
+                                >
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="20dp"
+                                    android:src="@drawable/edit"
+                                    android:layout_gravity="right"
+                                    android:id="@+id/edithocvan"
+                                    ></ImageView>
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/recycleviewstudy"
+                            ></androidx.recyclerview.widget.RecyclerView>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="20dp"
+                        >
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            >
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Kinh nghiệm"
+                                android:textSize="15sp"
+                                android:textColor="#000000"
+                                android:textStyle="bold"
+                                ></TextView>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical"
+                                >
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="20dp"
+                                    android:src="@drawable/edit"
+                                    android:layout_gravity="right"
+                                    android:id="@+id/editkinhnghiem"
+                                    ></ImageView>
+                            </LinearLayout>
+                        </LinearLayout>
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/recycleviewexperience"
+                            ></androidx.recyclerview.widget.RecyclerView>
+
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="80dp"
+                        >
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            >
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Kỹ năng"
+                                android:textSize="15sp"
+                                android:textColor="#000000"
+                                android:textStyle="bold"
+                                ></TextView>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical"
+                                >
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="20dp"
+                                    android:src="@drawable/edit"
+                                    android:layout_gravity="right"
+                                    android:id="@+id/editkynang"
+                                    ></ImageView>
+                            </LinearLayout>
+                        </LinearLayout>
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/recycleviewskill"
+                            ></androidx.recyclerview.widget.RecyclerView>
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+        </ScrollView>
+
+
 
 
 

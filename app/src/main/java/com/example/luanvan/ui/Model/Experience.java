@@ -1,18 +1,30 @@
 package com.example.luanvan.ui.Model;
 
-public class Experience  {
+import java.io.Serializable;
+
+public class Experience implements Serializable {
+    private int id;
     private String company;
     private String position;
     private String date_start;
     private String date_end;
     private String description;
 
-    public Experience(String company, String position, String date_start, String date_end, String description) {
+    public Experience(int id, String company, String position, String date_start, String date_end, String description) {
+        this.id = id;
         this.company = company;
         this.position = position;
         this.date_start = date_start;
         this.date_end = date_end;
         this.description = description;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getCompany() {
