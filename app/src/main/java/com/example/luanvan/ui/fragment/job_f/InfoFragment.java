@@ -1,4 +1,4 @@
-package com.example.luanvan.ui.fragment;
+package com.example.luanvan.ui.fragment.job_f;
 
 import android.content.Intent;
 import android.os.Bundle;

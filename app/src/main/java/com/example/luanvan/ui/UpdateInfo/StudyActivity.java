@@ -49,6 +49,7 @@ public class StudyActivity extends AppCompatActivity {
     String url = "";
     ProgressDialog progressDialog;
     Handler handler = new Handler();
+    int x = 0; // check end date có trước start date hay k, nếu có thì 1
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +57,10 @@ public class StudyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_study);
         anhxa();
         actionBar();
+        getInfo();
         eventUpdate();
         eventDate();
-        getInfo();
+
 
     }
     void loading(){
@@ -82,24 +84,32 @@ public class StudyActivity extends AppCompatActivity {
             String ngaybatdau = study.getDate_start();
             String ngayketthuc = study.getDate_end();
             SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat fmtOut = new SimpleDateFormat("dd/MM/yyyy");
             Date date1 = null, date2 = null;
             try {
                 date1 = fmt.parse(ngaybatdau);
                 date2 = fmt.parse(ngayketthuc);
+
+                date_start = date1;
+                date_end = date2;
+                date_post_start = fmt.format(date1);
+                date_post_end = fmt.format(date2);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            SimpleDateFormat fmtOut = new SimpleDateFormat("dd/MM/yyyy");
+
             try {
+
+
                 editstart.setText(fmtOut.format(date1));
                 editend.setText(fmtOut.format(date2));
             }catch (NullPointerException e){
                 Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
             }
+        //    Toast.makeText(getApplicationContext(), "start: " + date_post_start + " end: " + date_post_end, Toast.LENGTH_SHORT).show();
 
         }
     }
-
 
     public void showDate(final int kind) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -125,8 +135,10 @@ public class StudyActivity extends AppCompatActivity {
                         date_end = calendar.getTime();
                         if(date_end.before(date_start)){
                             Toast.makeText(getApplicationContext(), "Ngày kết thúc phải sau ngày bắt đầu", Toast.LENGTH_SHORT).show();
+                            x = 1;
                         }else {
                             editend.setText(dateFormat.format(calendar.getTime()));
+                            x = 0;
                         }
 
                     }
@@ -166,7 +178,7 @@ public class StudyActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    if(check_start == 0){
+                    if(check_start == 0 && editstart.getText().equals("")){
                         Toast.makeText(getApplicationContext(), "Bạn chọn ngày bắt đầu trước", Toast.LENGTH_SHORT).show();
                     }else {
                         showDate(2);
@@ -224,10 +236,15 @@ public class StudyActivity extends AppCompatActivity {
         btncapnhat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if(editshool.getText().equals("") || editmota.getText().equals("") || editmajor.getText().equals("") || editstart.getText().equals("")
                 || editend.getText().equals("")){
                     Toast.makeText(getApplicationContext(), "Vui lòng nhập đủ thông tin" , Toast.LENGTH_SHORT).show();
-                }else {
+                }else if(x == 1){
+                    Toast.makeText(getApplicationContext(), "Ngày kết thúc phải sau ngày bắt đầu" , Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
                     final String school = editshool.getText().toString();
                     final String major = editmajor.getText().toString();
                     final String mota = editmota.getText().toString();
@@ -243,7 +260,7 @@ public class StudyActivity extends AppCompatActivity {
                                 public void onResponse(String response) {
                                     if(response.equals("success")){
                                         Toast.makeText(getApplicationContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
-
+                                      //  Toast.makeText(getApplicationContext(), "start: " + date_post_start + " end: " + date_post_end, Toast.LENGTH_SHORT).show();
                                         if(update == 1){
                                             MainActivity.studies.get(position).setSchool(school);
                                             MainActivity.studies.get(position).setMajor(major);
@@ -260,10 +277,8 @@ public class StudyActivity extends AppCompatActivity {
                                             @Override
                                             public void run() {
                                                 if(update == 0){
-
                                                     MainActivity.studyAdapter.notifyDataSetChanged();
                                                 }
-
                                                 progressDialog.dismiss();
                                                 Intent intent = new Intent();
                                                 setResult(1, intent);

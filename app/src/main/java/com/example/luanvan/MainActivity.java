@@ -42,9 +42,10 @@ public class MainActivity extends AppCompatActivity {
     public static ArrayList<Study> studies = new ArrayList<>();
     public static ArrayList<Experience> experiences = new ArrayList<>();
     public static ArrayList<Skill> skills = new ArrayList<>();
+    // list CV
+    public static ArrayList<String> arrayListCV = new ArrayList<>();
 
-
-    public static String host = "http://10.10.34.78:8888/luanvan/";
+    public static String host = "http://192.168.0.101:8888/luanvan/";
     public static String urljob1 = host + "job1.php";
     public static String urlcompany = host + "company.php";
     // dang nhap

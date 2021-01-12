@@ -162,7 +162,7 @@ public class SkillActivity extends AppCompatActivity {
                                                 if(update == 0){
                                                     MainActivity.skillAdapter.notifyDataSetChanged();
                                                 }
-                                                MainActivity.skillAdapter.notifyDataSetChanged();
+
                                                 progressDialog.dismiss();
                                                 Intent intent = new Intent();
                                                 setResult(3);

@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,14 +13,13 @@ import com.bumptech.glide.Glide;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.ViewPageAdapter;
 import com.example.luanvan.ui.Model.Job;
-import com.example.luanvan.ui.fragment.CompanyFragment;
-import com.example.luanvan.ui.fragment.InfoFragment;
-import com.example.luanvan.ui.fragment.RelevantJobFragment;
+import com.example.luanvan.ui.fragment.job_f.CompanyFragment;
+import com.example.luanvan.ui.fragment.job_f.InfoFragment;
+import com.example.luanvan.ui.fragment.job_f.RelevantJobFragment;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
