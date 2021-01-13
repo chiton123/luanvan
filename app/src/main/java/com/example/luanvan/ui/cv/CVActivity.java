@@ -31,7 +31,7 @@ public class CVActivity extends AppCompatActivity {
     Dialog dialog;
     ListView listViewThongtinLienHe, listViewRemove, listViewAdd;
     public static TitleAdapter titleAdapterTTLH, titleAdapterRemove;
-    public static ArrayList<Title> arrayListTTLH, arrayListRemove, arrayListAdd;
+    public static ArrayList<Title> arrayListTTLH, arrayListRemove, arrayListAdd, arrayListTongHop;
     public static AddAdapter addAdapter;
     ImageView imgCancel;
 
@@ -72,14 +72,23 @@ public class CVActivity extends AppCompatActivity {
         arrayListRemove = new ArrayList<>();
         arrayListTTLH = new ArrayList<>();
         arrayListAdd = new ArrayList<>();
-        arrayListTTLH.add(new Title(1, "Thông tin liên hệ"));
-        arrayListRemove.add(new Title(1, "Mục tiêu nghề nghiệp"));
-        arrayListRemove.add(new Title(2, "Học vấn"));
-        arrayListRemove.add(new Title(3, "Kinh nghiệm làm việc"));
-        arrayListAdd.add(new Title(1, "Sở thích"));
-        arrayListAdd.add(new Title(2, "Hoạt động"));
-        titleAdapterTTLH = new TitleAdapter(getApplicationContext(), arrayListTTLH, 1);
-        titleAdapterRemove = new TitleAdapter(getApplicationContext(), arrayListRemove, 0);
+        arrayListTongHop = new ArrayList<>();
+        arrayListTongHop.add(new Title(0, "Thông tin liên hệ"));
+        arrayListTongHop.add(new Title(1, "Mục tiêu nghề nghiệp"));
+        arrayListTongHop.add(new Title(2, "Học vấn"));
+        arrayListTongHop.add(new Title(3, "Kinh nghiệm làm việc"));
+        arrayListTongHop.add(new Title(4, "Kỹ năng"));
+        arrayListTongHop.add(new Title(5, "Hoạt động"));
+
+
+        arrayListRemove.add(arrayListTongHop.get(0));
+        arrayListRemove.add(arrayListTongHop.get(1));
+        arrayListRemove.add(arrayListTongHop.get(2));
+        arrayListRemove.add(arrayListTongHop.get(3));
+        arrayListAdd.add(arrayListTongHop.get(4));
+        arrayListAdd.add(arrayListTongHop.get(5));
+        titleAdapterTTLH = new TitleAdapter(getApplicationContext(), arrayListTTLH, this, 1);
+        titleAdapterRemove = new TitleAdapter(getApplicationContext(), arrayListRemove, this, 0);
         addAdapter = new AddAdapter(getApplicationContext(), arrayListAdd);
         listViewAdd.setAdapter(addAdapter);
         listViewThongtinLienHe.setAdapter(titleAdapterTTLH);

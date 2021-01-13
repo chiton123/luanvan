@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.cv_content.CVInfoActivity">
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:id="@+id/toolbar"
+        app:title="Tạo CV"
+        android:background="#fff"
+        ></androidx.appcompat.widget.Toolbar>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="12"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:layout_weight="11"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Thông tin liên hệ"
+                android:textSize="18sp"
+                android:textColor="#070707"
+                ></TextView>
+            <EditText
+                android:layout_gravity="center_horizontal"
+                android:layout_width="310dp"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/user1"
+                android:id="@+id/name"
+                android:backgroundTint="#070707"
+                android:hint="Họ tên"
+                android:drawablePadding="20dp"
+                ></EditText>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtname"
+                android:text="Tên không được để trống"
+                android:textColor="#E30D08"
+                android:layout_marginLeft="30dp"
+                android:visibility="gone"
+                ></TextView>
+            <EditText
+                android:layout_gravity="center_horizontal"
+                android:layout_width="310dp"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/document3"
+                android:id="@+id/position"
+                android:backgroundTint="#070707"
+                android:hint="Vị trí bạn muốn ứng tuyển"
+                android:drawablePadding="20dp"
+                ></EditText>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtposition"
+                android:text="Vị trí không được để trống"
+                android:textColor="#E30D08"
+                android:layout_marginLeft="30dp"
+                android:visibility="gone"
+                ></TextView>
+            <EditText
+                android:layout_gravity="center_horizontal"
+                android:layout_width="310dp"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/phone3"
+                android:id="@+id/phone"
+                android:backgroundTint="#070707"
+                android:hint="Số điện thoại"
+                android:drawablePadding="20dp"
+                android:inputType="number"
+                ></EditText>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtphone"
+                android:text="Số điện thoại không được để trống"
+                android:textColor="#E30D08"
+                android:layout_marginLeft="30dp"
+                android:visibility="gone"
+                ></TextView>
+            <EditText
+                android:layout_gravity="center_horizontal"
+                android:layout_width="310dp"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/email1"
+                android:id="@+id/email"
+                android:backgroundTint="#070707"
+                android:hint="Địa chỉ email"
+                android:drawablePadding="20dp"
+                ></EditText>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtemail"
+                android:text="Email không được để trống"
+                android:textColor="#E30D08"
+                android:layout_marginLeft="30dp"
+                android:visibility="gone"
+                ></TextView>
+            <EditText
+                android:layout_gravity="center_horizontal"
+                android:layout_width="310dp"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/map2"
+                android:id="@+id/address"
+                android:backgroundTint="#070707"
+                android:hint="Địa chỉ hiện tại"
+                android:drawablePadding="20dp"
+                ></EditText>
+            <EditText
+                android:layout_gravity="center_horizontal"
+                android:layout_width="310dp"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/gender"
+                android:id="@+id/gender"
+                android:backgroundTint="#070707"
+                android:hint="Giới tính"
+                android:drawablePadding="20dp"
+                ></EditText>
+            <EditText
+                android:layout_gravity="center_horizontal"
+                android:layout_width="310dp"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/calendar"
+                android:id="@+id/birthday"
+                android:backgroundTint="#070707"
+                android:hint="Ngày sinh"
+                android:drawablePadding="20dp"
+                ></EditText>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                >
+                <Button
+                    android:layout_width="150dp"
+                    android:layout_height="40dp"
+                    android:id="@+id/buttonhuy"
+                    android:background="@drawable/button_huy"
+                    android:text="Hủy"
+                    ></Button>
+                <Button
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="150dp"
+                    android:layout_height="40dp"
+                    android:id="@+id/buttonluu"
+                    android:background="@drawable/button_login"
+                    android:text="Lưu"
+                    android:textColor="#fff"
+                    ></Button>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

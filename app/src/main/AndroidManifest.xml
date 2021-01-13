@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.luanvan">
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -12,7 +13,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.cv.CVActivity"></activity>
+        <activity android:name=".ui.cv_content.CVVolunteerActivity"></activity>
+        <activity android:name=".ui.cv_content.CVGoalActivity" />
+        <activity android:name=".ui.cv_content.CVExperienceActivity" />
+        <activity android:name=".ui.cv_content.CVSkillActivity" />
+        <activity android:name=".ui.cv_content.CVInfoActivity" />
+        <activity android:name=".ui.cv_content.CVStudyActivity" />
+        <activity android:name=".ui.cv.CVActivity" />
         <activity android:name=".ui.cv.CVCreateActivity" />
         <activity android:name=".ui.User.EditCombineActivity" />
         <activity android:name=".ui.UpdateInfo.SkillActivity" />

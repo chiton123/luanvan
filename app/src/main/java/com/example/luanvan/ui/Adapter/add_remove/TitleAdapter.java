@@ -1,28 +1,40 @@
 package com.example.luanvan.ui.Adapter.add_remove;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Title;
 import com.example.luanvan.ui.cv.CVActivity;
+import com.example.luanvan.ui.cv_content.CVExperienceActivity;
+import com.example.luanvan.ui.cv_content.CVGoalActivity;
+import com.example.luanvan.ui.cv_content.CVInfoActivity;
+import com.example.luanvan.ui.cv_content.CVSkillActivity;
+import com.example.luanvan.ui.cv_content.CVStudyActivity;
+import com.example.luanvan.ui.cv_content.CVVolunteerActivity;
 
 import java.util.ArrayList;
 
 public class TitleAdapter extends BaseAdapter {
     Context context;
     ArrayList<Title> arrayList;
+    Activity activity;
     int kind;
+    int REQUEST_CODE0 = 100, REQUEST_CODE1 = 101, REQUEST_CODE2 = 102,REQUEST_CODE3 = 103,REQUEST_CODE4 = 104,REQUEST_CODE5 = 105;
 
-    public TitleAdapter(Context context, ArrayList<Title> arrayList, int kind) {
+    public TitleAdapter(Context context, ArrayList<Title> arrayList, Activity activity, int kind) {
         this.context = context;
         this.arrayList = arrayList;
+        this.activity = activity;
         this.kind = kind;
     }
 
@@ -43,6 +55,7 @@ public class TitleAdapter extends BaseAdapter {
     public class ViewHolder{
         public TextView txtname;
         public TextView txtRemove;
+        public LinearLayout layout;
 
     }
     @Override
@@ -54,9 +67,7 @@ public class TitleAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.dong_remove, null);
             viewHolder.txtname = (TextView) convertView.findViewById(R.id.name);
             viewHolder.txtRemove = (TextView) convertView.findViewById(R.id.remove);
-            if(kind == 1){
-                viewHolder.txtRemove.setVisibility(View.GONE);
-            }
+            viewHolder.layout = (LinearLayout) convertView.findViewById(R.id.linear);
             convertView.setTag(viewHolder);
 
         }else {
@@ -64,6 +75,11 @@ public class TitleAdapter extends BaseAdapter {
         }
         Title title = arrayList.get(position);
         viewHolder.txtname.setText(title.getName());
+        if(kind == 1){
+            viewHolder.txtRemove.setVisibility(View.GONE);
+        }else {
+            viewHolder.txtRemove.setVisibility(View.VISIBLE);
+        }
         viewHolder.txtRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,6 +88,37 @@ public class TitleAdapter extends BaseAdapter {
                 CVActivity.arrayListRemove.remove(position);
                 notifyDataSetChanged();
 
+            }
+        });
+        viewHolder.layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (arrayList.get(position).getId()){
+                    case 0:
+                        Intent intent = new Intent(context, CVInfoActivity.class);
+                        activity.startActivityForResult(intent, REQUEST_CODE0);
+                        break;
+                    case 1:
+                        Intent intent1 = new Intent(context, CVGoalActivity.class);
+                        activity.startActivityForResult(intent1, REQUEST_CODE1);
+                        break;
+                    case 2:
+                        Intent intent2 = new Intent(context, CVStudyActivity.class);
+                        activity.startActivityForResult(intent2, REQUEST_CODE2);
+                        break;
+                    case 3:
+                        Intent intent3 = new Intent(context, CVExperienceActivity.class);
+                        activity.startActivityForResult(intent3, REQUEST_CODE3);
+                        break;
+                    case 4:
+                        Intent intent4 = new Intent(context, CVSkillActivity.class);
+                        activity.startActivityForResult(intent4, REQUEST_CODE4);
+                        break;
+                    case 5:
+                        Intent intent5 = new Intent(context, CVVolunteerActivity.class);
+                        activity.startActivityForResult(intent5, REQUEST_CODE5);
+                        break;
+                }
             }
         });
         return convertView;
