@@ -44,9 +44,6 @@ public class CVInfoActivity extends AppCompatActivity {
 
     }
 
-
-
-
     private void eventLuu() {
         btnluu.setOnClickListener(new View.OnClickListener() {
             @Override

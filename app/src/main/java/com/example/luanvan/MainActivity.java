@@ -14,6 +14,10 @@ import com.example.luanvan.ui.Model.User;
 import com.example.luanvan.ui.User.NotificationsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,11 +35,15 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     // Để adapter.notify trong runable handle sẽ k bị lỗi null
     // adapter của Notification fragment
+    public static DatabaseReference mData = FirebaseDatabase.getInstance().getReference("one");
+    public static FirebaseAuth mAuth = FirebaseAuth.getInstance() ;
+    public static FirebaseUser mUser;
     public static StudyAdapter studyAdapter;
     public static ExperienceAdapter experienceAdapter;
     public static SkillAdapter skillAdapter;
     public static int login = 0;
     public static int iduser = 0;
+    public static String uid = "";
     public static String username = "";
     public static String position = "";
     public static User user = new User();
@@ -45,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     // list CV
     public static ArrayList<String> arrayListCV = new ArrayList<>();
 
-    public static String host = "http://192.168.0.104:8888/luanvan/";
+    public static String host = "http://10.10.33.143:8888/luanvan/";
     public static String urljob1 = host + "job1.php";
     public static String urlcompany = host + "company.php";
     // dang nhap

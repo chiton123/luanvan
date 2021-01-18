@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
@@ -28,6 +29,12 @@ import com.example.luanvan.ui.Model.Experience;
 import com.example.luanvan.ui.Model.Skill;
 import com.example.luanvan.ui.Model.Study;
 import com.example.luanvan.ui.login.LoginActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -107,44 +114,23 @@ public class LoginFragment extends Fragment {
 
     }
     private void getInfoStudy() {
-        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlschool,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONArray jsonArray = new JSONArray(response);
-                            for(int i=0; i < jsonArray.length(); i++){
-                                JSONObject object = jsonArray.getJSONObject(i);
-                                MainActivity.studies.add(new Study(
-                                        object.getInt("id"),
-                                        object.getString("school"),
-                                        object.getString("major"),
-                                        object.getString("start"),
-                                        object.getString("end"),
-                                        object.getString("description")
-                                ));
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                }){
+        MainActivity.mData.child("study").addValueEventListener(new ValueEventListener() {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> map = new HashMap<>();
-                map.put("iduser", String.valueOf(MainActivity.iduser));
-                return map;
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot x : snapshot.getChildren()){
+                    Study study = x.getValue(Study.class);
+                    MainActivity.studies.add(study);
+                    Toast.makeText(getActivity(), study.getSchool(), Toast.LENGTH_SHORT).show();
+                }
+
+
             }
-        };
-        requestQueue.add(stringRequest);
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
     }
     private void getInfoExperience() {
@@ -240,30 +226,42 @@ public class LoginFragment extends Fragment {
                     StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urllogin,
                             new Response.Listener<String>() {
                                 @Override
-                                public void onResponse(String response) {
+                                public void onResponse(final String response) {
                                     if(!response.equals("fail")){
-                                        Toast.makeText(getActivity(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-                                        editEmail.setText("");
-                                        editPass.setText("");
+                                        MainActivity.mAuth.signInWithEmailAndPassword(email, pass)
+                                                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                                        if(task.isSuccessful()){
+                                                            Toast.makeText(getActivity(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                                                            MainActivity.mUser = MainActivity.mAuth.getCurrentUser();
+                                                            MainActivity.uid = MainActivity.mUser.getUid();
+                                                            editEmail.setText("");
+                                                            editPass.setText("");
+                                                            loading();
+                                                            MainActivity.login = 1;
+                                                            MainActivity.iduser = Integer.parseInt(response);
+                                                            getInfo();
+                                                            getInfoSkill();
+                                                            getInfoStudy();
+                                                            getInfoExperience();
+                                                            Handler handler = new Handler();
+                                                            handler.postDelayed(new Runnable() {
+                                                                @Override
+                                                                public void run() {
 
-                                        loading();
-                                        MainActivity.login = 1;
-                                        MainActivity.iduser = Integer.parseInt(response);
-                                        getInfo();
-                                        getInfoSkill();
-                                        getInfoStudy();
-                                        getInfoExperience();
-                                        Handler handler = new Handler();
-                                        handler.postDelayed(new Runnable() {
-                                            @Override
-                                            public void run() {
+                                                                    progressDialog.dismiss();
+                                                                    Intent intent = new Intent();
+                                                                    getActivity().setResult(123);
+                                                                    getActivity().finish();
+                                                                }
+                                                            },4000);
+                                                        }else {
+                                                            Toast.makeText(getActivity(), "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    }
+                                                });
 
-                                                progressDialog.dismiss();
-                                                Intent intent = new Intent();
-                                                getActivity().setResult(123);
-                                                getActivity().finish();
-                                            }
-                                        },4000);
 
                                     }else {
                                         Toast.makeText(getActivity(), "Sai tên hoặc mật khẩu", Toast.LENGTH_SHORT).show();

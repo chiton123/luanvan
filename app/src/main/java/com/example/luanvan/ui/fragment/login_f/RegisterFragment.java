@@ -2,6 +2,7 @@ package com.example.luanvan.ui.fragment.login_f;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -21,6 +22,13 @@ import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.login.LoginActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,12 +36,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class RegisterFragment extends Fragment {
+
     EditText editEmail, editPass, editPass2, editName;
     Button btnDangky;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_register, container, false);
+        FirebaseApp.initializeApp(getActivity());
+
         editEmail = (EditText) view.findViewById(R.id.editemail);
         editPass = (EditText) view.findViewById(R.id.editpass);
         btnDangky = (Button) view.findViewById(R.id.buttondangky);
@@ -43,14 +54,36 @@ public class RegisterFragment extends Fragment {
 
         return view;
     }
+    public void SignUp(String email, String password){
+        // firebase
+        MainActivity.mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()){
+                            Toast.makeText(getActivity(), "Đăng ký thành công", Toast.LENGTH_SHORT).show();
+                            editEmail.setText("");
+                            editName.setText("");
+                            editPass.setText("");
+                            editPass2.setText("");
+                            ((LoginActivity) getActivity()).Switch1();
+                        }else {
+                            Toast.makeText(getActivity(), "Đăng ký thất bại", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+    }
     private void eventRegister() {
         btnDangky.setOnClickListener(new View.OnClickListener() {
+
+
             @Override
             public void onClick(View v) {
                 if(editEmail.getText().equals("") || editName.getText().equals("") || editPass.getText().equals("") || editPass2.getText().equals("")){
                     Toast.makeText(getActivity(), "Vui lòng nhập đủ thông tin", Toast.LENGTH_SHORT).show();
-                }else if(editPass.getText().length() < 8 || editPass2.getText().length() < 8){
-                    Toast.makeText(getActivity(), "Mật khẩu ít nhất 8 ký tự", Toast.LENGTH_SHORT).show();
+                }else if(editPass.getText().length() < 6 || editPass2.getText().length() < 6){
+                    Toast.makeText(getActivity(), "Mật khẩu ít nhất 6 ký tự", Toast.LENGTH_SHORT).show();
                 }else if(!isEmailValid(editEmail.getText().toString())){
                     Toast.makeText(getActivity(), "Email không đúng định dạng", Toast.LENGTH_SHORT).show();
                 }else if (!editPass2.getText().toString().equals(editPass.getText().toString())){
@@ -60,17 +93,16 @@ public class RegisterFragment extends Fragment {
                     final String email = editEmail.getText().toString();
                     final String pass = editPass.getText().toString();
                     RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+
                     StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlRegister,
                             new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
                                     if(response.equals("success")){
-                                        Toast.makeText(getActivity(), "Đăng ký thành công", Toast.LENGTH_SHORT).show();
-                                        editEmail.setText("");
-                                        editName.setText("");
-                                        editPass.setText("");
-                                        editPass2.setText("");
-                                        ((LoginActivity) getActivity()).Switch1();
+                                       // Toast.makeText(getActivity(), email + pass, Toast.LENGTH_SHORT).show();
+                                        SignUp(email, pass);
+                                    }else {
+                                        Toast.makeText(getActivity(), "Đăng ký thất bại", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             },
@@ -95,6 +127,7 @@ public class RegisterFragment extends Fragment {
             }
         });
     }
+
 
     public boolean isEmailValid(String email)
     {
