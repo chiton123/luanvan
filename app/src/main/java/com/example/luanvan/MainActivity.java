@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     public static DatabaseReference mData = FirebaseDatabase.getInstance().getReference("one");
     public static FirebaseAuth mAuth = FirebaseAuth.getInstance() ;
     public static FirebaseUser mUser;
+    // fragment notification
     public static StudyAdapter studyAdapter;
     public static ExperienceAdapter experienceAdapter;
     public static SkillAdapter skillAdapter;
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     // list CV
     public static ArrayList<String> arrayListCV = new ArrayList<>();
 
-    public static String host = "http://10.10.33.143:8888/luanvan/";
+    public static String host = "http://10.3.74.80:8888/luanvan/";
     public static String urljob1 = host + "job1.php";
     public static String urlcompany = host + "company.php";
     // dang nhap

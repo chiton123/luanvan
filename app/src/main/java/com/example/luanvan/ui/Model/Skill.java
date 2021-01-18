@@ -3,24 +3,37 @@ package com.example.luanvan.ui.Model;
 import java.io.Serializable;
 
 public class Skill implements Serializable {
-    private int id;
+    private String id;
+    private String uid;
     private String name;
     private float star;
     private String description;
 
-    public Skill(int id, String name, float star, String description) {
+    public Skill() {
+    }
+
+    public Skill(String id, String uid, String name, float star, String description) {
         this.id = id;
+        this.uid = uid;
         this.name = name;
         this.star = star;
         this.description = description;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getName() {

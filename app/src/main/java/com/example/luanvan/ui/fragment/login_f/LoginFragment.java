@@ -114,16 +114,30 @@ public class LoginFragment extends Fragment {
 
     }
     private void getInfoStudy() {
-        MainActivity.mData.child("study").addValueEventListener(new ValueEventListener() {
+        MainActivity.mData.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot x : snapshot.getChildren()){
-                    Study study = x.getValue(Study.class);
-                    MainActivity.studies.add(study);
-                    Toast.makeText(getActivity(), study.getSchool(), Toast.LENGTH_SHORT).show();
+                if(snapshot.hasChild("study")){
+                    MainActivity.mData.child("study").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for(DataSnapshot x : snapshot.getChildren()){
+                                Study study = x.getValue(Study.class);
+                                if(study.getUid().equals(MainActivity.uid)){
+                                    MainActivity.studies.add(study);
+                                }
+
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
                 }
-
-
             }
 
             @Override
@@ -132,85 +146,71 @@ public class LoginFragment extends Fragment {
             }
         });
 
+
     }
     private void getInfoExperience() {
-        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlexperience,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONArray jsonArray = new JSONArray(response);
-                            for(int i=0; i < jsonArray.length(); i++){
-                                JSONObject object = jsonArray.getJSONObject(i);
-                                MainActivity.experiences.add(new Experience(
-                                        object.getInt("id"),
-                                        object.getString("company"),
-                                        object.getString("position"),
-                                        object.getString("start"),
-                                        object.getString("end"),
-                                        object.getString("description")
-                                ));
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getActivity(), error.toString() , Toast.LENGTH_SHORT).show();
-                    }
-                }){
+        MainActivity.mData.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> map = new HashMap<>();
-                map.put("iduser", String.valueOf(MainActivity.iduser));
-                return map;
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.hasChild("experience") && snapshot.exists()){
+                    MainActivity.mData.child("experience").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for(DataSnapshot x : snapshot.getChildren()){
+                                Experience experience = x.getValue(Experience.class);
+                                if(experience.getUid().equals(MainActivity.uid)){
+                                    MainActivity.experiences.add(experience);
+                                }
+
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                }
             }
-        };
-        requestQueue.add(stringRequest);
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
 
     }
     private void getInfoSkill() {
-        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlskill,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONArray jsonArray = new JSONArray(response);
-                            for(int i=0; i < jsonArray.length(); i++){
-                                JSONObject object = jsonArray.getJSONObject(i);
-                                MainActivity.skills.add(new Skill(
-                                        object.getInt("id"),
-                                        object.getString("name"),
-                                        (float) object.getDouble("star"),
-                                        object.getString("description")
-                                ));
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                }){
+        MainActivity.mData.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> map = new HashMap<>();
-                map.put("iduser", String.valueOf(MainActivity.iduser));
-                return map;
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.hasChild("skill")){
+                    MainActivity.mData.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for(DataSnapshot x : snapshot.getChildren()){
+                                Skill skill = x.getValue(Skill.class);
+                               // Toast.makeText(getActivity(), skill.getUid(), Toast.LENGTH_SHORT).show();
+                                if(skill.getUid().equals(MainActivity.uid)){
+                                    MainActivity.skills.add(skill);
+                                }
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                }
             }
-        };
-        requestQueue.add(stringRequest);
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
     }
     private void eventLogin() {
@@ -233,18 +233,22 @@ public class LoginFragment extends Fragment {
                                                     @Override
                                                     public void onComplete(@NonNull Task<AuthResult> task) {
                                                         if(task.isSuccessful()){
+                                                            loading();
                                                             Toast.makeText(getActivity(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                                                             MainActivity.mUser = MainActivity.mAuth.getCurrentUser();
+
                                                             MainActivity.uid = MainActivity.mUser.getUid();
+                                                            Toast.makeText(getActivity(), MainActivity.uid, Toast.LENGTH_SHORT).show();
                                                             editEmail.setText("");
                                                             editPass.setText("");
-                                                            loading();
+
                                                             MainActivity.login = 1;
                                                             MainActivity.iduser = Integer.parseInt(response);
                                                             getInfo();
                                                             getInfoSkill();
                                                             getInfoStudy();
                                                             getInfoExperience();
+
                                                             Handler handler = new Handler();
                                                             handler.postDelayed(new Runnable() {
                                                                 @Override

@@ -223,9 +223,7 @@ public class NotificationsFragment extends Fragment {
         if(requestCode == REQUEST_CODE2 && resultCode == 234){
             getInfo();
         }
-        if(resultCode == 1){
-            studyAdapter.notifyDataSetChanged();
-        }
+
 
 
         super.onActivityResult(requestCode, resultCode, data);

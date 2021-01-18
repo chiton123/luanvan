@@ -1,5 +1,6 @@
 package com.example.luanvan.ui.UpdateInfo;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -25,6 +26,11 @@ import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Experience;
 import com.example.luanvan.ui.Model.Skill;
 import com.example.luanvan.ui.Model.Study;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,7 +47,7 @@ public class SkillActivity extends AppCompatActivity {
     EditText editname, editmota;
     RatingBar ratingBar;
     Button btnhuy, btncapnhat;
-    int id = 0; // id study trên csdl
+    String id = ""; // id study trên csdl
     int position = 0; // trên mảng arraylist, thứ tự
     int update = 0;
     String url = "";
@@ -80,42 +86,33 @@ public class SkillActivity extends AppCompatActivity {
     }
 
     private void getInfoSkill() {
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlskill,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONArray jsonArray = new JSONArray(response);
-                            for(int i=0; i < jsonArray.length(); i++){
-                                JSONObject object = jsonArray.getJSONObject(i);
-                                MainActivity.skills.add(new Skill(
-                                        object.getInt("id"),
-                                        object.getString("name"),
-                                        (float) object.getDouble("star"),
-                                        object.getString("description")
-                                ));
-                            }
+       MainActivity.mData.child("skill").addListenerForSingleValueEvent(new ValueEventListener() {
+           @Override
+           public void onDataChange(@NonNull DataSnapshot snapshot) {
+               if(snapshot.hasChild("skill")){
+                   MainActivity.mData.addValueEventListener(new ValueEventListener() {
+                       @Override
+                       public void onDataChange(@NonNull DataSnapshot snapshot) {
+                           for(DataSnapshot x : snapshot.getChildren()){
+                               Skill skill = x.getValue(Skill.class);
+                               MainActivity.skills.add(skill);
+                           }
+                       }
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
+                       @Override
+                       public void onCancelled(@NonNull DatabaseError error) {
 
-                    }
-                }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> map = new HashMap<>();
-                map.put("iduser", String.valueOf(MainActivity.iduser));
-                return map;
-            }
-        };
-        requestQueue.add(stringRequest);
+                       }
+                   });
+
+               }
+           }
+
+           @Override
+           public void onCancelled(@NonNull DatabaseError error) {
+
+           }
+       });
 
     }
     private void eventUpdate() {
@@ -137,63 +134,24 @@ public class SkillActivity extends AppCompatActivity {
                     }else {
                         url = MainActivity.urlupdateskill;
                     }
-                    RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                    StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-                            new Response.Listener<String>() {
+                    String key = MainActivity.mData.push().getKey();
+                    final Skill skill = new Skill(key, MainActivity.uid, name, star, mota);
+                    MainActivity.mData.child("skill").push().setValue(skill)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
-                                public void onResponse(String response) {
-                                    if(response.equals("success")){
-                                        Toast.makeText(getApplicationContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
-                                        if(update == 1){
-                                            MainActivity.skills.get(position).setDescription(mota);
-                                            MainActivity.skills.get(position).setName(name);
-                                            MainActivity.skills.get(position).setStar(star);
-                                        }else {
-                                            MainActivity.skills.clear();
-                                            getInfoSkill();
-
-                                        }
-
-                                        loading();
-                                        handler = new Handler();
-                                        handler.postDelayed(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                if(update == 0){
-                                                    MainActivity.skillAdapter.notifyDataSetChanged();
-                                                }
-
-                                                progressDialog.dismiss();
-                                                Intent intent = new Intent();
-                                                setResult(3);
-                                                finish();
-                                            }
-                                        }, 3000);
-
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful()){
+                                        MainActivity.skills.add(skill);
+                                        MainActivity.skillAdapter.notifyDataSetChanged();
+                                        Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent();
+                                        setResult(3, intent);
+                                        finish();
                                     }else {
-                                        Toast.makeText(getApplicationContext(), "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
                                     }
                                 }
-                            },
-                            new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
-                                }
-                            }){
-                        @Override
-                        protected Map<String, String> getParams() throws AuthFailureError {
-                            Map<String,String> map = new HashMap<>();
-                            map.put("id", String.valueOf(id));
-                            map.put("name", name);
-                            map.put("mota", mota);
-                            map.put("star", String.valueOf(star1));
-                            map.put("iduser", String.valueOf(MainActivity.iduser));
-                            return map;
-                        }
-                    };
-                    requestQueue.add(stringRequest);
-
+                            });
 
                 }
             }

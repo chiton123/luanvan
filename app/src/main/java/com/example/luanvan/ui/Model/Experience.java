@@ -3,15 +3,20 @@ package com.example.luanvan.ui.Model;
 import java.io.Serializable;
 
 public class Experience implements Serializable {
-    private int id;
+    private String id;
+    private String uid;
     private String company;
     private String position;
     private String date_start;
     private String date_end;
     private String description;
 
-    public Experience(int id, String company, String position, String date_start, String date_end, String description) {
+    public Experience() {
+    }
+
+    public Experience(String id, String uid, String company, String position, String date_start, String date_end, String description) {
         this.id = id;
+        this.uid = uid;
         this.company = company;
         this.position = position;
         this.date_start = date_start;
@@ -19,12 +24,20 @@ public class Experience implements Serializable {
         this.description = description;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getCompany() {
