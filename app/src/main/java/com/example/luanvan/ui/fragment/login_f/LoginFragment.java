@@ -186,17 +186,32 @@ public class LoginFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.hasChild("skill")){
-                    MainActivity.mData.addValueEventListener(new ValueEventListener() {
+                    MainActivity.mData.child("skill").addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             for(DataSnapshot x : snapshot.getChildren()){
                                 Skill skill = x.getValue(Skill.class);
-                               // Toast.makeText(getActivity(), skill.getUid(), Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(getActivity(), skill.getUid(), Toast.LENGTH_SHORT).show();
                                 if(skill.getUid().equals(MainActivity.uid)){
                                     MainActivity.skills.add(skill);
                                 }
+                                //  MainActivity.skills.add(skill);
 
                             }
+//                            if(snapshot.getChildrenCount() > 2){
+//                                for(DataSnapshot x : snapshot.getChildren()){
+//                                    Skill skill = x.getValue(Skill.class);
+//                                     Toast.makeText(getActivity(), skill.getUid(), Toast.LENGTH_SHORT).show();
+//                                    if(skill.getUid().equals(MainActivity.uid)){
+//                                        MainActivity.skills.add(skill);
+//                                    }
+//                                    //  MainActivity.skills.add(skill);
+//
+//                                }
+//                            }else {
+//                                MainActivity.skills.add(snapshot.getValue(Skill.class));
+//                            }
+
                         }
 
                         @Override
@@ -238,22 +253,21 @@ public class LoginFragment extends Fragment {
                                                             MainActivity.mUser = MainActivity.mAuth.getCurrentUser();
 
                                                             MainActivity.uid = MainActivity.mUser.getUid();
-                                                            Toast.makeText(getActivity(), MainActivity.uid, Toast.LENGTH_SHORT).show();
+                                                       //     Toast.makeText(getActivity(), MainActivity.uid, Toast.LENGTH_SHORT).show();
                                                             editEmail.setText("");
                                                             editPass.setText("");
 
                                                             MainActivity.login = 1;
                                                             MainActivity.iduser = Integer.parseInt(response);
                                                             getInfo();
-                                                            getInfoSkill();
+
                                                             getInfoStudy();
                                                             getInfoExperience();
-
+                                                            getInfoSkill();
                                                             Handler handler = new Handler();
                                                             handler.postDelayed(new Runnable() {
                                                                 @Override
                                                                 public void run() {
-
                                                                     progressDialog.dismiss();
                                                                     Intent intent = new Intent();
                                                                     getActivity().setResult(123);

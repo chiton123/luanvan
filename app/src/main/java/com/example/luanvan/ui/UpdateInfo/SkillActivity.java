@@ -1,6 +1,7 @@
 package com.example.luanvan.ui.UpdateInfo;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -28,6 +29,7 @@ import com.example.luanvan.ui.Model.Skill;
 import com.example.luanvan.ui.Model.Study;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -52,7 +54,9 @@ public class SkillActivity extends AppCompatActivity {
     int update = 0;
     String url = "";
     ProgressDialog progressDialog;
-    Handler handler = new Handler();
+    Handler handler, handler1;
+    String key = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,33 +90,66 @@ public class SkillActivity extends AppCompatActivity {
     }
 
     private void getInfoSkill() {
-       MainActivity.mData.child("skill").addListenerForSingleValueEvent(new ValueEventListener() {
-           @Override
-           public void onDataChange(@NonNull DataSnapshot snapshot) {
-               if(snapshot.hasChild("skill")){
-                   MainActivity.mData.addValueEventListener(new ValueEventListener() {
-                       @Override
-                       public void onDataChange(@NonNull DataSnapshot snapshot) {
-                           for(DataSnapshot x : snapshot.getChildren()){
-                               Skill skill = x.getValue(Skill.class);
-                               MainActivity.skills.add(skill);
-                           }
-                       }
+        MainActivity.mData.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.hasChild("skill")){
+                    MainActivity.mData.child("skill").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for(DataSnapshot x : snapshot.getChildren()){
+                                Skill skill = x.getValue(Skill.class);
+                                if(skill.getUid().equals(MainActivity.uid)){
+                                    MainActivity.skills.add(skill);
+                                }
+                            }
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
 
-                       @Override
-                       public void onCancelled(@NonNull DatabaseError error) {
+                        }
+                    });
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
-                       }
-                   });
+            }
+        });
 
-               }
-           }
+    }
+    public void getKey(){
+        MainActivity.mData.child("skill").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                for(DataSnapshot x : snapshot.getChildren()){
+                    if(snapshot.child("id").getValue().toString().equals(id)){
+                        key = snapshot.getKey();
+                    }
+                }
 
-           @Override
-           public void onCancelled(@NonNull DatabaseError error) {
+            }
 
-           }
-       });
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
     }
     private void eventUpdate() {
@@ -130,28 +167,60 @@ public class SkillActivity extends AppCompatActivity {
                     final String mota = editmota.getText().toString();
                     final float star1 = ratingBar.getRating();
                     if(update == 1){
-                        url = MainActivity.urlupdate_old_skill;
+                        loading();
+                        getKey();
+                        final Skill skill = new Skill(id, MainActivity.uid, name, star1, mota);
+                        handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                MainActivity.mData.child("skill").child(key).setValue(skill);
+                                Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+                            }
+                        },2000);
+                        handler1 = new Handler();
+                        handler1.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                progressDialog.dismiss();
+                                Intent intent = new Intent();
+                                setResult(3, intent);
+                                finish();
+                            }
+                        }, 2000);
                     }else {
-                        url = MainActivity.urlupdateskill;
-                    }
-                    String key = MainActivity.mData.push().getKey();
-                    final Skill skill = new Skill(key, MainActivity.uid, name, star, mota);
-                    MainActivity.mData.child("skill").push().setValue(skill)
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if(task.isSuccessful()){
-                                        MainActivity.skills.add(skill);
-                                        MainActivity.skillAdapter.notifyDataSetChanged();
-                                        Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent();
-                                        setResult(3, intent);
-                                        finish();
-                                    }else {
-                                        Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
+                        String key = MainActivity.mData.push().getKey();
+                        final Skill skill = new Skill(key, MainActivity.uid, name, star, mota);
+                        MainActivity.mData.child("skill").push().setValue(skill)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if(task.isSuccessful()){
+                                            Toast.makeText(getApplicationContext(), "Đã thêm", Toast.LENGTH_SHORT).show();
+                                            loading();
+                                            MainActivity.skills.clear();
+                                            getInfoSkill();
+                                            MainActivity.skillAdapter.notifyDataSetChanged();
+                                            handler = new Handler();
+                                            handler.postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    progressDialog.dismiss();
+                                                    Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+                                                    Intent intent = new Intent();
+                                                    setResult(3, intent);
+                                                    finish();
+                                                }
+                                            },1000);
+
+
+                                        }else {
+                                            Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
+                                        }
                                     }
-                                }
-                            });
+                                });
+                    }
+
 
                 }
             }

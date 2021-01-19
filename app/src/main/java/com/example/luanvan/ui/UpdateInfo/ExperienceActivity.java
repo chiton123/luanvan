@@ -1,6 +1,7 @@
 package com.example.luanvan.ui.UpdateInfo;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -25,9 +26,12 @@ import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Experience;
-import com.example.luanvan.ui.Model.Study;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -52,8 +56,9 @@ public class ExperienceActivity extends AppCompatActivity {
     int update = 0;
     String url = "";
     ProgressDialog progressDialog;
-    Handler handler = new Handler();
+    Handler handler, handler1;
     int x = 0;
+    String key = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -185,10 +190,74 @@ public class ExperienceActivity extends AppCompatActivity {
             }
         });
     }
+    public void getKey(){
+        MainActivity.mData.child("experience").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                for(DataSnapshot x : snapshot.getChildren()){
+                    if(snapshot.child("id").getValue().toString().equals(id)){
+                        key = snapshot.getKey();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
     private void getInfoExperience() {
+        MainActivity.mData.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.hasChild("experience") && snapshot.exists()){
+                    MainActivity.mData.child("experience").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for(DataSnapshot x : snapshot.getChildren()){
+                                Experience experience = x.getValue(Experience.class);
+                                if(experience.getUid().equals(MainActivity.uid)){
+                                    MainActivity.experiences.add(experience);
+                                }
+
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
 
     }
+
     private void eventUpdate() {
         btncapnhat.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -204,28 +273,61 @@ public class ExperienceActivity extends AppCompatActivity {
                     final String position1 = editposition.getText().toString();
                     final String mota = editmota.getText().toString();
                     if(update == 1){
-                        url = MainActivity.urlupdate_old_experience;
+                        loading();
+                        getKey();
+                        final Experience experience = new Experience(id, MainActivity.uid, company, position1, date_post_start, date_post_end, mota);
+                        handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                MainActivity.mData.child("experience").child(key).setValue(experience);
+                                Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+                                progressDialog.dismiss();
+                            }
+                        },2000);
+                        handler1 = new Handler();
+                        handler1.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                progressDialog.dismiss();
+                                Intent intent = new Intent();
+                                setResult(2, intent);
+                                finish();
+                            }
+                        }, 2000);
                     }else {
-                        url = MainActivity.urlupdateexperience;
-                    }
-                    String key = MainActivity.mData.push().getKey();
-                    final Experience experience = new Experience(key, MainActivity.uid, company, position1, date_post_start, date_post_end, mota);
-                    MainActivity.mData.child("experience").push().setValue(experience)
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if(task.isSuccessful()){
-                                        MainActivity.experiences.add(experience);
-                                        MainActivity.experienceAdapter.notifyDataSetChanged();
-                                        Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent();
-                                        setResult(2, intent);
-                                        finish();
-                                    }else {
-                                        Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
+                        String key1 = MainActivity.mData.push().getKey();
+                        final Experience experience = new Experience(key1, MainActivity.uid, company, position1, date_post_start, date_post_end, mota);
+                        MainActivity.mData.child("experience").push().setValue(experience)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if(task.isSuccessful()){
+                                            Toast.makeText(getApplicationContext(), "Đã thêm", Toast.LENGTH_SHORT).show();
+                                            loading();
+                                            MainActivity.experiences.clear();
+                                            getInfoExperience();
+                                            MainActivity.experienceAdapter.notifyDataSetChanged();
+                                            handler = new Handler();
+                                            handler.postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    progressDialog.dismiss();
+                                                    Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+                                                    Intent intent = new Intent();
+                                                    setResult(2, intent);
+                                                    finish();
+                                                }
+                                            },1000);
+
+
+                                        }else {
+                                            Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
+                                        }
                                     }
-                                }
-                            });
+                                });
+                    }
+
 
                 }
             }

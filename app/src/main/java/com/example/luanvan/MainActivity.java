@@ -69,9 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static String urlskill = host + "skill.php";
     // add new skill, experience, study
-    public static String urlupdatestudy = host + "updatestudy.php";
-    public static String urlupdateexperience = host + "updatexperience.php";
-    public static String urlupdateskill = host + "updateskill.php";
+
     // cap nhat skill, experience, study
     public static String urlupdate_old_study = host + "update_old_study.php";
     public static String urlupdate_old_experience = host + "update_old_experience.php";

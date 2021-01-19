@@ -57,7 +57,8 @@ public class StudyActivity extends AppCompatActivity {
     int update = 0;
     String url = "";
     ProgressDialog progressDialog;
-    Handler handler = new Handler();
+    Handler handler;
+    Handler handler1;
     int x = 0; // check end date có trước start date hay k, nếu có thì 1
 
     @Override
@@ -267,15 +268,7 @@ public class StudyActivity extends AppCompatActivity {
         });
 
     }
-    public void back(){
-        MainActivity.studies.clear();
-        getInfoStudy();
-        MainActivity.studyAdapter.notifyDataSetChanged();
-        Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent();
-        setResult(1, intent);
-        finish();
-    }
+
     private void eventUpdate() {
 
         btncapnhat.setOnClickListener(new View.OnClickListener() {
@@ -297,18 +290,28 @@ public class StudyActivity extends AppCompatActivity {
                     if(update == 1){
                         loading();
                         getKey();
+                        final Study study = new Study(id, MainActivity.uid, school, major, date_post_start, date_post_end, mota);
                         handler = new Handler();
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                final Study study = new Study(id, MainActivity.uid, school, major, date_post_start, date_post_end, mota);
-                                Toast.makeText(getApplicationContext(), "key : " + key, Toast.LENGTH_SHORT).show();
-                                    MainActivity.mData.child("study").child(key).setValue(study);
-
-                                progressDialog.dismiss();
+                                MainActivity.mData.child("study").child(key).setValue(study);
+                                Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
                             }
                         },2000);
-                        back();
+
+                        handler1 = new Handler();
+                        handler1.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                progressDialog.dismiss();
+                                Intent intent = new Intent();
+                                setResult(1, intent);
+                                finish();
+                            }
+                        }, 2000);
+
+
                     }else {
                         String key1 = MainActivity.mData.child("study").push().getKey();
                         final Study study1 = new Study(key1, MainActivity.uid, school, major, date_post_start, date_post_end, mota);
