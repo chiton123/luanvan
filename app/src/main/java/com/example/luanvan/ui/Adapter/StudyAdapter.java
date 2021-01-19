@@ -27,6 +27,10 @@ import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Study;
 import com.example.luanvan.ui.UpdateInfo.StudyActivity;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -34,12 +38,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Handler;
 
 public class StudyAdapter extends RecyclerView.Adapter<StudyAdapter.ItemHolder> {
     Context context;
     ArrayList<Study> arrayList;
     Activity activity;
     int visable;
+    Handler handler;
 
     public StudyAdapter(Context context, ArrayList<Study> arrayList, Activity activity, int visable) {
         this.context = context;
@@ -110,36 +116,30 @@ public class StudyAdapter extends RecyclerView.Adapter<StudyAdapter.ItemHolder> 
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    RequestQueue requestQueue = Volley.newRequestQueue(context);
-                                    StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urldeleteitem,
-                                            new Response.Listener<String>() {
-                                                @Override
-                                                public void onResponse(String response) {
-                                                    if(response.equals("success")){
-                                                        Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
-                                                        MainActivity.studies.remove(position);
-                                                        notifyDataSetChanged();
-                                                        MainActivity.studyAdapter.notifyDataSetChanged();
-                                                    }else {
-                                                        Toast.makeText(context, "Xóa thất bại", Toast.LENGTH_SHORT).show();
-                                                    }
-                                                }
-                                            },
-                                            new Response.ErrorListener() {
-                                                @Override
-                                                public void onErrorResponse(VolleyError error) {
-                                                    Toast.makeText(context, error.toString() , Toast.LENGTH_SHORT).show();
-                                                }
-                                            }){
+                                    Query query = MainActivity.mData.child("study").orderByChild("id").equalTo(arrayList.get(position).getId());
+                                    query.addValueEventListener(new ValueEventListener() {
                                         @Override
-                                        protected Map<String, String> getParams() throws AuthFailureError {
-                                            Map<String,String> map = new HashMap<>();
-                                            map.put("kind",String.valueOf(1));
-                                            map.put("id",String.valueOf(arrayList.get(position).getId()));
-                                            return map;
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            for(DataSnapshot x : snapshot.getChildren()){
+                                                x.getRef().removeValue();
+                                            }
                                         }
-                                    };
-                                    requestQueue.add(stringRequest);
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
+                                    Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                                    MainActivity.studies.remove(position);
+                                    notifyItemRemoved(position);
+                                    notifyItemRangeChanged(position,  MainActivity.studies.size());
+                           //         notifyDataSetChanged();
+                                  //  Toast.makeText(context, MainActivity.studies.size() + "", Toast.LENGTH_SHORT).show();
+                                    MainActivity.studyAdapter.notifyItemRemoved(position);
+                                    MainActivity.studyAdapter.notifyItemRangeChanged(position, MainActivity.studies.size());
+                                    MainActivity.studyAdapter.notifyDataSetChanged();
+                               //     Toast.makeText(context, MainActivity.studies.size() + "", Toast.LENGTH_SHORT).show();
                                 }
                             });
 
