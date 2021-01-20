@@ -4,31 +4,24 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.NavUtils;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
 
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 
-import com.example.luanvan.ui.Adapter.ExperienceAdapter;
-import com.example.luanvan.ui.Adapter.SkillAdapter;
-import com.example.luanvan.ui.Adapter.StudyAdapter;
+import com.example.luanvan.ui.Adapter.update_personal_info.ExperienceAdapter;
+import com.example.luanvan.ui.Adapter.update_personal_info.SkillAdapter;
+import com.example.luanvan.ui.Adapter.update_personal_info.StudyAdapter;
 import com.example.luanvan.ui.Model.Experience;
 import com.example.luanvan.ui.Model.Skill;
 import com.example.luanvan.ui.Model.Study;
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -41,6 +34,7 @@ public class EditCombineActivity extends AppCompatActivity {
     ExperienceAdapter experienceAdapter;
     ProgressDialog progressDialog;
     Handler handler;
+    int number = 0; // 1: adapter study, 2: experience, 3: skill
     // request_code 1: study, 2: experience, 3: skill
     // tip: khi update xong, thì edit arraylist tại vị trí position, sau đó, quay về, onActivityResult => adapter.notify
     @Override
@@ -157,6 +151,43 @@ public class EditCombineActivity extends AppCompatActivity {
         progressDialog.show();
         progressDialog.setCancelable(false);
     }
+    public void reloadStudy(){
+        MainActivity.studies.clear();
+        getInfoStudy();
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                MainActivity.studyAdapter.notifyDataSetChanged();
+                //    Toast.makeText(getApplicationContext(), MainActivity.studies.size() + "", Toast.LENGTH_SHORT).show();
+            }
+        },500);
+    }
+    public void reloadExperience(){
+        MainActivity.experiences.clear();
+        getInfoExperience();
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                MainActivity.experienceAdapter.notifyDataSetChanged();
+                //    Toast.makeText(getApplicationContext(), MainActivity.studies.size() + "", Toast.LENGTH_SHORT).show();
+            }
+        },500);
+    }
+    public void reloadSkill(){
+        MainActivity.skills.clear();
+        getInfoSkill();
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                MainActivity.skillAdapter.notifyDataSetChanged();
+                //    Toast.makeText(getApplicationContext(), MainActivity.studies.size() + "", Toast.LENGTH_SHORT).show();
+            }
+        },1000);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == 1 && resultCode == 1){
@@ -174,7 +205,7 @@ public class EditCombineActivity extends AppCompatActivity {
 
         }
         if(requestCode == 2 && resultCode == 2){
-            MainActivity.studies.clear();
+            MainActivity.experiences.clear();
             getInfoExperience();
             handler = new Handler();
             handler.postDelayed(new Runnable() {
@@ -205,7 +236,7 @@ public class EditCombineActivity extends AppCompatActivity {
 
     private void PickAdapter() {
         Intent intent = getIntent();
-        int number = intent.getIntExtra("number",0);
+        number = intent.getIntExtra("number",0);
         switch (number){
             case 1:
                 studyAdapter = new StudyAdapter(getApplicationContext(), MainActivity.studies, this, 0);
@@ -234,6 +265,17 @@ public class EditCombineActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                switch (number){
+                    case 1:
+                        reloadStudy();
+                        break;
+                    case 2:
+                        reloadExperience();
+                        break;
+                    case 3:
+                        reloadSkill();
+                        break;
+                }
                 finish();
             }
         });

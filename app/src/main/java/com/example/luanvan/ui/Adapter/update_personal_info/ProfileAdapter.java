@@ -1,4 +1,4 @@
-package com.example.luanvan.ui.Adapter;
+package com.example.luanvan.ui.Adapter.update_personal_info;
 
 import android.app.Activity;
 import android.content.Context;

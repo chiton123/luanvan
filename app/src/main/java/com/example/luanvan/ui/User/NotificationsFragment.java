@@ -1,14 +1,11 @@
 package com.example.luanvan.ui.User;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -18,39 +15,21 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
-import com.example.luanvan.ui.Adapter.ExperienceAdapter;
-import com.example.luanvan.ui.Adapter.ProfileAdapter;
-import com.example.luanvan.ui.Adapter.SkillAdapter;
-import com.example.luanvan.ui.Adapter.StudyAdapter;
-import com.example.luanvan.ui.Model.Experience;
+import com.example.luanvan.ui.Adapter.update_personal_info.ExperienceAdapter;
+import com.example.luanvan.ui.Adapter.update_personal_info.ProfileAdapter;
+import com.example.luanvan.ui.Adapter.update_personal_info.SkillAdapter;
+import com.example.luanvan.ui.Adapter.update_personal_info.StudyAdapter;
 import com.example.luanvan.ui.Model.Profile;
-import com.example.luanvan.ui.Model.Skill;
-import com.example.luanvan.ui.Model.Study;
 import com.example.luanvan.ui.login.LoginActivity;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
-import static android.app.Activity.RESULT_OK;
 import static com.example.luanvan.MainActivity.experienceAdapter;
 import static com.example.luanvan.MainActivity.skillAdapter;
 import static com.example.luanvan.MainActivity.studyAdapter;
@@ -98,9 +77,9 @@ public class NotificationsFragment extends Fragment {
         recyclerViewstudy = (RecyclerView) view.findViewById(R.id.recycleviewstudy);
         recyclerViewskill = (RecyclerView) view.findViewById(R.id.recycleviewskill);
         recyclerView.setHasFixedSize(true);
-//        recyclerViewskill.setHasFixedSize(true);
-//        recyclerViewstudy.setHasFixedSize(true);
-//        recyclerViewexperience.setHasFixedSize(true);
+        recyclerViewskill.setHasFixedSize(false);
+        recyclerViewstudy.setHasFixedSize(false);
+        recyclerViewexperience.setHasFixedSize(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewstudy.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerViewexperience.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));

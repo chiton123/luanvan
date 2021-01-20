@@ -1,4 +1,4 @@
-package com.example.luanvan.ui.Adapter;
+package com.example.luanvan.ui.Adapter.update_personal_info;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -25,8 +25,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
-import com.example.luanvan.ui.Model.Study;
-import com.example.luanvan.ui.UpdateInfo.StudyActivity;
+import com.example.luanvan.ui.Model.Experience;
+import com.example.luanvan.ui.UpdateInfo.ExperienceActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
@@ -38,16 +38,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Handler;
 
-public class StudyAdapter extends RecyclerView.Adapter<StudyAdapter.ItemHolder> {
+public class ExperienceAdapter extends RecyclerView.Adapter<ExperienceAdapter.ItemHolder> {
     Context context;
-    ArrayList<Study> arrayList;
+    ArrayList<Experience> arrayList;
     Activity activity;
     int visable;
-    Handler handler;
-
-    public StudyAdapter(Context context, ArrayList<Study> arrayList, Activity activity, int visable) {
+    public ExperienceAdapter(Context context, ArrayList<Experience> arrayList, Activity activity, int visable) {
         this.context = context;
         this.arrayList = arrayList;
         this.activity = activity;
@@ -57,24 +54,24 @@ public class StudyAdapter extends RecyclerView.Adapter<StudyAdapter.ItemHolder> 
     @NonNull
     @Override
     public ItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.dong_study, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.dong_experience, null);
         ItemHolder itemHolder = new ItemHolder(view);
         return itemHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ItemHolder holder, final int position) {
-        Study study = arrayList.get(position);
-        holder.school.setText(study.getSchool());
-        holder.major.setText(study.getMajor());
-        holder.img.setImageResource(R.drawable.school1);
-        final String start = study.getDate_start();
-        final String end = study.getDate_end();
+        Experience experience = arrayList.get(position);
+        holder.company.setText(experience.getCompany());
+        holder.position.setText(experience.getPosition());
+        holder.img.setImageResource(R.drawable.company1);
+        String start = experience.getDate_start();
+        String end = experience.getDate_end();
         SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
         Date date1 = null, date2 = null;
         try {
-            date1 = fmt.parse(study.getDate_start());
-            date2 = fmt.parse(study.getDate_end());
+            date1 = fmt.parse(start);
+            date2 = fmt.parse(end);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -85,18 +82,17 @@ public class StudyAdapter extends RecyclerView.Adapter<StudyAdapter.ItemHolder> 
             Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
         }
 
-        // 0: hien thi
         if(visable == 0){
             holder.linearLayout.setVisibility(View.VISIBLE);
             holder.edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, StudyActivity.class);
+                    Intent intent = new Intent(context, ExperienceActivity.class);
                     // problem: khi muốn gửi có intent phải gửi 2 lần, xác nhận để không bị lỗi, 10: empty, 3: có đối tượng gửi
                     intent.putExtra("confirm", 3);
-                    intent.putExtra("study", arrayList.get(position));
+                    intent.putExtra("experience", arrayList.get(position));
                     intent.putExtra("position", position);
-                    activity.startActivityForResult(intent,1);
+                    activity.startActivityForResult(intent,2);
                 }
             });
             holder.delete.setOnClickListener(new View.OnClickListener() {
@@ -116,7 +112,7 @@ public class StudyAdapter extends RecyclerView.Adapter<StudyAdapter.ItemHolder> 
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Query query = MainActivity.mData.child("study").orderByChild("id").equalTo(arrayList.get(position).getId());
+                                    Query query = MainActivity.mData.child("experience").orderByChild("id").equalTo(arrayList.get(position).getId());
                                     query.addValueEventListener(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -131,23 +127,15 @@ public class StudyAdapter extends RecyclerView.Adapter<StudyAdapter.ItemHolder> 
                                         }
                                     });
                                     Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
-                                    MainActivity.studies.remove(position);
+                                    MainActivity.experiences.remove(position);
                                     notifyItemRemoved(position);
-                                    notifyItemRangeChanged(position,  MainActivity.studies.size());
-                           //         notifyDataSetChanged();
-                                  //  Toast.makeText(context, MainActivity.studies.size() + "", Toast.LENGTH_SHORT).show();
-                                    MainActivity.studyAdapter.notifyItemRemoved(position);
-                                    MainActivity.studyAdapter.notifyItemRangeChanged(position, MainActivity.studies.size());
-                                    MainActivity.studyAdapter.notifyDataSetChanged();
-                               //     Toast.makeText(context, MainActivity.studies.size() + "", Toast.LENGTH_SHORT).show();
+                                    notifyItemRangeChanged(position,  MainActivity.experiences.size());
                                 }
                             });
 
                     alert.show();
                 }
             });
-
-
         }else {
             holder.linearLayout.setVisibility(View.GONE);
         }
@@ -159,21 +147,19 @@ public class StudyAdapter extends RecyclerView.Adapter<StudyAdapter.ItemHolder> 
     }
 
     public class ItemHolder extends RecyclerView.ViewHolder{
-        public TextView school, major, date;
+        public TextView company, position, date;
         public ImageView img, delete, edit;
         public LinearLayout linearLayout;
 
         public ItemHolder(@NonNull View itemView) {
             super(itemView);
-            school = (TextView) itemView.findViewById(R.id.school);
-            major = (TextView) itemView.findViewById(R.id.major);
+            company = (TextView) itemView.findViewById(R.id.company);
+            position = (TextView) itemView.findViewById(R.id.position);
             date = (TextView) itemView.findViewById(R.id.date);
             img = (ImageView) itemView.findViewById(R.id.hinh);
             linearLayout = (LinearLayout) itemView.findViewById(R.id.linear);
             edit = (ImageView) itemView.findViewById(R.id.edit);
             delete = (ImageView) itemView.findViewById(R.id.delete);
-
-
         }
     }
 }
