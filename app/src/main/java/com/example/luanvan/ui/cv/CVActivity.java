@@ -18,6 +18,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,6 +37,7 @@ import com.example.luanvan.ui.Adapter.add_remove.TitleAdapter;
 import com.example.luanvan.ui.Model.Pdf;
 import com.example.luanvan.ui.Model.Title;
 import com.example.luanvan.ui.modelCV.Info;
+import com.example.luanvan.ui.modelCV.PdfCV;
 import com.github.barteksc.pdfviewer.PDFView;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -63,6 +65,7 @@ public class CVActivity extends AppCompatActivity {
     ImageView imgCancel;
     String url = "https://firebasestorage.googleapis.com/v0/b/project-7807e.appspot.com/o/default.pdf?alt=media&token=e22cfec0-f4fc-47a8-b65d-84e3d17a9b7a";
     int pageWidth = 1200;
+    Handler handler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,8 +93,20 @@ public class CVActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == 100 && resultCode == 100){
-            String url1 = "https://docs.google.com/gview?embedded=true&url=" + MainActivity.urlCV;
-            webView.loadUrl(url1);
+            handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    webView.requestFocus();
+                    WebSettings webSettings = webView.getSettings();
+                    webSettings.setJavaScriptEnabled(true);
+                    webView.getSettings().setSupportZoom(true);
+                 //   Toast.makeText(getApplicationContext(), MainActivity.urlCV, Toast.LENGTH_SHORT).show();
+                    String url1 = "https://docs.google.com/gview?embedded=true&url=" + MainActivity.urlCV;
+                    webView.loadUrl(url1);
+                }
+            },3000);
+
         }
 
         super.onActivityResult(requestCode, resultCode, data);
@@ -268,13 +283,10 @@ public class CVActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.luu:
-//                Info info = new Info("Nguyen Van A", "DBA", "0232322", "abc@gmail.com", "Ha Noi", "Nam", "20/12/1990");
-//                MainActivity.mData.child("preview").child("cv1").child("info").setValue(info);
-                try {
-                    createCV();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                String key = MainActivity.mData.child("cv").push().getKey();
+                PdfCV pdfCV = new PdfCV(MainActivity.uid,"Ứng tuyển HD bank", MainActivity.urlCV, key);
+                MainActivity.mData.child("cv").child(MainActivity.uid).setValue(pdfCV);
+                Toast.makeText(getApplicationContext(), "Đã lưu", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.huy:
 

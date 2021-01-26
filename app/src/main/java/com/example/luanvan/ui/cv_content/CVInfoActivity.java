@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -44,9 +45,11 @@ public class CVInfoActivity extends AppCompatActivity {
     EditText editname, editposition, editphone, editemail, editaddress, editgender, editbirthday;
     Button btnluu, btnhuy;
     TextView txtname, txtposition, txtphone, txtemail;
+
     StorageReference storageReference;
     int pageWidth = 1200;
     String cv_name = "", cv_phone = "", cv_address = "", cv_email = "", cv_position = "", cv_birthday = "", cv_gender = "";
+    Handler handler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,12 +58,13 @@ public class CVInfoActivity extends AppCompatActivity {
         actionBar();
         eventLuu();
         getInfo();
+        // root path
         storageReference = FirebaseStorage.getInstance().getReference();
 
     }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void createCV() throws IOException {
-        StorageReference reference =  storageReference.child("audit" + ".pdf");
+
         PdfDocument pdfDocument = new PdfDocument();
         // mo mau
         Paint myPaint = new Paint();
@@ -142,7 +146,7 @@ public class CVInfoActivity extends AppCompatActivity {
         File file = new File(Environment.getExternalStorageDirectory(), "/a10.pdf");
         pdfDocument.writeTo(new FileOutputStream(file));
         pdfDocument.close();
-        reference.putFile(Uri.fromFile(file))
+        storageReference.child("abc.pdf").putFile(Uri.fromFile(file))
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -150,8 +154,8 @@ public class CVInfoActivity extends AppCompatActivity {
                         while (!uriTask.isComplete());
                         Uri uri = uriTask.getResult();
                         MainActivity.urlCV = uri.toString();
-                        Toast.makeText(getApplicationContext(), uri.toString(), Toast.LENGTH_SHORT).show();
-                        Pdf pdf = new Pdf(MainActivity.uid,"audit.pdf", uri.toString());
+                   //     Toast.makeText(getApplicationContext(), uri.toString(), Toast.LENGTH_SHORT).show();
+                        Pdf pdf = new Pdf(MainActivity.uid,"audit1.pdf", uri.toString());
                         MainActivity.mData.child("preview").child("audit").setValue(pdf);
                         Toast.makeText(getApplicationContext(), "upload success", Toast.LENGTH_SHORT).show();
 
@@ -217,9 +221,16 @@ public class CVInfoActivity extends AppCompatActivity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    Intent intent = new Intent();
-                    setResult(100);
-                    finish();
+                    handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent intent = new Intent();
+                            setResult(100);
+                            finish();
+                        }
+                    },4000);
+
                 }
 
             }

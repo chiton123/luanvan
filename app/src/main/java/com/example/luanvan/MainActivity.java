@@ -35,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     public static SkillAdapter skillAdapter;
     public static int login = 0;
     public static int iduser = 0;
+    public static int checkCV = 0;
+    // 1: có cv, 2: chưa
     public static String uid = "";
     public static String username = "";
     public static String position = "";
@@ -46,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     // list CV
     public static ArrayList<String> arrayListCV = new ArrayList<>();
 
-    public static String host = "http://10.10.36.101:8888/luanvan/";
+    public static String host = "http://10.3.74.156:8888/luanvan/";
     public static String urljob1 = host + "job1.php";
     public static String urlcompany = host + "company.php";
     // dang nhap
