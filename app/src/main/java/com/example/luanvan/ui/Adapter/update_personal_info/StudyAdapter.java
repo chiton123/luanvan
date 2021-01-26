@@ -20,6 +20,7 @@ import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Study;
 import com.example.luanvan.ui.UpdateInfo.StudyActivity;
+import com.example.luanvan.ui.User.EditCombineActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
@@ -29,6 +30,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Handler;
 
 public class StudyAdapter extends RecyclerView.Adapter<StudyAdapter.ItemHolder> {
@@ -123,8 +125,8 @@ public class StudyAdapter extends RecyclerView.Adapter<StudyAdapter.ItemHolder> 
                                     });
                                     Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
                                     MainActivity.studies.remove(position);
-                                    notifyItemRemoved(position);
-                                    notifyItemRangeChanged(position,  MainActivity.studies.size());
+                                    notifyDataSetChanged();
+                                    MainActivity.studyAdapter.notifyItemRemoved(position);
                                 }
                             });
 
@@ -142,7 +144,9 @@ public class StudyAdapter extends RecyclerView.Adapter<StudyAdapter.ItemHolder> 
     public int getItemCount() {
         return arrayList.size();
     }
-
+    public void setItems(ArrayList<Study> study) {
+        this.arrayList = study;
+    }
     public class ItemHolder extends RecyclerView.ViewHolder{
         public TextView school, major, date;
         public ImageView img, delete, edit;

@@ -26,6 +26,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Experience;
+import com.example.luanvan.ui.Model.Study;
 import com.example.luanvan.ui.UpdateInfo.ExperienceActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -128,8 +129,8 @@ public class ExperienceAdapter extends RecyclerView.Adapter<ExperienceAdapter.It
                                     });
                                     Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
                                     MainActivity.experiences.remove(position);
-                                    notifyItemRemoved(position);
-                                    notifyItemRangeChanged(position,  MainActivity.experiences.size());
+                                    notifyDataSetChanged();
+                                    MainActivity.experienceAdapter.notifyItemRemoved(position);
                                 }
                             });
 
@@ -145,7 +146,9 @@ public class ExperienceAdapter extends RecyclerView.Adapter<ExperienceAdapter.It
     public int getItemCount() {
         return arrayList.size();
     }
-
+    public void setItems(ArrayList<Experience> experiences) {
+        this.arrayList = experiences;
+    }
     public class ItemHolder extends RecyclerView.ViewHolder{
         public TextView company, position, date;
         public ImageView img, delete, edit;

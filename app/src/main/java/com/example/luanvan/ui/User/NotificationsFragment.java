@@ -77,9 +77,9 @@ public class NotificationsFragment extends Fragment {
         recyclerViewstudy = (RecyclerView) view.findViewById(R.id.recycleviewstudy);
         recyclerViewskill = (RecyclerView) view.findViewById(R.id.recycleviewskill);
         recyclerView.setHasFixedSize(true);
-        recyclerViewskill.setHasFixedSize(false);
-        recyclerViewstudy.setHasFixedSize(false);
-        recyclerViewexperience.setHasFixedSize(false);
+        recyclerViewskill.setHasFixedSize(true);
+        recyclerViewstudy.setHasFixedSize(true);
+        recyclerViewexperience.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewstudy.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerViewexperience.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));

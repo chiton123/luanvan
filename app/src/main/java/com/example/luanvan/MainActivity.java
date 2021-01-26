@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     // list CV
     public static ArrayList<String> arrayListCV = new ArrayList<>();
 
-    public static String host = "http://10.3.74.80:8888/luanvan/";
+    public static String host = "http://10.10.36.101:8888/luanvan/";
     public static String urljob1 = host + "job1.php";
     public static String urlcompany = host + "company.php";
     // dang nhap
@@ -53,20 +53,6 @@ public class MainActivity extends AppCompatActivity {
     public static String urllogin = host + "login.php";
     public static String urluserinfo = host + "userinfo.php";
     public static String urlupdateuser = host + "updateuser.php";
-
-
-    public static String urlschool = host + "school.php";
-    public static String urlexperience = host + "experience.php";
-
-    public static String urlskill = host + "skill.php";
-    // add new skill, experience, study
-
-    // cap nhat skill, experience, study
-    public static String urlupdate_old_study = host + "update_old_study.php";
-    public static String urlupdate_old_experience = host + "update_old_experience.php";
-    public static String urlupdate_old_skill = host + "update_old_skill.php";
-    // delete skill, experience, study
-    public static String urldeleteitem = host + "deleteitem.php";
 
 
 

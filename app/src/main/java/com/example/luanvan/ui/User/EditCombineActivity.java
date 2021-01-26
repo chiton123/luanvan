@@ -34,6 +34,7 @@ public class EditCombineActivity extends AppCompatActivity {
     ExperienceAdapter experienceAdapter;
     ProgressDialog progressDialog;
     Handler handler;
+    int x = 0;
     int number = 0; // 1: adapter study, 2: experience, 3: skill
     // request_code 1: study, 2: experience, 3: skill
     // tip: khi update xong, thì edit arraylist tại vị trí position, sau đó, quay về, onActivityResult => adapter.notify
@@ -152,81 +153,53 @@ public class EditCombineActivity extends AppCompatActivity {
         progressDialog.setCancelable(false);
     }
     public void reloadStudy(){
+        x = 1;
         MainActivity.studies.clear();
         getInfoStudy();
-        handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                MainActivity.studyAdapter.notifyDataSetChanged();
-                //    Toast.makeText(getApplicationContext(), MainActivity.studies.size() + "", Toast.LENGTH_SHORT).show();
-            }
-        },500);
     }
     public void reloadExperience(){
+        x = 2;
         MainActivity.experiences.clear();
         getInfoExperience();
-        handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                MainActivity.experienceAdapter.notifyDataSetChanged();
-                //    Toast.makeText(getApplicationContext(), MainActivity.studies.size() + "", Toast.LENGTH_SHORT).show();
-            }
-        },500);
     }
     public void reloadSkill(){
+        x = 3;
         MainActivity.skills.clear();
         getInfoSkill();
-        handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                MainActivity.skillAdapter.notifyDataSetChanged();
-                //    Toast.makeText(getApplicationContext(), MainActivity.studies.size() + "", Toast.LENGTH_SHORT).show();
-            }
-        },1000);
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == 1 && resultCode == 1){
-            MainActivity.studies.clear();
-            getInfoStudy();
+            reloadStudy();
             handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     studyAdapter.notifyDataSetChanged();
                     MainActivity.studyAdapter.notifyDataSetChanged();
-                //    Toast.makeText(getApplicationContext(), MainActivity.studies.size() + "", Toast.LENGTH_SHORT).show();
                 }
             },1000);
 
         }
         if(requestCode == 2 && resultCode == 2){
-            MainActivity.experiences.clear();
-            getInfoExperience();
+            reloadExperience();
             handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     experienceAdapter.notifyDataSetChanged();
                     MainActivity.experienceAdapter.notifyDataSetChanged();
-                    //    Toast.makeText(getApplicationContext(), MainActivity.studies.size() + "", Toast.LENGTH_SHORT).show();
                 }
             },1000);
         }
         if(requestCode == 3 && resultCode == 3){
-            MainActivity.skills.clear();
-            getInfoSkill();
+            reloadSkill();
             handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     skillAdapter.notifyDataSetChanged();
                     MainActivity.skillAdapter.notifyDataSetChanged();
-                    //    Toast.makeText(getApplicationContext(), MainActivity.studies.size() + "", Toast.LENGTH_SHORT).show();
                 }
             },1000);
         }
@@ -265,25 +238,15 @@ public class EditCombineActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (number){
-                    case 1:
-                        reloadStudy();
-                        break;
-                    case 2:
-                        reloadExperience();
-                        break;
-                    case 3:
-                        reloadSkill();
-                        break;
-                }
                 finish();
             }
         });
+
     }
     private void anhxa() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         recyclerView = (RecyclerView) findViewById(R.id.recycleview);
-     //   recyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
 
 

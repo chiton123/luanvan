@@ -27,6 +27,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Skill;
+import com.example.luanvan.ui.Model.Study;
 import com.example.luanvan.ui.UpdateInfo.SkillActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -110,8 +111,8 @@ public class SkillAdapter extends RecyclerView.Adapter<SkillAdapter.ItemHolder> 
                                     });
                                     Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
                                     MainActivity.skills.remove(position);
-                                    notifyItemRemoved(position);
-                                    notifyItemRangeChanged(position,  MainActivity.skills.size());
+                                    notifyDataSetChanged();
+                                    MainActivity.studyAdapter.notifyItemRemoved(position);
                                 }
                             });
 
@@ -128,7 +129,9 @@ public class SkillAdapter extends RecyclerView.Adapter<SkillAdapter.ItemHolder> 
     public int getItemCount() {
         return arrayList.size();
     }
-
+    public void setItems(ArrayList<Skill> skills) {
+        this.arrayList = skills;
+    }
     public class ItemHolder extends RecyclerView.ViewHolder{
         public TextView skill;
         public RatingBar ratingBar;

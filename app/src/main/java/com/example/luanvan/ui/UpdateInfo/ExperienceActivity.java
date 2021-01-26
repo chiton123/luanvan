@@ -282,7 +282,7 @@ public class ExperienceActivity extends AppCompatActivity {
                             public void run() {
                                 MainActivity.mData.child("experience").child(key).setValue(experience);
                                 Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
-                                progressDialog.dismiss();
+
                             }
                         },2000);
                         handler1 = new Handler();
