@@ -48,12 +48,10 @@
             android:background="@drawable/button_tuychinh"
             ></Button>
     </LinearLayout>
-    <com.github.barteksc.pdfviewer.PDFView
-        android:layout_marginTop="25dp"
-        android:layout_width="400dp"
-        android:layout_height="450dp"
-        android:id="@+id/pdfview"
-        android:layout_gravity="center"
-        ></com.github.barteksc.pdfviewer.PDFView>
+    <WebView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/webview"
+        ></WebView>
 
 </LinearLayout>

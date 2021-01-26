@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.cv.CVCreateActivity;
+import com.example.luanvan.ui.login.LoginActivity;
 
 public class CVFragment extends Fragment {
     LinearLayout linearLayoutCV, linearLayoutEmpty;
@@ -42,8 +43,14 @@ public class CVFragment extends Fragment {
         btnThem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), CVCreateActivity.class);
-                getActivity().startActivityForResult(intent, REQUEST_CODE);
+                if(MainActivity.login == 0){
+                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    getActivity().startActivity(intent);
+                }else {
+                    Intent intent = new Intent(getActivity(), CVCreateActivity.class);
+                    getActivity().startActivityForResult(intent, REQUEST_CODE);
+                }
+
             }
         });
 

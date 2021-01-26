@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     public static String uid = "";
     public static String username = "";
     public static String position = "";
+    public static String urlCV = "";
     public static User user = new User();
     public static ArrayList<Study> studies = new ArrayList<>();
     public static ArrayList<Experience> experiences = new ArrayList<>();
