@@ -55,7 +55,7 @@ import java.util.ArrayList;
 public class CVActivity extends AppCompatActivity {
     Toolbar toolbar;
     WebView webView;
-    Button btndoimau, btntuychinh, btnnoidung;
+    Button btndoimau, btnnoidung;
     Dialog dialog;
     ListView listViewThongtinLienHe, listViewRemove, listViewAdd;
     public static TitleAdapter titleAdapterTTLH, titleAdapterRemove;
@@ -75,7 +75,8 @@ public class CVActivity extends AppCompatActivity {
         eventPDF();
         eventButton();
         storageReference = FirebaseStorage.getInstance().getReference();
-
+        thông báo: skill, experience, school là mặc định, tự lấy của người dùng, k cần điền
+                chỉ thêm goal, giới thiệu, hoạt động , lưu CV lại
 
 
     }
@@ -121,7 +122,28 @@ public class CVActivity extends AppCompatActivity {
                     webView.loadUrl(url1);
                 }
             },3000);
+
+
         }
+        if(requestCode == 104 && resultCode == 104){
+          //  Toast.makeText(getApplicationContext(), "eheh", Toast.LENGTH_SHORT).show();
+            handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    webView.requestFocus();
+                    WebSettings webSettings = webView.getSettings();
+                    webSettings.setJavaScriptEnabled(true);
+                    webView.getSettings().setSupportZoom(true);
+                    //   Toast.makeText(getApplicationContext(), MainActivity.urlCV, Toast.LENGTH_SHORT).show();
+                    String url1 = "https://docs.google.com/gview?embedded=true&url=" + MainActivity.urlCV;
+                    webView.loadUrl(url1);
+                }
+            },3000);
+
+
+        }
+
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -324,7 +346,6 @@ public class CVActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         webView = (WebView) findViewById(R.id.webview);
         btndoimau = (Button) findViewById(R.id.buttondoimau);
-        btntuychinh = (Button) findViewById(R.id.buttontuychinh);
         btnnoidung = (Button) findViewById(R.id.buttonnoidung);
 
 
