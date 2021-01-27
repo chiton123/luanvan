@@ -42,15 +42,6 @@
                 android:hint="Họ tên"
                 android:drawablePadding="20dp"
                 ></EditText>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/txtname"
-                android:text="Tên không được để trống"
-                android:textColor="#E30D08"
-                android:layout_marginLeft="30dp"
-                android:visibility="gone"
-                ></TextView>
             <EditText
                 android:layout_gravity="center_horizontal"
                 android:layout_width="310dp"
@@ -61,15 +52,6 @@
                 android:hint="Vị trí bạn muốn ứng tuyển"
                 android:drawablePadding="20dp"
                 ></EditText>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/txtposition"
-                android:text="Vị trí không được để trống"
-                android:textColor="#E30D08"
-                android:layout_marginLeft="30dp"
-                android:visibility="gone"
-                ></TextView>
             <EditText
                 android:layout_gravity="center_horizontal"
                 android:layout_width="310dp"
@@ -81,15 +63,6 @@
                 android:drawablePadding="20dp"
                 android:inputType="number"
                 ></EditText>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/txtphone"
-                android:text="Số điện thoại không được để trống"
-                android:textColor="#E30D08"
-                android:layout_marginLeft="30dp"
-                android:visibility="gone"
-                ></TextView>
             <EditText
                 android:layout_gravity="center_horizontal"
                 android:layout_width="310dp"
@@ -100,15 +73,6 @@
                 android:hint="Địa chỉ email"
                 android:drawablePadding="20dp"
                 ></EditText>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/txtemail"
-                android:text="Email không được để trống"
-                android:textColor="#E30D08"
-                android:layout_marginLeft="30dp"
-                android:visibility="gone"
-                ></TextView>
             <EditText
                 android:layout_gravity="center_horizontal"
                 android:layout_width="310dp"

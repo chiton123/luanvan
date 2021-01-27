@@ -106,9 +106,22 @@ public class CVActivity extends AppCompatActivity {
                     webView.loadUrl(url1);
                 }
             },3000);
-
         }
-
+        if(requestCode == 101 && resultCode == 101){
+            handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    webView.requestFocus();
+                    WebSettings webSettings = webView.getSettings();
+                    webSettings.setJavaScriptEnabled(true);
+                    webView.getSettings().setSupportZoom(true);
+                    //   Toast.makeText(getApplicationContext(), MainActivity.urlCV, Toast.LENGTH_SHORT).show();
+                    String url1 = "https://docs.google.com/gview?embedded=true&url=" + MainActivity.urlCV;
+                    webView.loadUrl(url1);
+                }
+            },3000);
+        }
         super.onActivityResult(requestCode, resultCode, data);
     }
 

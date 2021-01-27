@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     // list CV
     public static ArrayList<String> arrayListCV = new ArrayList<>();
 
-    public static String host = "http://10.3.74.156:8888/luanvan/";
+    public static String host = "http://10.10.43.233:8888/luanvan/";
     public static String urljob1 = host + "job1.php";
     public static String urlcompany = host + "company.php";
     // dang nhap

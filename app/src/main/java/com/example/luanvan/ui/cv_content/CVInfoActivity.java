@@ -44,12 +44,12 @@ public class CVInfoActivity extends AppCompatActivity {
     Toolbar toolbar;
     EditText editname, editposition, editphone, editemail, editaddress, editgender, editbirthday;
     Button btnluu, btnhuy;
-    TextView txtname, txtposition, txtphone, txtemail;
-
     StorageReference storageReference;
     int pageWidth = 1200;
-    String cv_name = "", cv_phone = "", cv_address = "", cv_email = "", cv_position = "", cv_birthday = "", cv_gender = "";
+    public static String cv_name = "", cv_phone = "", cv_address = "", cv_email = "", cv_position = "", cv_birthday = "", cv_gender = "";
     Handler handler;
+    // check xem nếu là tạo cv mới thì lần đầu update thì check = 1, các edittext gán cho giá trị mới cho các lần sau
+    public static int checkFirst = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +62,7 @@ public class CVInfoActivity extends AppCompatActivity {
         storageReference = FirebaseStorage.getInstance().getReference();
 
     }
+    // x: 1 thì up
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void createCV() throws IOException {
 
@@ -168,26 +169,38 @@ public class CVInfoActivity extends AppCompatActivity {
         });
     }
     private void getInfo() {
-        editname.setText(MainActivity.username);
-        editposition.setText(MainActivity.position);
-        editemail.setText(MainActivity.user.getEmail());
-        editphone.setText(MainActivity.user.getPhone() + "");
-        editaddress.setText(MainActivity.user.getAddress());
-        String ngay = MainActivity.user.getBirthday();
-        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = null;
-        try {
-            date = fmt.parse(ngay);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        SimpleDateFormat fmtOut = new SimpleDateFormat("dd/MM/yyyy");
-        editbirthday.setText(fmtOut.format(date));
-        if(MainActivity.user.getGender() == 0){
-            editgender.setText("Nam");
+        if(checkFirst == 0){
+            editname.setText(MainActivity.username);
+            editposition.setText(MainActivity.position);
+            editemail.setText(MainActivity.user.getEmail());
+            editphone.setText(MainActivity.user.getPhone() + "");
+            editaddress.setText(MainActivity.user.getAddress());
+            String ngay = MainActivity.user.getBirthday();
+            SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = null;
+            try {
+                date = fmt.parse(ngay);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            SimpleDateFormat fmtOut = new SimpleDateFormat("dd/MM/yyyy");
+            editbirthday.setText(fmtOut.format(date));
+            if(MainActivity.user.getGender() == 0){
+                editgender.setText("Nam");
+            }else {
+                editgender.setText("Nữ");
+            }
         }else {
-            editgender.setText("Nữ");
+            editname.setText(cv_name);
+            editgender.setText(cv_gender);
+            editbirthday.setText(cv_birthday);
+            editaddress.setText(cv_address);
+            editposition.setText(cv_position);
+            editemail.setText(cv_email);
+            editphone.setText(cv_phone);
         }
+
+
 
     }
 
@@ -214,6 +227,7 @@ public class CVInfoActivity extends AppCompatActivity {
                     cv_gender = gender;
                     cv_phone = phone;
                     cv_position = position;
+                    checkFirst = 1;
                     Info info = new Info(name, position, phone, email, address, gender, birthday);
                     MainActivity.mData.child("cvinfo").child(MainActivity.uid).child("info").setValue(info);
                     try {
@@ -266,10 +280,6 @@ public class CVInfoActivity extends AppCompatActivity {
         editgender = (EditText) findViewById(R.id.gender);
         editposition = (EditText) findViewById(R.id.position);
         editphone = (EditText) findViewById(R.id.phone);
-        txtname = (TextView) findViewById(R.id.txtname);
-        txtemail = (TextView) findViewById(R.id.txtemail);
-        txtphone = (TextView) findViewById(R.id.txtphone);
-        txtposition = (TextView) findViewById(R.id.txtposition);
 
     }
 }
