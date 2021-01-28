@@ -3,22 +3,22 @@ package com.example.luanvan.ui.modelCV;
 public class SkillCV {
     private String name;
     private float star;
-    private String key;
+    private String id;
     public SkillCV() {
     }
 
-    public SkillCV(String name, float star, String key) {
+    public SkillCV(String name, float star, String id) {
         this.name = name;
         this.star = star;
-        this.key = key;
+        this.id = id;
     }
 
-    public String getKey() {
-        return key;
+    public String getId() {
+        return id;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {

@@ -9,6 +9,7 @@ import com.example.luanvan.ui.Model.Experience;
 import com.example.luanvan.ui.Model.Skill;
 import com.example.luanvan.ui.Model.Study;
 import com.example.luanvan.ui.Model.User;
+import com.example.luanvan.ui.modelCV.SkillCV;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -47,8 +48,9 @@ public class MainActivity extends AppCompatActivity {
     public static ArrayList<Skill> skills = new ArrayList<>();
     // list CV
     public static ArrayList<String> arrayListCV = new ArrayList<>();
-
-    public static String host = "http://10.3.74.156:8888/luanvan/";
+    // skill CV
+    public static ArrayList<SkillCV> skillCVS = new ArrayList<>();
+    public static String host = "http://10.10.39.98:8888/luanvan/";
     public static String urljob1 = host + "job1.php";
     public static String urlcompany = host + "company.php";
     // dang nhap

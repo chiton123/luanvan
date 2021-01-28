@@ -75,8 +75,7 @@ public class CVActivity extends AppCompatActivity {
         eventPDF();
         eventButton();
         storageReference = FirebaseStorage.getInstance().getReference();
-        thông báo: skill, experience, school là mặc định, tự lấy của người dùng, k cần điền
-                chỉ thêm goal, giới thiệu, hoạt động , lưu CV lại
+
 
 
     }
@@ -127,6 +126,24 @@ public class CVActivity extends AppCompatActivity {
         }
         if(requestCode == 104 && resultCode == 104){
           //  Toast.makeText(getApplicationContext(), "eheh", Toast.LENGTH_SHORT).show();
+            handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    webView.requestFocus();
+                    WebSettings webSettings = webView.getSettings();
+                    webSettings.setJavaScriptEnabled(true);
+                    webView.getSettings().setSupportZoom(true);
+                    //   Toast.makeText(getApplicationContext(), MainActivity.urlCV, Toast.LENGTH_SHORT).show();
+                    String url1 = "https://docs.google.com/gview?embedded=true&url=" + MainActivity.urlCV;
+                    webView.loadUrl(url1);
+                }
+            },3000);
+
+
+        }
+        if(requestCode == 103 && resultCode == 103){
+            //  Toast.makeText(getApplicationContext(), "eheh", Toast.LENGTH_SHORT).show();
             handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override

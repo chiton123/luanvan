@@ -34,6 +34,9 @@ import com.example.luanvan.ui.Model.Skill;
 import com.example.luanvan.ui.modelCV.SkillCV;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -55,10 +58,10 @@ public class CVSkillActivity extends AppCompatActivity {
     Button btnAdd, btnHuy, btnLuu;
     RecyclerView recyclerView;
     SkillCVAdapter adapter;
-    public static ArrayList<SkillCV> skillCVS;
     int pageWidth = 1200;
     StorageReference storageReference;
     Handler handler;
+    public static int firstcheck = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,16 +69,38 @@ public class CVSkillActivity extends AppCompatActivity {
         anhxa();
         actionBar();
         eventButton();
+        getData();
         storageReference = FirebaseStorage.getInstance().getReference();
 
 
     }
 
-//    private void getData() {
-//        skillCVS.add(new SkillCV("Kỹ năng tiếng anh", 4, "a1"));
-//        skillCVS.add(new SkillCV("Kỹ năng tin học", 4, "a2"));
-//
-//    }
+    private void getData() {
+        if(firstcheck == 1){
+         //   Toast.makeText(getApplicationContext(), "hhaa", Toast.LENGTH_SHORT).show();
+          //  Toast.makeText(getApplicationContext(), "" + MainActivity.skillCVS.size(), Toast.LENGTH_SHORT).show();
+            MainActivity.mData.child("cvinfo").child(MainActivity.uid).child("skill").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for(DataSnapshot x : snapshot.getChildren()){
+                        SkillCV a = x.getValue(SkillCV.class);
+                        MainActivity.skillCVS.add(a);
+                        adapter.notifyDataSetChanged();
+                    }
+
+                    //   Toast.makeText(getApplicationContext(), "" + skillCVS.size(), Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+       // Toast.makeText(getApplicationContext(), "" + skillCVS.size(), Toast.LENGTH_SHORT).show();
+
+    }
+
     public void showDialog(){
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -94,7 +119,7 @@ public class CVSkillActivity extends AppCompatActivity {
                     String name = editName.getText().toString();
                     float sosao = ratingBar.getRating();
                     SkillCV skill = new SkillCV(name, sosao, "temp");
-                    skillCVS.add(skill);
+                    MainActivity.skillCVS.add(skill);
                     adapter.notifyDataSetChanged();
                     dialog.dismiss();
 
@@ -103,7 +128,12 @@ public class CVSkillActivity extends AppCompatActivity {
 
             }
         });
-
+        btnHuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
         dialog.show();
     }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -179,15 +209,15 @@ public class CVSkillActivity extends AppCompatActivity {
         canvas.drawText("Học bổng du học Thái Lan", 500, 970, contentPaint);
         // ky nang
         canvas.drawText("KỸ NĂNG", 30, 1050, titlePaint);
-        canvas.drawText(skillCVS.get(0).getName(), 30, 1100, contentPaint);
+        canvas.drawText(MainActivity.skillCVS.get(0).getName(), 30, 1100, contentPaint);
         int width = 300, height = 50;
         // 300 : 5 = 60
-        float star1 = skillCVS.get(0).getStar()*60;
-        float star2 = skillCVS.get(1).getStar()*60;
+        float star1 = MainActivity.skillCVS.get(0).getStar()*60;
+        float star2 = MainActivity.skillCVS.get(1).getStar()*60;
         canvas.drawLine(30, 1150, star1+30, 1150, kynang_paint);
         canvas.drawLine(star1 + 30, 1150, width + 30,1150,  kynangphu );
 
-        canvas.drawText(skillCVS.get(1).getName(), 30, 1200, contentPaint);
+        canvas.drawText(MainActivity.skillCVS.get(1).getName(), 30, 1200, contentPaint);
         canvas.drawLine(30, 1250, star2+30, 1250, kynang_paint);
         canvas.drawLine(star2+30, 1250, width + 30, 1250, kynangphu);
 
@@ -227,30 +257,35 @@ public class CVSkillActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
-                if(skillCVS.size() == 0){
+                if(MainActivity.skillCVS.size() == 0){
                     Toast.makeText(getApplicationContext(), "Bạn chưa thêm kỹ năng nào", Toast.LENGTH_SHORT).show();
                 }else {
-                    for(int i=0; i < skillCVS.size(); i++){
+                    MainActivity.mData.child("cvinfo").child(MainActivity.uid).child("skill").removeValue();
+                   // Toast.makeText(getApplicationContext(), "" + MainActivity.skillCVS.size(), Toast.LENGTH_SHORT).show();
+                    for(int i=0; i < MainActivity.skillCVS.size(); i++){
                         String key = MainActivity.mData.push().getKey();
-                        skillCVS.get(i).setKey(key);
-                        MainActivity.mData.child("cvinfo").child(MainActivity.uid).child("skill").push().setValue(skillCVS.get(i));
-
+                        MainActivity.skillCVS.get(i).setId(key);
+                        MainActivity.mData.child("cvinfo").child(MainActivity.uid).child("skill").push().setValue(MainActivity.skillCVS.get(i));
+                        firstcheck = 1;
                     }
                     try {
                         createCV();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                    recyclerView.setVisibility(View.INVISIBLE);
                     handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             Toast.makeText(getApplicationContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent();
-                            setResult(104);
+                            setResult(104, intent);
                             finish();
+                            //Toast.makeText(getApplicationContext(), "" + MainActivity.skillCVS.size(), Toast.LENGTH_SHORT).show();
                         }
                     },4000);
+                //    Toast.makeText(getApplicationContext(), "" + MainActivity.skillCVS.size(), Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -283,11 +318,11 @@ public class CVSkillActivity extends AppCompatActivity {
         btnAdd = (Button) findViewById(R.id.buttonadd);
         btnHuy = (Button) findViewById(R.id.buttonhuy);
         btnLuu = (Button) findViewById(R.id.buttonluu);
-        skillCVS = new ArrayList<>();
+        MainActivity.skillCVS = new ArrayList<>();
         recyclerView = (RecyclerView) findViewById(R.id.recycleview);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
-        adapter = new SkillCVAdapter(getApplicationContext(), skillCVS, this, 0);
+        adapter = new SkillCVAdapter(getApplicationContext(), MainActivity.skillCVS, this, 0);
         recyclerView.setAdapter(adapter);
 
 
