@@ -78,7 +78,7 @@ public class ExperienceCVAdapter extends RecyclerView.Adapter<ExperienceCVAdapte
 //        }catch (NullPointerException e){
 //            Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
 //        }
-        holder.date.setText(start + "" + end);
+        holder.date.setText(start + " - " + end);
 
         if(visable == 0){
             holder.linearLayout.setVisibility(View.VISIBLE);

@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     public static ArrayList<String> arrayListCV = new ArrayList<>();
     // skill CV
     public static ArrayList<SkillCV> skillCVS = new ArrayList<>();
-    public static String host = "http://10.10.39.98:8888/luanvan/";
+    public static String host = "http://10.10.35.164:8888/luanvan/";
     public static String urljob1 = host + "job1.php";
     public static String urlcompany = host + "company.php";
     // dang nhap

@@ -31,8 +31,12 @@ import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.cv_all.ExperienceCVAdapter;
 import com.example.luanvan.ui.Model.Pdf;
 import com.example.luanvan.ui.modelCV.ExperienceCV;
+import com.example.luanvan.ui.modelCV.SkillCV;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -60,6 +64,7 @@ public class CVExperienceActivity extends AppCompatActivity {
     int pageWidth = 1200;
     StorageReference storageReference;
     Handler handler;
+    public static int firstcheck = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +73,29 @@ public class CVExperienceActivity extends AppCompatActivity {
         actionBar();
         eventButton();
         storageReference = FirebaseStorage.getInstance().getReference();
+        getData();
 
+    }
+    private void getData() {
+        if(firstcheck == 1){
+            MainActivity.mData.child("cvinfo").child(MainActivity.uid).child("experience").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for(DataSnapshot x : snapshot.getChildren()){
+                        ExperienceCV a = x.getValue(ExperienceCV.class);
+                        arrayList.add(a);
+                        adapter.notifyDataSetChanged();
+                    }
+
+                    //   Toast.makeText(getApplicationContext(), "" + skillCVS.size(), Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
 
     }
     public void showDialog(){
@@ -180,7 +207,7 @@ public class CVExperienceActivity extends AppCompatActivity {
         for(int i=0; i < arrayList.size(); i++){
             canvas.drawText(arrayList.get(i).getStart()+"-"+arrayList.get(i).getEnd(), 30, 970 + i*90, contentPaint);
             canvas.drawText(arrayList.get(i).getCompany(), 500, 970 + i*90, contentPaint);
-            canvas.drawText(arrayList.get(i).getPosition(), 500, 1070 + i*90, contentPaint);
+            canvas.drawText(arrayList.get(i).getPosition(), 500, 1010 + i*90, contentPaint);
         }
 
 //        canvas.drawText("10/2017-12/2017", 30, 970, contentPaint);
@@ -238,11 +265,13 @@ public class CVExperienceActivity extends AppCompatActivity {
                 if(arrayList.size() == 0){
                     Toast.makeText(getApplicationContext(), "Bạn chưa thêm kinh nghiệm nào", Toast.LENGTH_SHORT).show();
                 }else {
+                    recyclerView.setVisibility(View.INVISIBLE);
+                    MainActivity.mData.child("cvinfo").child(MainActivity.uid).child("experience").removeValue();
                     for(int i=0; i < arrayList.size(); i++){
                         String key = MainActivity.mData.push().getKey();
                         arrayList.get(i).setId(key);
                         MainActivity.mData.child("cvinfo").child(MainActivity.uid).child("experience").push().setValue(arrayList.get(i));
-
+                        firstcheck = 1;
                     }
                     try {
                         createCV();
