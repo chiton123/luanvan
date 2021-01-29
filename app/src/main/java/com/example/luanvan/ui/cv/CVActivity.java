@@ -89,99 +89,36 @@ public class CVActivity extends AppCompatActivity {
         });
 
     }
-
+    public void reloadWebview(){
+        final String url1 = "https://docs.google.com/gview?embedded=true&url=" + MainActivity.urlCV;
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                webView.loadUrl(url1);
+            }
+        }, 2000);
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
         if (requestCode == 100 && resultCode == 100) {
-            Toast.makeText(getApplicationContext(), "100", Toast.LENGTH_SHORT).show();
-            handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    webView.requestFocus();
-                    WebSettings webSettings = webView.getSettings();
-                    webSettings.setJavaScriptEnabled(true);
-                    webView.getSettings().setSupportZoom(true);
-                    //   Toast.makeText(getApplicationContext(), MainActivity.urlCV, Toast.LENGTH_SHORT).show();
-                    String url1 = "https://docs.google.com/gview?embedded=true&url=" + MainActivity.urlCV;
-                    webView.loadUrl(url1);
-                }
-            }, 3000);
+            reloadWebview();
         }
         if (requestCode == 101 && resultCode == 101) {
-            Toast.makeText(getApplicationContext(), "101", Toast.LENGTH_SHORT).show();
-            handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    webView.requestFocus();
-                    WebSettings webSettings = webView.getSettings();
-                    webSettings.setJavaScriptEnabled(true);
-                    webView.getSettings().setSupportZoom(true);
-                    //   Toast.makeText(getApplicationContext(), MainActivity.urlCV, Toast.LENGTH_SHORT).show();
-                    String url1 = "https://docs.google.com/gview?embedded=true&url=" + MainActivity.urlCV;
-                    webView.loadUrl(url1);
-                }
-            }, 3000);
-
-
+            reloadWebview();
         }
         if (requestCode == 104 && resultCode == 104) {
-            Toast.makeText(getApplicationContext(), "104", Toast.LENGTH_SHORT).show();
-            //  Toast.makeText(getApplicationContext(), "eheh", Toast.LENGTH_SHORT).show();
-            handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    webView.requestFocus();
-                    WebSettings webSettings = webView.getSettings();
-                    webSettings.setJavaScriptEnabled(true);
-                    webView.getSettings().setSupportZoom(true);
-                    //   Toast.makeText(getApplicationContext(), MainActivity.urlCV, Toast.LENGTH_SHORT).show();
-                    String url1 = "https://docs.google.com/gview?embedded=true&url=" + MainActivity.urlCV;
-                    webView.loadUrl(url1);
-                }
-            }, 3000);
-
-
+            reloadWebview();
         }
         if (requestCode == 103 && resultCode == 103) {
-            Toast.makeText(getApplicationContext(), "103", Toast.LENGTH_SHORT).show();
-            //  Toast.makeText(getApplicationContext(), "eheh", Toast.LENGTH_SHORT).show();
-            handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    webView.requestFocus();
-                    WebSettings webSettings = webView.getSettings();
-                    webSettings.setJavaScriptEnabled(true);
-                    webView.getSettings().setSupportZoom(true);
-                    //   Toast.makeText(getApplicationContext(), MainActivity.urlCV, Toast.LENGTH_SHORT).show();
-                    String url1 = "https://docs.google.com/gview?embedded=true&url=" + MainActivity.urlCV;
-                    webView.loadUrl(url1);
-                }
-            }, 3000);
-
-
+            reloadWebview();
         }
         if (requestCode == 102 && resultCode == 102) {
-            Toast.makeText(getApplicationContext(), "102", Toast.LENGTH_SHORT).show();
-            //  Toast.makeText(getApplicationContext(), "eheh", Toast.LENGTH_SHORT).show();
-            handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    webView.requestFocus();
-                    WebSettings webSettings = webView.getSettings();
-                    webSettings.setJavaScriptEnabled(true);
-                    webView.getSettings().setSupportZoom(true);
-                    //   Toast.makeText(getApplicationContext(), MainActivity.urlCV, Toast.LENGTH_SHORT).show();
-                    String url1 = "https://docs.google.com/gview?embedded=true&url=" + MainActivity.urlCV;
-                    webView.loadUrl(url1);
-                }
-            }, 3000);
-            super.onActivityResult(requestCode, resultCode, data);
+            reloadWebview();
         }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
     private void eventDialog() {
         dialog = new Dialog(this);
@@ -252,10 +189,11 @@ public class CVActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.luu:
-                String key = MainActivity.mData.child("cv").push().getKey();
+                String key = MainActivity.mData.child("cv").child(MainActivity.uid).push().getKey();
                 PdfCV pdfCV = new PdfCV(MainActivity.uid,"Ứng tuyển HD bank", MainActivity.urlCV, key);
-                MainActivity.mData.child("cv").child(MainActivity.uid).setValue(pdfCV);
+                MainActivity.mData.child("cv").child(MainActivity.uid).child(MainActivity.uid).setValue(pdfCV);
                 Toast.makeText(getApplicationContext(), "Đã lưu", Toast.LENGTH_SHORT).show();
+                // lưu id CV bằng số tăng dần, có ví dụ rồi, mỗi user thì có nhiều CV
                 break;
             case R.id.huy:
 

@@ -19,14 +19,12 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Pdf;
-import com.example.luanvan.ui.Model.User;
-import com.example.luanvan.ui.Model.UserCV;
+import com.example.luanvan.ui.modelCV.UserCV;
 import com.example.luanvan.ui.modelCV.Info;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -51,7 +49,6 @@ public class CVInfoActivity extends AppCompatActivity {
     Button btnluu, btnhuy;
     StorageReference storageReference;
     int pageWidth = 1200;
-    public static String cv_name = "", cv_phone = "", cv_address = "", cv_email = "", cv_position = "", cv_birthday = "", cv_gender = "";
     Handler handler;
     // check xem nếu là tạo cv mới thì lần đầu update thì check = 1, các edittext gán cho giá trị mới cho các lần sau
 
@@ -137,7 +134,7 @@ public class CVInfoActivity extends AppCompatActivity {
         }
 
         // hoc van
-        int x1 = 610, x2 = 920, x3 = 1050;
+        int x1 = 610, x2 = 920, x3 = 1300;
 
         canvas.drawText("HỌC VẤN", 30,  530, titlePaint);
         titlePaint2.setTextSize(30);
@@ -149,7 +146,10 @@ public class CVInfoActivity extends AppCompatActivity {
                     canvas.drawText(MainActivity.studyCVS.get(i).getStart() + " - " + MainActivity.studyCVS.get(i).getEnd(), 30, x1 + 50 + i*90, contentPaint);
                     canvas.drawText("CHUYÊN NGÀNH: " + MainActivity.studyCVS.get(i).getMajor(), 500, x1 + i*90, titlePaint2 );
                     canvas.drawText(MainActivity.studyCVS.get(i).getDescription(), 500, x1 + 50 + i*90, contentPaint);
+                }else {
+                    break;
                 }
+
             }
         }else {
             canvas.drawText(MainActivity.studyCV.getSchool(), 30, x1, titlePaint2);
@@ -167,6 +167,8 @@ public class CVInfoActivity extends AppCompatActivity {
                     canvas.drawText(experienceCVS.get(i).getStart()+"-"+experienceCVS.get(i).getEnd(), 30, x2 + 50 + i*90, contentPaint);
                     canvas.drawText(experienceCVS.get(i).getCompany(), 500, x2 + 50 + i*90, contentPaint);
                     canvas.drawText(experienceCVS.get(i).getPosition(), 500, x2 + 90 + i*90, contentPaint);
+                }else {
+                    break;
                 }
             }
         }else {
@@ -186,6 +188,8 @@ public class CVInfoActivity extends AppCompatActivity {
                     float star1 = MainActivity.skillCVS.get(i).getStar()*60;
                     canvas.drawLine(30, x3+100 + i*90, star1+30, x3 + 100 + i*90, kynang_paint);
                     canvas.drawLine(star1 + 30, x3+100 + i*90, width + 30,x3 + 100 + i*90,  kynangphu );
+                }else {
+                    break;
                 }
             }
 
@@ -197,7 +201,7 @@ public class CVInfoActivity extends AppCompatActivity {
             canvas.drawLine(30, x3+100, star1+30, x3 + 100, kynang_paint);
             canvas.drawLine(star1 + 30, x3+100, width + 30,x3 + 100,  kynangphu );
 
-            canvas.drawText(MainActivity.skillCVArray.get(1).getName(), 30, x3 + 200, contentPaint);
+            canvas.drawText(MainActivity.skillCVArray.get(1).getName(), 30, x3 + 150, contentPaint);
             canvas.drawLine(30, x3+200, star2+30, x3+200, kynang_paint);
             canvas.drawLine(star2+30, x3+200, width + 30, x3+200, kynangphu);
 
@@ -251,13 +255,13 @@ public class CVInfoActivity extends AppCompatActivity {
                 editgender.setText("Nữ");
             }
         }else {
-            editname.setText(cv_name);
-            editgender.setText(cv_gender);
-            editbirthday.setText(cv_birthday);
-            editaddress.setText(cv_address);
-            editposition.setText(cv_position);
-            editemail.setText(cv_email);
-            editphone.setText(cv_phone);
+            editname.setText(MainActivity.userCV.getUsername());
+            editaddress.setText(MainActivity.userCV.getAddress());
+            editposition.setText(MainActivity.userCV.getPosition());
+            editemail.setText(MainActivity.userCV.getEmail());
+            editphone.setText(MainActivity.userCV.getPhone());
+            editgender.setText(MainActivity.userCV.getGender());
+            editbirthday.setText(MainActivity.userCV.getBirthday());
         }
 
 
@@ -280,14 +284,8 @@ public class CVInfoActivity extends AppCompatActivity {
                     String address = editaddress.getText().toString();
                     String gender = editgender.getText().toString();
                     String birthday = editbirthday.getText().toString();
-                    cv_name = name;
-                    cv_address = address;
-                    cv_birthday = birthday;
-                    cv_email = email;
-                    cv_gender = gender;
-                    cv_phone = phone;
-                    cv_position = position;
-                    MainActivity.userCV = new UserCV(name, position, email, phone, address);
+
+                    MainActivity.userCV = new UserCV(name, position, email, phone, address, gender, birthday);
                     MainActivity.checkFirstInfo = 1;
                     Info info = new Info(name, position, phone, email, address, gender, birthday);
                     MainActivity.mData.child("cvinfo").child(MainActivity.uid).child("info").setValue(info);
@@ -306,6 +304,7 @@ public class CVInfoActivity extends AppCompatActivity {
                             finish();
                         }
                     },4000);
+
 
                 }
 
