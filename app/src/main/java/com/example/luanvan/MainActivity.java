@@ -9,7 +9,10 @@ import com.example.luanvan.ui.Model.Experience;
 import com.example.luanvan.ui.Model.Skill;
 import com.example.luanvan.ui.Model.Study;
 import com.example.luanvan.ui.Model.User;
+import com.example.luanvan.ui.Model.UserCV;
+import com.example.luanvan.ui.modelCV.ExperienceCV;
 import com.example.luanvan.ui.modelCV.SkillCV;
+import com.example.luanvan.ui.modelCV.StudyCV;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -48,8 +51,31 @@ public class MainActivity extends AppCompatActivity {
     public static ArrayList<Skill> skills = new ArrayList<>();
     // list CV
     public static ArrayList<String> arrayListCV = new ArrayList<>();
-    // skill CV
+    // default CV info
+    // - info connect : user
+    // - Experience
+    public static ExperienceCV experienceCV = new ExperienceCV("temp","TMA Solution","Developer", "2015", "2020", "Rất tốt");
+    public static ArrayList<SkillCV> skillCVArray = new ArrayList<>();
+    public static UserCV userCVDefault = new UserCV("Nguyễn Văn A", "DBA", "batphuongtrinhvoti@gmail.com","0323232","Vĩnh Long");
+    public static StudyCV studyCV = new StudyCV("temp", "Đại học Cần Thơ", "Công nghệ thông tin", "2017", "2021", "Giỏi, GPA: 3.5");
+    public static String goal = "";
+
+
+
+    // skillCV , infoCV, experienceCV, studyCV
     public static ArrayList<SkillCV> skillCVS = new ArrayList<>();
+    public static UserCV userCV = new UserCV();
+    public static ArrayList<ExperienceCV> experienceCVS = new ArrayList<>();
+    public static ArrayList<StudyCV> studyCVS = new ArrayList<>();
+    // check first , khi vào và điền thông tin rồi thì = 1
+    public static int checkFirstInfo = 0;
+    public static int checkFirstGoal = 0;
+    public static int checkFirstStudy = 0;
+    public static int checkFirstExperience = 0;
+    public static int checkFirstSkill = 0;
+    public static int checkFirstVolunteer = 0;
+
+
     public static String host = "http://10.10.35.164:8888/luanvan/";
     public static String urljob1 = host + "job1.php";
     public static String urlcompany = host + "company.php";
@@ -80,7 +106,8 @@ public class MainActivity extends AppCompatActivity {
 //        }catch (NullPointerException e){
 //            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
 //        }
-
+        skillCVArray.add(new SkillCV("Kỹ năng tiếng anh", 4, "temp"));
+        skillCVArray.add(new SkillCV("Kỹ năng tin học", 3, "temp"));
 
     }
 

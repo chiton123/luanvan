@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="5dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tên trường"
+            android:textSize="18sp"
+            android:textColor="#020202"
+            ></TextView>
+        <EditText
+            android:layout_marginLeft="10dp"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/school"
+            android:hint="Tên trường"
+            ></EditText>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tên ngành"
+            android:textSize="18sp"
+            android:textColor="#020202"
+            ></TextView>
+        <EditText
+            android:layout_marginLeft="10dp"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/major"
+            android:hint="Tên ngành"
+            ></EditText>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bắt đầu"
+            android:textSize="18sp"
+            android:textColor="#020202"
+            ></TextView>
+        <EditText
+            android:layout_marginLeft="10dp"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/start"
+            android:hint="Bắt đầu"
+            ></EditText>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="kết thúc"
+            android:textSize="18sp"
+            android:textColor="#020202"
+            ></TextView>
+        <EditText
+            android:layout_marginLeft="10dp"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/end"
+            android:hint="kết thúc"
+            ></EditText>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+
+        >
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mô tả"
+            android:textSize="18sp"
+            android:textColor="#020202"
+            ></TextView>
+        <EditText
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lines="5"
+            android:padding="10dp"
+            android:id="@+id/description"
+            android:gravity="top|left"
+            android:hint="Mô tả"
+            android:background="@drawable/edittext_frame"
+            ></EditText>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        >
+
+        <Button
+            android:id="@+id/huy"
+            android:layout_width="100dp"
+            android:layout_height="37dp"
+            android:background="@drawable/button_huy"
+            android:text="Hủy"></Button>
+        <Button
+            android:layout_marginLeft="30dp"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:text="Lưu"
+            android:background="@drawable/button_dangnhap"
+            android:textColor="#fff"
+            android:id="@+id/luu"
+            ></Button>
+    </LinearLayout>
+
+
+</LinearLayout>

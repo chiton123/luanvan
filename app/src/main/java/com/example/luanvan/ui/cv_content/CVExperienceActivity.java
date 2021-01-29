@@ -47,6 +47,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static com.example.luanvan.MainActivity.experienceCV;
+import static com.example.luanvan.MainActivity.experienceCVS;
 import static com.example.luanvan.MainActivity.experiences;
 import static com.example.luanvan.MainActivity.skillCVS;
 import static com.example.luanvan.ui.cv_content.CVInfoActivity.cv_address;
@@ -60,11 +62,11 @@ public class CVExperienceActivity extends AppCompatActivity {
     Button btnAdd, btnHuy, btnLuu;
     RecyclerView recyclerView;
     ExperienceCVAdapter adapter;
-    public static ArrayList<ExperienceCV> arrayList;
+
     int pageWidth = 1200;
     StorageReference storageReference;
     Handler handler;
-    public static int firstcheck = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,13 +79,13 @@ public class CVExperienceActivity extends AppCompatActivity {
 
     }
     private void getData() {
-        if(firstcheck == 1){
+        if(MainActivity.checkFirstExperience == 1){
             MainActivity.mData.child("cvinfo").child(MainActivity.uid).child("experience").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for(DataSnapshot x : snapshot.getChildren()){
                         ExperienceCV a = x.getValue(ExperienceCV.class);
-                        arrayList.add(a);
+                        experienceCVS.add(a);
                         adapter.notifyDataSetChanged();
                     }
 
@@ -123,7 +125,7 @@ public class CVExperienceActivity extends AppCompatActivity {
                     String end = editend.getText().toString();
                     String description = editdescription.getText().toString();
                     ExperienceCV experienceCV = new ExperienceCV("temp", name, position, start, end, description);
-                    arrayList.add(experienceCV);
+                    experienceCVS.add(experienceCV);
                     adapter.notifyDataSetChanged();
                     dialog.dismiss();
 
@@ -136,7 +138,7 @@ public class CVExperienceActivity extends AppCompatActivity {
         dialog.show();
     }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public void createCV() throws IOException {
+    public void createCV(int a, int b, int c, int d, int e) throws IOException {
 
         PdfDocument pdfDocument = new PdfDocument();
         // mo mau
@@ -166,16 +168,28 @@ public class CVExperienceActivity extends AppCompatActivity {
 
         paint1.setColor(Color.WHITE);
         paint1.setTextAlign(Paint.Align.LEFT);
-        paint1.setTextSize(50);
-        canvas.drawText(cv_name, 30, 80, paint1);
-        paint1.setTextSize(35);
-        canvas.drawText(cv_position, 30, 140, paint1);
+        if(a == 1){
+            paint1.setTextSize(50);
+            canvas.drawText(MainActivity.userCV.getUsername(), 30, 80, paint1);
+            paint1.setTextSize(35);
+            canvas.drawText(MainActivity.userCV.getPosition(), 30, 140, paint1);
 
+            paint1.setTextSize(30);
+            canvas.drawText(MainActivity.userCV.getAddress(), 30, 230, paint1);
+            canvas.drawText(MainActivity.userCV.getEmail(), 500, 230, paint1);
+            canvas.drawText(MainActivity.userCV.getPhone(), pageWidth-230, 230, paint1);
+        }else {
+            paint1.setTextSize(50);
+            canvas.drawText(MainActivity.userCVDefault.getUsername(), 30, 80, paint1);
+            paint1.setTextSize(35);
+            canvas.drawText(MainActivity.userCVDefault.getPosition(), 30, 140, paint1);
 
-        paint1.setTextSize(30);
-        canvas.drawText(cv_address, 30, 230, paint1);
-        canvas.drawText(cv_email, 500, 230, paint1);
-        canvas.drawText(cv_phone, pageWidth-230, 230, paint1);
+            paint1.setTextSize(30);
+            canvas.drawText(MainActivity.userCVDefault.getAddress(), 30, 230, paint1);
+            canvas.drawText(MainActivity.userCVDefault.getEmail(), 500, 230, paint1);
+            canvas.drawText(MainActivity.userCVDefault.getPhone()+"", pageWidth-230, 230, paint1);
+        }
+
         // muc tieu nghe nghiep
         titlePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         titlePaint.setTextSize(35);
@@ -184,47 +198,78 @@ public class CVExperienceActivity extends AppCompatActivity {
 
         contentPaint.setColor(Color.BLACK);
         contentPaint.setTextSize(25);
-        canvas.drawText(CVGoalActivity.cv_goal, 30, 450, contentPaint);
+        if(b == 1){
+            canvas.drawText(MainActivity.goal, 30, 450, contentPaint);
+        }else {
+            canvas.drawText("Trờ thành nhân viên xuất sắc của công ty, cống hiến, tận tụy trong công việc", 30, 450, contentPaint);
+        }
 
         // hoc van
+        int x1 = 610, x2 = 920, x3 = 1050;
+
         canvas.drawText("HỌC VẤN", 30,  530, titlePaint);
         titlePaint2.setTextSize(30);
         titlePaint2.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-        canvas.drawText("ĐẠI HỌC CẦN THƠ", 30, 610, titlePaint2);
-        canvas.drawText("10/2017 - 10/2021", 30, 660, contentPaint);
-        canvas.drawText("CHUYÊN NGÀNH: CÔNG NGHỆ THÔNG TIN", 500, 610, titlePaint2 );
-        canvas.drawText("Tốt nghiệp loại giỏi, điểm trung bình 8.0", 500, 660, contentPaint);
-
-        // hoat dong
-        canvas.drawText("HOẠT ĐỘNG", 30, 730, titlePaint);
-        canvas.drawText("THAM GIA CLUB TIẾNG ANH", 30, 800, titlePaint2);
-        canvas.drawText("2020 - 2021", 30, 850, contentPaint);
-        canvas.drawText("NGƯỜI THAM GIA", 500,800, titlePaint2);
-        canvas.drawText("Nói tiếng anh với người bản xứ",  500, 850, contentPaint);
-
-        // KINH NGHIEM
-        canvas.drawText("KINH NGHIỆM", 30, 920, titlePaint);
-        for(int i=0; i < arrayList.size(); i++){
-            canvas.drawText(arrayList.get(i).getStart()+"-"+arrayList.get(i).getEnd(), 30, 970 + i*90, contentPaint);
-            canvas.drawText(arrayList.get(i).getCompany(), 500, 970 + i*90, contentPaint);
-            canvas.drawText(arrayList.get(i).getPosition(), 500, 1010 + i*90, contentPaint);
+        if(c == 1){
+            for(int i=0; i < MainActivity.studyCVS.size(); i++){
+                if(i < 2){
+                    canvas.drawText(MainActivity.studyCVS.get(i).getSchool(), 30, x1 + i*90, titlePaint2);
+                    canvas.drawText(MainActivity.studyCVS.get(i).getStart() + " - " + MainActivity.studyCVS.get(i).getEnd(), 30, x1 + 50 + i*90, contentPaint);
+                    canvas.drawText("CHUYÊN NGÀNH: " + MainActivity.studyCVS.get(i).getMajor(), 500, x1 + i*90, titlePaint2 );
+                    canvas.drawText(MainActivity.studyCVS.get(i).getDescription(), 500, x1 + 50 + i*90, contentPaint);
+                }
+            }
+        }else {
+            canvas.drawText(MainActivity.studyCV.getSchool(), 30, x1, titlePaint2);
+            canvas.drawText(MainActivity.studyCV.getStart() + " - " + MainActivity.studyCV.getEnd(), 30, x1 + 50, contentPaint);
+            canvas.drawText("CHUYÊN NGÀNH: " + MainActivity.studyCV.getMajor(), 500, x1 + 50, titlePaint2 );
+            canvas.drawText(MainActivity.studyCV.getDescription(), 500, x1 + 50, contentPaint);
         }
 
-//        canvas.drawText("10/2017-12/2017", 30, 970, contentPaint);
-//        canvas.drawText("Học bổng du học Thái Lan", 500, 970, contentPaint);
-        // ky nang
-        canvas.drawText("KỸ NĂNG", 30, 1250, titlePaint);
-        canvas.drawText(skillCVS.get(0).getName(), 30, 1300, contentPaint);
-        int width = 300, height = 50;
-        // 300 : 5 = 60
-        float star1 = skillCVS.get(0).getStar()*60;
-        float star2 = skillCVS.get(1).getStar()*60;
-        canvas.drawLine(30, 1350, star1+30, 1350, kynang_paint);
-        canvas.drawLine(star1 + 30, 1350, width + 30,1350,  kynangphu );
 
-        canvas.drawText(skillCVS.get(1).getName(), 30, 1400, contentPaint);
-        canvas.drawLine(30, 1450, star2+30, 1450, kynang_paint);
-        canvas.drawLine(star2+30, 1450, width + 30, 1450, kynangphu);
+        // kinh nghiem
+        canvas.drawText("KINH NGHIỆM", 30, x2, titlePaint);
+        if(d == 1){
+            for(int i=0; i < experienceCVS.size(); i++){
+                if(i < 2){
+                    canvas.drawText(experienceCVS.get(i).getStart()+"-"+experienceCVS.get(i).getEnd(), 30, x2 + 50 + i*90, contentPaint);
+                    canvas.drawText(experienceCVS.get(i).getCompany(), 500, x2 + 50 + i*90, contentPaint);
+                    canvas.drawText(experienceCVS.get(i).getPosition(), 500, x2 + 90 + i*90, contentPaint);
+                }
+            }
+        }else {
+            canvas.drawText(experienceCV.getStart()+"-"+experienceCV.getEnd(), 30, x2 + 50, contentPaint);
+            canvas.drawText(experienceCV.getCompany(), 500, x2 + 50 , contentPaint);
+            canvas.drawText(experienceCV.getPosition(), 500, x2 + 90 , contentPaint);
+        }
+
+
+        // ky nang
+        canvas.drawText("KỸ NĂNG", 30, x3, titlePaint);
+        int width = 300, height = 50;
+        if(e == 1){
+            for(int i=0; i < MainActivity.skillCVS.size(); i++){
+                if(i < 2){
+                    canvas.drawText(MainActivity.skillCVS.get(i).getName(), 30, x3 + 50 + i*90, contentPaint);
+                    float star1 = MainActivity.skillCVS.get(i).getStar()*60;
+                    canvas.drawLine(30, x3+100 + i*90, star1+30, x3 + 100 + i*90, kynang_paint);
+                    canvas.drawLine(star1 + 30, x3+100 + i*90, width + 30,x3 + 100 + i*90,  kynangphu );
+                }
+            }
+
+        }else {
+            canvas.drawText(MainActivity.skillCVArray.get(0).getName(), 30, x3 + 50, contentPaint);
+            // 300 : 5 = 60
+            float star1 = MainActivity.skillCVArray.get(0).getStar()*60;
+            float star2 = MainActivity.skillCVArray.get(1).getStar()*60;
+            canvas.drawLine(30, x3+100, star1+30, x3 + 100, kynang_paint);
+            canvas.drawLine(star1 + 30, x3+100, width + 30,x3 + 100,  kynangphu );
+
+            canvas.drawText(MainActivity.skillCVArray.get(1).getName(), 30, x3 + 200, contentPaint);
+            canvas.drawLine(30, x3+200, star2+30, x3+200, kynang_paint);
+            canvas.drawLine(star2+30, x3+200, width + 30, x3+200, kynangphu);
+
+        }
 
         pdfDocument.finishPage(page);
         File file = new File(Environment.getExternalStorageDirectory(), "/a10.pdf");
@@ -262,19 +307,20 @@ public class CVExperienceActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
-                if(arrayList.size() == 0){
+                if(experienceCVS.size() == 0){
                     Toast.makeText(getApplicationContext(), "Bạn chưa thêm kinh nghiệm nào", Toast.LENGTH_SHORT).show();
                 }else {
                     recyclerView.setVisibility(View.INVISIBLE);
                     MainActivity.mData.child("cvinfo").child(MainActivity.uid).child("experience").removeValue();
-                    for(int i=0; i < arrayList.size(); i++){
+                    for(int i=0; i < experienceCVS.size(); i++){
                         String key = MainActivity.mData.push().getKey();
-                        arrayList.get(i).setId(key);
-                        MainActivity.mData.child("cvinfo").child(MainActivity.uid).child("experience").push().setValue(arrayList.get(i));
-                        firstcheck = 1;
+                        experienceCVS.get(i).setId(key);
+                        MainActivity.mData.child("cvinfo").child(MainActivity.uid).child("experience").push().setValue(experienceCVS.get(i));
+                        MainActivity.checkFirstExperience = 1;
                     }
                     try {
-                        createCV();
+                        createCV(MainActivity.checkFirstInfo, MainActivity.checkFirstGoal, MainActivity.checkFirstStudy, MainActivity.checkFirstExperience,
+                                MainActivity.checkFirstSkill);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -322,9 +368,9 @@ public class CVExperienceActivity extends AppCompatActivity {
         btnLuu = (Button) findViewById(R.id.buttonluu);
         recyclerView = (RecyclerView) findViewById(R.id.recycleview);
         recyclerView.setHasFixedSize(true);
-        arrayList = new ArrayList<>();
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
-        adapter = new ExperienceCVAdapter(getApplicationContext(), arrayList, this, 0);
+        adapter = new ExperienceCVAdapter(getApplicationContext(), experienceCVS, this, 0);
         recyclerView.setAdapter(adapter);
 
 
