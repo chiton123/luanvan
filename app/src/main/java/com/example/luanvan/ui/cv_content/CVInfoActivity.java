@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Pdf;
+import com.example.luanvan.ui.cv.CVActivity;
 import com.example.luanvan.ui.modelCV.UserCV;
 import com.example.luanvan.ui.modelCV.Info;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -287,8 +288,8 @@ public class CVInfoActivity extends AppCompatActivity {
 
                     MainActivity.userCV = new UserCV(name, position, email, phone, address, gender, birthday);
                     MainActivity.checkFirstInfo = 1;
-                    Info info = new Info(name, position, phone, email, address, gender, birthday);
-                    MainActivity.mData.child("cvinfo").child(MainActivity.uid).child("info").setValue(info);
+                 //   Info info = new Info(name, position, phone, email, address, gender, birthday);
+                  //  MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(String.valueOf(CVActivity.idCV+1)).child("info").setValue(info);
                     try {
                         createCV(MainActivity.checkFirstInfo, MainActivity.checkFirstGoal, MainActivity.checkFirstStudy, MainActivity.checkFirstExperience,
                                 MainActivity.checkFirstSkill);

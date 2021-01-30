@@ -31,6 +31,7 @@ import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.cv_all.SkillCVAdapter;
 import com.example.luanvan.ui.Model.Pdf;
 import com.example.luanvan.ui.Model.Skill;
+import com.example.luanvan.ui.cv.CVActivity;
 import com.example.luanvan.ui.modelCV.SkillCV;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -315,14 +316,14 @@ public class CVSkillActivity extends AppCompatActivity {
                 if(MainActivity.skillCVS.size() == 0){
                     Toast.makeText(getApplicationContext(), "Bạn chưa thêm kỹ năng nào", Toast.LENGTH_SHORT).show();
                 }else {
-                    MainActivity.mData.child("cvinfo").child(MainActivity.uid).child("skill").removeValue();
-                   // Toast.makeText(getApplicationContext(), "" + MainActivity.skillCVS.size(), Toast.LENGTH_SHORT).show();
-                    for(int i=0; i < MainActivity.skillCVS.size(); i++){
-                        String key = MainActivity.mData.push().getKey();
-                        MainActivity.skillCVS.get(i).setId(key);
-                        MainActivity.mData.child("cvinfo").child(MainActivity.uid).child("skill").push().setValue(MainActivity.skillCVS.get(i));
-                        MainActivity.checkFirstSkill = 1;
-                    }
+//                    MainActivity.mData.child("cvinfo").child(MainActivity.uid).child("skill").removeValue();
+//                   // Toast.makeText(getApplicationContext(), "" + MainActivity.skillCVS.size(), Toast.LENGTH_SHORT).show();
+//                    for(int i=0; i < MainActivity.skillCVS.size(); i++){
+//                        String key = MainActivity.mData.push().getKey();
+//                        MainActivity.skillCVS.get(i).setId(key);
+//                        MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(String.valueOf(CVActivity.idCV+1)).child("skill").push().setValue(MainActivity.skillCVS.get(i));
+//                        MainActivity.checkFirstSkill = 1;
+//                    }
                     try {
                         createCV(MainActivity.checkFirstInfo, MainActivity.checkFirstGoal, MainActivity.checkFirstStudy, MainActivity.checkFirstExperience,
                                 MainActivity.checkFirstSkill);

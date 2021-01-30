@@ -23,6 +23,7 @@ public class CVKindAdapter extends RecyclerView.Adapter<CVKindAdapter.ItemHolder
     Context context;
     ArrayList<CVKind> arrayList;
     Activity activity;
+    int REQUEST_CODE = 123;
 
     public CVKindAdapter(Context context, ArrayList<CVKind> arrayList, Activity activity) {
         this.context = context;
@@ -47,7 +48,7 @@ public class CVKindAdapter extends RecyclerView.Adapter<CVKindAdapter.ItemHolder
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, CVActivity.class);
-                activity.startActivity(intent);
+                activity.startActivityForResult(intent, REQUEST_CODE);
             }
         });
 

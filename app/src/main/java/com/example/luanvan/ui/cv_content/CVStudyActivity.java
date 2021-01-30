@@ -30,6 +30,7 @@ import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.cv_all.ExperienceCVAdapter;
 import com.example.luanvan.ui.Adapter.cv_all.StudyCVAdapter;
 import com.example.luanvan.ui.Model.Pdf;
+import com.example.luanvan.ui.cv.CVActivity;
 import com.example.luanvan.ui.modelCV.ExperienceCV;
 import com.example.luanvan.ui.modelCV.StudyCV;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -320,13 +321,13 @@ public class CVStudyActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Bạn chưa thêm kinh nghiệm nào", Toast.LENGTH_SHORT).show();
                 }else {
                     recyclerView.setVisibility(View.INVISIBLE);
-                    MainActivity.mData.child("cvinfo").child(MainActivity.uid).child("study").removeValue();
-                    for(int i=0; i < MainActivity.studyCVS.size(); i++){
-                        String key = MainActivity.mData.push().getKey();
-                        MainActivity.studyCVS.get(i).setId(key);
-                        MainActivity.mData.child("cvinfo").child(MainActivity.uid).child("study").push().setValue(MainActivity.studyCVS.get(i));
-                        MainActivity.checkFirstStudy = 1;
-                    }
+//                    MainActivity.mData.child("cvinfo").child(MainActivity.uid).child("study").removeValue();
+//                    for(int i=0; i < MainActivity.studyCVS.size(); i++){
+//                        String key = MainActivity.mData.push().getKey();
+//                        MainActivity.studyCVS.get(i).setId(key);
+//                        MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(String.valueOf(CVActivity.idCV+1)).child("study").push().setValue(MainActivity.studyCVS.get(i));
+//                        MainActivity.checkFirstStudy = 1;
+//                    }
                     try {
                         createCV(MainActivity.checkFirstInfo, MainActivity.checkFirstGoal, MainActivity.checkFirstStudy, MainActivity.checkFirstExperience,
                                 MainActivity.checkFirstSkill);

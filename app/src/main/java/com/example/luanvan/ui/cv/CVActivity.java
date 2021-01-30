@@ -26,6 +26,7 @@ import android.view.Window;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -41,6 +42,9 @@ import com.example.luanvan.ui.modelCV.PdfCV;
 import com.github.barteksc.pdfviewer.PDFView;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -52,10 +56,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static com.example.luanvan.MainActivity.experienceCVS;
+
 public class CVActivity extends AppCompatActivity {
     Toolbar toolbar;
     WebView webView;
     Button btndoimau, btnnoidung;
+    EditText cvName;
     Dialog dialog;
     ListView listViewThongtinLienHe, listViewRemove, listViewAdd;
     public static TitleAdapter titleAdapterTTLH, titleAdapterRemove;
@@ -66,17 +73,36 @@ public class CVActivity extends AppCompatActivity {
     String url = "https://firebasestorage.googleapis.com/v0/b/project-7807e.appspot.com/o/default.pdf?alt=media&token=e22cfec0-f4fc-47a8-b65d-84e3d17a9b7a";
     int pageWidth = 1200;
     Handler handler;
+    public static long idCV = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_c_v);
         anhxa();
         actionBar();
+        getIDCV();
+
         eventPDF();
         eventButton();
         storageReference = FirebaseStorage.getInstance().getReference();
 
 
+
+    }
+
+    private void getIDCV() {
+        MainActivity.mData.child("cv").child(MainActivity.uid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                idCV = snapshot.getChildrenCount();
+                cvName.setText("Ứng tuyển "+ String.valueOf(idCV + 1));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
     }
 
@@ -97,7 +123,7 @@ public class CVActivity extends AppCompatActivity {
             public void run() {
                 webView.loadUrl(url1);
             }
-        }, 2000);
+        }, 3000);
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -189,14 +215,55 @@ public class CVActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.luu:
-                String key = MainActivity.mData.child("cv").child(MainActivity.uid).push().getKey();
-                PdfCV pdfCV = new PdfCV(MainActivity.uid,"Ứng tuyển HD bank", MainActivity.urlCV, key);
-                MainActivity.mData.child("cv").child(MainActivity.uid).child(MainActivity.uid).setValue(pdfCV);
-                Toast.makeText(getApplicationContext(), "Đã lưu", Toast.LENGTH_SHORT).show();
-                // lưu id CV bằng số tăng dần, có ví dụ rồi, mỗi user thì có nhiều CV
+                if(cvName.getText().equals("")){
+                    Toast.makeText(getApplicationContext(), "Vui lòng điền tên CV", Toast.LENGTH_SHORT).show();
+                }else {
+                    String key = MainActivity.mData.child("cv").child(MainActivity.uid).push().getKey();
+                    PdfCV pdfCV = new PdfCV(MainActivity.uid, cvName.getText().toString(), MainActivity.urlCV, key);
+                    MainActivity.mData.child("cv").child(MainActivity.uid).child(String.valueOf(idCV + 1)).setValue(pdfCV);
+                    // info
+                    MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(String.valueOf(CVActivity.idCV+1)).child("info").setValue(MainActivity.userCV);
+                    // study
+                  //  MainActivity.mData.child("cvinfo").child(MainActivity.uid).child("study").removeValue();
+
+                    for(int i=0; i < MainActivity.studyCVS.size(); i++){
+                        String keyx = MainActivity.mData.push().getKey();
+                        MainActivity.studyCVS.get(i).setId(keyx);
+                        MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(String.valueOf(CVActivity.idCV+1)).child("study").push().setValue(MainActivity.studyCVS.get(i));
+                        MainActivity.checkFirstStudy = 1;
+                    }
+                    // experience
+                 //   MainActivity.mData.child("cvinfo").child(MainActivity.uid).child("experience").removeValue();
+                    for(int i=0; i < experienceCVS.size(); i++){
+                        String keyx = MainActivity.mData.push().getKey();
+                        experienceCVS.get(i).setId(keyx);
+                        MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(String.valueOf(CVActivity.idCV+1)).child("experience").push().setValue(experienceCVS.get(i));
+                        MainActivity.checkFirstExperience = 1;
+                    }
+                    // skill
+                   // MainActivity.mData.child("cvinfo").child(MainActivity.uid).child("skill").removeValue();
+                    // Toast.makeText(getApplicationContext(), "" + MainActivity.skillCVS.size(), Toast.LENGTH_SHORT).show();
+                    for(int i=0; i < MainActivity.skillCVS.size(); i++){
+                        String keyx = MainActivity.mData.push().getKey();
+                        MainActivity.skillCVS.get(i).setId(keyx);
+                        MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(String.valueOf(CVActivity.idCV+1)).child("skill").push().setValue(MainActivity.skillCVS.get(i));
+                        MainActivity.checkFirstSkill = 1;
+                    }
+                    // goal
+                    MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(String.valueOf(CVActivity.idCV+1)).child("goal").setValue(MainActivity.goal);
+
+
+
+                    Toast.makeText(getApplicationContext(), "Đã lưu", Toast.LENGTH_SHORT).show();
+                    // lưu id CV bằng số tăng dần, có ví dụ rồi, mỗi user thì có nhiều CV
+                    Intent intent = new Intent();
+                    setResult(123);
+                    finish();
+
+                }
                 break;
             case R.id.huy:
-
+                finish();
                 break;
         }
 
@@ -219,7 +286,7 @@ public class CVActivity extends AppCompatActivity {
         webView = (WebView) findViewById(R.id.webview);
         btndoimau = (Button) findViewById(R.id.buttondoimau);
         btnnoidung = (Button) findViewById(R.id.buttonnoidung);
-
+        cvName = (EditText) findViewById(R.id.editname);
 
 
     }

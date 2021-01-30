@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Pdf;
+import com.example.luanvan.ui.cv.CVActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -255,7 +256,7 @@ public class CVGoalActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Vui lòng nhập đủ thông tin", Toast.LENGTH_SHORT).show();
                 }else {
                     MainActivity.goal = editContent.getText().toString();
-                    MainActivity.mData.child("cvinfo").child(MainActivity.uid).child("goal").setValue(MainActivity.goal);
+//                    MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(String.valueOf(CVActivity.idCV+1)).child("goal").setValue(MainActivity.goal);
                     MainActivity.checkFirstGoal = 1;
                     try {
                         createCV(MainActivity.checkFirstInfo, MainActivity.checkFirstGoal, MainActivity.checkFirstStudy, MainActivity.checkFirstExperience,

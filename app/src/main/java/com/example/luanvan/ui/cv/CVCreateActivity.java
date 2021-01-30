@@ -1,10 +1,12 @@
 package com.example.luanvan.ui.cv;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -18,7 +20,7 @@ public class CVCreateActivity extends AppCompatActivity {
     Toolbar toolbar;
     RecyclerView recyclerView;
     ArrayList<CVKind> arrayList;
-    CVKindAdapter adapter;
+    CVKindAdapter adapter; // request_code = 123
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +31,18 @@ public class CVCreateActivity extends AppCompatActivity {
 
 
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == 123 && resultCode == 123){
+            Intent intent = new Intent();
+            setResult(123);
+            finish();
+
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void getKind() {

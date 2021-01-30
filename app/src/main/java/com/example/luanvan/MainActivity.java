@@ -58,15 +58,16 @@ public class MainActivity extends AppCompatActivity {
     public static ArrayList<SkillCV> skillCVArray = new ArrayList<>();
     public static UserCV userCVDefault = new UserCV("Nguyễn Văn A", "DBA", "batphuongtrinhvoti@gmail.com","0323232","Vĩnh Long","Nam","20/10/1999");
     public static StudyCV studyCV = new StudyCV("temp", "Đại học Cần Thơ", "Công nghệ thông tin", "2017", "2021", "Giỏi, GPA: 3.5");
-    public static String goal = "";
 
 
 
-    // skillCV , infoCV, experienceCV, studyCV
+
+    // skillCV , infoCV, experienceCV, studyCV, goal để up lên
     public static ArrayList<SkillCV> skillCVS = new ArrayList<>();
     public static UserCV userCV = new UserCV();
     public static ArrayList<ExperienceCV> experienceCVS = new ArrayList<>();
     public static ArrayList<StudyCV> studyCVS = new ArrayList<>();
+    public static String goal = "";
     // check first , khi vào và điền thông tin rồi thì = 1
     public static int checkFirstInfo = 0;
     public static int checkFirstGoal = 0;
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
     public static int checkFirstVolunteer = 0;
 
 
-    public static String host = "http://10.3.74.116:8888/luanvan/";
+    public static String host = "http://10.10.34.88:8888/luanvan/";
     public static String urljob1 = host + "job1.php";
     public static String urlcompany = host + "company.php";
     // dang nhap

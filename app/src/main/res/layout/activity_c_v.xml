@@ -39,7 +39,18 @@
             android:background="@drawable/button_tuychinh"
             ></Button>
     </LinearLayout>
+    <EditText
+        android:layout_width="240dp"
+        android:layout_height="30dp"
+        android:background="@drawable/stroke"
+        android:id="@+id/editname"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
+        android:hint="Tên CV"
+        android:gravity="center"
+        ></EditText>
     <WebView
+        android:layout_gravity="center_horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/webview"
