@@ -5,17 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:weightSum="13"
     tools:context=".ui.User.NotificationsFragment">
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:id="@+id/toolbar"
         app:title="Hồ sơ TopCV"
         android:background="#fff"
         ></androidx.appcompat.widget.Toolbar>
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="11"
 
         >
         <LinearLayout

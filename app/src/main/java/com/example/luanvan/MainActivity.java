@@ -1,6 +1,8 @@
 package com.example.luanvan;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.example.luanvan.ui.Adapter.update_personal_info.ExperienceAdapter;
 import com.example.luanvan.ui.Adapter.update_personal_info.SkillAdapter;
@@ -19,6 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -50,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     public static ArrayList<Experience> experiences = new ArrayList<>();
     public static ArrayList<Skill> skills = new ArrayList<>();
     // list CV
-    public static ArrayList<String> arrayListCV = new ArrayList<>();
+
     // default CV info
     // - info connect : user
     // - Experience
@@ -58,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     public static ArrayList<SkillCV> skillCVArray = new ArrayList<>();
     public static UserCV userCVDefault = new UserCV("Nguyễn Văn A", "DBA", "batphuongtrinhvoti@gmail.com","0323232","Vĩnh Long","Nam","20/10/1999");
     public static StudyCV studyCV = new StudyCV("temp", "Đại học Cần Thơ", "Công nghệ thông tin", "2017", "2021", "Giỏi, GPA: 3.5");
-
+    public static String goalDefault = "Trở thành DBA lương 1000$";
 
 
 

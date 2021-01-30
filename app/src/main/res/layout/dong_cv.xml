@@ -10,9 +10,9 @@
         android:orientation="horizontal"
         >
         <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/ic_launcher_background"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/cv1"
             android:id="@+id/img"
             ></de.hdodenhof.circleimageview.CircleImageView>
         <TextView
@@ -32,20 +32,20 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="10dp"
-        android:gravity="center"
         >
         <Button
-            android:layout_width="100dp"
-            android:layout_height="50dp"
+            android:layout_marginLeft="60dp"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
             android:text="Xem CV"
-            android:id="@+id/look"
+            android:id="@+id/show"
             android:background="@drawable/button_adjust"
             android:textColor="#06AF0D"
             ></Button>
         <Button
             android:layout_marginLeft="60dp"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
             android:text="Sửa CV"
             android:id="@+id/adjust"
             android:background="@drawable/button_adjust"
@@ -57,11 +57,11 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="10dp"
-        android:gravity="center"
         >
         <Button
-            android:layout_width="100dp"
-            android:layout_height="50dp"
+            android:layout_marginLeft="60dp"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
             android:text="Tải CV"
             android:id="@+id/download"
             android:background="@drawable/button_adjust"
@@ -69,8 +69,8 @@
             ></Button>
         <Button
             android:layout_marginLeft="60dp"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
             android:text="Xóa CV"
             android:id="@+id/delete"
             android:background="@drawable/button_adjust"

@@ -198,19 +198,6 @@ public class LoginFragment extends Fragment {
                                 //  MainActivity.skills.add(skill);
 
                             }
-//                            if(snapshot.getChildrenCount() > 2){
-//                                for(DataSnapshot x : snapshot.getChildren()){
-//                                    Skill skill = x.getValue(Skill.class);
-//                                     Toast.makeText(getActivity(), skill.getUid(), Toast.LENGTH_SHORT).show();
-//                                    if(skill.getUid().equals(MainActivity.uid)){
-//                                        MainActivity.skills.add(skill);
-//                                    }
-//                                    //  MainActivity.skills.add(skill);
-//
-//                                }
-//                            }else {
-//                                MainActivity.skills.add(snapshot.getValue(Skill.class));
-//                            }
 
                         }
 

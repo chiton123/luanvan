@@ -145,7 +145,7 @@ public class CVGoalActivity extends AppCompatActivity {
         if(b == 1){
             canvas.drawText(MainActivity.goal, 30, 450, contentPaint);
         }else {
-            canvas.drawText("Trờ thành nhân viên xuất sắc của công ty, cống hiến, tận tụy trong công việc", 30, 450, contentPaint);
+            canvas.drawText(MainActivity.goalDefault, 30, 450, contentPaint);
         }
 
         // hoc van

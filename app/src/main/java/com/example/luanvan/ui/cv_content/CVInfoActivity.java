@@ -131,7 +131,7 @@ public class CVInfoActivity extends AppCompatActivity {
         if(b == 1){
             canvas.drawText(MainActivity.goal, 30, 450, contentPaint);
         }else {
-            canvas.drawText("Trờ thành nhân viên xuất sắc của công ty, cống hiến, tận tụy trong công việc", 30, 450, contentPaint);
+            canvas.drawText(MainActivity.goalDefault, 30, 450, contentPaint);
         }
 
         // hoc van
@@ -220,7 +220,7 @@ public class CVInfoActivity extends AppCompatActivity {
                         while (!uriTask.isComplete());
                         Uri uri = uriTask.getResult();
                         MainActivity.urlCV = uri.toString();
-                   //     Toast.makeText(getApplicationContext(), uri.toString(), Toast.LENGTH_SHORT).show();
+                        //     Toast.makeText(getApplicationContext(), uri.toString(), Toast.LENGTH_SHORT).show();
                         Pdf pdf = new Pdf(MainActivity.uid,"audit1.pdf", uri.toString());
                         MainActivity.mData.child("preview").child("audit").setValue(pdf);
                         Toast.makeText(getApplicationContext(), "upload success", Toast.LENGTH_SHORT).show();

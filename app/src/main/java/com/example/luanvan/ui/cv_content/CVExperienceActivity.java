@@ -198,7 +198,7 @@ public class CVExperienceActivity extends AppCompatActivity {
         if(b == 1){
             canvas.drawText(MainActivity.goal, 30, 450, contentPaint);
         }else {
-            canvas.drawText("Trờ thành nhân viên xuất sắc của công ty, cống hiến, tận tụy trong công việc", 30, 450, contentPaint);
+            canvas.drawText(MainActivity.goalDefault, 30, 450, contentPaint);
         }
 
         // hoc van
@@ -315,12 +315,13 @@ public class CVExperienceActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Bạn chưa thêm kinh nghiệm nào", Toast.LENGTH_SHORT).show();
                 }else {
                     recyclerView.setVisibility(View.INVISIBLE);
+                    MainActivity.checkFirstExperience = 1;
 //                    MainActivity.mData.child("cvinfo").child(MainActivity.uid).child("experience").removeValue();
 //                    for(int i=0; i < experienceCVS.size(); i++){
 //                        String key = MainActivity.mData.push().getKey();
 //                        experienceCVS.get(i).setId(key);
 //                        MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(String.valueOf(CVActivity.idCV+1)).child("experience").push().setValue(experienceCVS.get(i));
-//                        MainActivity.checkFirstExperience = 1;
+//
 //                    }
                     try {
                         createCV(MainActivity.checkFirstInfo, MainActivity.checkFirstGoal, MainActivity.checkFirstStudy, MainActivity.checkFirstExperience,

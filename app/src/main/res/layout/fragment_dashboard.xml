@@ -9,60 +9,26 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        >
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Danh sách CV"
-                android:textColor="#020202"
-                android:textSize="17sp"
-                android:padding="3dp"
-                android:textStyle="bold"
-                ></TextView>
-            <Button
-                android:layout_width="110dp"
-                android:layout_height="40dp"
-                android:background="@drawable/button_dangnhap"
-                android:textColor="#fff"
-                android:text="+ TẠO MỚI"
-                android:layout_marginLeft="100dp"
-                android:id="@+id/buttontaomoi"
-                ></Button>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:id="@+id/a"
-            >
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/recycleview"
-                ></androidx.recyclerview.widget.RecyclerView>
-
-        </LinearLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
         android:gravity="center"
-        android:id="@+id/c"
         >
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="230dp"
             android:layout_height="wrap_content"
-            android:text="Bạn chưa có CV"
+            android:text="Bạn chưa có CV, hãy sử dụng dịch vụ tạo CV của chúng tôi"
+            android:lines="2"
             android:textColor="#040404"
             android:textSize="20sp"
             android:textStyle="bold"
             ></TextView>
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:background="@drawable/button_login"
+            android:textColor="#fff"
+            android:text="Sử dụng"
+            android:id="@+id/buttonuse"
+            android:layout_marginTop="20dp"
+            ></Button>
     </LinearLayout>
 
 </RelativeLayout>

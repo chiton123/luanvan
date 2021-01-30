@@ -37,7 +37,7 @@ public class CVCreateActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == 123 && resultCode == 123){
             Intent intent = new Intent();
-            setResult(123);
+            setResult(123, intent);
             finish();
 
         }
