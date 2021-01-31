@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
+import com.example.luanvan.ui.cv.CVActivity;
+import com.example.luanvan.ui.cv.CVIntroductionActivity;
 import com.example.luanvan.ui.cv.CVShowActivity;
 import com.example.luanvan.ui.modelCV.PdfCV;
 import com.google.firebase.database.DataSnapshot;
@@ -31,6 +33,7 @@ public class CVAdapter extends RecyclerView.Adapter<CVAdapter.ItemHolder> {
     Context context;
     ArrayList<PdfCV> arrayList;
     Activity activity;
+    int REQUEST_CODE = 2;
 
     public CVAdapter(Context context, ArrayList<PdfCV> arrayList, Activity activity) {
         this.context = context;
@@ -76,11 +79,25 @@ public class CVAdapter extends RecyclerView.Adapter<CVAdapter.ItemHolder> {
                        // Toast.makeText(context, arrayList.get(position).getKey(), Toast.LENGTH_SHORT).show();
                         MainActivity.mData.child("cv").child(MainActivity.uid).child(arrayList.get(position).getKey()).removeValue();
                         MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(arrayList.get(position).getKey()).removeValue();
+                        CVIntroductionActivity.arrayListCV.remove(position);
+                        notifyDataSetChanged();
 
                     }
                 });
                 alert.show();
 
+            }
+        });
+        holder.btnAdjust.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // kind: 1 add, kind: 2 update
+                Intent intent = new Intent(context, CVActivity.class);
+                intent.putExtra("kind",2);
+                intent.putExtra("url", arrayList.get(position).getUrl());
+                intent.putExtra("cvname", arrayList.get(position).getName());
+                intent.putExtra("key", arrayList.get(position).getKey());
+                activity.startActivityForResult(intent, REQUEST_CODE);
             }
         });
 

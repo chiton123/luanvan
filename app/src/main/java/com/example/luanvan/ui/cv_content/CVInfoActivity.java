@@ -1,6 +1,7 @@
 package com.example.luanvan.ui.cv_content;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -29,6 +30,9 @@ import com.example.luanvan.ui.modelCV.UserCV;
 import com.example.luanvan.ui.modelCV.Info;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -39,6 +43,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import static com.example.luanvan.MainActivity.experienceCV;
@@ -98,6 +103,7 @@ public class CVInfoActivity extends AppCompatActivity {
 
         paint1.setColor(Color.WHITE);
         paint1.setTextAlign(Paint.Align.LEFT);
+        // thong tin ca nhan
         if(a == 1){
             paint1.setTextSize(50);
             canvas.drawText(MainActivity.userCV.getUsername(), 30, 80, paint1);
@@ -233,7 +239,8 @@ public class CVInfoActivity extends AppCompatActivity {
             }
         });
     }
-    private void getInfo() {
+    // add function
+    public void getInfoAdd(){
         if(MainActivity.checkFirstInfo == 0){
             editname.setText(MainActivity.username);
             editposition.setText(MainActivity.position);
@@ -264,8 +271,59 @@ public class CVInfoActivity extends AppCompatActivity {
             editgender.setText(MainActivity.userCV.getGender());
             editbirthday.setText(MainActivity.userCV.getBirthday());
         }
+    }
+    // update function
+    public void getInfoUpdate(){
+        final ArrayList<String> list = new ArrayList<>();
+        final int[] i = {0};
+        MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(CVActivity.key).child("info").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                String chuoi = snapshot.getValue(String.class);
+                list.add(chuoi);
+                if(i[0] == 6){
+                    editname.setText(list.get(6));
+                    editaddress.setText(list.get(0));
+                    editposition.setText(list.get(5));
+                    editemail.setText(list.get(2));
+                    editphone.setText(list.get(4));
+                    editgender.setText(list.get(3));
+                    editbirthday.setText(list.get(1));
+                }
+                i[0] = i[0] + 1;
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
 
+
+    }
+    private void getInfo() {
+        //Toast.makeText(getApplicationContext(), "kind " + CVActivity.kind, Toast.LENGTH_SHORT).show();
+        if(CVActivity.kind == 1){
+            getInfoAdd();
+        }else {
+            getInfoUpdate();
+        }
 
     }
 
@@ -288,8 +346,10 @@ public class CVInfoActivity extends AppCompatActivity {
 
                     MainActivity.userCV = new UserCV(name, position, email, phone, address, gender, birthday);
                     MainActivity.checkFirstInfo = 1;
-                 //   Info info = new Info(name, position, phone, email, address, gender, birthday);
-                  //  MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(String.valueOf(CVActivity.idCV+1)).child("info").setValue(info);
+                    if(CVActivity.kind == 2){
+                        MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(String.valueOf(CVActivity.idCV+1)).child("info").setValue(MainActivity.userCV);
+                    }
+
                     try {
                         createCV(MainActivity.checkFirstInfo, MainActivity.checkFirstGoal, MainActivity.checkFirstStudy, MainActivity.checkFirstExperience,
                                 MainActivity.checkFirstSkill);

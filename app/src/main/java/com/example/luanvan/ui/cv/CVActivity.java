@@ -71,17 +71,29 @@ public class CVActivity extends AppCompatActivity {
     public static AddAdapter addAdapter;
     StorageReference storageReference;
     ImageView imgCancel;
+    // default add
     String url = "https://firebasestorage.googleapis.com/v0/b/project-7807e.appspot.com/o/default.pdf?alt=media&token=e22cfec0-f4fc-47a8-b65d-84e3d17a9b7a";
+    // update cv
+    String urlX = "";
+    String nameUpdate = "";
+    // key cua CV
+    public static String key = "";
+
     int pageWidth = 1200;
     Handler handler;
     public static long idCV = 0;
+    // kind: 1 add, kind: 2 update
+    public static int kind = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_c_v);
         anhxa();
         actionBar();
-        getIDCV();
+        if(kind == 1){
+            getIDCV();
+        }
+
 
         eventPDF();
         eventButton();
@@ -199,7 +211,13 @@ public class CVActivity extends AppCompatActivity {
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webView.getSettings().setSupportZoom(true);
-        String url1 = "https://docs.google.com/gview?embedded=true&url=" + url;
+        String url1 = "https://docs.google.com/gview?embedded=true&url=";
+        if(kind == 1){
+            url1 += url;
+        }else {
+            url1 += urlX;
+        }
+
         webView.loadUrl(url1);
 
     }
@@ -501,6 +519,14 @@ public class CVActivity extends AppCompatActivity {
         btndoimau = (Button) findViewById(R.id.buttondoimau);
         btnnoidung = (Button) findViewById(R.id.buttonnoidung);
         cvName = (EditText) findViewById(R.id.editname);
+        kind = getIntent().getIntExtra("kind",0);
+        if(kind == 2){
+            urlX = getIntent().getStringExtra("url");
+            nameUpdate = getIntent().getStringExtra("cvname");
+            cvName.setText(nameUpdate);
+            key = getIntent().getStringExtra("key");
+        }
+
 
 
     }

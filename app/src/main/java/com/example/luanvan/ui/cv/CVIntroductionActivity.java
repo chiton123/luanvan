@@ -35,8 +35,9 @@ public class CVIntroductionActivity extends AppCompatActivity {
     int REQUEST_CODE = 123;
     private DashboardViewModel dashboardViewModel;
     RecyclerView recyclerView;
-    ArrayList<PdfCV> arrayListCV;
+    public static ArrayList<PdfCV> arrayListCV;
     CVAdapter adapter;
+    // kind: 1 add, kind: 2 update
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +66,7 @@ public class CVIntroductionActivity extends AppCompatActivity {
         MainActivity.mData.child("cv").child(MainActivity.uid).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                Toast.makeText(getApplicationContext(), snapshot.getValue().toString(), Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(getApplicationContext(), snapshot.getValue().toString(), Toast.LENGTH_SHORT).show();
                 for(DataSnapshot x : snapshot.getChildren()){
                     PdfCV pdfCV = x.getValue(PdfCV.class);
                     if(pdfCV.key != null){
@@ -114,6 +115,7 @@ public class CVIntroductionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), CVCreateActivity.class);
+                intent.putExtra("kind", 1);
                 startActivityForResult(intent, REQUEST_CODE);
 
             }
