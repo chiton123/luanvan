@@ -46,8 +46,6 @@ public class CVGoalActivity extends AppCompatActivity {
     Toolbar toolbar;
     Button btnLuu, btnHuy;
     EditText editContent;
-
-
     int pageWidth = 1200;
     StorageReference storageReference;
     Handler handler;
@@ -59,28 +57,36 @@ public class CVGoalActivity extends AppCompatActivity {
         actionBar();
         eventButton();
         storageReference = FirebaseStorage.getInstance().getReference();
-      //  getData();
+        getInfo();
+
     }
 
     private void getData() {
-        if(MainActivity.checkFirstGoal == 1){
-            MainActivity.mData.child("cvinfo").child(MainActivity.uid).child("goal").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    String goal = snapshot.getValue(String.class);
-                    editContent.setText(goal);
-                }
+        MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(CVActivity.key).child("goal").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String goal = snapshot.getValue(String.class);
+                editContent.setText(goal);
+            }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
-                }
-            });
-        }else {
-            editContent.setText(MainActivity.goal);
-        }
+            }
+        });
+
+
     }
+    public void getInfo(){
+        if(CVActivity.kind == 1){
+            editContent.setText(MainActivity.goal);
+        }else if(MainActivity.checkFirstGoal == 1){
+            editContent.setText(MainActivity.goal);
+        }else if(MainActivity.checkFirstGoal == 0 && CVActivity.kind == 2) {
+            getData();
+        }
 
+    }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void createCV(int a, int b, int c, int d, int e) throws IOException {
 
@@ -256,7 +262,9 @@ public class CVGoalActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Vui lòng nhập đủ thông tin", Toast.LENGTH_SHORT).show();
                 }else {
                     MainActivity.goal = editContent.getText().toString();
-//                    MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(String.valueOf(CVActivity.idCV+1)).child("goal").setValue(MainActivity.goal);
+//                    if(CVActivity.kind == 2){
+//                        MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(CVActivity.key).child("goal").setValue(MainActivity.goal);
+//                    }
                     MainActivity.checkFirstGoal = 1;
                     try {
                         createCV(MainActivity.checkFirstInfo, MainActivity.checkFirstGoal, MainActivity.checkFirstStudy, MainActivity.checkFirstExperience,
@@ -301,7 +309,7 @@ public class CVGoalActivity extends AppCompatActivity {
         btnHuy = (Button) findViewById(R.id.buttonhuy);
         btnLuu = (Button) findViewById(R.id.buttonluu);
         editContent = (EditText) findViewById(R.id.content);
-        editContent.setText(MainActivity.goal);
+
 
 
     }

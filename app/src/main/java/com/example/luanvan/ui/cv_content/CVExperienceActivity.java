@@ -72,31 +72,40 @@ public class CVExperienceActivity extends AppCompatActivity {
         actionBar();
         eventButton();
         storageReference = FirebaseStorage.getInstance().getReference();
-   //     getData();
+        getInfo();
 
     }
+
+
+
     private void getData() {
-        if(MainActivity.checkFirstExperience == 1){
-            MainActivity.mData.child("cvinfo").child(MainActivity.uid).child("experience").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    for(DataSnapshot x : snapshot.getChildren()){
-                        ExperienceCV a = x.getValue(ExperienceCV.class);
-                        experienceCVS.add(a);
-                        adapter.notifyDataSetChanged();
-                    }
-
-                    //   Toast.makeText(getApplicationContext(), "" + skillCVS.size(), Toast.LENGTH_SHORT).show();
+        MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(CVActivity.key).child("experience").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot x : snapshot.getChildren()){
+                    ExperienceCV a = x.getValue(ExperienceCV.class);
+                    experienceCVS.add(a);
+                    adapter.notifyDataSetChanged();
                 }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
+                //   Toast.makeText(getApplicationContext(), "" + skillCVS.size(), Toast.LENGTH_SHORT).show();
+            }
 
-                }
-            });
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+
+    private void getInfo() {
+        if(MainActivity.checkFirstExperience == 0 && CVActivity.kind == 2){
+            getData();
         }
 
     }
+
     public void showDialog(){
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);

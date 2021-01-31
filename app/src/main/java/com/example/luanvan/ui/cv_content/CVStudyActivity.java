@@ -71,29 +71,30 @@ public class CVStudyActivity extends AppCompatActivity {
         actionBar();
         eventButton();
         storageReference = FirebaseStorage.getInstance().getReference();
-     //   getData();
-
+        getInfo();
 
     }
     private void getData() {
-        if(MainActivity.checkFirstStudy == 1){
-            MainActivity.mData.child("cvinfo").child(MainActivity.uid).child("study").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    for(DataSnapshot x : snapshot.getChildren()){
-                        StudyCV a = x.getValue(StudyCV.class);
-                        MainActivity.studyCVS.add(a);
-                        adapter.notifyDataSetChanged();
-                    }
-
-                    //   Toast.makeText(getApplicationContext(), "" + skillCVS.size(), Toast.LENGTH_SHORT).show();
+        MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(CVActivity.key).child("study").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot x : snapshot.getChildren()){
+                    StudyCV a = x.getValue(StudyCV.class);
+                    MainActivity.studyCVS.add(a);
+                    adapter.notifyDataSetChanged();
                 }
+            }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
-                }
-            });
+            }
+        });
+    }
+
+    public void getInfo(){
+        if(MainActivity.checkFirstStudy == 0 && CVActivity.kind == 2) {
+            getData();
         }
 
     }

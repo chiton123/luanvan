@@ -69,38 +69,35 @@ public class CVSkillActivity extends AppCompatActivity {
         anhxa();
         actionBar();
         eventButton();
-       // getData();
         storageReference = FirebaseStorage.getInstance().getReference();
-
+        getInfo();
 
     }
 
     private void getData() {
-        if(MainActivity.checkFirstSkill == 1){
-         //   Toast.makeText(getApplicationContext(), "hhaa", Toast.LENGTH_SHORT).show();
-          //  Toast.makeText(getApplicationContext(), "" + MainActivity.skillCVS.size(), Toast.LENGTH_SHORT).show();
-            MainActivity.mData.child("cvinfo").child(MainActivity.uid).child("skill").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    for(DataSnapshot x : snapshot.getChildren()){
-                        SkillCV a = x.getValue(SkillCV.class);
-                        MainActivity.skillCVS.add(a);
-                        adapter.notifyDataSetChanged();
-                    }
-
-                    //   Toast.makeText(getApplicationContext(), "" + skillCVS.size(), Toast.LENGTH_SHORT).show();
+        MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(CVActivity.key).child("skill").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot x : snapshot.getChildren()){
+                    SkillCV a = x.getValue(SkillCV.class);
+                    MainActivity.skillCVS.add(a);
+                    adapter.notifyDataSetChanged();
                 }
+            }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
-                }
-            });
-        }
-       // Toast.makeText(getApplicationContext(), "" + skillCVS.size(), Toast.LENGTH_SHORT).show();
-
+            }
+        });
     }
 
+    private void getInfo() {
+        if(MainActivity.checkFirstSkill == 0 && CVActivity.kind == 2){
+            getData();
+        }
+
+    }
     public void showDialog(){
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);

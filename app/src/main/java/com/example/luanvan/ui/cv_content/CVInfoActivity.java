@@ -54,7 +54,7 @@ public class CVInfoActivity extends AppCompatActivity {
     EditText editname, editposition, editphone, editemail, editaddress, editgender, editbirthday;
     Button btnluu, btnhuy;
     StorageReference storageReference;
-    int pageWidth = 1200;
+    public static int pageWidth = 1200;
     Handler handler;
     // check xem nếu là tạo cv mới thì lần đầu update thì check = 1, các edittext gán cho giá trị mới cho các lần sau
 
@@ -229,7 +229,7 @@ public class CVInfoActivity extends AppCompatActivity {
                         //     Toast.makeText(getApplicationContext(), uri.toString(), Toast.LENGTH_SHORT).show();
                         Pdf pdf = new Pdf(MainActivity.uid,"audit1.pdf", uri.toString());
                         MainActivity.mData.child("preview").child("audit").setValue(pdf);
-                        Toast.makeText(getApplicationContext(), "upload success", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CVInfoActivity.this, "upload success", Toast.LENGTH_SHORT).show();
 
                     }
                 }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -238,7 +238,9 @@ public class CVInfoActivity extends AppCompatActivity {
 
             }
         });
+
     }
+
     // add function
     public void getInfoAdd(){
         if(MainActivity.checkFirstInfo == 0){
@@ -317,11 +319,14 @@ public class CVInfoActivity extends AppCompatActivity {
 
 
     }
+
     private void getInfo() {
         //Toast.makeText(getApplicationContext(), "kind " + CVActivity.kind, Toast.LENGTH_SHORT).show();
         if(CVActivity.kind == 1){
             getInfoAdd();
-        }else {
+        }else if(MainActivity.checkFirstInfo == 1){
+            getInfoAdd();
+        }else if(MainActivity.checkFirstInfo == 0 && CVActivity.kind == 2){
             getInfoUpdate();
         }
 
@@ -346,9 +351,9 @@ public class CVInfoActivity extends AppCompatActivity {
 
                     MainActivity.userCV = new UserCV(name, position, email, phone, address, gender, birthday);
                     MainActivity.checkFirstInfo = 1;
-                    if(CVActivity.kind == 2){
-                        MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(String.valueOf(CVActivity.idCV+1)).child("info").setValue(MainActivity.userCV);
-                    }
+//                    if(CVActivity.kind == 2){
+//                        MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(CVActivity.key).child("info").setValue(MainActivity.userCV);
+//                    }
 
                     try {
                         createCV(MainActivity.checkFirstInfo, MainActivity.checkFirstGoal, MainActivity.checkFirstStudy, MainActivity.checkFirstExperience,

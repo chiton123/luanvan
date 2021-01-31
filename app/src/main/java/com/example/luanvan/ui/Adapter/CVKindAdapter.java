@@ -48,6 +48,7 @@ public class CVKindAdapter extends RecyclerView.Adapter<CVKindAdapter.ItemHolder
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, CVActivity.class);
+                intent.putExtra("kind",1);
                 activity.startActivityForResult(intent, REQUEST_CODE);
             }
         });

@@ -67,6 +67,7 @@ public class CVIntroductionActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
               //  Toast.makeText(getApplicationContext(), snapshot.getValue().toString(), Toast.LENGTH_SHORT).show();
+                arrayListCV.clear();
                 for(DataSnapshot x : snapshot.getChildren()){
                     PdfCV pdfCV = x.getValue(PdfCV.class);
                     if(pdfCV.key != null){
@@ -103,8 +104,7 @@ public class CVIntroductionActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(resultCode == 123 && requestCode == REQUEST_CODE){
-//            arrayListCV.clear();
-//            getData();
+
         }
 
         super.onActivityResult(requestCode, resultCode, data);
