@@ -62,12 +62,10 @@ public class CVIntroductionActivity extends AppCompatActivity {
 
 
     private void getData() {
-
         MainActivity.mData.child("cv").child(MainActivity.uid).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
               //  Toast.makeText(getApplicationContext(), snapshot.getValue().toString(), Toast.LENGTH_SHORT).show();
-                arrayListCV.clear();
                 for(DataSnapshot x : snapshot.getChildren()){
                     PdfCV pdfCV = x.getValue(PdfCV.class);
                     if(pdfCV.key != null){

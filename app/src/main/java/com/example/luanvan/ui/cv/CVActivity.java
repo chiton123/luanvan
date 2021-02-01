@@ -42,6 +42,7 @@ import com.example.luanvan.ui.modelCV.PdfCV;
 import com.github.barteksc.pdfviewer.PDFView;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -78,7 +79,7 @@ public class CVActivity extends AppCompatActivity {
     String nameUpdate = "";
     // key cua CV
     public static String key = "";
-
+    public static String keyFirebase = "";
     int pageWidth = 1200;
     Handler handler;
     public static long idCV = 0;
@@ -552,7 +553,40 @@ public class CVActivity extends AppCompatActivity {
         // goal
         pushGoalAdd();
     }
+    public void getKey(){
+        MainActivity.mData.child("cv").child(MainActivity.uid).child(key).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                for(DataSnapshot x : snapshot.getChildren()){
+                    if(x.child("key").getValue().toString().equals(key)){
+                        keyFirebase = x.getKey();
+                    }
+                }
 
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
 
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -578,8 +612,14 @@ public class CVActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.huy:
-                finish();
-                break;
+                if(MainActivity.checkFirstSkill != 0 || MainActivity.checkFirstExperience != 0 || MainActivity.checkFirstStudy != 0
+                || MainActivity.checkFirstGoal != 0 || MainActivity.checkFirstInfo != 0){
+                    Toast.makeText(getApplicationContext(), "Bạn đã thay đổi nội dung của CV, hãy chọn lưu", Toast.LENGTH_SHORT).show();
+                }else {
+                    finish();
+                    break;
+                }
+
         }
 
         return super.onOptionsItemSelected(item);

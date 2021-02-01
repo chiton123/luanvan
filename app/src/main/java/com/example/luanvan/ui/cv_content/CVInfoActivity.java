@@ -351,9 +351,6 @@ public class CVInfoActivity extends AppCompatActivity {
 
                     MainActivity.userCV = new UserCV(name, position, email, phone, address, gender, birthday);
                     MainActivity.checkFirstInfo = 1;
-//                    if(CVActivity.kind == 2){
-//                        MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(CVActivity.key).child("info").setValue(MainActivity.userCV);
-//                    }
 
                     try {
                         createCV(MainActivity.checkFirstInfo, MainActivity.checkFirstGoal, MainActivity.checkFirstStudy, MainActivity.checkFirstExperience,

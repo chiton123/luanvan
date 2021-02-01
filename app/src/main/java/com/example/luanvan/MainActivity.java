@@ -71,6 +71,9 @@ public class MainActivity extends AppCompatActivity {
     public static ArrayList<ExperienceCV> experienceCVS = new ArrayList<>();
     public static ArrayList<StudyCV> studyCVS = new ArrayList<>();
     public static String goal = "";
+    // khi update cv, nếu hủy, k update nữa thì giữ nguyên url
+
+
     // check first , khi vào và điền thông tin rồi thì = 1
     public static int checkFirstInfo = 0;
     public static int checkFirstGoal = 0;
@@ -80,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
     public static int checkFirstVolunteer = 0;
 
 
-    public static String host = "http://10.3.74.116:8888/luanvan/";
+    public static String host = "http://10.10.35.55:8888/luanvan/";
     public static String urljob1 = host + "job1.php";
     public static String urlcompany = host + "company.php";
     // dang nhap
