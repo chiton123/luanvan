@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Title;
 import com.example.luanvan.ui.cv.CVActivity;
@@ -58,6 +59,24 @@ public class TitleAdapter extends BaseAdapter {
         public LinearLayout layout;
 
     }
+    // hàm kiểm tra khi remove ra thì các biến check sẽ chuyển thành 1
+    public void check(int id){
+        switch (id){
+            case 1:
+                CVActivity.checkGoal = 1;
+                break;
+            case 2:
+                CVActivity.checkStudy = 1;
+                break;
+            case 3:
+                CVActivity.checkExperience = 1;
+                break;
+            case 4:
+                CVActivity.checkSkill = 1;
+                break;
+
+        }
+    }
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder = null;
@@ -80,12 +99,17 @@ public class TitleAdapter extends BaseAdapter {
         }else {
             viewHolder.txtRemove.setVisibility(View.VISIBLE);
         }
+        if(arrayList.get(position).getId() == 0){
+            viewHolder.txtRemove.setVisibility(View.INVISIBLE);
+        }
+
         viewHolder.txtRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CVActivity.arrayListAdd.add(arrayList.get(position));
+                check(arrayList.get(position).getId());
                 CVActivity.addAdapter.notifyDataSetChanged();
-                CVActivity.arrayListRemove.remove(position);
+                arrayList.remove(position);
                 notifyDataSetChanged();
 
             }
@@ -123,4 +147,5 @@ public class TitleAdapter extends BaseAdapter {
         });
         return convertView;
     }
+
 }

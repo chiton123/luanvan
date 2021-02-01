@@ -42,6 +42,24 @@ public class AddAdapter extends BaseAdapter {
         public TextView txtAdd;
 
     }
+    // hàm kiểm tra khi remove ra thì các biến check sẽ chuyển thành 0
+    public void check(int id){
+        switch (id){
+            case 1:
+                CVActivity.checkGoal = 0;
+                break;
+            case 2:
+                CVActivity.checkStudy = 0;
+                break;
+            case 3:
+                CVActivity.checkExperience = 0;
+                break;
+            case 4:
+                CVActivity.checkSkill = 0;
+                break;
+
+        }
+    }
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
        ViewHolder viewHolder = null;
@@ -62,11 +80,13 @@ public class AddAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 CVActivity.arrayListRemove.add(arrayList.get(position));
+                check(arrayList.get(position).getId());
                 CVActivity.titleAdapterRemove.notifyDataSetChanged();
-                CVActivity.arrayListAdd.remove(arrayList.get(position));
-                CVActivity.addAdapter.notifyDataSetChanged();
+                arrayList.remove(arrayList.get(position));
+                notifyDataSetChanged();
             }
         });
         return convertView;
     }
+
 }

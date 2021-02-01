@@ -37,6 +37,11 @@ public class CVIntroductionActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     public static ArrayList<PdfCV> arrayListCV;
     CVAdapter adapter;
+    // position to remove
+    public static int position = 0;
+    // kiểm tra trong CV có những thông tin gì
+    public static int cvGoal = 0, cvSkill = 0, cvStudy = 0, cvExperience = 0;
+
     // kind: 1 add, kind: 2 update
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +50,7 @@ public class CVIntroductionActivity extends AppCompatActivity {
         anhxa();
         actionBar();
         getData();
+
         eventCreateCV();
 
     }
@@ -101,8 +107,15 @@ public class CVIntroductionActivity extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(resultCode == 123 && requestCode == 2){
+            arrayListCV.remove(position);
+            adapter.notifyDataSetChanged();
+        }
         if(resultCode == 123 && requestCode == REQUEST_CODE){
-
+            CVActivity.checkSkill = 0;
+            CVActivity.checkExperience = 0;
+            CVActivity.checkStudy = 0;
+            CVActivity.checkGoal = 0;
         }
 
         super.onActivityResult(requestCode, resultCode, data);

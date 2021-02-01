@@ -42,6 +42,7 @@ import java.io.IOException;
 import static com.example.luanvan.MainActivity.experienceCV;
 import static com.example.luanvan.MainActivity.experienceCVS;
 
+
 public class CVGoalActivity extends AppCompatActivity {
     Toolbar toolbar;
     Button btnLuu, btnHuy;
@@ -53,6 +54,7 @@ public class CVGoalActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_c_v_goal);
+
         anhxa();
         actionBar();
         eventButton();
@@ -144,88 +146,99 @@ public class CVGoalActivity extends AppCompatActivity {
         titlePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         titlePaint.setTextSize(35);
         titlePaint.setColor(Color.BLACK);
-        canvas.drawText("MỤC TIÊU NGHỀ NGHIỆP", 30, 380, titlePaint);
+
 
         contentPaint.setColor(Color.BLACK);
         contentPaint.setTextSize(25);
-        if(b == 1){
-            canvas.drawText(MainActivity.goal, 30, 450, contentPaint);
-        }else {
-            canvas.drawText(MainActivity.goalDefault, 30, 450, contentPaint);
+        if(CVActivity.checkGoal == 0){
+            canvas.drawText("MỤC TIÊU NGHỀ NGHIỆP", 30, 380, titlePaint);
+            if(b == 1){
+                canvas.drawText(MainActivity.goal, 30, 450, contentPaint);
+            }else {
+                canvas.drawText(MainActivity.goalDefault, 30, 450, contentPaint);
+            }
         }
 
         // hoc van
         int x1 = 610, x2 = 920, x3 = 1300;
 
-        canvas.drawText("HỌC VẤN", 30,  530, titlePaint);
-        titlePaint2.setTextSize(30);
-        titlePaint2.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-        if(c == 1){
-            for(int i=0; i < MainActivity.studyCVS.size(); i++){
-                if(i < 2){
-                    canvas.drawText(MainActivity.studyCVS.get(i).getSchool(), 30, x1 + i*90, titlePaint2);
-                    canvas.drawText(MainActivity.studyCVS.get(i).getStart() + " - " + MainActivity.studyCVS.get(i).getEnd(), 30, x1 + 50 + i*90, contentPaint);
-                    canvas.drawText("CHUYÊN NGÀNH: " + MainActivity.studyCVS.get(i).getMajor(), 500, x1 + i*90, titlePaint2 );
-                    canvas.drawText(MainActivity.studyCVS.get(i).getDescription(), 500, x1 + 50 + i*90, contentPaint);
-                }else {
-                    break;
-                }
 
+        if(CVActivity.checkStudy == 0){
+            canvas.drawText("HỌC VẤN", 30,  530, titlePaint);
+            titlePaint2.setTextSize(30);
+            titlePaint2.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+            if(c == 1){
+                for(int i=0; i < MainActivity.studyCVS.size(); i++){
+                    if(i < 2){
+                        canvas.drawText(MainActivity.studyCVS.get(i).getSchool(), 30, x1 + i*90, titlePaint2);
+                        canvas.drawText(MainActivity.studyCVS.get(i).getStart() + " - " + MainActivity.studyCVS.get(i).getEnd(), 30, x1 + 50 + i*90, contentPaint);
+                        canvas.drawText("CHUYÊN NGÀNH: " + MainActivity.studyCVS.get(i).getMajor(), 500, x1 + i*90, titlePaint2 );
+                        canvas.drawText(MainActivity.studyCVS.get(i).getDescription(), 500, x1 + 50 + i*90, contentPaint);
+                    }else {
+                        break;
+                    }
+
+                }
+            }else {
+                canvas.drawText(MainActivity.studyCV.getSchool(), 30, x1, titlePaint2);
+                canvas.drawText(MainActivity.studyCV.getStart() + " - " + MainActivity.studyCV.getEnd(), 30, x1 + 50, contentPaint);
+                canvas.drawText("CHUYÊN NGÀNH: " + MainActivity.studyCV.getMajor(), 500, x1 , titlePaint2 );
+                canvas.drawText(MainActivity.studyCV.getDescription(), 500, x1 + 50, contentPaint);
             }
-        }else {
-            canvas.drawText(MainActivity.studyCV.getSchool(), 30, x1, titlePaint2);
-            canvas.drawText(MainActivity.studyCV.getStart() + " - " + MainActivity.studyCV.getEnd(), 30, x1 + 50, contentPaint);
-            canvas.drawText("CHUYÊN NGÀNH: " + MainActivity.studyCV.getMajor(), 500, x1 , titlePaint2 );
-            canvas.drawText(MainActivity.studyCV.getDescription(), 500, x1 + 50, contentPaint);
         }
 
 
+
         // kinh nghiem
-        canvas.drawText("KINH NGHIỆM", 30, x2, titlePaint);
-        if(d == 1){
-            for(int i=0; i < experienceCVS.size(); i++){
-                if(i < 2){
-                    canvas.drawText(experienceCVS.get(i).getStart()+"-"+experienceCVS.get(i).getEnd(), 30, x2 + 50 + i*90, contentPaint);
-                    canvas.drawText(experienceCVS.get(i).getCompany(), 500, x2 + 50 + i*90, contentPaint);
-                    canvas.drawText(experienceCVS.get(i).getPosition(), 500, x2 + 90 + i*90, contentPaint);
-                }else {
-                    break;
+        if(CVActivity.checkExperience == 0){
+            canvas.drawText("KINH NGHIỆM", 30, x2, titlePaint);
+            if(d == 1){
+                for(int i=0; i < experienceCVS.size(); i++){
+                    if(i < 2){
+                        canvas.drawText(experienceCVS.get(i).getStart()+"-"+experienceCVS.get(i).getEnd(), 30, x2 + 50 + i*90, contentPaint);
+                        canvas.drawText(experienceCVS.get(i).getCompany(), 500, x2 + 50 + i*90, contentPaint);
+                        canvas.drawText(experienceCVS.get(i).getPosition(), 500, x2 + 90 + i*90, contentPaint);
+                    }else {
+                        break;
+                    }
                 }
+            }else {
+                canvas.drawText(experienceCV.getStart()+"-"+experienceCV.getEnd(), 30, x2 + 50, contentPaint);
+                canvas.drawText(experienceCV.getCompany(), 500, x2 + 50 , contentPaint);
+                canvas.drawText(experienceCV.getPosition(), 500, x2 + 90 , contentPaint);
             }
-        }else {
-            canvas.drawText(experienceCV.getStart()+"-"+experienceCV.getEnd(), 30, x2 + 50, contentPaint);
-            canvas.drawText(experienceCV.getCompany(), 500, x2 + 50 , contentPaint);
-            canvas.drawText(experienceCV.getPosition(), 500, x2 + 90 , contentPaint);
         }
 
 
         // ky nang
-        canvas.drawText("KỸ NĂNG", 30, x3, titlePaint);
-        int width = 300, height = 50;
-        if(e == 1){
-            for(int i=0; i < MainActivity.skillCVS.size(); i++){
-                if(i < 2){
-                    canvas.drawText(MainActivity.skillCVS.get(i).getName(), 30, x3 + 50 + i*90, contentPaint);
-                    float star1 = MainActivity.skillCVS.get(i).getStar()*60;
-                    canvas.drawLine(30, x3+100 + i*90, star1+30, x3 + 100 + i*90, kynang_paint);
-                    canvas.drawLine(star1 + 30, x3+100 + i*90, width + 30,x3 + 100 + i*90,  kynangphu );
-                }else {
-                    break;
+        if(CVActivity.checkSkill == 0){
+            canvas.drawText("KỸ NĂNG", 30, x3, titlePaint);
+            int width = 300, height = 50;
+            if(e == 1){
+                for(int i=0; i < MainActivity.skillCVS.size(); i++){
+                    if(i < 2){
+                        canvas.drawText(MainActivity.skillCVS.get(i).getName(), 30, x3 + 50 + i*90, contentPaint);
+                        float star1 = MainActivity.skillCVS.get(i).getStar()*60;
+                        canvas.drawLine(30, x3+100 + i*90, star1+30, x3 + 100 + i*90, kynang_paint);
+                        canvas.drawLine(star1 + 30, x3+100 + i*90, width + 30,x3 + 100 + i*90,  kynangphu );
+                    }else {
+                        break;
+                    }
                 }
+
+            }else {
+                canvas.drawText(MainActivity.skillCVArray.get(0).getName(), 30, x3 + 50, contentPaint);
+                // 300 : 5 = 60
+                float star1 = MainActivity.skillCVArray.get(0).getStar()*60;
+                float star2 = MainActivity.skillCVArray.get(1).getStar()*60;
+                canvas.drawLine(30, x3+100, star1+30, x3 + 100, kynang_paint);
+                canvas.drawLine(star1 + 30, x3+100, width + 30,x3 + 100,  kynangphu );
+
+                canvas.drawText(MainActivity.skillCVArray.get(1).getName(), 30, x3 + 150, contentPaint);
+                canvas.drawLine(30, x3+200, star2+30, x3+200, kynang_paint);
+                canvas.drawLine(star2+30, x3+200, width + 30, x3+200, kynangphu);
+
             }
-
-        }else {
-            canvas.drawText(MainActivity.skillCVArray.get(0).getName(), 30, x3 + 50, contentPaint);
-            // 300 : 5 = 60
-            float star1 = MainActivity.skillCVArray.get(0).getStar()*60;
-            float star2 = MainActivity.skillCVArray.get(1).getStar()*60;
-            canvas.drawLine(30, x3+100, star1+30, x3 + 100, kynang_paint);
-            canvas.drawLine(star1 + 30, x3+100, width + 30,x3 + 100,  kynangphu );
-
-            canvas.drawText(MainActivity.skillCVArray.get(1).getName(), 30, x3 + 150, contentPaint);
-            canvas.drawLine(30, x3+200, star2+30, x3+200, kynang_paint);
-            canvas.drawLine(star2+30, x3+200, width + 30, x3+200, kynangphu);
-
         }
 
         pdfDocument.finishPage(page);
@@ -262,9 +275,7 @@ public class CVGoalActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Vui lòng nhập đủ thông tin", Toast.LENGTH_SHORT).show();
                 }else {
                     MainActivity.goal = editContent.getText().toString();
-//                    if(CVActivity.kind == 2){
-//                        MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(CVActivity.key).child("goal").setValue(MainActivity.goal);
-//                    }
+
                     MainActivity.checkFirstGoal = 1;
                     try {
                         createCV(MainActivity.checkFirstInfo, MainActivity.checkFirstGoal, MainActivity.checkFirstStudy, MainActivity.checkFirstExperience,

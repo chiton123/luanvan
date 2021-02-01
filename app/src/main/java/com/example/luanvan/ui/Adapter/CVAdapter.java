@@ -48,6 +48,8 @@ public class CVAdapter extends RecyclerView.Adapter<CVAdapter.ItemHolder> {
         ItemHolder itemHolder = new ItemHolder(view);
         return itemHolder;
     }
+    // check xem trong CVinfo có những thông tin gì, experience, study, ...
+
 
     @Override
     public void onBindViewHolder(@NonNull ItemHolder holder, final int position) {
@@ -97,6 +99,7 @@ public class CVAdapter extends RecyclerView.Adapter<CVAdapter.ItemHolder> {
                 intent.putExtra("url", arrayList.get(position).getUrl());
                 intent.putExtra("cvname", arrayList.get(position).getName());
                 intent.putExtra("key", arrayList.get(position).getKey());
+                CVIntroductionActivity.position = position;
                 activity.startActivityForResult(intent, REQUEST_CODE);
             }
         });

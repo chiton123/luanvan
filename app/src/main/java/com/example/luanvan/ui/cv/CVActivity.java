@@ -79,12 +79,14 @@ public class CVActivity extends AppCompatActivity {
     String nameUpdate = "";
     // key cua CV
     public static String key = "";
-    public static String keyFirebase = "";
     int pageWidth = 1200;
     Handler handler;
     public static long idCV = 0;
     // kind: 1 add, kind: 2 update
     public static int kind = 0;
+    // kiểm tra thông tin nào có trong CV, k cần phải ghi hết nhé : bắc buộc: info
+    public static int checkGoal = 0, checkSkill = 0, checkStudy = 0, checkExperience = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,7 +100,6 @@ public class CVActivity extends AppCompatActivity {
         eventPDF();
         eventButton();
         storageReference = FirebaseStorage.getInstance().getReference();
-
 
 
     }
@@ -146,6 +147,7 @@ public class CVActivity extends AppCompatActivity {
         }
         if (requestCode == 101 && resultCode == 101) {
             reloadWebview();
+
         }
         if (requestCode == 104 && resultCode == 104) {
             reloadWebview();
@@ -170,24 +172,7 @@ public class CVActivity extends AppCompatActivity {
         listViewRemove = (ListView) dialog.findViewById(R.id.listviewRemove);
         listViewAdd = (ListView) dialog.findViewById(R.id.listviewAdd);
         imgCancel = (ImageView) dialog.findViewById(R.id.cancel);
-        arrayListRemove = new ArrayList<>();
-        arrayListTTLH = new ArrayList<>();
-        arrayListAdd = new ArrayList<>();
-        arrayListTongHop = new ArrayList<>();
-        arrayListTongHop.add(new Title(0, "Thông tin liên hệ"));
-        arrayListTongHop.add(new Title(1, "Mục tiêu nghề nghiệp"));
-        arrayListTongHop.add(new Title(2, "Học vấn"));
-        arrayListTongHop.add(new Title(3, "Kinh nghiệm làm việc"));
-        arrayListTongHop.add(new Title(4, "Kỹ năng"));
-        arrayListTongHop.add(new Title(5, "Hoạt động"));
 
-
-        arrayListRemove.add(arrayListTongHop.get(0));
-        arrayListRemove.add(arrayListTongHop.get(1));
-        arrayListRemove.add(arrayListTongHop.get(2));
-        arrayListRemove.add(arrayListTongHop.get(3));
-        arrayListRemove.add(arrayListTongHop.get(4));
-        arrayListAdd.add(arrayListTongHop.get(5));
         titleAdapterTTLH = new TitleAdapter(getApplicationContext(), arrayListTTLH, this, 1);
         titleAdapterRemove = new TitleAdapter(getApplicationContext(), arrayListRemove, this, 0);
         addAdapter = new AddAdapter(getApplicationContext(), arrayListAdd);
@@ -219,7 +204,6 @@ public class CVActivity extends AppCompatActivity {
         }
 
         webView.loadUrl(url1);
-
     }
 
     @Override
@@ -285,89 +269,100 @@ public class CVActivity extends AppCompatActivity {
         titlePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         titlePaint.setTextSize(35);
         titlePaint.setColor(Color.BLACK);
-        canvas.drawText("MỤC TIÊU NGHỀ NGHIỆP", 30, 380, titlePaint);
+
 
         contentPaint.setColor(Color.BLACK);
         contentPaint.setTextSize(25);
-        if(b == 1){
-            canvas.drawText(MainActivity.goal, 30, 450, contentPaint);
-        }else {
-            canvas.drawText(MainActivity.goalDefault, 30, 450, contentPaint);
+        if(CVActivity.checkGoal == 0){
+            canvas.drawText("MỤC TIÊU NGHỀ NGHIỆP", 30, 380, titlePaint);
+            if(b == 1){
+                canvas.drawText(MainActivity.goal, 30, 450, contentPaint);
+            }else {
+                canvas.drawText(MainActivity.goalDefault, 30, 450, contentPaint);
+            }
         }
 
         // hoc van
         int x1 = 610, x2 = 920, x3 = 1300;
 
-        canvas.drawText("HỌC VẤN", 30,  530, titlePaint);
-        titlePaint2.setTextSize(30);
-        titlePaint2.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-        if(c == 1){
-            for(int i=0; i < MainActivity.studyCVS.size(); i++){
-                if(i < 2){
-                    canvas.drawText(MainActivity.studyCVS.get(i).getSchool(), 30, x1 + i*90, titlePaint2);
-                    canvas.drawText(MainActivity.studyCVS.get(i).getStart() + " - " + MainActivity.studyCVS.get(i).getEnd(), 30, x1 + 50 + i*90, contentPaint);
-                    canvas.drawText("CHUYÊN NGÀNH: " + MainActivity.studyCVS.get(i).getMajor(), 500, x1 + i*90, titlePaint2 );
-                    canvas.drawText(MainActivity.studyCVS.get(i).getDescription(), 500, x1 + 50 + i*90, contentPaint);
-                }else {
-                    break;
-                }
 
+        if(checkStudy == 0){
+            canvas.drawText("HỌC VẤN", 30,  530, titlePaint);
+            titlePaint2.setTextSize(30);
+            titlePaint2.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+            if(c == 1){
+                for(int i=0; i < MainActivity.studyCVS.size(); i++){
+                    if(i < 2){
+                        canvas.drawText(MainActivity.studyCVS.get(i).getSchool(), 30, x1 + i*90, titlePaint2);
+                        canvas.drawText(MainActivity.studyCVS.get(i).getStart() + " - " + MainActivity.studyCVS.get(i).getEnd(), 30, x1 + 50 + i*90, contentPaint);
+                        canvas.drawText("CHUYÊN NGÀNH: " + MainActivity.studyCVS.get(i).getMajor(), 500, x1 + i*90, titlePaint2 );
+                        canvas.drawText(MainActivity.studyCVS.get(i).getDescription(), 500, x1 + 50 + i*90, contentPaint);
+                    }else {
+                        break;
+                    }
+
+                }
+            }else {
+                canvas.drawText(MainActivity.studyCV.getSchool(), 30, x1, titlePaint2);
+                canvas.drawText(MainActivity.studyCV.getStart() + " - " + MainActivity.studyCV.getEnd(), 30, x1 + 50, contentPaint);
+                canvas.drawText("CHUYÊN NGÀNH: " + MainActivity.studyCV.getMajor(), 500, x1 , titlePaint2 );
+                canvas.drawText(MainActivity.studyCV.getDescription(), 500, x1 + 50, contentPaint);
             }
-        }else {
-            canvas.drawText(MainActivity.studyCV.getSchool(), 30, x1, titlePaint2);
-            canvas.drawText(MainActivity.studyCV.getStart() + " - " + MainActivity.studyCV.getEnd(), 30, x1 + 50, contentPaint);
-            canvas.drawText("CHUYÊN NGÀNH: " + MainActivity.studyCV.getMajor(), 500, x1 , titlePaint2 );
-            canvas.drawText(MainActivity.studyCV.getDescription(), 500, x1 + 50, contentPaint);
         }
 
 
         // kinh nghiem
-        canvas.drawText("KINH NGHIỆM", 30, x2, titlePaint);
-        if(d == 1){
-            for(int i=0; i < experienceCVS.size(); i++){
-                if(i < 2){
-                    canvas.drawText(experienceCVS.get(i).getStart()+"-"+experienceCVS.get(i).getEnd(), 30, x2 + 50 + i*90, contentPaint);
-                    canvas.drawText(experienceCVS.get(i).getCompany(), 500, x2 + 50 + i*90, contentPaint);
-                    canvas.drawText(experienceCVS.get(i).getPosition(), 500, x2 + 90 + i*90, contentPaint);
-                }else {
-                    break;
+        if(checkExperience == 0){
+            canvas.drawText("KINH NGHIỆM", 30, x2, titlePaint);
+            if(d == 1){
+                for(int i=0; i < experienceCVS.size(); i++){
+                    if(i < 2){
+                        canvas.drawText(experienceCVS.get(i).getStart()+"-"+experienceCVS.get(i).getEnd(), 30, x2 + 50 + i*90, contentPaint);
+                        canvas.drawText(experienceCVS.get(i).getCompany(), 500, x2 + 50 + i*90, contentPaint);
+                        canvas.drawText(experienceCVS.get(i).getPosition(), 500, x2 + 90 + i*90, contentPaint);
+                    }else {
+                        break;
+                    }
                 }
+            }else {
+                canvas.drawText(experienceCV.getStart()+"-"+experienceCV.getEnd(), 30, x2 + 50, contentPaint);
+                canvas.drawText(experienceCV.getCompany(), 500, x2 + 50 , contentPaint);
+                canvas.drawText(experienceCV.getPosition(), 500, x2 + 90 , contentPaint);
             }
-        }else {
-            canvas.drawText(experienceCV.getStart()+"-"+experienceCV.getEnd(), 30, x2 + 50, contentPaint);
-            canvas.drawText(experienceCV.getCompany(), 500, x2 + 50 , contentPaint);
-            canvas.drawText(experienceCV.getPosition(), 500, x2 + 90 , contentPaint);
         }
 
 
         // ky nang
-        canvas.drawText("KỸ NĂNG", 30, x3, titlePaint);
-        int width = 300, height = 50;
-        if(e == 1){
-            for(int i=0; i < MainActivity.skillCVS.size(); i++){
-                if(i < 2){
-                    canvas.drawText(MainActivity.skillCVS.get(i).getName(), 30, x3 + 50 + i*90, contentPaint);
-                    float star1 = MainActivity.skillCVS.get(i).getStar()*60;
-                    canvas.drawLine(30, x3+100 + i*90, star1+30, x3 + 100 + i*90, kynang_paint);
-                    canvas.drawLine(star1 + 30, x3+100 + i*90, width + 30,x3 + 100 + i*90,  kynangphu );
-                }else {
-                    break;
+        if(checkSkill == 0){
+            canvas.drawText("KỸ NĂNG", 30, x3, titlePaint);
+            int width = 300, height = 50;
+            if(e == 1){
+                for(int i=0; i < MainActivity.skillCVS.size(); i++){
+                    if(i < 2){
+                        canvas.drawText(MainActivity.skillCVS.get(i).getName(), 30, x3 + 50 + i*90, contentPaint);
+                        float star1 = MainActivity.skillCVS.get(i).getStar()*60;
+                        canvas.drawLine(30, x3+100 + i*90, star1+30, x3 + 100 + i*90, kynang_paint);
+                        canvas.drawLine(star1 + 30, x3+100 + i*90, width + 30,x3 + 100 + i*90,  kynangphu );
+                    }else {
+                        break;
+                    }
                 }
+
+            }else {
+                canvas.drawText(MainActivity.skillCVArray.get(0).getName(), 30, x3 + 50, contentPaint);
+                // 300 : 5 = 60
+                float star1 = MainActivity.skillCVArray.get(0).getStar()*60;
+                float star2 = MainActivity.skillCVArray.get(1).getStar()*60;
+                canvas.drawLine(30, x3+100, star1+30, x3 + 100, kynang_paint);
+                canvas.drawLine(star1 + 30, x3+100, width + 30,x3 + 100,  kynangphu );
+
+                canvas.drawText(MainActivity.skillCVArray.get(1).getName(), 30, x3 + 150, contentPaint);
+                canvas.drawLine(30, x3+200, star2+30, x3+200, kynang_paint);
+                canvas.drawLine(star2+30, x3+200, width + 30, x3+200, kynangphu);
+
             }
-
-        }else {
-            canvas.drawText(MainActivity.skillCVArray.get(0).getName(), 30, x3 + 50, contentPaint);
-            // 300 : 5 = 60
-            float star1 = MainActivity.skillCVArray.get(0).getStar()*60;
-            float star2 = MainActivity.skillCVArray.get(1).getStar()*60;
-            canvas.drawLine(30, x3+100, star1+30, x3 + 100, kynang_paint);
-            canvas.drawLine(star1 + 30, x3+100, width + 30,x3 + 100,  kynangphu );
-
-            canvas.drawText(MainActivity.skillCVArray.get(1).getName(), 30, x3 + 150, contentPaint);
-            canvas.drawLine(30, x3+200, star2+30, x3+200, kynang_paint);
-            canvas.drawLine(star2+30, x3+200, width + 30, x3+200, kynangphu);
-
         }
+
 
         pdfDocument.finishPage(page);
         File file = new File(Environment.getExternalStorageDirectory(), "/a10.pdf");
@@ -417,11 +412,11 @@ public class CVActivity extends AppCompatActivity {
         }
 
         // goal
-        if(MainActivity.checkFirstGoal == 1){
+        if(MainActivity.checkFirstGoal == 1 && checkGoal == 0){
             MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("goal").setValue(MainActivity.goal);
         }
         // study
-        if(MainActivity.checkFirstStudy == 1){
+        if(MainActivity.checkFirstStudy == 1 && checkStudy == 0){
             MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("study").removeValue();
 
             for(int i=0; i < MainActivity.studyCVS.size(); i++){
@@ -431,9 +426,8 @@ public class CVActivity extends AppCompatActivity {
             }
         }
 
-
         // experience
-        if(MainActivity.checkFirstExperience == 1){
+        if(MainActivity.checkFirstExperience == 1 && checkExperience == 0){
             MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("experience").removeValue();
             for(int i=0; i < experienceCVS.size(); i++){
                 String keyx = MainActivity.mData.push().getKey();
@@ -442,7 +436,8 @@ public class CVActivity extends AppCompatActivity {
             }
         }
 
-        if(MainActivity.checkFirstSkill == 1){
+        // skill
+        if(MainActivity.checkFirstSkill == 1 && checkSkill == 0){
             MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("skill").removeValue();
             for(int i=0; i < MainActivity.skillCVS.size(); i++){
                 String keyx = MainActivity.mData.push().getKey();
@@ -450,8 +445,6 @@ public class CVActivity extends AppCompatActivity {
                 MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("skill").push().setValue(MainActivity.skillCVS.get(i));
             }
         }
-        // skill
-
 
     }
     // push goal
@@ -540,51 +533,26 @@ public class CVActivity extends AppCompatActivity {
 
         // info
         pushInfoAdd();
-
+        // những biến nào = 0 thì ghi vào CV info
         // study
-        pushStudyAdd();
+        if(checkStudy == 0){
+            pushStudyAdd();
+        }
 
         // experience
-        pushExperienceAdd();
+        if(checkExperience == 0){
+            pushExperienceAdd();
+        }
 
         // skill
-        pushSkillAdd();
+        if(checkSkill == 0){
+            pushSkillAdd();
+        }
 
         // goal
-        pushGoalAdd();
-    }
-    public void getKey(){
-        MainActivity.mData.child("cv").child(MainActivity.uid).child(key).addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                for(DataSnapshot x : snapshot.getChildren()){
-                    if(x.child("key").getValue().toString().equals(key)){
-                        keyFirebase = x.getKey();
-                    }
-                }
-
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        if(checkGoal == 0){
+            pushGoalAdd();
+        }
 
     }
 
@@ -635,7 +603,36 @@ public class CVActivity extends AppCompatActivity {
             }
         });
     }
+    public void checkChild(String key){
+        MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                CVIntroductionActivity.cvGoal = 0;
+                CVIntroductionActivity.cvStudy = 0;
+                CVIntroductionActivity.cvExperience = 0;
+                CVIntroductionActivity.cvSkill = 0;
+                if(snapshot.hasChild("goal")){
+                    CVIntroductionActivity.cvGoal = 1;
+                }
+                if(snapshot.hasChild("study")){
+                    CVIntroductionActivity.cvStudy = 1;
+                }
+                if(snapshot.hasChild("experience")){
+                    CVIntroductionActivity.cvExperience = 1;
+                }
+                if(snapshot.hasChild("skill")){
+                    CVIntroductionActivity.cvSkill = 1;
+                }
+                Toast.makeText(getApplicationContext(), "goal :" + CVIntroductionActivity.cvGoal +  " study : " + CVIntroductionActivity.cvStudy
+                        + " ex  : " + CVIntroductionActivity.cvExperience +  " skill " + CVIntroductionActivity.cvSkill, Toast.LENGTH_SHORT).show();
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
     private void anhxa() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         webView = (WebView) findViewById(R.id.webview);
@@ -650,6 +647,59 @@ public class CVActivity extends AppCompatActivity {
             key = getIntent().getStringExtra("key");
             MainActivity.urlCV = urlX;
         }
+        arrayListRemove = new ArrayList<>();
+        arrayListTTLH = new ArrayList<>();
+        arrayListAdd = new ArrayList<>();
+        arrayListTongHop = new ArrayList<>();
+        arrayListTongHop.add(new Title(0, "Thông tin liên hệ"));
+        arrayListTongHop.add(new Title(1, "Mục tiêu nghề nghiệp"));
+        arrayListTongHop.add(new Title(2, "Học vấn"));
+        arrayListTongHop.add(new Title(3, "Kinh nghiệm làm việc"));
+        arrayListTongHop.add(new Title(4, "Kỹ năng"));
+      //  arrayListTongHop.add(new Title(5, "Hoạt động"));
+        arrayListRemove.add(arrayListTongHop.get(0));
+        if(kind == 1){
+            arrayListRemove.add(arrayListTongHop.get(1));
+            arrayListRemove.add(arrayListTongHop.get(2));
+            arrayListRemove.add(arrayListTongHop.get(3));
+            arrayListRemove.add(arrayListTongHop.get(4));
+            arrayListAdd.add(arrayListTongHop.get(5));
+        }else {
+            checkChild(key);
+            handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getApplicationContext(), "goal :" + CVIntroductionActivity.cvGoal +  " study : " + CVIntroductionActivity.cvStudy
+                            + " ex  : " + CVIntroductionActivity.cvExperience +  " skill " + CVIntroductionActivity.cvSkill, Toast.LENGTH_SHORT).show();
+                    if(CVIntroductionActivity.cvGoal == 1){
+                        arrayListRemove.add(arrayListTongHop.get(1));
+                    }else {
+                        arrayListAdd.add(arrayListTongHop.get(1));
+                    }
+                    if(CVIntroductionActivity.cvStudy == 1){
+                        arrayListRemove.add(arrayListTongHop.get(2));
+                    }else {
+                        arrayListAdd.add(arrayListTongHop.get(2));
+                    }
+                    if(CVIntroductionActivity.cvExperience == 1){
+                        arrayListRemove.add(arrayListTongHop.get(3));
+                    }else {
+                        arrayListAdd.add(arrayListTongHop.get(3));
+                    }
+                    if(CVIntroductionActivity.cvSkill == 1){
+                        arrayListRemove.add(arrayListTongHop.get(4));
+                    }else {
+                        arrayListAdd.add(arrayListTongHop.get(4));
+                    }
+                }
+            }, 2000);
+
+
+        }
+
+
+
 
 
 
