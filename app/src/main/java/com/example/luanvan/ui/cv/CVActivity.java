@@ -273,7 +273,7 @@ public class CVActivity extends AppCompatActivity {
 
         contentPaint.setColor(Color.BLACK);
         contentPaint.setTextSize(25);
-        if(CVActivity.checkGoal == 0){
+        if(checkGoal == 0){
             canvas.drawText("MỤC TIÊU NGHỀ NGHIỆP", 30, 380, titlePaint);
             if(b == 1){
                 canvas.drawText(MainActivity.goal, 30, 450, contentPaint);
@@ -400,8 +400,8 @@ public class CVActivity extends AppCompatActivity {
         }
 
     }
-    public void updateCVAll(){
-        // cv
+
+    public void updateInfoCVAll(){
         MainActivity.mData.child("cv").child(MainActivity.uid).child(key).removeValue();
         PdfCV pdfCV = new PdfCV(MainActivity.uid, cvName.getText().toString(), MainActivity.urlCV, key);
         MainActivity.mData.child("cv").child(MainActivity.uid).child(key).push().setValue(pdfCV);
@@ -412,39 +412,90 @@ public class CVActivity extends AppCompatActivity {
         }
 
         // goal
-        if(MainActivity.checkFirstGoal == 1 && checkGoal == 0){
-            MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("goal").setValue(MainActivity.goal);
+        if(checkGoal == 0){
+            if(MainActivity.checkFirstGoal == 1){
+                MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("goal").setValue(MainActivity.goal);
+            }else {
+                MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(String.valueOf(CVActivity.idCV+1)).child("goal").setValue(MainActivity.goalDefault);
+            }
+
+        }else if(checkGoal == 1) {
+            MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("goal").removeValue();
         }
         // study
-        if(MainActivity.checkFirstStudy == 1 && checkStudy == 0){
-            MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("study").removeValue();
+        if( checkStudy == 0){
+            if(MainActivity.checkFirstStudy == 1){
+                MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("study").removeValue();
 
-            for(int i=0; i < MainActivity.studyCVS.size(); i++){
+                for(int i=0; i < MainActivity.studyCVS.size(); i++){
+                    String keyx = MainActivity.mData.push().getKey();
+                    MainActivity.studyCVS.get(i).setId(keyx);
+                    MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("study").push().setValue(MainActivity.studyCVS.get(i));
+                }
+            }else {
                 String keyx = MainActivity.mData.push().getKey();
-                MainActivity.studyCVS.get(i).setId(keyx);
-                MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("study").push().setValue(MainActivity.studyCVS.get(i));
+                MainActivity.studyCV.setId(keyx);
+                MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(String.valueOf(CVActivity.idCV+1)).child("study").push().setValue(MainActivity.studyCV);
             }
+
+        }else if(checkStudy == 1) {
+            MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("study").removeValue();
         }
 
         // experience
-        if(MainActivity.checkFirstExperience == 1 && checkExperience == 0){
-            MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("experience").removeValue();
-            for(int i=0; i < experienceCVS.size(); i++){
+        if( checkExperience == 0){
+            if(MainActivity.checkFirstExperience == 1){
+                MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("experience").removeValue();
+                for(int i=0; i < experienceCVS.size(); i++){
+                    String keyx = MainActivity.mData.push().getKey();
+                    experienceCVS.get(i).setId(keyx);
+                    MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("experience").push().setValue(experienceCVS.get(i));
+                }
+            }else {
                 String keyx = MainActivity.mData.push().getKey();
-                experienceCVS.get(i).setId(keyx);
-                MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("experience").push().setValue(experienceCVS.get(i));
+                MainActivity.experienceCV.setId(keyx);
+                MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(String.valueOf(CVActivity.idCV+1)).child("experience").push().setValue(MainActivity.experienceCV);
             }
+
+        }else if(checkExperience == 1){
+            MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("experience").removeValue();
         }
 
         // skill
-        if(MainActivity.checkFirstSkill == 1 && checkSkill == 0){
-            MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("skill").removeValue();
-            for(int i=0; i < MainActivity.skillCVS.size(); i++){
-                String keyx = MainActivity.mData.push().getKey();
-                MainActivity.skillCVS.get(i).setId(keyx);
-                MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("skill").push().setValue(MainActivity.skillCVS.get(i));
+        if( checkSkill == 0){
+            if(MainActivity.checkFirstSkill == 1){
+                MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("skill").removeValue();
+                for(int i=0; i < MainActivity.skillCVS.size(); i++){
+                    String keyx = MainActivity.mData.push().getKey();
+                    MainActivity.skillCVS.get(i).setId(keyx);
+                    MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("skill").push().setValue(MainActivity.skillCVS.get(i));
+                }
+            }else {
+                for(int i=0; i < MainActivity.skillCVArray.size(); i++){
+                    String keyx = MainActivity.mData.push().getKey();
+                    MainActivity.skillCVArray.get(i).setId(keyx);
+                    MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(String.valueOf(CVActivity.idCV+1)).child("skill").push().setValue(MainActivity.skillCVArray.get(i));
+                }
             }
+
+        }else if(checkSkill == 1){
+            MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("skill").removeValue();
         }
+
+    }
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void updateCVAll() throws IOException {
+
+        // tạo cv mới rồi up lên
+        createCV(MainActivity.checkFirstInfo, MainActivity.checkFirstGoal, MainActivity.checkFirstStudy, MainActivity.checkFirstExperience,
+                MainActivity.checkFirstSkill);
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                updateInfoCVAll();
+            }
+        },4000);
 
     }
     // push goal
@@ -503,26 +554,20 @@ public class CVActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void pushCVAdd(){
         final String key = String.valueOf(idCV + 1);
-        if(MainActivity.checkFirstGoal == 0 && MainActivity.checkFirstSkill == 0 && MainActivity.checkFirstExperience == 0
-                && MainActivity.checkFirstStudy == 0 && MainActivity.checkFirstInfo == 0){
-            try {
-                createCV(MainActivity.checkFirstInfo, MainActivity.checkFirstGoal, MainActivity.checkFirstStudy, MainActivity.checkFirstExperience,
-                        MainActivity.checkFirstSkill);
-                handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        PdfCV pdfCV = new PdfCV(MainActivity.uid, cvName.getText().toString(), MainActivity.urlCV, key);
-                        MainActivity.mData.child("cv").child(MainActivity.uid).child(String.valueOf(idCV + 1)).push().setValue(pdfCV);
-                    }
-                },3000);
+        try {
+            createCV(MainActivity.checkFirstInfo, MainActivity.checkFirstGoal, MainActivity.checkFirstStudy, MainActivity.checkFirstExperience,
+                    MainActivity.checkFirstSkill);
+            handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    PdfCV pdfCV = new PdfCV(MainActivity.uid, cvName.getText().toString(), MainActivity.urlCV, key);
+                    MainActivity.mData.child("cv").child(MainActivity.uid).child(String.valueOf(idCV + 1)).push().setValue(pdfCV);
+                }
+            },3000);
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }else {
-            PdfCV pdfCV = new PdfCV(MainActivity.uid, cvName.getText().toString(), MainActivity.urlCV, key);
-            MainActivity.mData.child("cv").child(MainActivity.uid).child(String.valueOf(idCV + 1)).push().setValue(pdfCV);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
     // push ADD
@@ -568,14 +613,23 @@ public class CVActivity extends AppCompatActivity {
                     if(kind == 1){
                         pushAddAll();
                     }else {
-                        updateCVAll();
+                        try {
+                            updateCVAll();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
-
                     Toast.makeText(getApplicationContext(), "Đã lưu", Toast.LENGTH_SHORT).show();
                     // lưu id CV bằng số tăng dần, có ví dụ rồi, mỗi user thì có nhiều CV
-                    Intent intent = new Intent();
-                    setResult(123);
-                    finish();
+                    handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent intent = new Intent();
+                            setResult(123);
+                            finish();
+                        }
+                    },3000);
 
                 }
                 break;
@@ -587,7 +641,6 @@ public class CVActivity extends AppCompatActivity {
                     finish();
                     break;
                 }
-
         }
 
         return super.onOptionsItemSelected(item);
@@ -607,24 +660,27 @@ public class CVActivity extends AppCompatActivity {
         MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                CVIntroductionActivity.cvGoal = 0;
-                CVIntroductionActivity.cvStudy = 0;
-                CVIntroductionActivity.cvExperience = 0;
-                CVIntroductionActivity.cvSkill = 0;
                 if(snapshot.hasChild("goal")){
-                    CVIntroductionActivity.cvGoal = 1;
+                    checkGoal = 0;
+                }else {
+                    checkGoal = 1;
                 }
                 if(snapshot.hasChild("study")){
-                    CVIntroductionActivity.cvStudy = 1;
+                    checkStudy = 0;
+                }else {
+                    checkStudy = 1;
                 }
                 if(snapshot.hasChild("experience")){
-                    CVIntroductionActivity.cvExperience = 1;
+                    checkExperience = 0;
+                }else {
+                    checkExperience = 1;
                 }
                 if(snapshot.hasChild("skill")){
-                    CVIntroductionActivity.cvSkill = 1;
+                    checkSkill = 0;
+                }else {
+                    checkSkill = 1;
                 }
-                Toast.makeText(getApplicationContext(), "goal :" + CVIntroductionActivity.cvGoal +  " study : " + CVIntroductionActivity.cvStudy
-                        + " ex  : " + CVIntroductionActivity.cvExperience +  " skill " + CVIntroductionActivity.cvSkill, Toast.LENGTH_SHORT).show();
+
             }
 
             @Override
@@ -656,38 +712,36 @@ public class CVActivity extends AppCompatActivity {
         arrayListTongHop.add(new Title(2, "Học vấn"));
         arrayListTongHop.add(new Title(3, "Kinh nghiệm làm việc"));
         arrayListTongHop.add(new Title(4, "Kỹ năng"));
-      //  arrayListTongHop.add(new Title(5, "Hoạt động"));
+
         arrayListRemove.add(arrayListTongHop.get(0));
         if(kind == 1){
             arrayListRemove.add(arrayListTongHop.get(1));
             arrayListRemove.add(arrayListTongHop.get(2));
             arrayListRemove.add(arrayListTongHop.get(3));
             arrayListRemove.add(arrayListTongHop.get(4));
-            arrayListAdd.add(arrayListTongHop.get(5));
+
         }else {
             checkChild(key);
             handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(getApplicationContext(), "goal :" + CVIntroductionActivity.cvGoal +  " study : " + CVIntroductionActivity.cvStudy
-                            + " ex  : " + CVIntroductionActivity.cvExperience +  " skill " + CVIntroductionActivity.cvSkill, Toast.LENGTH_SHORT).show();
-                    if(CVIntroductionActivity.cvGoal == 1){
+                    if(checkGoal == 0){
                         arrayListRemove.add(arrayListTongHop.get(1));
                     }else {
                         arrayListAdd.add(arrayListTongHop.get(1));
                     }
-                    if(CVIntroductionActivity.cvStudy == 1){
+                    if(checkStudy == 0){
                         arrayListRemove.add(arrayListTongHop.get(2));
                     }else {
                         arrayListAdd.add(arrayListTongHop.get(2));
                     }
-                    if(CVIntroductionActivity.cvExperience == 1){
+                    if(checkExperience == 0){
                         arrayListRemove.add(arrayListTongHop.get(3));
                     }else {
                         arrayListAdd.add(arrayListTongHop.get(3));
                     }
-                    if(CVIntroductionActivity.cvSkill == 1){
+                    if(checkSkill == 0){
                         arrayListRemove.add(arrayListTongHop.get(4));
                     }else {
                         arrayListAdd.add(arrayListTongHop.get(4));
@@ -698,10 +752,8 @@ public class CVActivity extends AppCompatActivity {
 
         }
 
-
-
-
-
+        //        Toast.makeText(getApplicationContext(), "goal : " + checkGoal + " ex: " + checkExperience + " study " + checkStudy + " skill " + checkSkill,
+        //                Toast.LENGTH_SHORT).show();
 
     }
 }

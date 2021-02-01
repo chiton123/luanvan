@@ -39,8 +39,7 @@ public class CVIntroductionActivity extends AppCompatActivity {
     CVAdapter adapter;
     // position to remove
     public static int position = 0;
-    // kiểm tra trong CV có những thông tin gì
-    public static int cvGoal = 0, cvSkill = 0, cvStudy = 0, cvExperience = 0;
+
 
     // kind: 1 add, kind: 2 update
     @Override

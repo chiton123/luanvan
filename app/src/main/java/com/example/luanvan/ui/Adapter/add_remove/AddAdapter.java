@@ -42,7 +42,7 @@ public class AddAdapter extends BaseAdapter {
         public TextView txtAdd;
 
     }
-    // hàm kiểm tra khi remove ra thì các biến check sẽ chuyển thành 0
+    // hàm kiểm tra khi add vào thì các biến check sẽ chuyển thành 0 , sử dụng trong CV info
     public void check(int id){
         switch (id){
             case 1:
