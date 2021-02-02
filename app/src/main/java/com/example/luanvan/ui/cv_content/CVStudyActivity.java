@@ -66,6 +66,7 @@ public class CVStudyActivity extends AppCompatActivity {
     StorageReference storageReference;
     Handler handler;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -218,7 +219,7 @@ public class CVStudyActivity extends AppCompatActivity {
         int x1 = 610, x2 = 920, x3 = 1300;
 
 
-        if(checkStudy == 0){
+        if(CVActivity.checkStudy == 0){
             canvas.drawText("HỌC VẤN", 30,  530, titlePaint);
             titlePaint2.setTextSize(30);
             titlePaint2.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
@@ -245,7 +246,7 @@ public class CVStudyActivity extends AppCompatActivity {
 
 
         // kinh nghiem
-        if(checkExperience == 0){
+        if(CVActivity.checkExperience == 0){
             canvas.drawText("KINH NGHIỆM", 30, x2, titlePaint);
             if(d == 1){
                 for(int i=0; i < experienceCVS.size(); i++){
@@ -265,9 +266,8 @@ public class CVStudyActivity extends AppCompatActivity {
         }
 
 
-
         // ky nang
-        if(checkSkill == 0){
+        if(CVActivity.checkSkill == 0){
             canvas.drawText("KỸ NĂNG", 30, x3, titlePaint);
             int width = 300, height = 50;
             if(e == 1){
@@ -296,7 +296,6 @@ public class CVStudyActivity extends AppCompatActivity {
 
             }
         }
-
 
         pdfDocument.finishPage(page);
         File file = new File(Environment.getExternalStorageDirectory(), "/a10.pdf");

@@ -218,7 +218,7 @@ public class CVExperienceActivity extends AppCompatActivity {
         int x1 = 610, x2 = 920, x3 = 1300;
 
 
-        if(checkStudy == 0){
+        if(CVActivity.checkStudy == 0){
             canvas.drawText("HỌC VẤN", 30,  530, titlePaint);
             titlePaint2.setTextSize(30);
             titlePaint2.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
@@ -245,7 +245,7 @@ public class CVExperienceActivity extends AppCompatActivity {
 
 
         // kinh nghiem
-        if(checkExperience == 0){
+        if(CVActivity.checkExperience == 0){
             canvas.drawText("KINH NGHIỆM", 30, x2, titlePaint);
             if(d == 1){
                 for(int i=0; i < experienceCVS.size(); i++){
@@ -265,9 +265,8 @@ public class CVExperienceActivity extends AppCompatActivity {
         }
 
 
-
         // ky nang
-        if(checkSkill == 0){
+        if(CVActivity.checkSkill == 0){
             canvas.drawText("KỸ NĂNG", 30, x3, titlePaint);
             int width = 300, height = 50;
             if(e == 1){
@@ -296,7 +295,6 @@ public class CVExperienceActivity extends AppCompatActivity {
 
             }
         }
-
 
         pdfDocument.finishPage(page);
         File file = new File(Environment.getExternalStorageDirectory(), "/a10.pdf");
@@ -339,13 +337,6 @@ public class CVExperienceActivity extends AppCompatActivity {
                 }else {
                     recyclerView.setVisibility(View.INVISIBLE);
                     MainActivity.checkFirstExperience = 1;
-//                    MainActivity.mData.child("cvinfo").child(MainActivity.uid).child("experience").removeValue();
-//                    for(int i=0; i < experienceCVS.size(); i++){
-//                        String key = MainActivity.mData.push().getKey();
-//                        experienceCVS.get(i).setId(key);
-//                        MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(String.valueOf(CVActivity.idCV+1)).child("experience").push().setValue(experienceCVS.get(i));
-//
-//                    }
                     try {
                         createCV(MainActivity.checkFirstInfo, MainActivity.checkFirstGoal, MainActivity.checkFirstStudy, MainActivity.checkFirstExperience,
                                 MainActivity.checkFirstSkill);

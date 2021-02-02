@@ -65,6 +65,7 @@ public class CVSkillActivity extends AppCompatActivity {
     StorageReference storageReference;
     Handler handler;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -210,7 +211,7 @@ public class CVSkillActivity extends AppCompatActivity {
         int x1 = 610, x2 = 920, x3 = 1300;
 
 
-        if(checkStudy == 0){
+        if(CVActivity.checkStudy == 0){
             canvas.drawText("HỌC VẤN", 30,  530, titlePaint);
             titlePaint2.setTextSize(30);
             titlePaint2.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
@@ -237,7 +238,7 @@ public class CVSkillActivity extends AppCompatActivity {
 
 
         // kinh nghiem
-        if(checkExperience == 0){
+        if(CVActivity.checkExperience == 0){
             canvas.drawText("KINH NGHIỆM", 30, x2, titlePaint);
             if(d == 1){
                 for(int i=0; i < experienceCVS.size(); i++){
@@ -257,9 +258,8 @@ public class CVSkillActivity extends AppCompatActivity {
         }
 
 
-
         // ky nang
-        if(checkSkill == 0){
+        if(CVActivity.checkSkill == 0){
             canvas.drawText("KỸ NĂNG", 30, x3, titlePaint);
             int width = 300, height = 50;
             if(e == 1){
@@ -288,7 +288,6 @@ public class CVSkillActivity extends AppCompatActivity {
 
             }
         }
-
 
         pdfDocument.finishPage(page);
         File file = new File(Environment.getExternalStorageDirectory(), "/a10.pdf");
@@ -330,14 +329,6 @@ public class CVSkillActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Bạn chưa thêm kỹ năng nào", Toast.LENGTH_SHORT).show();
                 }else {
                     MainActivity.checkFirstSkill = 1;
-//                    MainActivity.mData.child("cvinfo").child(MainActivity.uid).child("skill").removeValue();
-//                   // Toast.makeText(getApplicationContext(), "" + MainActivity.skillCVS.size(), Toast.LENGTH_SHORT).show();
-//                    for(int i=0; i < MainActivity.skillCVS.size(); i++){
-//                        String key = MainActivity.mData.push().getKey();
-//                        MainActivity.skillCVS.get(i).setId(key);
-//                        MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(String.valueOf(CVActivity.idCV+1)).child("skill").push().setValue(MainActivity.skillCVS.get(i));
-//
-//                    }
                     try {
                         createCV(MainActivity.checkFirstInfo, MainActivity.checkFirstGoal, MainActivity.checkFirstStudy, MainActivity.checkFirstExperience,
                                 MainActivity.checkFirstSkill);

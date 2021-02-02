@@ -50,6 +50,10 @@ public class CVGoalActivity extends AppCompatActivity {
     int pageWidth = 1200;
     StorageReference storageReference;
     Handler handler;
+    public static int a0 = 270, a1 = 420, a2 = 600, a3 = 800;
+    public static int x0 = 0, x1 = 0, x2 = 0, x3 = 0;
+    // kiem tra xem x1, x2, x3 có nhảy lên bậc nào hay k khi tạo CV
+    public static int checkX1 = 0, checkX2 = 0, checkX3 = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

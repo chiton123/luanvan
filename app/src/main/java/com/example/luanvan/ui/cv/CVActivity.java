@@ -80,6 +80,7 @@ public class CVActivity extends AppCompatActivity {
     // key cua CV
     public static String key = "";
     int pageWidth = 1200;
+    int pageHeight = 2000;
     Handler handler;
     public static long idCV = 0;
     // kind: 1 add, kind: 2 update
@@ -91,6 +92,7 @@ public class CVActivity extends AppCompatActivity {
     public static int x0 = 0, x1 = 0, x2 = 0, x3 = 0;
     // kiem tra xem x1, x2, x3 có nhảy lên bậc nào hay k khi tạo CV
     public static int checkX1 = 0, checkX2 = 0, checkX3 = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -216,6 +218,7 @@ public class CVActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_cv, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void createCV(int a, int b, int c, int d, int e) throws IOException {
@@ -368,7 +371,7 @@ public class CVActivity extends AppCompatActivity {
             if(x0 != 0){
                 if(x1 != 0){
                     if(x2 != 0){
-                        x3 = x3;
+                        x3 = a3;
                     }else {
                         x3 = a2;
                         checkX3 = 1;
