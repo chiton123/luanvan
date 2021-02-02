@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     public static DatabaseReference mData = FirebaseDatabase.getInstance().getReference("one");
     public static FirebaseAuth mAuth = FirebaseAuth.getInstance() ;
     public static FirebaseUser mUser;
+    public static FirebaseStorage storage = FirebaseStorage.getInstance();
     // fragment notification
     public static StudyAdapter studyAdapter;
     public static ExperienceAdapter experienceAdapter;
@@ -66,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     // skillCV , infoCV, experienceCV, studyCV, goal để up lên
+
     public static ArrayList<SkillCV> skillCVS = new ArrayList<>();
     public static UserCV userCV = new UserCV();
     public static ArrayList<ExperienceCV> experienceCVS = new ArrayList<>();
@@ -83,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
     public static int checkFirstVolunteer = 0;
 
 
-    public static String host = "http://10.10.35.56:8888/luanvan/";
+    public static String host = "http://10.3.74.116:8888/luanvan/";
     public static String urljob1 = host + "job1.php";
     public static String urlcompany = host + "company.php";
     // dang nhap

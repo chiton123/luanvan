@@ -39,6 +39,7 @@ import com.example.luanvan.ui.Model.Pdf;
 import com.example.luanvan.ui.Model.Title;
 import com.example.luanvan.ui.modelCV.Info;
 import com.example.luanvan.ui.modelCV.PdfCV;
+import com.example.luanvan.ui.modelCV.UserCV;
 import com.github.barteksc.pdfviewer.PDFView;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -92,7 +93,7 @@ public class CVActivity extends AppCompatActivity {
     public static int x0 = 0, x1 = 0, x2 = 0, x3 = 0;
     // kiem tra xem x1, x2, x3 có nhảy lên bậc nào hay k khi tạo CV
     public static int checkX1 = 0, checkX2 = 0, checkX3 = 0;
-
+    String CVNameToPost = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +111,7 @@ public class CVActivity extends AppCompatActivity {
 
 
     }
+
 
     private void getIDCV() {
         MainActivity.mData.child("cv").child(MainActivity.uid).addValueEventListener(new ValueEventListener() {
@@ -443,7 +445,9 @@ public class CVActivity extends AppCompatActivity {
         File file = new File(Environment.getExternalStorageDirectory(), "/a10.pdf");
         pdfDocument.writeTo(new FileOutputStream(file));
         pdfDocument.close();
-        storageReference.child("abc.pdf").putFile(Uri.fromFile(file))
+        CVNameToPost = cvName.getText().toString();
+        // lưu thật sự file pdf, còn CV content như goal, study ... thì chỉ lưu nháp trong file abc.pdf thôi, k dc giống nhe
+        storageReference.child(CVNameToPost+".pdf").putFile(Uri.fromFile(file))
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {

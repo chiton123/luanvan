@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,18 +23,23 @@ import com.example.luanvan.ui.cv.CVActivity;
 import com.example.luanvan.ui.cv.CVIntroductionActivity;
 import com.example.luanvan.ui.cv.CVShowActivity;
 import com.example.luanvan.ui.modelCV.PdfCV;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class CVAdapter extends RecyclerView.Adapter<CVAdapter.ItemHolder> {
     Context context;
     ArrayList<PdfCV> arrayList;
     Activity activity;
-    int REQUEST_CODE = 2;
+    int REQUEST_CODE = 123;
 
     public CVAdapter(Context context, ArrayList<PdfCV> arrayList, Activity activity) {
         this.context = context;
@@ -107,6 +113,25 @@ public class CVAdapter extends RecyclerView.Adapter<CVAdapter.ItemHolder> {
         holder.btnDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                StorageReference reference = MainActivity.storage.getReferenceFromUrl(arrayList.get(position).getUrl());
+          //      StorageReference  islandRef = storageRef.child("file.txt");
+                File rootPath = new File(Environment.getExternalStorageDirectory(), "CVdownload");
+                if(!rootPath.exists()) {
+                    rootPath.mkdirs();
+                }
+                final File localFile = new File(rootPath,arrayList.get(position).getName() + ".pdf");
+                reference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        Toast.makeText(context, "Lưu thành công", Toast.LENGTH_SHORT).show();
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        Toast.makeText(context, "Lưu thất bại", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
             }
         });

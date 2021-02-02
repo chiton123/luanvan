@@ -314,6 +314,7 @@ public class CVGoalActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MainActivity.checkFirstGoal = 1;
                 finish();
             }
         });

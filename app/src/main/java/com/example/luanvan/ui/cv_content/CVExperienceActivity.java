@@ -375,6 +375,7 @@ public class CVExperienceActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MainActivity.checkFirstExperience = 1;
                 finish();
             }
         });

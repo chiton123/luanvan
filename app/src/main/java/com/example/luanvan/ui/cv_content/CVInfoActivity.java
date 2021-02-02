@@ -397,6 +397,7 @@ public class CVInfoActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MainActivity.checkFirstInfo = 1;
                 finish();
             }
         });

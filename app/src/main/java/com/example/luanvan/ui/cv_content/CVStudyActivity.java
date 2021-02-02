@@ -100,6 +100,9 @@ public class CVStudyActivity extends AppCompatActivity {
         if(MainActivity.checkFirstStudy == 0 && CVActivity.kind == 2) {
             getData();
         }
+//        if(CVActivity.kind == 2){
+//            getData();
+//        }
 
     }
     public void showDialog(){
@@ -376,6 +379,7 @@ public class CVStudyActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MainActivity.checkFirstStudy = 1;
                 finish();
             }
         });

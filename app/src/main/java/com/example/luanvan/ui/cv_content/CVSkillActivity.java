@@ -370,6 +370,7 @@ public class CVSkillActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MainActivity.checkFirstSkill = 1;
                 finish();
             }
         });
