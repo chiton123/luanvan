@@ -86,6 +86,11 @@ public class CVActivity extends AppCompatActivity {
     public static int kind = 0;
     // kiểm tra thông tin nào có trong CV, k cần phải ghi hết nhé : bắc buộc: info
     public static int checkGoal = 0, checkSkill = 0, checkStudy = 0, checkExperience = 0;
+    // layout cho CV
+    public static int a0 = 400, a1 = 650, a2 = 950, a3 = 1200;
+    public static int x0 = 0, x1 = 0, x2 = 0, x3 = 0;
+    // kiem tra xem x1, x2, x3 có nhảy lên bậc nào hay k khi tạo CV
+    public static int checkX1 = 0, checkX2 = 0, checkX3 = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -274,20 +279,28 @@ public class CVActivity extends AppCompatActivity {
         contentPaint.setColor(Color.BLACK);
         contentPaint.setTextSize(25);
         if(checkGoal == 0){
-            canvas.drawText("MỤC TIÊU NGHỀ NGHIỆP", 30, 380, titlePaint);
+            x0 = a0;
+            canvas.drawText("MỤC TIÊU NGHỀ NGHIỆP", 30, x0, titlePaint);
             if(b == 1){
-                canvas.drawText(MainActivity.goal, 30, 450, contentPaint);
+                canvas.drawText(MainActivity.goal, 30, x0 + 70, contentPaint);
             }else {
-                canvas.drawText(MainActivity.goalDefault, 30, 450, contentPaint);
+                canvas.drawText(MainActivity.goalDefault, 30, x0 + 70, contentPaint);
             }
         }
 
         // hoc van
-        int x1 = 610, x2 = 920, x3 = 1300;
+
 
 
         if(checkStudy == 0){
-            canvas.drawText("HỌC VẤN", 30,  530, titlePaint);
+            if(x0 == 0){
+                x1 = a0;
+                checkX1 = 1; // nhảy 1 bậc
+            }else {
+                x1 = a1;
+            }
+
+            canvas.drawText("HỌC VẤN", 30,  x1 - 50, titlePaint);
             titlePaint2.setTextSize(30);
             titlePaint2.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
             if(c == 1){
@@ -313,6 +326,24 @@ public class CVActivity extends AppCompatActivity {
 
         // kinh nghiem
         if(checkExperience == 0){
+            if(x0 != 0){
+                if(x1 != 0){
+                    x2 = a2;
+                }else {
+                    x2 = a1;
+                    checkX2 = 1;
+                }
+
+            }else {
+                if(x1 == 0){
+                    x2 = a0;
+                    checkX2 = 2;
+                }else {
+                    x2 = a1;
+                    checkX2 = 1;
+                }
+            }
+
             canvas.drawText("KINH NGHIỆM", 30, x2, titlePaint);
             if(d == 1){
                 for(int i=0; i < experienceCVS.size(); i++){
@@ -334,6 +365,47 @@ public class CVActivity extends AppCompatActivity {
 
         // ky nang
         if(checkSkill == 0){
+            if(x0 != 0){
+                if(x1 != 0){
+                    if(x2 != 0){
+                        x3 = x3;
+                    }else {
+                        x3 = a2;
+                        checkX3 = 1;
+                    }
+                }else {
+                    if(x2 == 0){
+                        x3 = a1;
+                        checkX3 = 2;
+                    }else {
+                        x3 = a2;
+                        checkX3 = 1;
+                    }
+                }
+
+            }else {
+                if(x1 != 0){
+                    if(x2 != 0){
+                        x3 = a2;
+                        checkX3 = 1;
+                    }else {
+                        x3 = a1;
+                        checkX3 = 2;
+                    }
+
+                }else {
+                    if(x2 != 0){
+                        x3 = a1;
+                        checkX3 = 2;
+                    }else {
+                        x3 = a0;
+                        checkX3 = 3;
+                    }
+                }
+
+            }
+
+
             canvas.drawText("KỸ NĂNG", 30, x3, titlePaint);
             int width = 300, height = 50;
             if(e == 1){
