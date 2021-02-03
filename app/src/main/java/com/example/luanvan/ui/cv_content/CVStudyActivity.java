@@ -100,9 +100,6 @@ public class CVStudyActivity extends AppCompatActivity {
         if(MainActivity.checkFirstStudy == 0 && CVActivity.kind == 2) {
             getData();
         }
-//        if(CVActivity.kind == 2){
-//            getData();
-//        }
 
     }
     public void showDialog(){
@@ -174,7 +171,13 @@ public class CVStudyActivity extends AppCompatActivity {
         PdfDocument.Page page = pdfDocument.startPage(pageInfo);
         Canvas canvas = page.getCanvas();
         myPaint.setStyle(Paint.Style.FILL);
-        myPaint.setColor(Color.rgb(100,100,100));
+        if(MainActivity.color == 1){
+            myPaint.setColor(Color.rgb(100,100,100));
+        }else if(MainActivity.color == 2) {
+            myPaint.setColor(Color.rgb(20,115,160));
+        }else {
+            myPaint.setColor(Color.rgb(190,55,10));
+        }
         canvas.drawRect(0, 0, pageWidth, 300, myPaint);
 
         paint1.setColor(Color.WHITE);

@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.CVKind;
 import com.example.luanvan.ui.cv.CVActivity;
+import com.example.luanvan.ui.cv.CVCreateActivity;
 
 import java.util.ArrayList;
 
@@ -40,16 +41,26 @@ public class CVKindAdapter extends RecyclerView.Adapter<CVKindAdapter.ItemHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ItemHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ItemHolder holder, final int position) {
         CVKind cvKind = arrayList.get(position);
         holder.name.setText(cvKind.getName());
         holder.img.setImageResource(cvKind.getImage());
         holder.btnuse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, CVActivity.class);
-                intent.putExtra("kind",1);
-                activity.startActivityForResult(intent, REQUEST_CODE);
+                if(CVCreateActivity.kind == 1){
+                    Intent intent = new Intent(context, CVActivity.class);
+                    intent.putExtra("kind",1);
+                    // 1: defaut, 2: blue, 3: green
+                    intent.putExtra("color", arrayList.get(position).getId());
+                    activity.startActivityForResult(intent, REQUEST_CODE);
+                }else {
+                    Intent intent = new Intent();
+                    intent.putExtra("maucv", arrayList.get(position).getId());
+                    activity.setResult(2);
+                    activity.finish();
+                }
+
             }
         });
 

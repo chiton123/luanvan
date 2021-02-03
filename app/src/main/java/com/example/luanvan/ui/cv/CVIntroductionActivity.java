@@ -46,7 +46,7 @@ public class CVIntroductionActivity extends AppCompatActivity {
     Handler handler;
 
 
-    // kind: 1 add, kind: 2 update
+    // kind: 1 tạo mới, 2: đổi mãu
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -154,7 +154,7 @@ public class CVIntroductionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), CVCreateActivity.class);
-                intent.putExtra("kind", 1);
+                intent.putExtra("kind", 1); // tạo mới
                 startActivityForResult(intent, REQUEST_CODE);
 
             }

@@ -61,9 +61,9 @@ public class MainActivity extends AppCompatActivity {
     // - Experience
     public static ExperienceCV experienceCV = new ExperienceCV("temp","TMA Solution","Developer", "2015", "2020", "Rất tốt");
     public static ArrayList<SkillCV> skillCVArray = new ArrayList<>();
-    public static UserCV userCVDefault = new UserCV("Nguyễn Văn A", "DBA", "batphuongtrinhvoti@gmail.com","0323232","Vĩnh Long","Nam","20/10/1999");
-    public static StudyCV studyCV = new StudyCV("temp", "Đại học Cần Thơ", "Công nghệ thông tin", "2017", "2021", "Giỏi, GPA: 3.5");
-    public static String goalDefault = "Trở thành DBA lương 1000$";
+    public static UserCV userCVDefault = new UserCV("Nguyễn Chí Tôn", "DBA", "batphuongtrinhvoti@gmail.com","0323232","Ký túc xá B, đại học Cần Thơ","Nam","20/10/1999");
+    public static StudyCV studyCV = new StudyCV("temp", "Đại học Cần Thơ", "CÔNG NGHỆ THÔNG TIN", "10/2017", "10/2021", "Tốt nghiệp loại giỏi, điểm trung bình 8.0");
+    public static String goalDefault = "Trở thành DBA làm việc trong 1 ngân hàng lớn lương 1000$/năm";
 
 
 
@@ -85,8 +85,10 @@ public class MainActivity extends AppCompatActivity {
     public static int checkFirstSkill = 0;
     public static int checkFirstVolunteer = 0;
 
+    // kind CV, only change color
+    public static int color = 0;
 
-    public static String host = "http://10.3.74.116:8888/luanvan/";
+    public static String host = "http://10.10.43.4:8888/luanvan/";
     public static String urljob1 = host + "job1.php";
     public static String urlcompany = host + "company.php";
     // dang nhap
@@ -116,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
 //        }catch (NullPointerException e){
 //            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
 //        }
-        skillCVArray.add(new SkillCV("Kỹ năng tiếng anh", 4, "temp"));
+        skillCVArray.add(new SkillCV("Kỹ năng tiếng anh", 5, "temp"));
         skillCVArray.add(new SkillCV("Kỹ năng tin học", 3, "temp"));
 
     }

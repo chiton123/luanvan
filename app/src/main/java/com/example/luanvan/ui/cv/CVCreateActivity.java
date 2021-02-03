@@ -21,6 +21,7 @@ public class CVCreateActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     ArrayList<CVKind> arrayList;
     CVKindAdapter adapter; // request_code = 123
+    public static int kind = 0; // 1: tạo mới, 2: đổi mẫu
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +73,8 @@ public class CVCreateActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
         recyclerView.setAdapter(adapter);
+        kind = getIntent().getIntExtra("kind",0);
+
 
     }
 }

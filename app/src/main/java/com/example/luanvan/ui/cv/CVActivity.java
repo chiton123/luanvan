@@ -73,8 +73,14 @@ public class CVActivity extends AppCompatActivity {
     public static AddAdapter addAdapter;
     StorageReference storageReference;
     ImageView imgCancel;
+    int REQUEST_CODE_DOIMAU = 333;
+    // khi đổi mẫu
+    int checkKindChange = 0;
     // default add
-    String url = "https://firebasestorage.googleapis.com/v0/b/project-7807e.appspot.com/o/default.pdf?alt=media&token=e22cfec0-f4fc-47a8-b65d-84e3d17a9b7a";
+    // url cv theo từng loại
+    String urlKind1 = "https://firebasestorage.googleapis.com/v0/b/project-7807e.appspot.com/o/loai1.pdf?alt=media&token=0851ef5c-dc88-483e-a223-11dcceeeef93";
+    String urlKind2 = "https://firebasestorage.googleapis.com/v0/b/project-7807e.appspot.com/o/loai2.pdf?alt=media&token=8025c631-ae6f-4d6c-85ac-327adab71386";
+    String urlKind3 = "https://firebasestorage.googleapis.com/v0/b/project-7807e.appspot.com/o/loai3.pdf?alt=media&token=988ea675-41df-4298-bfb3-218f7dcedab6";
     // update cv
     String urlX = "";
     String nameUpdate = "";
@@ -136,6 +142,19 @@ public class CVActivity extends AppCompatActivity {
                 eventDialog();
             }
         });
+        btndoimau.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(kind == 1){
+                    finish();
+                }else {
+                    // tạo mới 1, đổi mẫu 2
+                    Intent intent = new Intent(getApplicationContext(), CVCreateActivity.class);
+                    intent.putExtra("kind",2);
+                    startActivityForResult(intent, REQUEST_CODE_DOIMAU);
+                }
+            }
+        });
 
     }
     public void reloadWebview(){
@@ -168,6 +187,13 @@ public class CVActivity extends AppCompatActivity {
             reloadWebview();
         }
 
+        if(requestCode == REQUEST_CODE_DOIMAU && resultCode == 2){
+           // Toast.makeText(getApplicationContext(), "doi mau", Toast.LENGTH_SHORT).show();
+            checkKindChange = 1;
+            MainActivity.color = data.getIntExtra("maucv", 0);
+            eventPDF();
+
+        }
         super.onActivityResult(requestCode, resultCode, data);
     }
     private void eventDialog() {
@@ -207,11 +233,17 @@ public class CVActivity extends AppCompatActivity {
         webView.getSettings().setSupportZoom(true);
         String url1 = "https://docs.google.com/gview?embedded=true&url=";
         if(kind == 1){
-            url1 += url;
+            if(MainActivity.color == 1){
+                url1 += urlKind1;
+            }else if(MainActivity.color == 2){
+                url1 += urlKind2;
+            }else {
+                url1 += urlKind3;
+            }
+
         }else {
             url1 += urlX;
         }
-
         webView.loadUrl(url1);
     }
 
@@ -248,7 +280,14 @@ public class CVActivity extends AppCompatActivity {
         PdfDocument.Page page = pdfDocument.startPage(pageInfo);
         Canvas canvas = page.getCanvas();
         myPaint.setStyle(Paint.Style.FILL);
-        myPaint.setColor(Color.rgb(100,100,100));
+        if(MainActivity.color == 1){
+            myPaint.setColor(Color.rgb(100,100,100));
+        }else if(MainActivity.color == 2) {
+            myPaint.setColor(Color.rgb(20,115,160));
+        }else {
+            myPaint.setColor(Color.rgb(190,55,10));
+        }
+
         canvas.drawRect(0, 0, pageWidth, 300, myPaint);
 
         paint1.setColor(Color.WHITE);
@@ -798,6 +837,7 @@ public class CVActivity extends AppCompatActivity {
             arrayListRemove.add(arrayListTongHop.get(2));
             arrayListRemove.add(arrayListTongHop.get(3));
             arrayListRemove.add(arrayListTongHop.get(4));
+            MainActivity.color = getIntent().getIntExtra("color",0);
 
         }else {
             checkChild(key);
