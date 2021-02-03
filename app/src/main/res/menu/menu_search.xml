@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/searchhienthithongtin"
+        android:icon="@drawable/search1"
+        android:title="Tim kiem"
+        app:showAsAction="always|collapseActionView"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        ></item>
+    <item android:id="@+id/filterhienthi"
+        android:icon="@drawable/filter"
+        app:showAsAction="always|collapseActionView"
+        android:title="Tim kiem"
+        ></item>
+
+</menu>

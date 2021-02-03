@@ -37,6 +37,7 @@ import com.example.luanvan.ui.Adapter.add_remove.AddAdapter;
 import com.example.luanvan.ui.Adapter.add_remove.TitleAdapter;
 import com.example.luanvan.ui.Model.Pdf;
 import com.example.luanvan.ui.Model.Title;
+import com.example.luanvan.ui.modelCV.ExperienceCV;
 import com.example.luanvan.ui.modelCV.Info;
 import com.example.luanvan.ui.modelCV.PdfCV;
 import com.example.luanvan.ui.modelCV.UserCV;
@@ -64,7 +65,7 @@ import static com.example.luanvan.MainActivity.experienceCVS;
 public class CVActivity extends AppCompatActivity {
     Toolbar toolbar;
     WebView webView;
-    Button btndoimau, btnnoidung;
+    Button  btnnoidung;
     EditText cvName;
     Dialog dialog;
     ListView listViewThongtinLienHe, listViewRemove, listViewAdd;
@@ -73,9 +74,8 @@ public class CVActivity extends AppCompatActivity {
     public static AddAdapter addAdapter;
     StorageReference storageReference;
     ImageView imgCancel;
-    int REQUEST_CODE_DOIMAU = 333;
-    // khi đổi mẫu
-    int checkKindChange = 0;
+
+
     // default add
     // url cv theo từng loại
     String urlKind1 = "https://firebasestorage.googleapis.com/v0/b/project-7807e.appspot.com/o/loai1.pdf?alt=media&token=0851ef5c-dc88-483e-a223-11dcceeeef93";
@@ -98,7 +98,7 @@ public class CVActivity extends AppCompatActivity {
     public static int a0 = 400, a1 = 650, a2 = 950, a3 = 1200;
     public static int x0 = 0, x1 = 0, x2 = 0, x3 = 0;
     // kiem tra xem x1, x2, x3 có nhảy lên bậc nào hay k khi tạo CV
-    public static int checkX1 = 0, checkX2 = 0, checkX3 = 0;
+    public static int checkX1 = 0, checkX2 = 0, checkX3 = 0; // chưa sử dụng
     String CVNameToPost = "";
 
     @Override
@@ -142,19 +142,6 @@ public class CVActivity extends AppCompatActivity {
                 eventDialog();
             }
         });
-        btndoimau.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(kind == 1){
-                    finish();
-                }else {
-                    // tạo mới 1, đổi mẫu 2
-                    Intent intent = new Intent(getApplicationContext(), CVCreateActivity.class);
-                    intent.putExtra("kind",2);
-                    startActivityForResult(intent, REQUEST_CODE_DOIMAU);
-                }
-            }
-        });
 
     }
     public void reloadWebview(){
@@ -187,13 +174,6 @@ public class CVActivity extends AppCompatActivity {
             reloadWebview();
         }
 
-        if(requestCode == REQUEST_CODE_DOIMAU && resultCode == 2){
-           // Toast.makeText(getApplicationContext(), "doi mau", Toast.LENGTH_SHORT).show();
-            checkKindChange = 1;
-            MainActivity.color = data.getIntExtra("maucv", 0);
-            eventPDF();
-
-        }
         super.onActivityResult(requestCode, resultCode, data);
     }
     private void eventDialog() {
@@ -519,6 +499,7 @@ public class CVActivity extends AppCompatActivity {
 
     }
 
+
     public void updateInfoCVAll(){
         MainActivity.mData.child("cv").child(MainActivity.uid).child(key).removeValue();
         PdfCV pdfCV = new PdfCV(MainActivity.uid, cvName.getText().toString(), MainActivity.urlCV, key);
@@ -810,7 +791,6 @@ public class CVActivity extends AppCompatActivity {
     private void anhxa() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         webView = (WebView) findViewById(R.id.webview);
-        btndoimau = (Button) findViewById(R.id.buttondoimau);
         btnnoidung = (Button) findViewById(R.id.buttonnoidung);
         cvName = (EditText) findViewById(R.id.editname);
         kind = getIntent().getIntExtra("kind",0);

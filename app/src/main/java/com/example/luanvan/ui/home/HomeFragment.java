@@ -3,6 +3,9 @@ package com.example.luanvan.ui.home;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -33,6 +36,7 @@ import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.JobAdapter;
 import com.example.luanvan.ui.KindofJob.KindOfJobActivity;
 import com.example.luanvan.ui.Model.Job;
+import com.example.luanvan.ui.Search_Filter.SearchActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -62,7 +66,14 @@ public class HomeFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerViewthuctap.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewthuctap.setHasFixedSize(true);
+        // toolbar menu option
+
         toolbar = (Toolbar)view.findViewById(R.id.toolbar);
+        MainActivity mainActivity = (MainActivity) getActivity();
+        mainActivity.setSupportActionBar(toolbar);
+        toolbar.inflateMenu(R.menu.menu_main);
+        setHasOptionsMenu(true);
+
         txtthuctap = (TextView) view.findViewById(R.id.txtviecthuctap);
         txtviectotnhat = (TextView) view.findViewById(R.id.txtvieclamtotnhat);
         arrayList = new ArrayList<>();
@@ -74,12 +85,33 @@ public class HomeFragment extends Fragment {
         recyclerView.setAdapter(jobAdapter);
         recyclerViewthuctap.setAdapter(adapterThuctap);
 
-        actionbar();
+
         eventXemtatca();
 
 
         return view;
     }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_main, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.search:
+                Intent intent = new Intent(getActivity(), SearchActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.chat:
+                Toast.makeText(getActivity(), "chat", Toast.LENGTH_SHORT).show();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     // 3: thuc tap
     private void eventXemtatca() {
         txtthuctap.setOnClickListener(new View.OnClickListener() {
@@ -103,10 +135,7 @@ public class HomeFragment extends Fragment {
 
     }
 
-    private void actionbar() {
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
-    }
 
 
     private void getData(final int kind) {

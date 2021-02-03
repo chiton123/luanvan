@@ -46,7 +46,7 @@ public class CVIntroductionActivity extends AppCompatActivity {
     Handler handler;
 
 
-    // kind: 1 tạo mới, 2: đổi mãu
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,6 +109,10 @@ public class CVIntroductionActivity extends AppCompatActivity {
 
     }
     public void getBackDefault(){
+        CVActivity.checkSkill = 0;
+        CVActivity.checkExperience = 0;
+        CVActivity.checkStudy = 0;
+        CVActivity.checkGoal = 0;
         MainActivity.checkFirstSkill = 0;
         MainActivity.checkFirstExperience = 0;
         MainActivity.checkFirstStudy = 0;
@@ -119,16 +123,14 @@ public class CVIntroductionActivity extends AppCompatActivity {
         MainActivity.experienceCVS.clear();
         MainActivity.studyCVS.clear();
         MainActivity.goal = "";
+        MainActivity.color = 0;
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         // update nhe
         if(resultCode == 123 && requestCode == 123){
-            Toast.makeText(getApplicationContext(), "haha", Toast.LENGTH_SHORT).show();
-            CVActivity.checkSkill = 0;
-            CVActivity.checkExperience = 0;
-            CVActivity.checkStudy = 0;
-            CVActivity.checkGoal = 0;
+         //   Toast.makeText(getApplicationContext(), "haha", Toast.LENGTH_SHORT).show();
+
             arrayListCV.remove(position);
             adapter.notifyDataSetChanged();
             handler = new Handler();
@@ -143,6 +145,14 @@ public class CVIntroductionActivity extends AppCompatActivity {
         // them
         if(resultCode == 123 && requestCode == REQUEST_CODE){
 
+            adapter.notifyDataSetChanged();
+            handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    getBackDefault();
+                }
+            },5000);
 
         }
 

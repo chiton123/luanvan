@@ -48,18 +48,11 @@ public class CVKindAdapter extends RecyclerView.Adapter<CVKindAdapter.ItemHolder
         holder.btnuse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(CVCreateActivity.kind == 1){
-                    Intent intent = new Intent(context, CVActivity.class);
-                    intent.putExtra("kind",1);
-                    // 1: defaut, 2: blue, 3: green
-                    intent.putExtra("color", arrayList.get(position).getId());
-                    activity.startActivityForResult(intent, REQUEST_CODE);
-                }else {
-                    Intent intent = new Intent();
-                    intent.putExtra("maucv", arrayList.get(position).getId());
-                    activity.setResult(2);
-                    activity.finish();
-                }
+                Intent intent = new Intent(context, CVActivity.class);
+                intent.putExtra("kind",1);
+                // 1: defaut, 2: blue, 3: green
+                intent.putExtra("color", arrayList.get(position).getId());
+                activity.startActivityForResult(intent, REQUEST_CODE);
 
             }
         });

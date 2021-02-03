@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,12 +25,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-public class JobAdapter extends RecyclerView.Adapter<JobAdapter.ItemHolder> {
+public class JobAdapter extends RecyclerView.Adapter<JobAdapter.ItemHolder> implements Filterable {
     Context context;
     ArrayList<Job> arrayList;
     Activity activity;
-
+    ArrayList<Job> filterArraylist;
 
     public JobAdapter(Context context, ArrayList<Job> arrayList, Activity activity) {
         this.context = context;
@@ -82,6 +85,36 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.ItemHolder> {
     @Override
     public int getItemCount() {
         return arrayList.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String charSequenceString = constraint.toString();
+                if(charSequenceString.isEmpty()){
+                    arrayList = filterArraylist;
+                }else {
+                    ArrayList<Job> filteredList = new ArrayList<>();
+                    for(Job name : filteredList){
+                        if(name.getName().toLowerCase().contains(charSequenceString.toLowerCase())){
+                            filteredList.add(name);
+                        }
+                        filterArraylist = filteredList;
+                    }
+                }
+                FilterResults results = new FilterResults();
+                results.values = filterArraylist;
+                return results;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                filterArraylist = (ArrayList<Job>) results.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 
     public class ItemHolder extends RecyclerView.ViewHolder{
