@@ -1,10 +1,10 @@
 package com.example.luanvan.ui.Model;
 
-public class Area {
+public class GeneralObject {
     private int id;
     private String name;
 
-    public Area(int id, String name) {
+    public GeneralObject(int id, String name) {
         this.id = id;
         this.name = name;
     }

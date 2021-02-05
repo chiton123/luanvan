@@ -1,4 +1,4 @@
-package com.example.luanvan.ui.Adapter;
+package com.example.luanvan.ui.Adapter.update_personal_info;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,18 +11,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.luanvan.R;
-import com.example.luanvan.ui.Model.Area;
+import com.example.luanvan.ui.Model.GeneralObject;
 
 import java.util.ArrayList;
 
-public class SpinnerAdapter extends ArrayAdapter<Area>{
-
-
-    public SpinnerAdapter(Context context, ArrayList<Area> arrayList){
-        super(context, 0, arrayList);
+public class SpinnerNewAdapter extends ArrayAdapter<GeneralObject> {
+    public SpinnerNewAdapter(Context context, ArrayList<GeneralObject> arrayList){
+        super(context, 0 , arrayList);
 
     }
-
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -38,12 +35,14 @@ public class SpinnerAdapter extends ArrayAdapter<Area>{
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.dong_spinner, parent, false);
         }
         TextView txtname = convertView.findViewById(R.id.name);
-        Area area = getItem(position);
-        if(area != null){
-            txtname.setText(area.getName());
+        GeneralObject object = getItem(position);
+        if(object != null){
+            txtname.setText(object.getName());
         }
+
 
         return  convertView;
     }
+
 
 }
