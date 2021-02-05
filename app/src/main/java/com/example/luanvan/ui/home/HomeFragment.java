@@ -80,7 +80,9 @@ public class HomeFragment extends Fragment {
         arrayListThuctap = new ArrayList<>();
         jobAdapter = new JobAdapter(getActivity(), arrayList, getActivity());
         adapterThuctap = new JobAdapter(getActivity(), arrayListThuctap, getActivity());
+        // tất cả job
         getData(0);
+        // job thực tập
         getData(3);
         recyclerView.setAdapter(jobAdapter);
         recyclerViewthuctap.setAdapter(adapterThuctap);

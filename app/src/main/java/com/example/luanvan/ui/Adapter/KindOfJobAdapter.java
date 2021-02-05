@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,17 +21,21 @@ import com.example.luanvan.ui.DetailedJob.DetailJobActivity;
 import com.example.luanvan.ui.Model.Job;
 
 import java.text.DecimalFormat;
+import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.List;
 
-public class KindOfJobAdapter extends RecyclerView.Adapter<KindOfJobAdapter.ItemHolder> {
+public class KindOfJobAdapter extends RecyclerView.Adapter<KindOfJobAdapter.ItemHolder> implements Filterable {
     Context context;
-    ArrayList<Job> arrayList;
+    List<Job> filterArraylist;
     Activity activity;
+    List<Job> nameList;
 
-    public KindOfJobAdapter(Context context, ArrayList<Job> arrayList, Activity activity) {
+    public KindOfJobAdapter(Context context, List<Job> arrayList, Activity activity) {
         this.context = context;
-        this.arrayList = arrayList;
+        this.nameList = arrayList;
         this.activity = activity;
+        this.filterArraylist = arrayList;
 
     }
 
@@ -43,7 +49,7 @@ public class KindOfJobAdapter extends RecyclerView.Adapter<KindOfJobAdapter.Item
 
     @Override
     public void onBindViewHolder(@NonNull ItemHolder holder, final int position) {
-        Job job = arrayList.get(position);
+        Job job = filterArraylist.get(position);
         holder.txttencongviec.setText(job.getName());
         holder.txttencongty.setText(job.getCompany_name());
         holder.txttime.setText(job.getDate());
@@ -57,7 +63,7 @@ public class KindOfJobAdapter extends RecyclerView.Adapter<KindOfJobAdapter.Item
             public void onClick(View v) {
                 Intent intent = new Intent(context, DetailJobActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("job", arrayList.get(position));
+                intent.putExtra("job", filterArraylist.get(position));
                 activity.startActivity(intent);
 
             }
@@ -68,7 +74,7 @@ public class KindOfJobAdapter extends RecyclerView.Adapter<KindOfJobAdapter.Item
 
     @Override
     public int getItemCount() {
-        return arrayList.size();
+        return filterArraylist.size();
     }
 
     public class ItemHolder extends RecyclerView.ViewHolder{
@@ -88,6 +94,42 @@ public class KindOfJobAdapter extends RecyclerView.Adapter<KindOfJobAdapter.Item
 
 
         }
+    }
+    public static String stripAccents(String s)
+    {
+        s = Normalizer.normalize(s, Normalizer.Form.NFD);
+        s = s.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
+        return s;
+    }
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String charSequenceString = stripAccents(constraint.toString()).trim();
+                if(charSequenceString.isEmpty()){
+                    filterArraylist = nameList;
+                }else {
+                    List<Job> filteredList = new ArrayList<>();
+                    for(Job job : nameList){
+                        String name1 = stripAccents(job.getName()).trim();
+                        if(name1.toLowerCase().contains(charSequenceString.toLowerCase())){
+                            filteredList.add(job);
+                        }
+                        filterArraylist = filteredList;
+                    }
+                }
+                FilterResults results = new FilterResults();
+                results.values = filterArraylist;
+                return results;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                filterArraylist = (ArrayList<Job>) results.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 
 }

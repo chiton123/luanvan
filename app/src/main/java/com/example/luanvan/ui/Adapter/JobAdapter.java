@@ -27,11 +27,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class JobAdapter extends RecyclerView.Adapter<JobAdapter.ItemHolder> implements Filterable {
+public class JobAdapter extends RecyclerView.Adapter<JobAdapter.ItemHolder>  {
     Context context;
     ArrayList<Job> arrayList;
     Activity activity;
-    ArrayList<Job> filterArraylist;
+
 
     public JobAdapter(Context context, ArrayList<Job> arrayList, Activity activity) {
         this.context = context;
@@ -87,35 +87,7 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.ItemHolder> impl
         return arrayList.size();
     }
 
-    @Override
-    public Filter getFilter() {
-        return new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                String charSequenceString = constraint.toString();
-                if(charSequenceString.isEmpty()){
-                    arrayList = filterArraylist;
-                }else {
-                    ArrayList<Job> filteredList = new ArrayList<>();
-                    for(Job name : filteredList){
-                        if(name.getName().toLowerCase().contains(charSequenceString.toLowerCase())){
-                            filteredList.add(name);
-                        }
-                        filterArraylist = filteredList;
-                    }
-                }
-                FilterResults results = new FilterResults();
-                results.values = filterArraylist;
-                return results;
-            }
 
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-                filterArraylist = (ArrayList<Job>) results.values;
-                notifyDataSetChanged();
-            }
-        };
-    }
 
     public class ItemHolder extends RecyclerView.ViewHolder{
         public TextView txttencongviec, txttencongty, txtarea, txttime, txtsalary;
