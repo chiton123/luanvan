@@ -32,7 +32,7 @@ public class SpinnerNewAdapter extends ArrayAdapter<GeneralObject> {
     }
     private View initview(int position, View convertView, ViewGroup parent){
         if(convertView == null){
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.dong_spinner, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.dong_spinner, null, false);
         }
         TextView txtname = convertView.findViewById(R.id.name);
         GeneralObject object = getItem(position);

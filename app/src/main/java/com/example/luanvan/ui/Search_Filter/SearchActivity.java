@@ -1,6 +1,7 @@
 package com.example.luanvan.ui.Search_Filter;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
@@ -44,7 +45,7 @@ public class SearchActivity extends AppCompatActivity {
     Toolbar toolbar;
     SearchView searchView;
     KindOfJobAdapter adapter;
-    ArrayList<Job> arrayList;
+    public static ArrayList<Job> arrayList;
     RecyclerView recyclerView;
     int REQUEST_CODE_FILTER = 123;
 
@@ -119,6 +120,17 @@ public class SearchActivity extends AppCompatActivity {
         };
         requestQueue.add(stringRequest);
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == REQUEST_CODE_FILTER && resultCode == 123){
+            adapter.notifyDataSetChanged();
+            Toast.makeText(getApplicationContext(), "haha", Toast.LENGTH_SHORT).show();
+
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

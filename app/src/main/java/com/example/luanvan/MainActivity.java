@@ -96,6 +96,8 @@ public class MainActivity extends AppCompatActivity {
     public static String urllogin = host + "login.php";
     public static String urluserinfo = host + "userinfo.php";
     public static String urlupdateuser = host + "updateuser.php";
+    // filter
+    public static String urlFilter = host + "filter.php";
 
 
 

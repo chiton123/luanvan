@@ -2,40 +2,150 @@ package com.example.luanvan.ui.Search_Filter;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.update_personal_info.SpinnerNewAdapter;
 import com.example.luanvan.ui.Model.GeneralObject;
+import com.example.luanvan.ui.Model.Job;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class FilterActivity extends AppCompatActivity {
-    Spinner spinnerKhuvuc, spinnerNganhnghe;
-    GeneralObject area, profession;
-    int idArea, idProfession;
-    ArrayList<GeneralObject> dataArea,dataProfession;
-    SpinnerNewAdapter khuVucAdapter, nganhNgheAdapter;
+    Spinner spinnerKhuvuc, spinnerNganhnghe, spinnerLuong, spinnerKinhnghiem, spinnerLoaiHinh;
+    GeneralObject area, profession, salary, experience, kindJob;
+    int idArea = 0, idProfession = 0, idSalary = 0, idExperience = 0, idKindJob = 0;
+    ArrayList<GeneralObject> dataArea,dataProfession, dataSalary, dataExperience, dataKindJob;
+    SpinnerNewAdapter khuVucAdapter, nganhNgheAdapter, luongAdapter, kinhNghiemAdapter, loaiHinhAdapter;
+    Button btnHuy, btnTimKiem;
+    Handler handler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter);
         anhxa();
         spinerEvent();
+        eventButton();
+
+    }
+
+    private void eventButton() {
+        btnTimKiem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              //  Toast.makeText(getApplicationContext(), "idarea:  "+ idArea + " pro " + idProfession , Toast.LENGTH_SHORT).show();
+                RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlFilter,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                SearchActivity.arrayList.clear();
+
+                                try {
+                                    JSONArray jsonArray = new JSONArray(response);
+                                    for(int i=0 ; i < jsonArray.length(); i++){
+                                        JSONObject object = jsonArray.getJSONObject(i);
+                                        SearchActivity.arrayList.add(new Job(
+                                                object.getInt("id"),
+                                                object.getString("name"),
+                                                object.getInt("idcompany"),
+                                                object.getString("img"),
+                                                object.getString("area"),
+                                                object.getInt("idtype"),
+                                                object.getInt("idprofession"),
+                                                object.getString("date"),
+                                                object.getInt("salary"),
+                                                object.getInt("idarea"),
+                                                object.getInt("gender"),
+                                                object.getString("experience"),
+                                                object.getInt("number"),
+                                                object.getString("position"),
+                                                object.getString("description"),
+                                                object.getString("requirement"),
+                                                object.getString("benefit"),
+                                                object.getInt("status"),
+                                                object.getString("company_name"),
+                                                object.getString("type_job")
+                                        ));
+
+                                    }
+                                    handler = new Handler();
+                                    handler.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Intent intent  = new Intent();
+                                            setResult(123);
+                                            finish();
+                                        }
+                                    },3000);
+
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+
+                            }
+                        }){
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String,String> map = new HashMap<>();
+                        map.put("idarea", String.valueOf(idArea));
+                        map.put("idprofession", String.valueOf(idProfession));
+                        map.put("idkindjob", String.valueOf(idKindJob));
+                        return map;
+                    }
+                };
+                requestQueue.add(stringRequest);
+
+            }
+        });
 
     }
 
     private void spinerEvent() {
 
         khuVucAdapter = new SpinnerNewAdapter(this, dataArea);
-       // khuVucAdapter.setDropDownViewResource(R.layout.dropdown_text_color);
+
         nganhNgheAdapter = new SpinnerNewAdapter(this, dataProfession);
 
+        luongAdapter = new SpinnerNewAdapter(this, dataSalary);
+
+        kinhNghiemAdapter = new SpinnerNewAdapter(this, dataExperience);
+
+        loaiHinhAdapter = new SpinnerNewAdapter(this, dataKindJob);
+-- spinner có vấn đề
         spinnerKhuvuc.setAdapter(khuVucAdapter);
         spinnerNganhnghe.setAdapter(nganhNgheAdapter);
+        spinnerLuong.setAdapter(luongAdapter);
+        spinnerKinhnghiem.setAdapter(kinhNghiemAdapter);
+        spinnerLoaiHinh.setAdapter(loaiHinhAdapter);
         spinnerKhuvuc.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -53,6 +163,43 @@ public class FilterActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 profession = (GeneralObject) spinnerKhuvuc.getSelectedItem();
                 idProfession = profession.getId();
+                Toast.makeText(getApplicationContext(), " p " + profession.getName(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        spinnerLuong.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                salary = (GeneralObject) spinnerLuong.getSelectedItem();
+                idSalary = salary.getId();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        spinnerKinhnghiem.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                experience = (GeneralObject) spinnerKinhnghiem.getSelectedItem();
+                idExperience = experience.getId();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        spinnerLoaiHinh.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                kindJob = (GeneralObject) spinnerLoaiHinh.getSelectedItem();
+                idKindJob = kindJob.getId();
             }
 
             @Override
@@ -61,15 +208,64 @@ public class FilterActivity extends AppCompatActivity {
             }
         });
 
+
     }
 
     private void anhxa() {
         spinnerKhuvuc = (Spinner) findViewById(R.id.spinnerkhuvuc);
         spinnerNganhnghe = (Spinner) findViewById(R.id.spinnernganhnghe);
+        spinnerLuong = (Spinner) findViewById(R.id.spinnerluong);
+        spinnerKinhnghiem = (Spinner) findViewById(R.id.spinnerkinhnghiem);
+        spinnerLoaiHinh = (Spinner) findViewById(R.id.spinnerloaihinh);
+        btnHuy = (Button) findViewById(R.id.buttonhuy);
+        btnTimKiem = (Button) findViewById(R.id.buttontimkiem);
         dataArea = new ArrayList();
         dataProfession = new ArrayList<>();
+        dataSalary = new ArrayList<>();
+        dataExperience = new ArrayList<>();
+        dataKindJob = new ArrayList<>();
         getDataArea();
         getDataProfession();
+        getDataSalary();
+        getDataExperience();
+        getDataKindJob();
+
+    }
+
+    private void getDataKindJob() {
+        dataKindJob.add(new GeneralObject(0, "Tất cả"));
+        dataKindJob.add(new GeneralObject(1, "Toàn thời gian"));
+        dataKindJob.add(new GeneralObject(2, "Bán thời gian"));
+        dataKindJob.add(new GeneralObject(3, "Thực tập"));
+        dataKindJob.add(new GeneralObject(4, "Remote - Làm việc từ xa"));
+    }
+
+    private void getDataExperience() {
+        dataExperience.add(new GeneralObject(0, "Tất cả"));
+        dataExperience.add(new GeneralObject(1, "Chưa có kinh nghiệm"));
+        dataExperience.add(new GeneralObject(2, "Dưới 1 năm"));
+        dataExperience.add(new GeneralObject(3, "1 năm"));
+        dataExperience.add(new GeneralObject(4, "2 năm"));
+        dataExperience.add(new GeneralObject(5, "3 năm"));
+        dataExperience.add(new GeneralObject(6, "4 năm"));
+        dataExperience.add(new GeneralObject(7, "5 năm"));
+        dataExperience.add(new GeneralObject(8, "Trên 5 năm"));
+
+    }
+
+    private void getDataSalary() {
+        dataSalary.add(new GeneralObject(0, "Tất cả"));
+        dataSalary.add(new GeneralObject(1, "Dưới 3 triệu"));
+        dataSalary.add(new GeneralObject(2, "3 - 5 triệu"));
+        dataSalary.add(new GeneralObject(3, "5 - 7 triệu"));
+        dataSalary.add(new GeneralObject(4, "7 - 10 triệu"));
+        dataSalary.add(new GeneralObject(5, "10 - 12 triệu"));
+        dataSalary.add(new GeneralObject(6, "12 - 15 triệu"));
+        dataSalary.add(new GeneralObject(7, "15 - 20 triệu"));
+        dataSalary.add(new GeneralObject(8, "20 - 25 triệu"));
+        dataSalary.add(new GeneralObject(9, "Trên 30 triệu"));
+        dataSalary.add(new GeneralObject(10, "Thỏa thuận"));
+
 
     }
 
@@ -80,11 +276,16 @@ public class FilterActivity extends AppCompatActivity {
         dataProfession.add(new GeneralObject(3, "Báo chí, truyền hình"));
         dataProfession.add(new GeneralObject(4, "Bất động sản"));
         dataProfession.add(new GeneralObject(5, "Du lịch"));
-        dataProfession.add(new GeneralObject(6, "IT phần mềm"));
-        dataProfession.add(new GeneralObject(7, "Khách sạn, nhà hàng"));
-        dataProfession.add(new GeneralObject(8, "Kế toán, kiểm toán"));
-        dataProfession.add(new GeneralObject(9, "Marketing"));
-        dataProfession.add(new GeneralObject(10, "Luật, pháp lý"));
+        dataProfession.add(new GeneralObject(6, "Luật, pháp lý"));
+        dataProfession.add(new GeneralObject(7, "Điện tử viễn thông"));
+        dataProfession.add(new GeneralObject(8, "Giáo dục / Đào tạo"));
+        dataProfession.add(new GeneralObject(9, "IT Phần cứng / Mạng"));
+        dataProfession.add(new GeneralObject(10, "IT Phần mềm"));
+        dataProfession.add(new GeneralObject(11, "Kế toán / Kiểm toán"));
+        dataProfession.add(new GeneralObject(12, "Marketing / truyền thông / Quảng cáo"));
+        dataProfession.add(new GeneralObject(13, "Thực phẩm / Đồ uống"));
+        dataProfession.add(new GeneralObject(14, "Thiết kế đồ họa"));
+
     }
 
     public void getDataArea() {
@@ -147,6 +348,11 @@ public class FilterActivity extends AppCompatActivity {
         dataArea.add(new GeneralObject(57,"Vĩnh Phúc"));
         dataArea.add(new GeneralObject(58,"Yên Bái"));
         dataArea.add(new GeneralObject(59,"Phú Yên"));
+        dataArea.add(new GeneralObject(59," Cần Thơ"));
+        dataArea.add(new GeneralObject(59,"Đà Nẵng"));
+        dataArea.add(new GeneralObject(59,"Hải Phòng"));
+        dataArea.add(new GeneralObject(59,"Hà Nội"));
+        dataArea.add(new GeneralObject(59,"TP HCM"));
 
 
     }
