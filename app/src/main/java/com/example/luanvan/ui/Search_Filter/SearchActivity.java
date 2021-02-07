@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -124,12 +125,16 @@ public class SearchActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        // search
         if(requestCode == REQUEST_CODE_FILTER && resultCode == 123){
             adapter.notifyDataSetChanged();
         //    Toast.makeText(getApplicationContext(), "haha", Toast.LENGTH_SHORT).show();
 
         }
-
+        if(requestCode == REQUEST_CODE_FILTER && resultCode == 234){
+            SearchActivity.arrayList.clear();
+            getData(0);
+        }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -183,6 +188,8 @@ public class SearchActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SharedPreferences sharedPreferences = getSharedPreferences("FileName", 0);
+                sharedPreferences.edit().clear().commit();
                 finish();
             }
         });

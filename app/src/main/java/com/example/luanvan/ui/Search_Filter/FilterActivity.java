@@ -1,8 +1,10 @@
 package com.example.luanvan.ui.Search_Filter;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -33,11 +35,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FilterActivity extends AppCompatActivity {
+    Toolbar toolbar;
     Spinner spinnerKhuvuc, spinnerNganhnghe, spinnerLuong, spinnerKinhnghiem, spinnerLoaiHinh;
     GeneralObject area, profession, salary, experience, kindJob;
     int idArea = 0, idProfession = 0, idSalary = 0, idExperience = 0, idKindJob = 0;
     ArrayList<GeneralObject> dataArea,dataProfession, dataSalary, dataExperience, dataKindJob;
-    SpinnerNewAdapter khuVucAdapter, nganhNgheAdapter, luongAdapter, kinhNghiemAdapter, loaiHinhAdapter;
+    public static SpinnerNewAdapter khuVucAdapter, nganhNgheAdapter, luongAdapter, kinhNghiemAdapter, loaiHinhAdapter;
     Button btnHuy, btnTimKiem;
     Handler handler;
     @Override
@@ -45,9 +48,21 @@ public class FilterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter);
         anhxa();
+        actionBar();
         spinerEvent();
         eventButton();
 
+    }
+
+    private void actionBar() {
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void eventButton() {
@@ -60,9 +75,8 @@ public class FilterActivity extends AppCompatActivity {
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
-                                Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
+                              //  Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
                                 SearchActivity.arrayList.clear();
-
                                 try {
                                     JSONArray jsonArray = new JSONArray(response);
                                     for(int i=0 ; i < jsonArray.length(); i++){
@@ -129,6 +143,16 @@ public class FilterActivity extends AppCompatActivity {
 
             }
         });
+        btnHuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences sharedPreferences = getSharedPreferences("FileName", 0);
+                sharedPreferences.edit().clear().commit();
+                Intent intent = new Intent();
+                setResult(234);
+                finish();
+            }
+        });
 
     }
 
@@ -144,16 +168,49 @@ public class FilterActivity extends AppCompatActivity {
 
         loaiHinhAdapter = new SpinnerNewAdapter(this,R.layout.dong_spinner, dataKindJob);
 
+
         spinnerKhuvuc.setAdapter(khuVucAdapter);
         spinnerNganhnghe.setAdapter(nganhNgheAdapter);
         spinnerLuong.setAdapter(luongAdapter);
         spinnerKinhnghiem.setAdapter(kinhNghiemAdapter);
         spinnerLoaiHinh.setAdapter(loaiHinhAdapter);
+        SharedPreferences sharedPref = getSharedPreferences("FileName",MODE_PRIVATE);
+        int spinnerValueLoaiHinh = sharedPref.getInt("loaihinh",-1);
+        if(spinnerValueLoaiHinh != -1) {
+            // set the selected value of the spinner
+            spinnerLoaiHinh.setSelection(spinnerValueLoaiHinh);
+        }
+
+        int spinnerValueKinhNghiem = sharedPref.getInt("kinhnghiem", -1);
+        if(spinnerValueKinhNghiem != -1){
+            spinnerKinhnghiem.setSelection(spinnerValueKinhNghiem);
+        }
+
+        int spinnerValueLuong = sharedPref.getInt("luong", -1);
+        if(spinnerValueLuong != -1){
+            spinnerLuong.setSelection(spinnerValueLuong);
+        }
+
+        int spinnerValueKhuVuc = sharedPref.getInt("khuvuc", -1);
+        if(spinnerValueKhuVuc != -1){
+            spinnerKhuvuc.setSelection(spinnerValueKhuVuc);
+        }
+
+        int spinnerValueNganhNghe = sharedPref.getInt("nganhnghe", -1);
+        if(spinnerValueNganhNghe != -1){
+            spinnerNganhnghe.setSelection(spinnerValueNganhNghe);
+        }
+
         spinnerKhuvuc.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 area = khuVucAdapter.getObject(position);
                 idArea = area.getId();
+                int userChoice = spinnerKhuvuc.getSelectedItemPosition();
+                SharedPreferences sharedPref = getSharedPreferences("FileName",0);
+                SharedPreferences.Editor prefEditor = sharedPref.edit();
+                prefEditor.putInt("khuvuc",userChoice);
+                prefEditor.commit();
             }
 
             @Override
@@ -167,6 +224,11 @@ public class FilterActivity extends AppCompatActivity {
                 profession = nganhNgheAdapter.getObject(position);
                 idProfession = profession.getId();
              //   Toast.makeText(getApplicationContext(), " p " + idProfession, Toast.LENGTH_SHORT).show();
+                int userChoice = spinnerNganhnghe.getSelectedItemPosition();
+                SharedPreferences sharedPref = getSharedPreferences("FileName",0);
+                SharedPreferences.Editor prefEditor = sharedPref.edit();
+                prefEditor.putInt("nganhnghe",userChoice);
+                prefEditor.commit();
             }
 
             @Override
@@ -179,6 +241,11 @@ public class FilterActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 salary = luongAdapter.getObject(position);
                 idSalary = salary.getId();
+                int userChoice = spinnerLuong.getSelectedItemPosition();
+                SharedPreferences sharedPref = getSharedPreferences("FileName",0);
+                SharedPreferences.Editor prefEditor = sharedPref.edit();
+                prefEditor.putInt("luong",userChoice);
+                prefEditor.commit();
             }
 
             @Override
@@ -191,6 +258,12 @@ public class FilterActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 experience = kinhNghiemAdapter.getObject(position);
                 idExperience = experience.getId();
+                int userChoice = spinnerKinhnghiem.getSelectedItemPosition();
+                SharedPreferences sharedPref = getSharedPreferences("FileName",0);
+                SharedPreferences.Editor prefEditor = sharedPref.edit();
+                prefEditor.putInt("kinhnghiem",userChoice);
+                prefEditor.commit();
+
             }
 
             @Override
@@ -203,6 +276,11 @@ public class FilterActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 kindJob = loaiHinhAdapter.getObject(position);
                 idKindJob = kindJob.getId();
+                int userChoice = spinnerLoaiHinh.getSelectedItemPosition();
+                SharedPreferences sharedPref = getSharedPreferences("FileName",0);
+                SharedPreferences.Editor prefEditor = sharedPref.edit();
+                prefEditor.putInt("loaihinh",userChoice);
+                prefEditor.commit();
             }
 
             @Override
@@ -215,6 +293,7 @@ public class FilterActivity extends AppCompatActivity {
     }
 
     private void anhxa() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         spinnerKhuvuc = (Spinner) findViewById(R.id.spinnerkhuvuc);
         spinnerNganhnghe = (Spinner) findViewById(R.id.spinnernganhnghe);
         spinnerLuong = (Spinner) findViewById(R.id.spinnerluong);
@@ -270,7 +349,6 @@ public class FilterActivity extends AppCompatActivity {
         dataSalary.add(new GeneralObject(10, "Trên 30 triệu"));
         dataSalary.add(new GeneralObject(11, "Thỏa thuận"));
 
-
     }
 
     private void getDataProfession() {
@@ -303,60 +381,60 @@ public class FilterActivity extends AppCompatActivity {
         dataArea.add(new GeneralObject(7,"Bến Tre"));
         dataArea.add(new GeneralObject(8,"Bình Định"));
         dataArea.add(new GeneralObject(9,"Bình Dương"));
-        dataArea.add(new GeneralObject(11,"Bình Phước"));
-        dataArea.add(new GeneralObject(12,"Bình Thuận"));
-        dataArea.add(new GeneralObject(13,"Cà Mau"));
-        dataArea.add(new GeneralObject(14,"Cao Bằng"));
-        dataArea.add(new GeneralObject(15,"Đắk Lắk"));
-        dataArea.add(new GeneralObject(16,"Đắk Nông"));
-        dataArea.add(new GeneralObject(17,"Điện Biên"));
-        dataArea.add(new GeneralObject(18,"Đồng Nai"));
-        dataArea.add(new GeneralObject(19,"Đồng Tháp"));
-        dataArea.add(new GeneralObject(20,"Gia Lai"));
-        dataArea.add(new GeneralObject(21,"Hà Giang"));
-        dataArea.add(new GeneralObject(22,"Hà Nam"));
-        dataArea.add(new GeneralObject(23,"Hà Tĩnh"));
-        dataArea.add(new GeneralObject(24,"Hải Dương"));
-        dataArea.add(new GeneralObject(25,"Hậu Giang"));
-        dataArea.add(new GeneralObject(26,"Hòa Bình"));
-        dataArea.add(new GeneralObject(27,"Hưng Yên"));
-        dataArea.add(new GeneralObject(28,"Khánh Hòa"));
-        dataArea.add(new GeneralObject(29,"Kiên Giang"));
-        dataArea.add(new GeneralObject(30,"Kon Tum"));
-        dataArea.add(new GeneralObject(31,"Lai Châu"));
-        dataArea.add(new GeneralObject(32,"Lâm Đồng"));
-        dataArea.add(new GeneralObject(33,"Lạng Sơn"));
-        dataArea.add(new GeneralObject(34,"Lào Cai"));
-        dataArea.add(new GeneralObject(35,"Long An"));
-        dataArea.add(new GeneralObject(36,"Nam Định"));
-        dataArea.add(new GeneralObject(37,"Nghệ An"));
-        dataArea.add(new GeneralObject(38,"Ninh Bình"));
-        dataArea.add(new GeneralObject(39,"Ninh Thuận"));
-        dataArea.add(new GeneralObject(40,"Phú Thọ"));
-        dataArea.add(new GeneralObject(41,"Quảng Bình"));
-        dataArea.add(new GeneralObject(42,"Quảng Nam"));
-        dataArea.add(new GeneralObject(43,"Quảng Ngãi"));
-        dataArea.add(new GeneralObject(44,"Quảng Ninh"));
-        dataArea.add(new GeneralObject(45,"Quảng Trị"));
-        dataArea.add(new GeneralObject(46,"Sóc Trăng"));
-        dataArea.add(new GeneralObject(47,"Sơn La"));
-        dataArea.add(new GeneralObject(48,"Tây Ninh"));
-        dataArea.add(new GeneralObject(49,"Thái Bình"));
-        dataArea.add(new GeneralObject(50,"Thái Nguyên"));
-        dataArea.add(new GeneralObject(51,"Thanh Hóa"));
-        dataArea.add(new GeneralObject(52,"Thừa Thiên Huế"));
-        dataArea.add(new GeneralObject(53,"Tiền Giang"));
-        dataArea.add(new GeneralObject(54,"Trà Vinh"));
-        dataArea.add(new GeneralObject(55,"Tuyên Quang"));
-        dataArea.add(new GeneralObject(56,"Vĩnh Long"));
-        dataArea.add(new GeneralObject(57,"Vĩnh Phúc"));
-        dataArea.add(new GeneralObject(58,"Yên Bái"));
-        dataArea.add(new GeneralObject(59,"Phú Yên"));
-        dataArea.add(new GeneralObject(59," Cần Thơ"));
-        dataArea.add(new GeneralObject(59,"Đà Nẵng"));
-        dataArea.add(new GeneralObject(59,"Hải Phòng"));
-        dataArea.add(new GeneralObject(59,"Hà Nội"));
-        dataArea.add(new GeneralObject(59,"TP HCM"));
+        dataArea.add(new GeneralObject(10,"Bình Phước"));
+        dataArea.add(new GeneralObject(11,"Bình Thuận"));
+        dataArea.add(new GeneralObject(12,"Cà Mau"));
+        dataArea.add(new GeneralObject(13,"Cao Bằng"));
+        dataArea.add(new GeneralObject(14,"Đắk Lắk"));
+        dataArea.add(new GeneralObject(15,"Đắk Nông"));
+        dataArea.add(new GeneralObject(16,"Điện Biên"));
+        dataArea.add(new GeneralObject(17,"Đồng Nai"));
+        dataArea.add(new GeneralObject(18,"Đồng Tháp"));
+        dataArea.add(new GeneralObject(19,"Gia Lai"));
+        dataArea.add(new GeneralObject(20,"Hà Giang"));
+        dataArea.add(new GeneralObject(21,"Hà Nam"));
+        dataArea.add(new GeneralObject(22,"Hà Tĩnh"));
+        dataArea.add(new GeneralObject(23,"Hải Dương"));
+        dataArea.add(new GeneralObject(24,"Hậu Giang"));
+        dataArea.add(new GeneralObject(25,"Hòa Bình"));
+        dataArea.add(new GeneralObject(26,"Hưng Yên"));
+        dataArea.add(new GeneralObject(27,"Khánh Hòa"));
+        dataArea.add(new GeneralObject(28,"Kiên Giang"));
+        dataArea.add(new GeneralObject(29,"Kon Tum"));
+        dataArea.add(new GeneralObject(30,"Lai Châu"));
+        dataArea.add(new GeneralObject(31,"Lâm Đồng"));
+        dataArea.add(new GeneralObject(32,"Lạng Sơn"));
+        dataArea.add(new GeneralObject(33,"Lào Cai"));
+        dataArea.add(new GeneralObject(34,"Long An"));
+        dataArea.add(new GeneralObject(35,"Nam Định"));
+        dataArea.add(new GeneralObject(36,"Nghệ An"));
+        dataArea.add(new GeneralObject(37,"Ninh Bình"));
+        dataArea.add(new GeneralObject(38,"Ninh Thuận"));
+        dataArea.add(new GeneralObject(39,"Phú Thọ"));
+        dataArea.add(new GeneralObject(40,"Quảng Bình"));
+        dataArea.add(new GeneralObject(41,"Quảng Nam"));
+        dataArea.add(new GeneralObject(42,"Quảng Ngãi"));
+        dataArea.add(new GeneralObject(43,"Quảng Ninh"));
+        dataArea.add(new GeneralObject(44,"Quảng Trị"));
+        dataArea.add(new GeneralObject(45,"Sóc Trăng"));
+        dataArea.add(new GeneralObject(46,"Sơn La"));
+        dataArea.add(new GeneralObject(47,"Tây Ninh"));
+        dataArea.add(new GeneralObject(48,"Thái Bình"));
+        dataArea.add(new GeneralObject(49,"Thái Nguyên"));
+        dataArea.add(new GeneralObject(50,"Thanh Hóa"));
+        dataArea.add(new GeneralObject(51,"Thừa Thiên Huế"));
+        dataArea.add(new GeneralObject(52,"Tiền Giang"));
+        dataArea.add(new GeneralObject(53,"Trà Vinh"));
+        dataArea.add(new GeneralObject(54,"Tuyên Quang"));
+        dataArea.add(new GeneralObject(55,"Vĩnh Long"));
+        dataArea.add(new GeneralObject(56,"Vĩnh Phúc"));
+        dataArea.add(new GeneralObject(57,"Yên Bái"));
+        dataArea.add(new GeneralObject(58,"Phú Yên"));
+        dataArea.add(new GeneralObject(59,"Cần Thơ"));
+        dataArea.add(new GeneralObject(60,"Đà Nẵng"));
+        dataArea.add(new GeneralObject(61,"Hải Phòng"));
+        dataArea.add(new GeneralObject(62,"Hà Nội"));
+        dataArea.add(new GeneralObject(63,"TP HCM"));
 
 
     }

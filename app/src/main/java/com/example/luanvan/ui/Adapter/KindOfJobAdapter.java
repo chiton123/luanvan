@@ -22,7 +22,10 @@ import com.example.luanvan.ui.Model.Job;
 
 import java.text.DecimalFormat;
 import java.text.Normalizer;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class KindOfJobAdapter extends RecyclerView.Adapter<KindOfJobAdapter.ItemHolder> implements Filterable {
@@ -52,7 +55,16 @@ public class KindOfJobAdapter extends RecyclerView.Adapter<KindOfJobAdapter.Item
         Job job = filterArraylist.get(position);
         holder.txttencongviec.setText(job.getName());
         holder.txttencongty.setText(job.getCompany_name());
-        holder.txttime.setText(job.getDate());
+        String ngay = job.getDate();
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+        try {
+            date = fmt.parse(ngay);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        SimpleDateFormat fmtOut = new SimpleDateFormat("dd/MM/yyyy");
+        holder.txttime.setText(fmtOut.format(date));
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
         holder.txtsalary.setText(decimalFormat.format(job.getSalary()) + "đ");
         holder.txtarea.setText(job.getArea());

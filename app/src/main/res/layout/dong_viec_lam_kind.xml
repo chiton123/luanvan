@@ -138,7 +138,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="hạn tuyển dụng"
+                            android:text="Hạn tuyển dụng"
                             android:textColor="#040404"
                             android:layout_marginLeft="3dp"
                             ></TextView>
