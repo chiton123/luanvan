@@ -54,12 +54,13 @@ public class FilterActivity extends AppCompatActivity {
         btnTimKiem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              //  Toast.makeText(getApplicationContext(), "idarea:  "+ idArea + " pro " + idProfession , Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getApplicationContext(), "idarea:  "+ idArea + " pro " + idProfession , Toast.LENGTH_SHORT).show();
                 RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlFilter,
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
+                               // Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
                                 SearchActivity.arrayList.clear();
 
                                 try {
@@ -110,7 +111,7 @@ public class FilterActivity extends AppCompatActivity {
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-
+                                Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
                             }
                         }){
                     @Override
@@ -119,6 +120,8 @@ public class FilterActivity extends AppCompatActivity {
                         map.put("idarea", String.valueOf(idArea));
                         map.put("idprofession", String.valueOf(idProfession));
                         map.put("idkindjob", String.valueOf(idKindJob));
+                        map.put("idsalary", String.valueOf(idSalary));
+                        map.put("idexperience", String.valueOf(idExperience));
                         return map;
                     }
                 };
@@ -131,16 +134,16 @@ public class FilterActivity extends AppCompatActivity {
 
     private void spinerEvent() {
 
-        khuVucAdapter = new SpinnerNewAdapter(this, dataArea);
+        khuVucAdapter = new SpinnerNewAdapter(this,R.layout.dong_spinner, dataArea);
 
-        nganhNgheAdapter = new SpinnerNewAdapter(this, dataProfession);
+        nganhNgheAdapter = new SpinnerNewAdapter(this,R.layout.dong_spinner, dataProfession);
 
-        luongAdapter = new SpinnerNewAdapter(this, dataSalary);
+        luongAdapter = new SpinnerNewAdapter(this,R.layout.dong_spinner, dataSalary);
 
-        kinhNghiemAdapter = new SpinnerNewAdapter(this, dataExperience);
+        kinhNghiemAdapter = new SpinnerNewAdapter(this,R.layout.dong_spinner, dataExperience);
 
-        loaiHinhAdapter = new SpinnerNewAdapter(this, dataKindJob);
--- spinner có vấn đề
+        loaiHinhAdapter = new SpinnerNewAdapter(this,R.layout.dong_spinner, dataKindJob);
+
         spinnerKhuvuc.setAdapter(khuVucAdapter);
         spinnerNganhnghe.setAdapter(nganhNgheAdapter);
         spinnerLuong.setAdapter(luongAdapter);
@@ -149,7 +152,7 @@ public class FilterActivity extends AppCompatActivity {
         spinnerKhuvuc.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                area = (GeneralObject) spinnerKhuvuc.getSelectedItem();
+                area = khuVucAdapter.getObject(position);
                 idArea = area.getId();
             }
 
@@ -161,9 +164,9 @@ public class FilterActivity extends AppCompatActivity {
         spinnerNganhnghe.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                profession = (GeneralObject) spinnerKhuvuc.getSelectedItem();
+                profession = nganhNgheAdapter.getObject(position);
                 idProfession = profession.getId();
-                Toast.makeText(getApplicationContext(), " p " + profession.getName(), Toast.LENGTH_SHORT).show();
+             //   Toast.makeText(getApplicationContext(), " p " + idProfession, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -174,7 +177,7 @@ public class FilterActivity extends AppCompatActivity {
         spinnerLuong.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                salary = (GeneralObject) spinnerLuong.getSelectedItem();
+                salary = luongAdapter.getObject(position);
                 idSalary = salary.getId();
             }
 
@@ -186,7 +189,7 @@ public class FilterActivity extends AppCompatActivity {
         spinnerKinhnghiem.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                experience = (GeneralObject) spinnerKinhnghiem.getSelectedItem();
+                experience = kinhNghiemAdapter.getObject(position);
                 idExperience = experience.getId();
             }
 
@@ -198,7 +201,7 @@ public class FilterActivity extends AppCompatActivity {
         spinnerLoaiHinh.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                kindJob = (GeneralObject) spinnerLoaiHinh.getSelectedItem();
+                kindJob = loaiHinhAdapter.getObject(position);
                 idKindJob = kindJob.getId();
             }
 
@@ -263,8 +266,9 @@ public class FilterActivity extends AppCompatActivity {
         dataSalary.add(new GeneralObject(6, "12 - 15 triệu"));
         dataSalary.add(new GeneralObject(7, "15 - 20 triệu"));
         dataSalary.add(new GeneralObject(8, "20 - 25 triệu"));
-        dataSalary.add(new GeneralObject(9, "Trên 30 triệu"));
-        dataSalary.add(new GeneralObject(10, "Thỏa thuận"));
+        dataSalary.add(new GeneralObject(9, "25 - 30 triệu"));
+        dataSalary.add(new GeneralObject(10, "Trên 30 triệu"));
+        dataSalary.add(new GeneralObject(11, "Thỏa thuận"));
 
 
     }

@@ -126,7 +126,7 @@ public class SearchActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == REQUEST_CODE_FILTER && resultCode == 123){
             adapter.notifyDataSetChanged();
-            Toast.makeText(getApplicationContext(), "haha", Toast.LENGTH_SHORT).show();
+        //    Toast.makeText(getApplicationContext(), "haha", Toast.LENGTH_SHORT).show();
 
         }
 
