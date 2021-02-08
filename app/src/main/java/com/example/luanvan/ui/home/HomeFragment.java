@@ -47,12 +47,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class HomeFragment extends Fragment {
+    // getdata 0 : all, 1: luong cao,2: lam tu xa, 3: thuc tap, 4: moi nhat
     Toolbar toolbar;
     private HomeViewModel homeViewModel;
-    RecyclerView recyclerView, recyclerViewthuctap;
-    JobAdapter jobAdapter, adapterThuctap;
-    ArrayList<Job> arrayList, arrayListThuctap;
-    TextView txtthuctap, txtviectotnhat;
+    RecyclerView recyclerView, recyclerViewthuctap, recyclerViewLuongCao, recyclerViewViecLamTuXa,recyclerViewViecLamMoiNhat;
+    JobAdapter jobAdapter, adapterThuctap, adapterLuongCao, adapterViecLamTuXa, adapterViecLamMoiNhat;
+    ArrayList<Job> arrayList, arrayListThuctap, arrayListLuongCao, arrayListViecLamTuXa, arrayListViecLamMoiNhat;
+    TextView txtthuctap, txtviectotnhat, txtLuongCao, txtViecLamTuXa, txtViecLamMoiNhat;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
@@ -61,11 +62,19 @@ public class HomeFragment extends Fragment {
         setHasOptionsMenu(true);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
         recyclerViewthuctap = (RecyclerView) view.findViewById(R.id.recycleviewthuctap);
-
+        recyclerViewLuongCao = (RecyclerView) view.findViewById(R.id.recycleviewluongcao);
+        recyclerViewViecLamTuXa = (RecyclerView) view.findViewById(R.id.recycleviewlamtuxa);
+        recyclerViewViecLamMoiNhat = (RecyclerView) view.findViewById(R.id.recycleviewlammoinhat);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        recyclerView.setHasFixedSize(true);
         recyclerViewthuctap.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerViewLuongCao.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerViewViecLamTuXa.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerViewViecLamMoiNhat.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerView.setHasFixedSize(true);
         recyclerViewthuctap.setHasFixedSize(true);
+        recyclerViewLuongCao.setHasFixedSize(true);
+        recyclerViewViecLamTuXa.setHasFixedSize(true);
+        recyclerViewViecLamMoiNhat.setHasFixedSize(true);
         // toolbar menu option
 
         toolbar = (Toolbar)view.findViewById(R.id.toolbar);
@@ -76,17 +85,31 @@ public class HomeFragment extends Fragment {
 
         txtthuctap = (TextView) view.findViewById(R.id.txtviecthuctap);
         txtviectotnhat = (TextView) view.findViewById(R.id.txtvieclamtotnhat);
+        txtLuongCao = (TextView) view.findViewById(R.id.txtviecluongcao);
+        txtViecLamTuXa = (TextView) view.findViewById(R.id.txtvieclamtuxa);
+        txtViecLamMoiNhat = (TextView) view.findViewById(R.id.txtvieclammoinhat);
         arrayList = new ArrayList<>();
         arrayListThuctap = new ArrayList<>();
+        arrayListLuongCao = new ArrayList<>();
+        arrayListViecLamTuXa = new ArrayList<>();
+        arrayListViecLamMoiNhat = new ArrayList<>();
         jobAdapter = new JobAdapter(getActivity(), arrayList, getActivity());
         adapterThuctap = new JobAdapter(getActivity(), arrayListThuctap, getActivity());
+        adapterLuongCao = new JobAdapter(getActivity(), arrayListLuongCao, getActivity());
+        adapterViecLamTuXa = new JobAdapter(getActivity(), arrayListViecLamTuXa, getActivity());
+        adapterViecLamMoiNhat = new JobAdapter(getActivity(), arrayListViecLamMoiNhat, getActivity());
         // tất cả job
         getData(0);
         // job thực tập
         getData(3);
+        getData(1);
+        getData(2);
+        getData(4);
         recyclerView.setAdapter(jobAdapter);
         recyclerViewthuctap.setAdapter(adapterThuctap);
-
+        recyclerViewLuongCao.setAdapter(adapterLuongCao);
+        recyclerViewViecLamTuXa.setAdapter(adapterViecLamTuXa);
+        recyclerViewViecLamMoiNhat.setAdapter(adapterViecLamMoiNhat);
 
         eventXemtatca();
 
@@ -116,6 +139,7 @@ public class HomeFragment extends Fragment {
 
     // 3: thuc tap
     private void eventXemtatca() {
+        // 0 : all, 1: luong cao,2: lam tu xa, 3: thuc tap, 4: moi nhat
         txtthuctap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,9 +158,35 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        txtLuongCao.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), KindOfJobActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("thuctap", 1);
+                startActivity(intent);
+            }
+        });
+        txtViecLamMoiNhat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), KindOfJobActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("thuctap", 4);
+                startActivity(intent);
+            }
+        });
+        txtViecLamTuXa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), KindOfJobActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("thuctap", 2);
+                startActivity(intent);
+            }
+        });
 
     }
-
 
 
 
@@ -198,6 +248,78 @@ public class HomeFragment extends Fragment {
                                             object.getString("type_job")
                                     ));
                                     adapterThuctap.notifyDataSetChanged();
+                                }else if(kind == 1){
+                                    arrayListLuongCao.add(new Job(
+                                            object.getInt("id"),
+                                            object.getString("name"),
+                                            object.getInt("idcompany"),
+                                            object.getString("img"),
+                                            object.getString("area"),
+                                            object.getInt("idtype"),
+                                            object.getInt("idprofession"),
+                                            object.getString("date"),
+                                            object.getInt("salary"),
+                                            object.getInt("idarea"),
+                                            object.getInt("gender"),
+                                            object.getString("experience"),
+                                            object.getInt("number"),
+                                            object.getString("position"),
+                                            object.getString("description"),
+                                            object.getString("requirement"),
+                                            object.getString("benefit"),
+                                            object.getInt("status"),
+                                            object.getString("company_name"),
+                                            object.getString("type_job")
+                                    ));
+                                    adapterLuongCao.notifyDataSetChanged();
+                                } else if(kind == 2){
+                                    arrayListViecLamTuXa.add(new Job(
+                                            object.getInt("id"),
+                                            object.getString("name"),
+                                            object.getInt("idcompany"),
+                                            object.getString("img"),
+                                            object.getString("area"),
+                                            object.getInt("idtype"),
+                                            object.getInt("idprofession"),
+                                            object.getString("date"),
+                                            object.getInt("salary"),
+                                            object.getInt("idarea"),
+                                            object.getInt("gender"),
+                                            object.getString("experience"),
+                                            object.getInt("number"),
+                                            object.getString("position"),
+                                            object.getString("description"),
+                                            object.getString("requirement"),
+                                            object.getString("benefit"),
+                                            object.getInt("status"),
+                                            object.getString("company_name"),
+                                            object.getString("type_job")
+                                    ));
+                                    adapterViecLamTuXa.notifyDataSetChanged();
+                                }else if(kind == 4){
+                                    arrayListViecLamMoiNhat.add(new Job(
+                                            object.getInt("id"),
+                                            object.getString("name"),
+                                            object.getInt("idcompany"),
+                                            object.getString("img"),
+                                            object.getString("area"),
+                                            object.getInt("idtype"),
+                                            object.getInt("idprofession"),
+                                            object.getString("date"),
+                                            object.getInt("salary"),
+                                            object.getInt("idarea"),
+                                            object.getInt("gender"),
+                                            object.getString("experience"),
+                                            object.getInt("number"),
+                                            object.getString("position"),
+                                            object.getString("description"),
+                                            object.getString("requirement"),
+                                            object.getString("benefit"),
+                                            object.getInt("status"),
+                                            object.getString("company_name"),
+                                            object.getString("type_job")
+                                    ));
+                                    adapterViecLamMoiNhat.notifyDataSetChanged();
                                 }
 
                             }
