@@ -47,6 +47,25 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dp"
                 ></Button>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Đăng nhập của nhà tuyển dụng"
+                android:textSize="18sp"
+                android:layout_gravity="center"
+                android:layout_marginTop="100dp"
+                android:textColor="#020202"
+                ></TextView>
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:id="@+id/buttondangnhaptuyendung"
+                android:text="Đăng nhập"
+                android:background="@drawable/button_dangnhap"
+                android:textColor="#fff"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                ></Button>
 
         </LinearLayout>
         <ScrollView

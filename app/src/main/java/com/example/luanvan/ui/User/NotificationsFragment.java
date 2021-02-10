@@ -27,6 +27,7 @@ import com.example.luanvan.ui.Adapter.update_personal_info.SkillAdapter;
 import com.example.luanvan.ui.Adapter.update_personal_info.StudyAdapter;
 import com.example.luanvan.ui.Model.Profile;
 import com.example.luanvan.ui.login.LoginActivity;
+import com.example.luanvan.ui.recruiter.LoginRecruiterActivity;
 
 import java.util.ArrayList;
 
@@ -36,9 +37,10 @@ import static com.example.luanvan.MainActivity.studyAdapter;
 
 public class NotificationsFragment extends Fragment {
     LinearLayout linearLayout1, linearLayout2;
-    Button btndangnhap;
+    Button btndangnhap, btnLoginRecruiter;
     int REQUEST_CODE = 123;
     int REQUEST_CODE2 = 234;
+    int REQUEST_CODE_RECRUITER = 333;
     // edit hoc van, kinh nghiem, skill
     int REQUEST_HOCVAN = 111, REQUEST_KINHNGHIEM = 2, REQUEST_KYNANG = 3;
     ImageView edit;
@@ -69,6 +71,7 @@ public class NotificationsFragment extends Fragment {
         name = (TextView) view.findViewById(R.id.name);
         positon = (TextView) view.findViewById(R.id.position);
         company_name = (TextView) view.findViewById(R.id.company);
+        btnLoginRecruiter = (Button) view.findViewById(R.id.buttondangnhaptuyendung);
         scrollView = (ScrollView)  view.findViewById(R.id.scrollview);
         arrayList = new ArrayList<>();
         getProfile();
@@ -187,6 +190,14 @@ public class NotificationsFragment extends Fragment {
                 startActivityForResult(intent, REQUEST_CODE);
             }
         });
+        btnLoginRecruiter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), LoginRecruiterActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_RECRUITER);
+            }
+        });
+
 
     }
 

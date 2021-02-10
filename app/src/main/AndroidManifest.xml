@@ -13,7 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.Search_Filter.FilterActivity"></activity>
+        <activity android:name=".ui.recruiter.RecruiterActivity"></activity>
+        <activity android:name=".ui.recruiter.LoginRecruiterActivity" />
+        <activity android:name=".ui.Search_Filter.FilterActivity" />
         <activity android:name=".ui.Search_Filter.SearchActivity" />
         <activity android:name=".ui.cv.CVShowActivity" />
         <activity android:name=".ui.cv.CVIntroductionActivity" />

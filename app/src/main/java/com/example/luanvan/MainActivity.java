@@ -94,6 +94,8 @@ public class MainActivity extends AppCompatActivity {
     // dang nhap
     public static String urlRegister = host + "register.php";
     public static String urllogin = host + "login.php";
+    // Đăng nhập nhà tuyển dụng
+    public static String urlLoginRecruiter = host + "login_recruiter.php";
     public static String urluserinfo = host + "userinfo.php";
     public static String urlupdateuser = host + "updateuser.php";
     // filter
