@@ -11,6 +11,7 @@ import com.example.luanvan.ui.Model.Experience;
 import com.example.luanvan.ui.Model.Skill;
 import com.example.luanvan.ui.Model.Study;
 import com.example.luanvan.ui.Model.User;
+import com.example.luanvan.ui.modelCV.PdfCV;
 import com.example.luanvan.ui.modelCV.UserCV;
 import com.example.luanvan.ui.modelCV.ExperienceCV;
 import com.example.luanvan.ui.modelCV.SkillCV;
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     public static ArrayList<Experience> experiences = new ArrayList<>();
     public static ArrayList<Skill> skills = new ArrayList<>();
     // list CV
-
+    public static ArrayList<PdfCV> arrayListCV = new ArrayList<>();
     // default CV info
     // - info connect : user
     // - Experience
@@ -88,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
     // kind CV, only change color
     public static int color = 0;
 
-    public static String host = "http://192.168.0.102:8888/luanvan/";
+    public static String host = "http://192.168.0.111:8888/luanvan/";
     public static String urljob1 = host + "job1.php";
     public static String urlcompany = host + "company.php";
     // dang nhap

@@ -87,7 +87,7 @@ public class CVAdapter extends RecyclerView.Adapter<CVAdapter.ItemHolder> {
                        // Toast.makeText(context, arrayList.get(position).getKey(), Toast.LENGTH_SHORT).show();
                         MainActivity.mData.child("cv").child(MainActivity.uid).child(arrayList.get(position).getKey()).removeValue();
                         MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(arrayList.get(position).getKey()).removeValue();
-                        CVIntroductionActivity.arrayListCV.remove(position);
+                        MainActivity.arrayListCV.remove(position);
                         notifyDataSetChanged();
 
                     }

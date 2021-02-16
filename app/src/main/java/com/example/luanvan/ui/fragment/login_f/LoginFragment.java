@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
@@ -29,9 +30,11 @@ import com.example.luanvan.ui.Model.Experience;
 import com.example.luanvan.ui.Model.Skill;
 import com.example.luanvan.ui.Model.Study;
 import com.example.luanvan.ui.login.LoginActivity;
+import com.example.luanvan.ui.modelCV.PdfCV;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -68,6 +71,42 @@ public class LoginFragment extends Fragment {
         progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
         progressDialog.show();
         progressDialog.setCancelable(false);
+    }
+    private void getDataCV() {
+        MainActivity.mData.child("cv").child(MainActivity.uid).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                //  Toast.makeText(getApplicationContext(), snapshot.getValue().toString(), Toast.LENGTH_SHORT).show();
+                for(DataSnapshot x : snapshot.getChildren()){
+                    PdfCV pdfCV = x.getValue(PdfCV.class);
+                    if(pdfCV.key != null){
+                        MainActivity.arrayListCV.add(pdfCV);
+                    }
+
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
     public void getInfo(){
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
@@ -251,6 +290,7 @@ public class LoginFragment extends Fragment {
                                                             getInfoStudy();
                                                             getInfoExperience();
                                                             getInfoSkill();
+                                                            getDataCV();
                                                             Handler handler = new Handler();
                                                             handler.postDelayed(new Runnable() {
                                                                 @Override

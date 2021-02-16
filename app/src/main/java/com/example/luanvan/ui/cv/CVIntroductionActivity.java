@@ -39,7 +39,7 @@ public class CVIntroductionActivity extends AppCompatActivity {
     int REQUEST_CODE = 234;
     private DashboardViewModel dashboardViewModel;
     RecyclerView recyclerView;
-    public static ArrayList<PdfCV> arrayListCV;
+
     CVAdapter adapter;
     // position to remove
     public static int position = 0;
@@ -53,7 +53,7 @@ public class CVIntroductionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_c_v_introduction);
         anhxa();
         actionBar();
-        getData();
+     //   getData();
 
         eventCreateCV();
 
@@ -71,43 +71,7 @@ public class CVIntroductionActivity extends AppCompatActivity {
     }
 
 
-    private void getData() {
-        MainActivity.mData.child("cv").child(MainActivity.uid).addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-              //  Toast.makeText(getApplicationContext(), snapshot.getValue().toString(), Toast.LENGTH_SHORT).show();
-                for(DataSnapshot x : snapshot.getChildren()){
-                    PdfCV pdfCV = x.getValue(PdfCV.class);
-                    if(pdfCV.key != null){
-                        arrayListCV.add(pdfCV);
-                    }
 
-                }
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-    }
     public void getBackDefault(){
         CVActivity.checkSkill = 0;
         CVActivity.checkExperience = 0;
@@ -131,7 +95,7 @@ public class CVIntroductionActivity extends AppCompatActivity {
         if(resultCode == 123 && requestCode == 123){
          //   Toast.makeText(getApplicationContext(), "haha", Toast.LENGTH_SHORT).show();
 
-            arrayListCV.remove(position);
+            MainActivity.arrayListCV.remove(position);
             adapter.notifyDataSetChanged();
             handler = new Handler();
             handler.postDelayed(new Runnable() {
@@ -172,11 +136,10 @@ public class CVIntroductionActivity extends AppCompatActivity {
 
     }
     private void anhxa() {
-        arrayListCV = new ArrayList<>();
         recyclerView = (RecyclerView)findViewById(R.id.recycleview);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
-        adapter = new CVAdapter(getApplicationContext(), arrayListCV, this);
+        adapter = new CVAdapter(getApplicationContext(), MainActivity.arrayListCV, this);
         recyclerView.setAdapter(adapter);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
