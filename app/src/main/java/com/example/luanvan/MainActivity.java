@@ -102,6 +102,9 @@ public class MainActivity extends AppCompatActivity {
     // filter
     public static String urlFilter = host + "filter.php";
 
+    // Ứng tuyển
+    public static String urlApply = host + "apply.php";
+
 
 
 

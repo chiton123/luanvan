@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.Checkable;
+import android.widget.CheckedTextView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -15,7 +17,7 @@ import com.example.luanvan.ui.modelCV.PdfCV;
 
 import java.util.ArrayList;
 
-public class CVChooseAdapter extends BaseAdapter {
+public class CVChooseAdapter extends BaseAdapter implements Checkable {
     Context context;
     ArrayList<PdfCV> arrayList;
     Activity activity;
@@ -41,9 +43,23 @@ public class CVChooseAdapter extends BaseAdapter {
         return 0;
     }
 
+    @Override
+    public void setChecked(boolean checked) {
+
+    }
+
+    @Override
+    public boolean isChecked() {
+        return false;
+    }
+
+    @Override
+    public void toggle() {
+
+    }
+
     public class ViewHolder{
         public TextView txtName;
-        public RadioButton radioButton;
     }
 
     @Override
@@ -53,7 +69,6 @@ public class CVChooseAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.dong_cv_ungtuyen, null);
-            viewHolder.radioButton = (RadioButton) convertView.findViewById(R.id.radiobutton);
             viewHolder.txtName = (TextView) convertView.findViewById(R.id.namecv);
             convertView.setTag(viewHolder);
         }else {
@@ -61,10 +76,6 @@ public class CVChooseAdapter extends BaseAdapter {
         }
         PdfCV pdfCV = arrayList.get(position);
         viewHolder.txtName.setText(pdfCV.getName());
-        if(viewHolder.radioButton.isChecked()){
-            notifyDataSetChanged();
-        }
-
 
 
         return convertView;

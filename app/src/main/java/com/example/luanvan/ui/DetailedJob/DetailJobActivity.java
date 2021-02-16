@@ -1,10 +1,12 @@
 package com.example.luanvan.ui.DetailedJob;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,6 +16,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
@@ -31,6 +40,8 @@ import com.google.android.material.tabs.TabLayout;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DetailJobActivity extends AppCompatActivity {
     Toolbar toolbar;
@@ -44,6 +55,8 @@ public class DetailJobActivity extends AppCompatActivity {
     TextView txtCV, txtName, txtEmail, txtPhone;
     int checkCV = 0; // có cv thì 0, k có thì 1
     int REQUEST_CODE_CV = 123;
+    public static int job_id = 0;
+  //  int checkApply = 0; // khi ứng tuyển, xem coi thành công hay thất bại rồi thông báo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,12 +68,58 @@ public class DetailJobActivity extends AppCompatActivity {
 
 
     }
+    public void showAlert(){
+        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setMessage("Bạn có chắc chắn muốn ứng tuyển công việc này không ?");
+        alert.setNegativeButton("Đóng", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
 
+            }
+        });
+        alert.setPositiveButton("Ứng tuyển", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlApply,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                if(response.equals("success")){
+                                    Toast.makeText(getApplicationContext(), "Ứng tuyển thành công", Toast.LENGTH_SHORT).show();
+                                }else {
+                                    Toast.makeText(getApplicationContext(), "Ứng tuyển thất bại", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(getApplicationContext(), "Lỗi", Toast.LENGTH_SHORT).show();
+                            }
+                        }){
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String,String> map = new HashMap<>();
+                        map.put("job_id", String.valueOf(DetailJobActivity.job_id));
+                        map.put("user_id", String.valueOf(MainActivity.user.getId()));
+                        map.put("user_id_f", MainActivity.uid);
+                        map.put("cv_id", MainActivity.arrayListCV.get(0).getKey());
+                        return map;
+                    }
+                };
+                requestQueue.add(stringRequest);
+
+            }
+        });
+
+        alert.show();
+    }
     public void showDialog(){
-        Dialog dialog = new Dialog(this);
+        final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_apply);
-        dialog.setCancelable(false);
+//        dialog.setCancelable(false);
 
         txtName = (TextView) dialog.findViewById(R.id.txtname);
         txtPhone = (TextView) dialog.findViewById(R.id.txtphone);
@@ -83,8 +142,8 @@ public class DetailJobActivity extends AppCompatActivity {
                 if(checkCV == 1){
                     Toast.makeText(getApplicationContext(), "Vui lòng tạo CV", Toast.LENGTH_SHORT).show();
                 }else {
-
-
+                    showAlert();
+                    dialog.dismiss();
                 }
             }
         });
@@ -114,7 +173,6 @@ public class DetailJobActivity extends AppCompatActivity {
                 }else {
                     showDialog();
                 }
-
             }
         });
 
@@ -122,6 +180,7 @@ public class DetailJobActivity extends AppCompatActivity {
 
     private void getInfo() {
         Job job = (Job) getIntent().getSerializableExtra("job");
+        job_id = job.getId();
         Glide.with(getApplicationContext()).load(job.getImg()).into(anhcongty);
         txttencongviec.setText(job.getName());
         txtcongty.setText(job.getCompany_name());
