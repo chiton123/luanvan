@@ -1,5 +1,6 @@
 package com.example.luanvan.ui.DetailedJob;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -8,6 +9,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -54,8 +56,9 @@ public class DetailJobActivity extends AppCompatActivity {
     CollapsingToolbarLayout collapsingToolbarLayout;
     TextView txtCV, txtName, txtEmail, txtPhone;
     int checkCV = 0; // có cv thì 0, k có thì 1
-    int REQUEST_CODE_CV = 123;
+    int REQUEST_CODE_CV = 123, REQUEST_CODE_LOGIN = 222;
     public static int job_id = 0;
+    Dialog dialog;
   //  int checkApply = 0; // khi ứng tuyển, xem coi thành công hay thất bại rồi thông báo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,9 +68,46 @@ public class DetailJobActivity extends AppCompatActivity {
         actionBar();
         getInfo();
         eventApply();
+        if(MainActivity.login == 1){
+            checkApplyOrNot();
+        }
+
 
 
     }
+
+    private void checkApplyOrNot() {
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlCheckApply,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(response.equals("success")){
+                            btnApply.setClickable(false);
+                            btnApply.setBackgroundColor(Color.BLACK);
+                            btnApply.setTextColor(Color.WHITE);
+                            btnApply.setText("Đã ứng tuyển");
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("job_id", String.valueOf(job_id));
+                map.put("user_id", String.valueOf(MainActivity.iduser));
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+
+    }
+
     public void showAlert(){
         final AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setMessage("Bạn có chắc chắn muốn ứng tuyển công việc này không ?");
@@ -87,6 +127,7 @@ public class DetailJobActivity extends AppCompatActivity {
                             public void onResponse(String response) {
                                 if(response.equals("success")){
                                     Toast.makeText(getApplicationContext(), "Ứng tuyển thành công", Toast.LENGTH_SHORT).show();
+                                    checkApplyOrNot();
                                 }else {
                                     Toast.makeText(getApplicationContext(), "Ứng tuyển thất bại", Toast.LENGTH_SHORT).show();
                                 }
@@ -116,7 +157,7 @@ public class DetailJobActivity extends AppCompatActivity {
         alert.show();
     }
     public void showDialog(){
-        final Dialog dialog = new Dialog(this);
+        dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_apply);
 //        dialog.setCancelable(false);
@@ -163,13 +204,27 @@ public class DetailJobActivity extends AppCompatActivity {
         dialog.show();
 
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == REQUEST_CODE_LOGIN && resultCode == 123){
+            checkApplyOrNot();
+        }
+        if(requestCode == REQUEST_CODE_CV && resultCode == 123){
+            checkApplyOrNot();
+            dialog.dismiss();
+
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
     private void eventApply() {
         btnApply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(MainActivity.login == 0){
                     Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                    startActivity(intent);
+                    startActivityForResult(intent, REQUEST_CODE_LOGIN);
                 }else {
                     showDialog();
                 }

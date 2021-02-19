@@ -26,7 +26,9 @@ import com.example.luanvan.ui.Adapter.update_personal_info.ProfileAdapter;
 import com.example.luanvan.ui.Adapter.update_personal_info.SkillAdapter;
 import com.example.luanvan.ui.Adapter.update_personal_info.StudyAdapter;
 import com.example.luanvan.ui.Model.Profile;
+import com.example.luanvan.ui.Model.User;
 import com.example.luanvan.ui.login.LoginActivity;
+import com.example.luanvan.ui.modelCV.UserCV;
 import com.example.luanvan.ui.recruiter.LoginRecruiterActivity;
 
 import java.util.ArrayList;
@@ -44,7 +46,7 @@ public class NotificationsFragment extends Fragment {
     // edit hoc van, kinh nghiem, skill
     int REQUEST_HOCVAN = 111, REQUEST_KINHNGHIEM = 2, REQUEST_KYNANG = 3;
     ImageView edit;
-    TextView name, positon, company_name;
+    TextView name, positon, company_name, txtLogOut;
     RecyclerView recyclerView, recyclerViewstudy, recyclerViewexperience, recyclerViewskill;
     ProfileAdapter profileAdapter;
 
@@ -75,6 +77,7 @@ public class NotificationsFragment extends Fragment {
         scrollView = (ScrollView)  view.findViewById(R.id.scrollview);
         arrayList = new ArrayList<>();
         getProfile();
+        txtLogOut = (TextView) view.findViewById(R.id.logout);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
         recyclerViewexperience = (RecyclerView) view.findViewById(R.id.recycleviewexperience);
         recyclerViewstudy = (RecyclerView) view.findViewById(R.id.recycleviewstudy);
@@ -112,8 +115,46 @@ public class NotificationsFragment extends Fragment {
         eventUpdateInfo();
         getInfo();
         eventEdit();
+        eventLogout();
 
         return view;
+    }
+    public void setDefault(){
+        MainActivity.login = 0;
+        MainActivity.iduser = 0;
+        MainActivity.checkCV = 0;
+        MainActivity.uid = "";
+        MainActivity.username = "";
+        MainActivity.position = "";
+        MainActivity.urlCV = "";
+        MainActivity.user = new User();
+        MainActivity.studies.clear();
+        MainActivity.experiences.clear();
+        MainActivity.skills.clear();
+        MainActivity.arrayListCV.clear();
+        MainActivity.userCV = new UserCV();
+        MainActivity.experienceCVS.clear();
+        MainActivity.studyCVS.clear();
+        MainActivity.skillCVS.clear();
+        MainActivity.goal = "";
+        MainActivity.checkFirstExperience = 0;
+        MainActivity.checkFirstGoal = 0;
+        MainActivity.checkFirstInfo = 0;
+        MainActivity.checkFirstSkill = 0;
+        MainActivity.checkFirstStudy = 0;
+        MainActivity.checkFirstVolunteer = 0;
+        MainActivity.mAuth.signOut();
+
+    }
+
+    private void eventLogout() {
+        txtLogOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setDefault();
+                getActivity().recreate();
+            }
+        });
     }
 
     private void eventEdit() {

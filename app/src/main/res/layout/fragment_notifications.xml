@@ -130,7 +130,17 @@
                         android:layout_marginTop="10dp"
                         android:id="@+id/company"
                         ></TextView>
-
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Đăng xuất"
+                        android:textSize="18sp"
+                        android:textColor="#07DD10"
+                        android:layout_gravity="right"
+                        android:layout_marginTop="10dp"
+                        android:id="@+id/logout"
+                        android:layout_marginRight="20dp"
+                        ></TextView>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

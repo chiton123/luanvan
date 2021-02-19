@@ -14,7 +14,8 @@
         <TextView
             android:layout_width="230dp"
             android:layout_height="wrap_content"
-            android:text="Bạn chưa có CV, hãy sử dụng dịch vụ tạo CV của chúng tôi"
+            android:text="Dịch vụ tạo CV"
+            android:gravity="center"
             android:lines="2"
             android:textColor="#040404"
             android:textSize="20sp"

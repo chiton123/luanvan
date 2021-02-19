@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -64,7 +65,9 @@ public class ChooseCVActivity extends AppCompatActivity {
                             public void onResponse(String response) {
                                 if(response.equals("success")){
                                     Toast.makeText(getApplicationContext(), "Ứng tuyển thành công", Toast.LENGTH_SHORT).show();
-
+                                    Intent intent = new Intent();
+                                    setResult(123);
+                                    finish();
                                 }else {
                                     Toast.makeText(getApplicationContext(), "Ứng tuyển thất bại", Toast.LENGTH_SHORT).show();
                                 }

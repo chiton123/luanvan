@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
     // kind CV, only change color
     public static int color = 0;
 
-    public static String host = "http://192.168.0.111:8888/luanvan/";
+    public static String host = "http://192.168.0.108:8888/luanvan/";
     public static String urljob1 = host + "job1.php";
     public static String urlcompany = host + "company.php";
     // dang nhap
@@ -104,7 +104,8 @@ public class MainActivity extends AppCompatActivity {
 
     // Ứng tuyển
     public static String urlApply = host + "apply.php";
-
+    // kiểm tra xem job đã ứng tuyển chưa
+    public static String urlCheckApply = host + "check_apply.php";
 
 
 
