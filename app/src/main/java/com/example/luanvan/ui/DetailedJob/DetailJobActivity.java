@@ -182,6 +182,7 @@ public class DetailJobActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(checkCV == 1){
                     Toast.makeText(getApplicationContext(), "Vui lòng tạo CV", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
                 }else {
                     showAlert();
                     dialog.dismiss();
@@ -193,6 +194,7 @@ public class DetailJobActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(checkCV == 1){
                     Toast.makeText(getApplicationContext(), "Vui lòng tạo CV", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
                 }else {
                     Intent intent = new Intent(getApplicationContext(), ChooseCVActivity.class);
                     startActivityForResult(intent, REQUEST_CODE_CV);
