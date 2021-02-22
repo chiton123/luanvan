@@ -9,6 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.luanvan.R;
+
 import java.util.ArrayList;
 
 public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHolder> {
@@ -32,11 +34,15 @@ public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHo
     }
 
     public class ItemHolder extends RecyclerView.ViewHolder{
-        public TextView txtName, txtEmail, txtStatus;
+        public TextView txtName, txtEmail, txtStatus, txtJob;
         public Button btnView;
         public ItemHolder(@NonNull View itemView) {
             super(itemView);
-
+            txtJob = (TextView) itemView.findViewById(R.id.jobName);
+            txtName = (TextView) itemView.findViewById(R.id.cadidateName);
+            txtEmail = (TextView) itemView.findViewById(R.id.email);
+            txtStatus = (TextView) itemView.findViewById(R.id.status);
+            btnView = (Button) itemView.findViewById(R.id.buttonxem);
 
         }
     }

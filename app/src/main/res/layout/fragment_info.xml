@@ -14,8 +14,6 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-
-
             >
             <LinearLayout
 
@@ -140,62 +138,7 @@
                             android:textColor="#090909"
                             ></TextView>
                     </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        >
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:src="@drawable/gender"
-                            ></ImageView>
-                        <TextView
-                            android:layout_marginLeft="10dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Giới tính"
-                            android:textColor="#0B0B0A"
-                            android:textStyle="bold"
-                            ></TextView>
-                        <TextView
-                            android:layout_marginLeft="8dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="10 trieu"
-                            android:id="@+id/gender"
-                            android:textColor="#090909"
-                            ></TextView>
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        >
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:src="@drawable/document3"
-                            ></ImageView>
-                        <TextView
-                            android:layout_marginLeft="10dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Chức vụ"
-                            android:textColor="#0B0B0A"
-                            android:textStyle="bold"
-                            ></TextView>
-                        <TextView
-                            android:layout_marginLeft="8dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="10 trieu"
-                            android:id="@+id/position"
-                            android:textColor="#090909"
-                            ></TextView>
-                    </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

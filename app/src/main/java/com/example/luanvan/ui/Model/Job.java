@@ -10,21 +10,20 @@ public class Job implements Serializable {
     private String img;
     private int idtype;
     private int idprofession;
-    private String date;
+    private String start_date;
+    private String end_date;
     private int salary;
     private int idarea;
     private String area;
-    private int gender;
     private String experience;
     private int number;
-    private String position;
     private String description;
     private String requirement;
     private String benefit;
     private int status;
     private String type_job;
-    public Job(int id, String name,int idcompany, String img,String area, int idtype, int idprofession, String date,
-               int salary, int idarea, int gender, String experience, int number, String position, String description,
+    public Job(int id, String name,int idcompany, String img,String area, int idtype, int idprofession, String start_date, String end_date,
+               int salary, int idarea, String experience, int number, String description,
                String requirement, String benefit, int status,String company_name, String type_job) {
         this.id = id;
         this.name = name;
@@ -33,13 +32,12 @@ public class Job implements Serializable {
         this.area = area;
         this.idtype = idtype;
         this.idprofession = idprofession;
-        this.date = date;
+        this.start_date = start_date;
+        this.end_date = end_date;
         this.salary = salary;
         this.idarea = idarea;
-        this.gender = gender;
         this.experience = experience;
         this.number = number;
-        this.position = position;
         this.description = description;
         this.requirement = requirement;
         this.benefit = benefit;
@@ -120,13 +118,6 @@ public class Job implements Serializable {
         this.idprofession = idprofession;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
 
     public int getSalary() {
         return salary;
@@ -144,12 +135,20 @@ public class Job implements Serializable {
         this.idarea = idarea;
     }
 
-    public int getGender() {
-        return gender;
+    public String getStart_date() {
+        return start_date;
     }
 
-    public void setGender(int gender) {
-        this.gender = gender;
+    public void setStart_date(String start_date) {
+        this.start_date = start_date;
+    }
+
+    public String getEnd_date() {
+        return end_date;
+    }
+
+    public void setEnd_date(String end_date) {
+        this.end_date = end_date;
     }
 
     public String getExperience() {
@@ -168,13 +167,6 @@ public class Job implements Serializable {
         this.number = number;
     }
 
-    public String getPosition() {
-        return position;
-    }
-
-    public void setPosition(String position) {
-        this.position = position;
-    }
 
     public String getDescription() {
         return description;

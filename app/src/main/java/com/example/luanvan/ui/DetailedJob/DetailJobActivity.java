@@ -241,16 +241,19 @@ public class DetailJobActivity extends AppCompatActivity {
         Glide.with(getApplicationContext()).load(job.getImg()).into(anhcongty);
         txttencongviec.setText(job.getName());
         txtcongty.setText(job.getCompany_name());
-        String ngay = job.getDate();
+        String ngaybatdau = job.getStart_date();
+        String ngayketthuc = job.getEnd_date();
         SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = null;
+        Date date1 = null;
+        Date date2 = null;
         try {
-            date = fmt.parse(ngay);
+            date1 = fmt.parse(ngaybatdau);
+            date2 = fmt.parse(ngayketthuc);
         } catch (ParseException e) {
             e.printStackTrace();
         }
         SimpleDateFormat fmtOut = new SimpleDateFormat("dd/MM/yyyy");
-        txthannop.setText(fmtOut.format(date));
+        txthannop.setText(fmtOut.format(date2));
 
 
     }

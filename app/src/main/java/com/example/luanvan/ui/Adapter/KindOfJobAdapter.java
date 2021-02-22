@@ -55,16 +55,19 @@ public class KindOfJobAdapter extends RecyclerView.Adapter<KindOfJobAdapter.Item
         Job job = filterArraylist.get(position);
         holder.txttencongviec.setText(job.getName());
         holder.txttencongty.setText(job.getCompany_name());
-        String ngay = job.getDate();
+        String ngaybatdau = job.getStart_date();
+        String ngayketthuc = job.getEnd_date();
         SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = null;
+        Date date1 = null;
+        Date date2 = null;
         try {
-            date = fmt.parse(ngay);
+            date1 = fmt.parse(ngaybatdau);
+            date2 = fmt.parse(ngayketthuc);
         } catch (ParseException e) {
             e.printStackTrace();
         }
         SimpleDateFormat fmtOut = new SimpleDateFormat("dd/MM/yyyy");
-        holder.txttime.setText(fmtOut.format(date));
+        holder.txttime.setText(fmtOut.format(date2));
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
         holder.txtsalary.setText(decimalFormat.format(job.getSalary()) + "đ");
         holder.txtarea.setText(job.getArea());

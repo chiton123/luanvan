@@ -17,7 +17,7 @@ import java.text.DecimalFormat;
 
 
 public class InfoFragment extends Fragment {
-    TextView txtsalary, txtarea, txthinhthuc, txtnumber, txtgender, txtposition, txtexperience, txtdescription, txtbenefit, txtrequirement;
+    TextView txtsalary, txtarea, txthinhthuc, txtnumber, txtexperience, txtdescription, txtbenefit, txtrequirement;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -27,8 +27,6 @@ public class InfoFragment extends Fragment {
         txtsalary = (TextView) view.findViewById(R.id.salary);
         txthinhthuc = (TextView) view.findViewById(R.id.hinhthuc);
         txtnumber = (TextView) view.findViewById(R.id.number);
-        txtposition = (TextView) view.findViewById(R.id.position);
-        txtgender = (TextView) view.findViewById(R.id.gender);
         txtexperience = (TextView) view.findViewById(R.id.experience);
         txtdescription = (TextView) view.findViewById(R.id.motacongviec);
         txtbenefit = (TextView) view.findViewById(R.id.quyenloi);
@@ -46,14 +44,6 @@ public class InfoFragment extends Fragment {
         txtsalary.setText(decimalFormat.format(job.getSalary())+"đ");
         txthinhthuc.setText(job.getType_job());
         txtnumber.setText(job.getNumber()+"");
-        txtposition.setText(job.getPosition());
-        if(job.getGender() == 0){
-            txtgender.setText("Không yêu cầu");
-        }else if(job.getGender() == 1){
-            txtgender.setText("Nam");
-        }else {
-            txtgender.setText("Nữ");
-        }
         txtexperience.setText(job.getExperience());
 
         String mota = xuongdong(job.getDescription());
