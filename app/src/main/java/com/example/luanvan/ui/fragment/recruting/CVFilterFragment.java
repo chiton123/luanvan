@@ -3,12 +3,14 @@ package com.example.luanvan.ui.fragment.recruting;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -43,11 +45,12 @@ public class CVFilterFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_c_v_filter, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
         arrayList = new ArrayList<>();
-        adapter = new CVFilterAdapter(getActivity(), arrayList, getActivity());
+        adapter = new CVFilterAdapter(getActivity(), arrayList, getActivity(),1);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
         job_id = getActivity().getIntent().getIntExtra("job_id", 0);
+        // 1: lọc CV, 2: phỏng vấn, 3: nhận việc
         getData();
 
         return view;
@@ -64,18 +67,22 @@ public class CVFilterFragment extends Fragment {
                                 JSONArray jsonArray = new JSONArray(response);
                                 for(int i=0; i < jsonArray.length(); i++){
                                     JSONObject object = jsonArray.getJSONObject(i);
-                                    arrayList.add(new Applicant(
-                                            object.getInt("id"),
-                                            object.getInt("job_id"),
-                                            object.getInt("user_id"),
-                                            object.getString("user_id_f"),
-                                            object.getString("username"),
-                                            object.getString("email"),
-                                            object.getString("address"),
-                                            object.getString("phone"),
-                                            object.getInt("cv_id"),
-                                            object.getInt("status")
-                                    ));
+                                    int status = object.getInt("status");
+                                    if(status == 0 || status == 1 || status == 2){
+                                        arrayList.add(new Applicant(
+                                                object.getInt("id"),
+                                                object.getInt("job_id"),
+                                                object.getInt("user_id"),
+                                                object.getString("user_id_f"),
+                                                object.getString("username"),
+                                                object.getString("email"),
+                                                object.getString("address"),
+                                                object.getString("phone"),
+                                                object.getInt("cv_id"),
+                                                object.getInt("status"),
+                                                object.getString("note")
+                                        ));
+                                    }
 
                                 }
                                 adapter.notifyDataSetChanged();
@@ -90,7 +97,7 @@ public class CVFilterFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
                     }
                 }){
             @Override
@@ -103,4 +110,5 @@ public class CVFilterFragment extends Fragment {
         requestQueue.add(stringRequest);
 
     }
+
 }

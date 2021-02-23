@@ -13,8 +13,9 @@ public class Applicant implements Serializable {
     private String phone;
     private int cv_id;
     private int status;
-
-    public Applicant(int id, int job_id, int user_id, String user_id_f, String username, String email, String address, String phone, int cv_id, int status) {
+    private String note;
+    public Applicant(int id, int job_id, int user_id, String user_id_f, String username, String email, String address, String phone, int cv_id, int status,
+                     String note) {
         this.id = id;
         this.job_id = job_id;
         this.user_id = user_id;
@@ -25,6 +26,15 @@ public class Applicant implements Serializable {
         this.phone = phone;
         this.cv_id = cv_id;
         this.status = status;
+        this.note = note;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 
     public int getId() {

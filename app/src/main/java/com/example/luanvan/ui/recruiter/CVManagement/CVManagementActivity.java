@@ -2,6 +2,7 @@ package com.example.luanvan.ui.recruiter.CVManagement;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
@@ -28,6 +29,33 @@ public class CVManagementActivity extends AppCompatActivity {
 
 
     }
+    // 1: lọc cv, 2: phỏng vấn , 3: nhận việc
+    public void reloadFilterCV(){
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        CVFilterFragment cvFilterFragment = null;
+        cvFilterFragment = (CVFilterFragment) viewPageAdapter.getItem(0);
+        transaction.detach(cvFilterFragment);
+        transaction.attach(cvFilterFragment);
+        transaction.commitNowAllowingStateLoss();
+    }
+    public void reloadInterview(){
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        InterviewFragment interviewFragment = null;
+        interviewFragment = (InterviewFragment) viewPageAdapter.getItem(1);
+        transaction.detach(interviewFragment);
+        transaction.attach(interviewFragment);
+        transaction.commitNowAllowingStateLoss();
+    }
+    public void reloadGoToWork(){
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        GoToWorkFragment goToWorkFragment = null;
+        goToWorkFragment = (GoToWorkFragment) viewPageAdapter.getItem(2);
+        transaction.detach(goToWorkFragment);
+        transaction.attach(goToWorkFragment);
+        transaction.commitNowAllowingStateLoss();
+    }
+
+
     private void actionBar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
