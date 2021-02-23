@@ -110,6 +110,8 @@ public class MainActivity extends AppCompatActivity {
     public static String urlJobList = host + "job_list.php";
     // filter CV
     public static String urlFilterCV = host + "filterCV.php";
+    // update application
+    public static String urlUpdateApplication = host + "update_application.php";
 
 
     @Override

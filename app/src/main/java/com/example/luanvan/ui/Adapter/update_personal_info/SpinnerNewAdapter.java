@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,10 +36,14 @@ public class SpinnerNewAdapter extends ArrayAdapter<GeneralObject> {
             txtname = rowView.findViewById(R.id.name);
         }
 
-        GeneralObject object = getItem(position);
-        
+        GeneralObject object = arrayList.get(position);
         if(object != null){
             txtname.setText(object.getName());
+        }
+        try {
+
+        }catch (NullPointerException e){
+            Toast.makeText(getContext(), "null", Toast.LENGTH_SHORT).show();
         }
 
 
