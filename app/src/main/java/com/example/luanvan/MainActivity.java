@@ -108,7 +108,8 @@ public class MainActivity extends AppCompatActivity {
     public static String urlCheckApply = host + "check_apply.php";
     // Danh sách vị trí
     public static String urlJobList = host + "job_list.php";
-
+    // filter CV
+    public static String urlFilterCV = host + "filterCV.php";
 
 
     @Override

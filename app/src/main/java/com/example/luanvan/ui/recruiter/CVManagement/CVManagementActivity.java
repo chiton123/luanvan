@@ -1,4 +1,4 @@
-package com.example.luanvan.ui.recruiter;
+package com.example.luanvan.ui.recruiter.CVManagement;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;

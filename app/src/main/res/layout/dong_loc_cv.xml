@@ -4,21 +4,11 @@
     android:layout_height="match_parent"
     android:padding="5dp"
     >
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/jobName"
-        android:text="job_name"
-        android:textColor="#070707"
-        android:textSize="16sp"
-        android:layout_margin="3dp"
-        ></TextView>
     <ImageView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:src="@drawable/user1"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/user2"
         android:id="@+id/hinh"
-        android:layout_below="@id/jobName"
         android:layout_margin="3dp"
         ></ImageView>
     <TextView
@@ -26,7 +16,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/cadidateName"
         android:text="candidate"
-        android:layout_below="@id/jobName"
         android:layout_toRightOf="@id/hinh"
         android:textColor="#070707"
         android:textSize="16sp"
@@ -52,14 +41,16 @@
         android:textSize="16sp"
         ></TextView>
     <Button
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:id="@+id/buttonxem"
-        android:text="Xem chi tiết"
-        android:background="@drawable/button_login"
-        android:textColor="#fff"
+        android:layout_margin="5dp"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:id="@+id/buttonthaotac"
+        android:text="Thao tác"
+        android:background="#C3C3BF"
+        android:textColor="#000000"
         android:layout_alignParentRight="true"
         android:layout_below="@id/status"
-        android:layout_margin="3dp"
+        android:drawableRight="@drawable/expandarrow"
+        android:paddingRight="5dp"
         ></Button>
 </RelativeLayout>

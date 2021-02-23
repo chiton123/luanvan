@@ -15,12 +15,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Job;
-import com.example.luanvan.ui.recruiter.CVManagementActivity;
+import com.example.luanvan.ui.recruiter.CVManagement.CVManagementActivity;
 
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -47,7 +45,7 @@ public class PositionAdapter extends RecyclerView.Adapter<PositionAdapter.ItemHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ItemHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ItemHolder holder, final int position) {
         Job job = arrayList.get(position);
         holder.txtName.setText(job.getName());
         String ngaybatdau = job.getStart_date();
@@ -87,6 +85,7 @@ public class PositionAdapter extends RecyclerView.Adapter<PositionAdapter.ItemHo
                                 break;
                             case R.id.show:
                                 Intent intent = new Intent(activity, CVManagementActivity.class);
+                                intent.putExtra("job_id", arrayList.get(position).getId());
                                 activity.startActivity(intent);
                                 break;
                             case R.id.end:

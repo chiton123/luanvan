@@ -31,6 +31,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class JobListActivity extends AppCompatActivity {
+    // status của applicant : status
+    // lọc CV: 0 chưa đánh giá, 1: đạt yêu cầu, 2: không đạt yêu cầu
+    // phỏng vấn: 3: chưa liên hệ, 4: đạt phỏng vấn , 5: không đạt phỏng vấn
+    // nhận việc: 6: đã thông báo kết quả, 7: đã đến nhận việc, 8: từ chối nhận việc
     Toolbar toolbar;
     PositionAdapter adapter;
     ArrayList<Job> arrayList;
@@ -54,27 +58,30 @@ public class JobListActivity extends AppCompatActivity {
                             JSONArray jsonArray = new JSONArray(response);
                             for(int i=0; i < jsonArray.length(); i++){
                                 JSONObject object = jsonArray.getJSONObject(i);
-                                arrayList.add(new Job(
-                                        object.getInt("id"),
-                                        object.getString("name"),
-                                        object.getInt("idcompany"),
-                                        object.getString("img"),
-                                        object.getString("area"),
-                                        object.getInt("idtype"),
-                                        object.getInt("idprofession"),
-                                        object.getString("start_date"),
-                                        object.getString("end_date"),
-                                        object.getInt("salary"),
-                                        object.getInt("idarea"),
-                                        object.getString("experience"),
-                                        object.getInt("number"),
-                                        object.getString("description"),
-                                        object.getString("requirement"),
-                                        object.getString("benefit"),
-                                        object.getInt("status"),
-                                        object.getString("company_name"),
-                                        object.getString("type_job")
-                                ));
+                                int status = object.getInt("status");
+                                if(status == 0 || status == 1 || status == 2){
+                                    arrayList.add(new Job(
+                                            object.getInt("id"),
+                                            object.getString("name"),
+                                            object.getInt("idcompany"),
+                                            object.getString("img"),
+                                            object.getString("area"),
+                                            object.getInt("idtype"),
+                                            object.getInt("idprofession"),
+                                            object.getString("start_date"),
+                                            object.getString("end_date"),
+                                            object.getInt("salary"),
+                                            object.getInt("idarea"),
+                                            object.getString("experience"),
+                                            object.getInt("number"),
+                                            object.getString("description"),
+                                            object.getString("requirement"),
+                                            object.getString("benefit"),
+                                            object.getInt("status"),
+                                            object.getString("company_name"),
+                                            object.getString("type_job")
+                                    ));
+                                }
 
                             }
                             adapter.notifyDataSetChanged();
