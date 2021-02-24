@@ -113,6 +113,8 @@ public class MainActivity extends AppCompatActivity {
     // update application, delete application
     public static String urlUpdateApplication = host + "update_application.php";
     public static String urlDeleteApplication = host + "delete_application.php";
+    // start end recruiting
+    public static String urlStartEndRecruiting = host + "recruit_start_end.php";
 
 
     @Override
