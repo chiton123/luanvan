@@ -14,7 +14,7 @@ public class Job implements Serializable {
     private String end_date;
     private int salary;
     private int idarea;
-    private String area;
+    private String address;
     private String experience;
     private int number;
     private String description;
@@ -22,14 +22,14 @@ public class Job implements Serializable {
     private String benefit;
     private int status;
     private String type_job;
-    public Job(int id, String name,int idcompany, String img,String area, int idtype, int idprofession, String start_date, String end_date,
+    public Job(int id, String name,int idcompany, String img,String address, int idtype, int idprofession, String start_date, String end_date,
                int salary, int idarea, String experience, int number, String description,
                String requirement, String benefit, int status,String company_name, String type_job) {
         this.id = id;
         this.name = name;
         this.idcompany = idcompany;
         this.img = img;
-        this.area = area;
+        this.address = address;
         this.idtype = idtype;
         this.idprofession = idprofession;
         this.start_date = start_date;
@@ -62,12 +62,12 @@ public class Job implements Serializable {
         this.img = img;
     }
 
-    public String getArea() {
-        return area;
+    public String getAddress() {
+        return address;
     }
 
-    public void setArea(String area) {
-        this.area = area;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getCompany_name() {

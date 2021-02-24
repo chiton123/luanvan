@@ -115,7 +115,8 @@ public class MainActivity extends AppCompatActivity {
     public static String urlDeleteApplication = host + "delete_application.php";
     // start end recruiting
     public static String urlStartEndRecruiting = host + "recruit_start_end.php";
-
+    // update job
+    public static String urlUpdateJob = host + "update_job.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

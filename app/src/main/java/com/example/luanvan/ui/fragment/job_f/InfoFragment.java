@@ -39,7 +39,7 @@ public class InfoFragment extends Fragment {
     private void setContent() {
         Intent intent = (Intent) getActivity().getIntent();
         Job job = (Job) intent.getSerializableExtra("job");
-        txtarea.setText(job.getArea());
+        txtarea.setText(job.getAddress());
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
         txtsalary.setText(decimalFormat.format(job.getSalary())+"đ");
         txthinhthuc.setText(job.getType_job());

@@ -70,7 +70,7 @@ public class KindOfJobAdapter extends RecyclerView.Adapter<KindOfJobAdapter.Item
         holder.txttime.setText(fmtOut.format(date2));
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
         holder.txtsalary.setText(decimalFormat.format(job.getSalary()) + "đ");
-        holder.txtarea.setText(job.getArea());
+        holder.txtarea.setText(job.getAddress());
         Glide.with(context).load(job.getImg()).into(holder.imganh);
         holder.imganh.setFocusable(false);
         holder.layout.setOnClickListener(new View.OnClickListener() {
