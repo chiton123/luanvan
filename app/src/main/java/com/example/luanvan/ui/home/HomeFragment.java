@@ -42,7 +42,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -200,122 +204,135 @@ public class HomeFragment extends Fragment {
                             JSONArray jsonArray = new JSONArray(response);
                             for(int i=0; i < jsonArray.length(); i++){
                                 JSONObject object = jsonArray.getJSONObject(i);
-                                if(kind == 0){
-                                    arrayList.add(new Job(
-                                            object.getInt("id"),
-                                            object.getString("name"),
-                                            object.getInt("idcompany"),
-                                            object.getString("img"),
-                                            object.getString("area"),
-                                            object.getInt("idtype"),
-                                            object.getInt("idprofession"),
-                                            object.getString("start_date"),
-                                            object.getString("end_date"),
-                                            object.getInt("salary"),
-                                            object.getInt("idarea"),
-                                            object.getString("experience"),
-                                            object.getInt("number"),
-                                            object.getString("description"),
-                                            object.getString("requirement"),
-                                            object.getString("benefit"),
-                                            object.getInt("status"),
-                                            object.getString("company_name"),
-                                            object.getString("type_job")
-                                    ));
-                                    jobAdapter.notifyDataSetChanged();
-                                }else if(kind == 3){
-                                    arrayListThuctap.add(new Job(
-                                            object.getInt("id"),
-                                            object.getString("name"),
-                                            object.getInt("idcompany"),
-                                            object.getString("img"),
-                                            object.getString("area"),
-                                            object.getInt("idtype"),
-                                            object.getInt("idprofession"),
-                                            object.getString("start_date"),
-                                            object.getString("end_date"),
-                                            object.getInt("salary"),
-                                            object.getInt("idarea"),
-                                            object.getString("experience"),
-                                            object.getInt("number"),
-                                            object.getString("description"),
-                                            object.getString("requirement"),
-                                            object.getString("benefit"),
-                                            object.getInt("status"),
-                                            object.getString("company_name"),
-                                            object.getString("type_job")
-                                    ));
-                                    adapterThuctap.notifyDataSetChanged();
-                                }else if(kind == 1){
-                                    arrayListLuongCao.add(new Job(
-                                            object.getInt("id"),
-                                            object.getString("name"),
-                                            object.getInt("idcompany"),
-                                            object.getString("img"),
-                                            object.getString("area"),
-                                            object.getInt("idtype"),
-                                            object.getInt("idprofession"),
-                                            object.getString("start_date"),
-                                            object.getString("end_date"),
-                                            object.getInt("salary"),
-                                            object.getInt("idarea"),
-                                            object.getString("experience"),
-                                            object.getInt("number"),
-                                            object.getString("description"),
-                                            object.getString("requirement"),
-                                            object.getString("benefit"),
-                                            object.getInt("status"),
-                                            object.getString("company_name"),
-                                            object.getString("type_job")
-                                    ));
-                                    adapterLuongCao.notifyDataSetChanged();
-                                } else if(kind == 2){
-                                    arrayListViecLamTuXa.add(new Job(
-                                            object.getInt("id"),
-                                            object.getString("name"),
-                                            object.getInt("idcompany"),
-                                            object.getString("img"),
-                                            object.getString("area"),
-                                            object.getInt("idtype"),
-                                            object.getInt("idprofession"),
-                                            object.getString("start_date"),
-                                            object.getString("end_date"),
-                                            object.getInt("salary"),
-                                            object.getInt("idarea"),
-                                            object.getString("experience"),
-                                            object.getInt("number"),
-                                            object.getString("description"),
-                                            object.getString("requirement"),
-                                            object.getString("benefit"),
-                                            object.getInt("status"),
-                                            object.getString("company_name"),
-                                            object.getString("type_job")
-                                    ));
-                                    adapterViecLamTuXa.notifyDataSetChanged();
-                                }else if(kind == 4){
-                                    arrayListViecLamMoiNhat.add(new Job(
-                                            object.getInt("id"),
-                                            object.getString("name"),
-                                            object.getInt("idcompany"),
-                                            object.getString("img"),
-                                            object.getString("area"),
-                                            object.getInt("idtype"),
-                                            object.getInt("idprofession"),
-                                            object.getString("start_date"),
-                                            object.getString("end_date"),
-                                            object.getInt("salary"),
-                                            object.getInt("idarea"),
-                                            object.getString("experience"),
-                                            object.getInt("number"),
-                                            object.getString("description"),
-                                            object.getString("requirement"),
-                                            object.getString("benefit"),
-                                            object.getInt("status"),
-                                            object.getString("company_name"),
-                                            object.getString("type_job")
-                                    ));
-                                    adapterViecLamMoiNhat.notifyDataSetChanged();
+                                // kiểm tra xem có hết hạn nộp hay không
+                                int status = object.getInt("status");
+                                SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+                                Date date = null;
+
+                                try {
+                                    date = fmt.parse(object.getString("end_date"));
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
                                 }
+                                if(status == 0 && date.after(Calendar.getInstance().getTime())){
+                                    if(kind == 0){
+                                        arrayList.add(new Job(
+                                                object.getInt("id"),
+                                                object.getString("name"),
+                                                object.getInt("idcompany"),
+                                                object.getString("img"),
+                                                object.getString("area"),
+                                                object.getInt("idtype"),
+                                                object.getInt("idprofession"),
+                                                object.getString("start_date"),
+                                                object.getString("end_date"),
+                                                object.getInt("salary"),
+                                                object.getInt("idarea"),
+                                                object.getString("experience"),
+                                                object.getInt("number"),
+                                                object.getString("description"),
+                                                object.getString("requirement"),
+                                                object.getString("benefit"),
+                                                object.getInt("status"),
+                                                object.getString("company_name"),
+                                                object.getString("type_job")
+                                        ));
+                                        jobAdapter.notifyDataSetChanged();
+                                    }else if(kind == 3){
+                                        arrayListThuctap.add(new Job(
+                                                object.getInt("id"),
+                                                object.getString("name"),
+                                                object.getInt("idcompany"),
+                                                object.getString("img"),
+                                                object.getString("area"),
+                                                object.getInt("idtype"),
+                                                object.getInt("idprofession"),
+                                                object.getString("start_date"),
+                                                object.getString("end_date"),
+                                                object.getInt("salary"),
+                                                object.getInt("idarea"),
+                                                object.getString("experience"),
+                                                object.getInt("number"),
+                                                object.getString("description"),
+                                                object.getString("requirement"),
+                                                object.getString("benefit"),
+                                                object.getInt("status"),
+                                                object.getString("company_name"),
+                                                object.getString("type_job")
+                                        ));
+                                        adapterThuctap.notifyDataSetChanged();
+                                    }else if(kind == 1){
+                                        arrayListLuongCao.add(new Job(
+                                                object.getInt("id"),
+                                                object.getString("name"),
+                                                object.getInt("idcompany"),
+                                                object.getString("img"),
+                                                object.getString("area"),
+                                                object.getInt("idtype"),
+                                                object.getInt("idprofession"),
+                                                object.getString("start_date"),
+                                                object.getString("end_date"),
+                                                object.getInt("salary"),
+                                                object.getInt("idarea"),
+                                                object.getString("experience"),
+                                                object.getInt("number"),
+                                                object.getString("description"),
+                                                object.getString("requirement"),
+                                                object.getString("benefit"),
+                                                object.getInt("status"),
+                                                object.getString("company_name"),
+                                                object.getString("type_job")
+                                        ));
+                                        adapterLuongCao.notifyDataSetChanged();
+                                    } else if(kind == 2){
+                                        arrayListViecLamTuXa.add(new Job(
+                                                object.getInt("id"),
+                                                object.getString("name"),
+                                                object.getInt("idcompany"),
+                                                object.getString("img"),
+                                                object.getString("area"),
+                                                object.getInt("idtype"),
+                                                object.getInt("idprofession"),
+                                                object.getString("start_date"),
+                                                object.getString("end_date"),
+                                                object.getInt("salary"),
+                                                object.getInt("idarea"),
+                                                object.getString("experience"),
+                                                object.getInt("number"),
+                                                object.getString("description"),
+                                                object.getString("requirement"),
+                                                object.getString("benefit"),
+                                                object.getInt("status"),
+                                                object.getString("company_name"),
+                                                object.getString("type_job")
+                                        ));
+                                        adapterViecLamTuXa.notifyDataSetChanged();
+                                    }else if(kind == 4){
+                                        arrayListViecLamMoiNhat.add(new Job(
+                                                object.getInt("id"),
+                                                object.getString("name"),
+                                                object.getInt("idcompany"),
+                                                object.getString("img"),
+                                                object.getString("area"),
+                                                object.getInt("idtype"),
+                                                object.getInt("idprofession"),
+                                                object.getString("start_date"),
+                                                object.getString("end_date"),
+                                                object.getInt("salary"),
+                                                object.getInt("idarea"),
+                                                object.getString("experience"),
+                                                object.getInt("number"),
+                                                object.getString("description"),
+                                                object.getString("requirement"),
+                                                object.getString("benefit"),
+                                                object.getInt("status"),
+                                                object.getString("company_name"),
+                                                object.getString("type_job")
+                                        ));
+                                        adapterViecLamMoiNhat.notifyDataSetChanged();
+                                    }
+                                }
+
 
                             }
 

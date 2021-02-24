@@ -82,6 +82,8 @@
                             android:id="@+id/area"
                             android:textColor="#040404"
                             android:layout_marginLeft="3dp"
+                            android:ellipsize="end"
+                            android:maxLines="1"
                             ></TextView>
 
                     </LinearLayout>

@@ -28,7 +28,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,33 +62,39 @@ public class KindOfJobActivity extends AppCompatActivity {
                             JSONArray jsonArray = new JSONArray(response);
                             for(int i=0; i < jsonArray.length(); i++){
                                 JSONObject object = jsonArray.getJSONObject(i);
-                                arrayList.add(new Job(
-                                        object.getInt("id"),
-                                        object.getString("name"),
-                                        object.getInt("idcompany"),
-                                        object.getString("img"),
-                                        object.getString("area"),
-                                        object.getInt("idtype"),
-                                        object.getInt("idprofession"),
-                                        object.getString("start_date"),
-                                        object.getString("end_date"),
-                                        object.getInt("salary"),
-                                        object.getInt("idarea"),
-                                        object.getString("experience"),
-                                        object.getInt("number"),
-                                        object.getString("description"),
-                                        object.getString("requirement"),
-                                        object.getString("benefit"),
-                                        object.getInt("status"),
-                                        object.getString("company_name"),
-                                        object.getString("type_job")
-                                ));
-                                adapter.notifyDataSetChanged();
+                                int status = object.getInt("status");
+                                SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+                                Date date = fmt.parse(object.getString("end_date"));
+                                if(status == 0 && date.after(Calendar.getInstance().getTime())){
+                                    arrayList.add(new Job(
+                                            object.getInt("id"),
+                                            object.getString("name"),
+                                            object.getInt("idcompany"),
+                                            object.getString("img"),
+                                            object.getString("area"),
+                                            object.getInt("idtype"),
+                                            object.getInt("idprofession"),
+                                            object.getString("start_date"),
+                                            object.getString("end_date"),
+                                            object.getInt("salary"),
+                                            object.getInt("idarea"),
+                                            object.getString("experience"),
+                                            object.getInt("number"),
+                                            object.getString("description"),
+                                            object.getString("requirement"),
+                                            object.getString("benefit"),
+                                            object.getInt("status"),
+                                            object.getString("company_name"),
+                                            object.getString("type_job")
+                                    ));
+                                    adapter.notifyDataSetChanged();
+                                }
+
 
                             }
 
 
-                        } catch (JSONException e) {
+                        } catch (JSONException | ParseException e) {
                             e.printStackTrace();
                         }
                     }

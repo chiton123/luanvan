@@ -84,6 +84,8 @@
                             android:text="Hà nội"
                             android:id="@+id/area"
                             android:textColor="#040404"
+                            android:ellipsize="end"
+                            android:maxLines="1"
                             android:layout_marginLeft="3dp"
                             ></TextView>
 

@@ -28,6 +28,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Job;
+import com.example.luanvan.ui.recruiter.AdjustJobActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManagementActivity;
 
 import java.text.ParseException;
@@ -108,7 +109,9 @@ public class PositionAdapter extends RecyclerView.Adapter<PositionAdapter.ItemHo
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()){
                             case R.id.edit:
-                                Toast.makeText(context, "edit", Toast.LENGTH_SHORT).show();
+                                Intent intent1 = new Intent(activity, AdjustJobActivity.class);
+                                intent1.putExtra("job", arrayList.get(position));
+                                activity.startActivity(intent1);
                                 break;
                             case R.id.show:
                                 Intent intent = new Intent(activity, CVManagementActivity.class);
@@ -138,7 +141,6 @@ public class PositionAdapter extends RecyclerView.Adapter<PositionAdapter.ItemHo
                                     }else {
                                         Toast.makeText(context, "Ngày hết hạn đã trước ngày hiện tại, không thể tuyển được nữa", Toast.LENGTH_SHORT).show();
                                     }
-
 
                                 }else {
 

@@ -175,6 +175,7 @@
                         android:background="@drawable/edittext_frame"
                         android:id="@+id/editmota"
                         android:lines="8"
+                        android:gravity="top|left"
                         android:hint="Mô tả chi tiết quá trình học tập của bản để nhà tuyển dụng có thể hiểu bạn hơn"
                         ></EditText>
                 </LinearLayout>
