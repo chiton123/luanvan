@@ -37,13 +37,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Tên vị trí"
-                        android:textColor="#050505"
-                        android:textSize="15sp"
+                        android:textColor="#040404"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
                         ></TextView>
                     <EditText
                         android:layout_marginTop="5dp"
                         android:layout_width="match_parent"
                         android:id="@+id/editposition"
+                        android:layout_marginRight="9dp"
+                        android:layout_marginLeft="9dp"
                         android:layout_height="?attr/dropdownListPreferredItemHeight"
                         android:background="@drawable/edittext_frame"
                         ></EditText>
@@ -64,19 +67,20 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Bắt đầu"
-                            android:textSize="13sp"
                             android:layout_gravity="left"
                             android:layout_marginBottom="2dp"
                             android:layout_marginLeft="5dp"
-                            android:textColor="#070707"
+                            android:textColor="#040404"
+                            android:textStyle="bold"
+                            android:textSize="14sp"
                             ></TextView>
                         <EditText
                             android:layout_marginTop="5dp"
-                            android:layout_margin="5dp"
                             android:layout_width="120dp"
                             android:layout_height="30dp"
                             android:id="@+id/editstart"
                             android:hint="Bắt đầu"
+                            android:layout_marginLeft="10dp"
                             android:background="@drawable/edittext_frame"
                             ></EditText>
 
@@ -92,11 +96,12 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Kết thúc"
-                            android:textSize="13sp"
                             android:layout_gravity="left"
                             android:layout_marginBottom="2dp"
                             android:layout_marginLeft="5dp"
-                            android:textColor="#070707"
+                            android:textColor="#040404"
+                            android:textStyle="bold"
+                            android:textSize="14sp"
                             ></TextView>
                         <EditText
                             android:layout_marginTop="5dp"
@@ -156,8 +161,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Địa chỉ làm việc"
-                        android:textColor="#050505"
-                        android:textSize="15sp"
+                        android:textColor="#040404"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
                         ></TextView>
                     <EditText
                         android:layout_marginTop="5dp"
@@ -217,8 +223,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Số lượng cần tuyển"
-                        android:textColor="#050505"
-                        android:textSize="15sp"
+                        android:textColor="#040404"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
                         ></TextView>
                     <EditText
                         android:layout_marginTop="5dp"
@@ -227,6 +234,7 @@
                         android:layout_marginLeft="9dp"
                         android:layout_height="?attr/dropdownListPreferredItemHeight"
                         android:id="@+id/editnumber"
+                        android:inputType="number"
                         android:background="@drawable/edittext_frame"
                         ></EditText>
                 </LinearLayout>
@@ -310,8 +318,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Lương"
-                        android:textColor="#050505"
-                        android:textSize="15sp"
+                        android:textColor="#040404"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
                         ></TextView>
                     <EditText
                         android:layout_marginTop="5dp"
@@ -320,6 +329,7 @@
                         android:layout_marginLeft="9dp"
                         android:layout_height="?attr/dropdownListPreferredItemHeight"
                         android:id="@+id/editsalary"
+                        android:inputType="number"
                         android:background="@drawable/edittext_frame"
                         ></EditText>
                 </LinearLayout>
@@ -333,8 +343,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Mô tả công việc"
-                        android:textColor="#050505"
-                        android:textSize="15sp"
+                        android:textColor="#040404"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
                         ></TextView>
                     <EditText
                         android:layout_marginTop="5dp"
@@ -359,8 +370,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Yêu cầu công việc"
-                        android:textColor="#050505"
-                        android:textSize="15sp"
+                        android:textColor="#040404"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
                         ></TextView>
                     <EditText
                         android:layout_marginTop="5dp"
@@ -385,8 +397,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Quyền lợi"
-                        android:textColor="#050505"
-                        android:textSize="15sp"
+                        android:textColor="#040404"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
                         ></TextView>
                     <EditText
                         android:layout_marginTop="5dp"

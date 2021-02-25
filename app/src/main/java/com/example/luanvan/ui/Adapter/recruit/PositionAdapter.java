@@ -43,6 +43,7 @@ public class PositionAdapter extends RecyclerView.Adapter<PositionAdapter.ItemHo
     Context context;
     ArrayList<Job> arrayList;
     Activity activity;
+    int REQUEST_CODE = 123;
     // kiểm tra xem có quá ngày hay không, nếu quá ngày thì k dc tiếp tục tuyển
 
     public PositionAdapter(Context context, ArrayList<Job> arrayList, Activity activity) {
@@ -62,31 +63,36 @@ public class PositionAdapter extends RecyclerView.Adapter<PositionAdapter.ItemHo
     @Override
     public void onBindViewHolder(@NonNull final ItemHolder holder, final int position) {
         Job job = arrayList.get(position);
-        holder.txtName.setText(job.getName());
-        String ngaybatdau = job.getStart_date();
-        String ngayketthuc = job.getEnd_date();
-        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
         Date date1 = null;
         Date date2 = null;
-        try {
-            date1 = fmt.parse(ngaybatdau);
-            date2 = fmt.parse(ngayketthuc);
-            if(date2.after(Calendar.getInstance().getTime())){
-                if(job.getStatus() == 1){
-                    holder.txtStatus.setText("Ngưng tuyển dụng");
+        if(job != null){
+            holder.txtName.setText(job.getName());
+            String ngaybatdau = job.getStart_date();
+            String ngayketthuc = job.getEnd_date();
+            SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+
+            try {
+                date1 = fmt.parse(ngaybatdau);
+                date2 = fmt.parse(ngayketthuc);
+                if(date2.after(Calendar.getInstance().getTime())){
+                    if(job.getStatus() == 1){
+                        holder.txtStatus.setText("Ngưng tuyển dụng");
+                    }else {
+                        holder.txtStatus.setText("Đang tuyển dụng");
+                    }
                 }else {
-                    holder.txtStatus.setText("Đang tuyển dụng");
+                    holder.txtStatus.setText("Ngưng tuyển dụng");
                 }
-            }else {
-                holder.txtStatus.setText("Ngưng tuyển dụng");
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
-        } catch (ParseException e) {
-            e.printStackTrace();
+            SimpleDateFormat fmtOut = new SimpleDateFormat("dd/MM/yyyy");
+            holder.txtDate.setText(fmtOut.format(date1) + "-" + fmtOut.format(date2));
+
         }
-        SimpleDateFormat fmtOut = new SimpleDateFormat("dd/MM/yyyy");
-        holder.txtDate.setText(fmtOut.format(date1) + "-" + fmtOut.format(date2));
-        // status:  dừng tuyển 1, đang tuyển 0
         final Date finalDate = date2;
+        // status:  dừng tuyển 1, đang tuyển 0
+
         holder.btnChange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,7 +117,8 @@ public class PositionAdapter extends RecyclerView.Adapter<PositionAdapter.ItemHo
                             case R.id.edit:
                                 Intent intent1 = new Intent(activity, AdjustJobActivity.class);
                                 intent1.putExtra("job", arrayList.get(position));
-                                activity.startActivity(intent1);
+                                intent1.putExtra("position", position);
+                                activity.startActivityForResult(intent1, REQUEST_CODE);
                                 break;
                             case R.id.show:
                                 Intent intent = new Intent(activity, CVManagementActivity.class);

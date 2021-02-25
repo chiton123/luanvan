@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -43,6 +45,7 @@ public class AdjustJobActivity extends AppCompatActivity {
     ArrayList<GeneralObject> dataArea,dataProfession, dataSalary, dataExperience, dataKindJob;
     public static SpinnerNewAdapter khuVucAdapter, nganhNgheAdapter, kinhNghiemAdapter, loaiHinhAdapter;
     Job job = null;
+    int position_job = 0;
     int check_start = 0;
     String date_post_start = "", date_post_end = "";
     Date date_start = null, date_end = null;
@@ -50,6 +53,7 @@ public class AdjustJobActivity extends AppCompatActivity {
     int x = 0; // check end date có trước start date hay k, nếu có thì 1
     GeneralObject area, profession, experience, kindJob;
     int idArea = 0, idProfession = 0, idExperience = 0, idKindJob = 0, job_id = 0;
+    Handler handler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,16 +70,22 @@ public class AdjustJobActivity extends AppCompatActivity {
 
     private void getInfo() {
         job = (Job) getIntent().getSerializableExtra("job");
+        position_job = getIntent().getIntExtra("position", 0);
         job_id = job.getId();
         editPosition.setText(job.getName());
         String ngaybatdau = job.getStart_date();
         String ngayketthuc = job.getEnd_date();
+
         SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
         Date date1 = null;
         Date date2 = null;
         try {
             date1 = fmt.parse(ngaybatdau);
             date2 = fmt.parse(ngayketthuc);
+            date_start = date1;
+            date_end = date2;
+            date_post_start = fmt.format(date1);
+            date_post_end = fmt.format(date2);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -187,7 +197,16 @@ public class AdjustJobActivity extends AppCompatActivity {
                     || editDescription.getText().equals("") || editRequirement.getText().equals("") || editNumber.getText().equals("") || editSalary.getText().equals("")
                     || editPosition.getText().equals("")){
                     Toast.makeText(getApplicationContext(), "Vui lòng điền đủ thông tin", Toast.LENGTH_SHORT).show();
-                }else {
+                }else if(idExperience == 0){
+                    Toast.makeText(getApplicationContext(), "Vui lòng chọn kinh nghiệm", Toast.LENGTH_SHORT).show();
+                }else if(idProfession == 0){
+                    Toast.makeText(getApplicationContext(), "Vui lòng chọn ngành nghề", Toast.LENGTH_SHORT).show();
+                }else if(idArea == 0){
+                    Toast.makeText(getApplicationContext(), "Vui lòng chọn khu vực", Toast.LENGTH_SHORT).show();
+                }else if(idKindJob == 0){
+                    Toast.makeText(getApplicationContext(), "Vui lòng chọn loại hình công việc", Toast.LENGTH_SHORT).show();
+                }
+                else {
                     position = editPosition.getText().toString();
                     address = editAddress.getText().toString();
                     benefit = editBenefit.getText().toString();
@@ -202,6 +221,55 @@ public class AdjustJobActivity extends AppCompatActivity {
                                 public void onResponse(String response) {
                                     if(response.equals("success")){
                                         Toast.makeText(getApplicationContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                                        JobListActivity.arrayList.get(position_job).setName(position);
+                                        JobListActivity.arrayList.get(position_job).setAddress(address);
+                                        JobListActivity.arrayList.get(position_job).setBenefit(benefit);
+                                        JobListActivity.arrayList.get(position_job).setDescription(description);
+                                        JobListActivity.arrayList.get(position_job).setRequirement(requirement);
+                                        JobListActivity.arrayList.get(position_job).setNumber(Integer.parseInt(number));
+                                        JobListActivity.arrayList.get(position_job).setSalary(Integer.parseInt(salary));
+                                        JobListActivity.arrayList.get(position_job).setIdarea(idArea);
+                                        JobListActivity.arrayList.get(position_job).setIdprofession(idProfession);
+                                        JobListActivity.arrayList.get(position_job).setIdtype(idKindJob);
+                                        JobListActivity.arrayList.get(position_job).setStart_date(date_post_start);
+                                        JobListActivity.arrayList.get(position_job).setEnd_date(date_post_end);
+                                        switch (idExperience){
+                                            case 1:
+                                                JobListActivity.arrayList.get(position_job).setExperience("Chưa có kinh nghiệm");
+                                                break;
+                                            case 2:
+                                                JobListActivity.arrayList.get(position_job).setExperience("Dưới 1 năm");
+                                                break;
+                                            case 3:
+                                                JobListActivity.arrayList.get(position_job).setExperience("1 năm");
+                                                break;
+                                            case 4:
+                                                JobListActivity.arrayList.get(position_job).setExperience("2 năm");
+                                                break;
+                                            case 5:
+                                                JobListActivity.arrayList.get(position_job).setExperience("3 năm");
+                                                break;
+                                            case 6:
+                                                JobListActivity.arrayList.get(position_job).setExperience("4 năm");
+                                                break;
+                                            case 7:
+                                                JobListActivity.arrayList.get(position_job).setExperience("5 năm");
+                                                break;
+                                            case 8:
+                                                JobListActivity.arrayList.get(position_job).setExperience("Trên 5 năm");
+                                                break;
+                                        }
+                                        handler = new Handler();
+                                        handler.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Intent intent = new Intent();
+                                                setResult(123);
+                                                finish();
+                                            }
+                                        },1000);
+
+
                                     }else {
                                         Toast.makeText(getApplicationContext(), "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
                                     }
@@ -351,7 +419,7 @@ public class AdjustJobActivity extends AppCompatActivity {
 
     }
     private void getDataKindJob() {
-        dataKindJob.add(new GeneralObject(0, "Tất cả"));
+        dataKindJob.add(new GeneralObject(0,"Vui lòng chọn"));
         dataKindJob.add(new GeneralObject(1, "Toàn thời gian"));
         dataKindJob.add(new GeneralObject(2, "Bán thời gian"));
         dataKindJob.add(new GeneralObject(3, "Thực tập"));
@@ -359,7 +427,7 @@ public class AdjustJobActivity extends AppCompatActivity {
     }
 
     private void getDataExperience() {
-        dataExperience.add(new GeneralObject(0, "Tất cả"));
+        dataExperience.add(new GeneralObject(0,"Vui lòng chọn"));
         dataExperience.add(new GeneralObject(1, "Chưa có kinh nghiệm"));
         dataExperience.add(new GeneralObject(2, "Dưới 1 năm"));
         dataExperience.add(new GeneralObject(3, "1 năm"));
@@ -372,7 +440,7 @@ public class AdjustJobActivity extends AppCompatActivity {
     }
 
     private void getDataSalary() {
-        dataSalary.add(new GeneralObject(0, "Tất cả"));
+        dataSalary.add(new GeneralObject(0,"Vui lòng chọn"));
         dataSalary.add(new GeneralObject(1, "Dưới 3 triệu"));
         dataSalary.add(new GeneralObject(2, "3 - 5 triệu"));
         dataSalary.add(new GeneralObject(3, "5 - 7 triệu"));
@@ -388,7 +456,7 @@ public class AdjustJobActivity extends AppCompatActivity {
     }
 
     private void getDataProfession() {
-        dataProfession.add(new GeneralObject(0, "Tất cả"));
+        dataProfession.add(new GeneralObject(0,"Vui lòng chọn"));
         dataProfession.add(new GeneralObject(1,"Kinh doanh, bán hàng"));
         dataProfession.add(new GeneralObject(2, "Biên phiên dịch"));
         dataProfession.add(new GeneralObject(3, "Báo chí, truyền hình"));
@@ -407,7 +475,7 @@ public class AdjustJobActivity extends AppCompatActivity {
     }
 
     public void getDataArea() {
-        dataArea.add(new GeneralObject(0,"Tất cả"));
+        dataArea.add(new GeneralObject(0,"Vui lòng chọn"));
         dataArea.add(new GeneralObject(1,"An Giang"));
         dataArea.add(new GeneralObject(2,"Bà Rịa - Vũng Tàu"));
         dataArea.add(new GeneralObject(3,"Bắc Giang"));

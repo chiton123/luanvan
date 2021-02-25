@@ -1,10 +1,12 @@
 package com.example.luanvan.ui.recruiter;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -37,7 +39,7 @@ public class JobListActivity extends AppCompatActivity {
     // nhận việc: 6: đã thông báo kết quả, 7: đã đến nhận việc, 8: từ chối nhận việc
     Toolbar toolbar;
     PositionAdapter adapter;
-    ArrayList<Job> arrayList;
+    public static ArrayList<Job> arrayList;
     RecyclerView recyclerView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +108,15 @@ public class JobListActivity extends AppCompatActivity {
         };
         requestQueue.add(stringRequest);
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == 123 && resultCode == 123){
+            adapter.notifyDataSetChanged();
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void actionBar() {
