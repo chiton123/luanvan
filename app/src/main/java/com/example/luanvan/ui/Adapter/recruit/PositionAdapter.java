@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -92,90 +93,83 @@ public class PositionAdapter extends RecyclerView.Adapter<PositionAdapter.ItemHo
         }
         final Date finalDate = date2;
         // status:  dừng tuyển 1, đang tuyển 0
-
-        holder.btnChange.setOnClickListener(new View.OnClickListener() {
+        holder.btnShow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PopupMenu popupMenu = new PopupMenu(activity, holder.btnChange);
-                popupMenu.getMenuInflater().inflate(R.menu.menu_popup, popupMenu.getMenu());
-                MenuItem item = popupMenu.getMenu().getItem(2);
-                int statusJob = arrayList.get(position).getStatus();
-                if(statusJob == 0){
-                    if(finalDate.after(Calendar.getInstance().getTime())){
-                        item.setTitle("Dừng tuyển");
-                    }else {
-                        item.setTitle("Tiếp tục tuyển");
-                    }
+                Intent intent = new Intent(activity, CVManagementActivity.class);
+                intent.putExtra("job_id", arrayList.get(position).getId());
+                activity.startActivity(intent);
+            }
+        });
+        holder.imgDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteJob(position);
+            }
+        });
+        holder.btnAdjust.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(activity, AdjustJobActivity.class);
+                intent1.putExtra("job", arrayList.get(position));
+                intent1.putExtra("position", position);
+                activity.startActivityForResult(intent1, REQUEST_CODE);
+            }
+        });
+        int statusJob = arrayList.get(position).getStatus();
+        if(statusJob == 0){
+            if(finalDate.after(Calendar.getInstance().getTime())){
+                holder.btnEnd.setText("Dừng tuyển");
+            }else {
+                holder.btnEnd.setText("Tiếp tục tuyển");
+            }
 
-                }else{
-                    item.setTitle("Tiếp tục tuyển");
-                }
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+        }else{
+            holder.btnEnd.setText("Tiếp tục tuyển");
+        }
+        holder.btnEnd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alert = new AlertDialog.Builder(activity);
+                alert.setTitle("Xác nhận");
+                alert.setNegativeButton("Không", new DialogInterface.OnClickListener() {
                     @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()){
-                            case R.id.edit:
-                                Intent intent1 = new Intent(activity, AdjustJobActivity.class);
-                                intent1.putExtra("job", arrayList.get(position));
-                                intent1.putExtra("position", position);
-                                activity.startActivityForResult(intent1, REQUEST_CODE);
-                                break;
-                            case R.id.show:
-                                Intent intent = new Intent(activity, CVManagementActivity.class);
-                                intent.putExtra("job_id", arrayList.get(position).getId());
-                                activity.startActivity(intent);
-                                break;
-                            case R.id.end:
-                                AlertDialog.Builder alert = new AlertDialog.Builder(activity);
-                                alert.setTitle("Xác nhận");
-                                alert.setNegativeButton("Không", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(DialogInterface dialog, int which) {
 
-                                    }
-                                });
-                                if(arrayList.get(position).getStatus() == 1){
-                                    if(finalDate.after(Calendar.getInstance().getTime())){
-                                        alert.setMessage("Bạn có muốn tiếp tục tuyển cho vị trí này không ?");
-                                        alert.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                endRecruiting(position, 0);
-                                                notifyDataSetChanged();
-                                            }
-                                        });
-                                        alert.show();
-                                    }else {
-                                        Toast.makeText(context, "Ngày hết hạn đã trước ngày hiện tại, không thể tuyển được nữa", Toast.LENGTH_SHORT).show();
-                                    }
-
-                                }else {
-
-                                    if(finalDate.after(Calendar.getInstance().getTime())){
-                                        alert.setMessage("Bạn có muốn ngưng tuyển cho vị trí này không ?");
-                                        alert.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                endRecruiting(position, 1);
-                                                notifyDataSetChanged();
-                                            }
-                                        });
-                                        alert.show();
-                                    }else {
-                                        Toast.makeText(context, "Ngày hết hạn đã trước ngày hiện tại, không thể tuyển được nữa", Toast.LENGTH_SHORT).show();
-                                    }
-
-                                }
-
-                                break;
-                            case R.id.delete:
-                                deleteJob(position);
-                                break;
-                        }
-                        return false;
                     }
                 });
-                popupMenu.show();
+                if(arrayList.get(position).getStatus() == 1){
+                    if(finalDate.after(Calendar.getInstance().getTime())){
+                        alert.setMessage("Bạn có muốn tiếp tục tuyển cho vị trí này không ?");
+                        alert.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                endRecruiting(position, 0);
+                                notifyDataSetChanged();
+                            }
+                        });
+                        alert.show();
+                    }else {
+                        Toast.makeText(context, "Ngày hết hạn đã trước ngày hiện tại, không thể tuyển được nữa", Toast.LENGTH_SHORT).show();
+                    }
+
+                }else {
+
+                    if(finalDate.after(Calendar.getInstance().getTime())){
+                        alert.setMessage("Bạn có muốn ngưng tuyển cho vị trí này không ?");
+                        alert.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                endRecruiting(position, 1);
+                                notifyDataSetChanged();
+                            }
+                        });
+                        alert.show();
+                    }else {
+                        Toast.makeText(context, "Ngày hết hạn đã trước ngày hiện tại, không thể tuyển được nữa", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
             }
         });
 
@@ -267,14 +261,18 @@ public class PositionAdapter extends RecyclerView.Adapter<PositionAdapter.ItemHo
 
     public class ItemHolder extends RecyclerView.ViewHolder{
         public TextView txtName, txtDate, txtStatus;
-        public Button btnChange;
+        public Button btnAdjust, btnShow, btnEnd;
+        public ImageView imgDelete;
 
         public ItemHolder(@NonNull View itemView) {
             super(itemView);
             txtName = (TextView) itemView.findViewById(R.id.name);
             txtDate = (TextView) itemView.findViewById(R.id.date);
             txtStatus = (TextView) itemView.findViewById(R.id.status);
-            btnChange = (Button) itemView.findViewById(R.id.buttonthaotac);
+            imgDelete = (ImageView) itemView.findViewById(R.id.imgdelete);
+            btnAdjust = (Button) itemView.findViewById(R.id.buttonchinhsua);
+            btnEnd = (Button) itemView.findViewById(R.id.buttondungtuyen);
+            btnShow = (Button) itemView.findViewById(R.id.buttonxem);
 
         }
     }

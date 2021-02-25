@@ -1,15 +1,17 @@
-package com.example.luanvan.ui.recruiter;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+package com.example.luanvan.ui.recruiter.CVManagement;
 
 import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -32,26 +34,33 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class JobListActivity extends AppCompatActivity {
+public class JobListFragment extends Fragment {
     // status của applicant : status
     // lọc CV: 0 chưa đánh giá, 1: đạt yêu cầu, 2: không đạt yêu cầu
     // phỏng vấn: 3: chưa liên hệ, 4: đạt phỏng vấn , 5: không đạt phỏng vấn
     // nhận việc: 6: đã thông báo kết quả, 7: đã đến nhận việc, 8: từ chối nhận việc
-    Toolbar toolbar;
-    PositionAdapter adapter;
+    public static PositionAdapter adapter;
     public static ArrayList<Job> arrayList;
     RecyclerView recyclerView;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_job_list);
-        anhxa();
-        actionBar();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_job_list, container, false);
+        arrayList = new ArrayList<>();
+        adapter = new PositionAdapter(getActivity(), arrayList, getActivity());
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        recyclerView.setAdapter(adapter);
+
+
         getData();
+
+        return view;
     }
 
     private void getData() {
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlJobList,
                 new Response.Listener<String>() {
                     @Override
@@ -96,7 +105,7 @@ public class JobListActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
                     }
                 }){
             @Override
@@ -111,33 +120,12 @@ public class JobListActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == 123 && resultCode == 123){
+            Toast.makeText(getActivity(), "haha", Toast.LENGTH_SHORT).show();
             adapter.notifyDataSetChanged();
         }
 
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    private void actionBar() {
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-    }
-
-    private void anhxa() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        arrayList = new ArrayList<>();
-        adapter = new PositionAdapter(getApplicationContext(), arrayList, this);
-        recyclerView = (RecyclerView) findViewById(R.id.recycleview);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
-        recyclerView.setAdapter(adapter);
-
     }
 }

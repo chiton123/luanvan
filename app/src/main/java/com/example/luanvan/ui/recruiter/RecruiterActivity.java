@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.example.luanvan.R;
+import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
 
 public class RecruiterActivity extends AppCompatActivity {
     Toolbar toolbar;
@@ -28,7 +29,7 @@ public class RecruiterActivity extends AppCompatActivity {
         imgCVManagement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), JobListActivity.class);
+                Intent intent = new Intent(getApplicationContext(), CVManageActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
