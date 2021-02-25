@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     public static ExperienceAdapter experienceAdapter;
     public static SkillAdapter skillAdapter;
     public static int login = 0;
+    public static int login_recruiter = 0;
     public static int iduser = 0;
     public static int checkCV = 0;
     // 1: có cv, 2: chưa
@@ -117,6 +118,8 @@ public class MainActivity extends AppCompatActivity {
     public static String urlStartEndRecruiting = host + "recruit_start_end.php";
     // update job
     public static String urlUpdateJob = host + "update_job.php";
+    // delete job
+    public static String urlDeleteJob = host + "delete_job.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

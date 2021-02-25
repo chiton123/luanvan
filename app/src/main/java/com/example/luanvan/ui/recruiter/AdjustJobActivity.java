@@ -72,6 +72,18 @@ public class AdjustJobActivity extends AppCompatActivity {
         job = (Job) getIntent().getSerializableExtra("job");
         position_job = getIntent().getIntExtra("position", 0);
         job_id = job.getId();
+        idArea = job.getIdarea();
+        idKindJob = job.getIdtype();
+        idProfession = job.getIdprofession();
+        for(int i=0; i < dataExperience.size(); i++){
+            if(job.getExperience().equals(dataExperience.get(i).getName())){
+                idExperience = dataExperience.get(i).getId();
+            }
+        }
+        spinnerNganhnghe.setSelection(idProfession);
+        spinnerLoaiHinh.setSelection(idKindJob);
+        spinnerKinhnghiem.setSelection(idExperience);
+        spinnerKhuvuc.setSelection(idArea);
         editPosition.setText(job.getName());
         String ngaybatdau = job.getStart_date();
         String ngayketthuc = job.getEnd_date();
@@ -322,6 +334,8 @@ public class AdjustJobActivity extends AppCompatActivity {
         spinnerNganhnghe.setAdapter(nganhNgheAdapter);
         spinnerKinhnghiem.setAdapter(kinhNghiemAdapter);
         spinnerLoaiHinh.setAdapter(loaiHinhAdapter);
+
+
 
         spinnerKhuvuc.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

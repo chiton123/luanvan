@@ -169,7 +169,7 @@ public class PositionAdapter extends RecyclerView.Adapter<PositionAdapter.ItemHo
 
                                 break;
                             case R.id.delete:
-                                Toast.makeText(context, "delete", Toast.LENGTH_SHORT).show();
+                                deleteJob(position);
                                 break;
                         }
                         return false;
@@ -181,6 +181,53 @@ public class PositionAdapter extends RecyclerView.Adapter<PositionAdapter.ItemHo
 
 
     }
+    public void deleteJob(final int position){
+        AlertDialog.Builder alert = new AlertDialog.Builder(activity);
+        alert.setTitle("Xác nhận");
+        alert.setMessage("Bạn có muốn xóa công việc này không ?");
+        alert.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        alert.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                RequestQueue requestQueue = Volley.newRequestQueue(context);
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlDeleteJob,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                if(response.equals("success")){
+                                    Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                                    arrayList.remove(position);
+                                    notifyDataSetChanged();
+                                }else {
+                                    Toast.makeText(context, "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                            }
+                        }){
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String,String> map = new HashMap<>();
+                        map.put("job_id", String.valueOf(arrayList.get(position).getId()));
+                        return map;
+                    }
+                };
+                requestQueue.add(stringRequest);
+            }
+        });
+        alert.show();
+
+    }
+
     public void endRecruiting(final int position, final int status){
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlStartEndRecruiting,

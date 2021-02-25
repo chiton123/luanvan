@@ -4,13 +4,16 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -32,9 +35,11 @@ import java.util.Map;
 public class LoginRecruiterActivity extends AppCompatActivity {
     Toolbar toolbar;
     EditText editEmail, editPass;
-    Button btnDangnhap;
+    Button btnDangnhap, btnLogout;
     ProgressDialog progressDialog;
     Handler handler = new Handler();
+    LinearLayout layoutLogin, layoutLogout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,11 +47,40 @@ public class LoginRecruiterActivity extends AppCompatActivity {
         anhxa();
         actionBar();
         eventButton();
-
-
+        eventLogout();
+        checkLogin();
 
 
     }
+
+    public void logOut(){
+        MainActivity.login_recruiter = 0;
+        MainActivity.mAuth.signOut();
+        MainActivity.uid = "";
+        MainActivity.iduser = 0;
+    }
+    private void eventLogout() {
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logOut();
+                checkLogin();
+
+            }
+        });
+
+    }
+
+    public void checkLogin(){
+        if(MainActivity.login_recruiter == 0){
+            layoutLogout.setVisibility(View.INVISIBLE);
+            layoutLogin.setVisibility(View.VISIBLE);
+        }else {
+            layoutLogout.setVisibility(View.VISIBLE);
+            layoutLogin.setVisibility(View.INVISIBLE);
+        }
+    }
+
     void loading(){
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading");
@@ -78,13 +112,13 @@ public class LoginRecruiterActivity extends AppCompatActivity {
                                                     MainActivity.mUser = MainActivity.mAuth.getCurrentUser();
 
                                                     MainActivity.uid = MainActivity.mUser.getUid();
-                                                    //     Toast.makeText(getActivity(), MainActivity.uid, Toast.LENGTH_SHORT).show();
+
                                                     editEmail.setText("");
                                                     editPass.setText("");
 
-                                                    MainActivity.login = 1;
+                                                    MainActivity.login_recruiter = 1;
                                                     MainActivity.iduser = Integer.parseInt(response);
-
+                                                    checkLogin();
                                                     Handler handler = new Handler();
                                                     handler.postDelayed(new Runnable() {
                                                         @Override
@@ -92,7 +126,6 @@ public class LoginRecruiterActivity extends AppCompatActivity {
                                                             progressDialog.dismiss();
                                                             Intent intent = new Intent(getApplicationContext(), RecruiterActivity.class);
                                                             startActivity(intent);
-
                                                         }
                                                     },2000);
                                                 }else {
@@ -126,14 +159,36 @@ public class LoginRecruiterActivity extends AppCompatActivity {
         });
 
     }
+    public void showAlert(){
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("Xác nhận");
+        alert.setMessage("Bạn có muốn đăng xuất khỏi nhà tuyển dụng không ?");
+        alert.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
 
+            }
+        });
+        alert.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                logOut();
+                finish();
+            }
+        });
+        alert.show();
+    }
     private void actionBar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                if(MainActivity.login_recruiter == 1){
+                    showAlert();
+                }else {
+                    finish();
+                }
             }
         });
     }
@@ -143,6 +198,10 @@ public class LoginRecruiterActivity extends AppCompatActivity {
         editEmail = (EditText) findViewById(R.id.editemail);
         editPass = (EditText) findViewById(R.id.editpass);
         btnDangnhap = (Button) findViewById(R.id.buttondangnhap);
+        layoutLogin = (LinearLayout) findViewById(R.id.lineardangnhap);
+        layoutLogout = (LinearLayout) findViewById(R.id.lineardangxuat);
+        btnLogout = (Button) findViewById(R.id.buttonlogout);
+
 
     }
 }
