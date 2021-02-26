@@ -13,9 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.recruiter.CVManagement.CVManageActivity"></activity>
+        <activity android:name=".ui.recruiter.CVManagement.CandidateInfoActivity"></activity>
+        <activity android:name=".ui.recruiter.CVManagement.CVManageActivity" />
         <activity android:name=".ui.recruiter.AdjustJobActivity" />
-        <activity android:name=".ui.recruiter.CVManagement.CandidateInfoActivity" />
         <activity android:name=".ui.recruiter.CVManagement.CVManagementActivity" />
         <activity android:name=".ui.Apply.ChooseCVActivity" />
         <activity android:name=".ui.recruiter.RecruiterActivity" />

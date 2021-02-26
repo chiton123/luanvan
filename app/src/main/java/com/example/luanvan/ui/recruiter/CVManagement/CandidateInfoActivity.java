@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,33 +17,45 @@ import android.widget.Toast;
 
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
+import com.example.luanvan.ui.Adapter.recruit.ProfileCadidateAdapter;
+import com.example.luanvan.ui.Adapter.update_personal_info.ProfileAdapter;
 import com.example.luanvan.ui.Model.Applicant;
 import com.example.luanvan.ui.Model.Pdf;
+import com.example.luanvan.ui.Model.Profile;
 import com.example.luanvan.ui.modelCV.PdfCV;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
+import java.util.ArrayList;
+
 public class CandidateInfoActivity extends AppCompatActivity {
     Toolbar toolbar;
-    TextView txtName, txtEmail, txtPhone, txtRound, txtStatus;
     WebView webView;
     Applicant applicant;
     int cv_id = 0;
     String user_id_f = "";
     String url1 = "https://docs.google.com/gview?embedded=true&url=";
     Handler handler;
+    RecyclerView recyclerView;
+    public static ProfileCadidateAdapter adapter;
+    ArrayList<Profile> arrayList;
+    int kind = 0;
+    int position = 0; // vị trí của mảng ở cvmanagement
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_candidate_info);
         anhxa();
         actionBar();
-        getInfo();
+        eventPDF();
 
 
 
     }
+
 
     private void eventPDF() {
         webView.requestFocus();
@@ -54,7 +68,7 @@ public class CandidateInfoActivity extends AppCompatActivity {
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 String url = snapshot.child("url").getValue(String.class);
                 url1 += url;
-              //  Toast.makeText(getApplicationContext(), url, Toast.LENGTH_SHORT).show();
+                //  Toast.makeText(getApplicationContext(), url, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -87,33 +101,7 @@ public class CandidateInfoActivity extends AppCompatActivity {
 
     }
 
-    private void getInfo() {
-        applicant = (Applicant) getIntent().getSerializableExtra("applicant");
-        txtName.setText(applicant.getUsername());
-        txtPhone.setText(applicant.getPhone());
-        txtEmail.setText(applicant.getEmail());
-        cv_id = applicant.getCv_id();
-        user_id_f = applicant.getUser_id_f();
-        int status = applicant.getStatus();
-        switch (status){
-            case 0:
-                txtStatus.setText("Chưa đánh giá");
-                txtRound.setText("Lọc CV");
-                break;
-            case 1:
-                txtStatus.setText("Đạt yêu cầu");
-                txtRound.setText("Lọc CV");
-                break;
-            case 2:
-                txtStatus.setText("Không đạt yêu cầu");
-                txtRound.setText("Lọc CV");
-                break;
 
-        }
-        eventPDF();
-
-
-    }
 
     private void actionBar() {
         setSupportActionBar(toolbar);
@@ -126,15 +114,25 @@ public class CandidateInfoActivity extends AppCompatActivity {
         });
     }
 
+
     private void anhxa() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        txtName = (TextView) findViewById(R.id.name);
-        txtEmail = (TextView) findViewById(R.id.email);
-        txtPhone = (TextView) findViewById(R.id.phone);
-        txtRound = (TextView) findViewById(R.id.round);
-        txtStatus = (TextView) findViewById(R.id.status);
         webView = (WebView) findViewById(R.id.webview);
-
+        arrayList = new ArrayList<>();
+        arrayList.add(new Profile(1, "Đánh giá ứng viên", R.drawable.star));
+        arrayList.add(new Profile(2, "Ghi chú ứng viên", R.drawable.note4));
+        arrayList.add(new Profile(3, "Đặt lịch hẹn ứng viên", R.drawable.calendar));
+        // get info
+        applicant = (Applicant) getIntent().getSerializableExtra("applicant");
+        kind = getIntent().getIntExtra("kind", 0);
+        position = getIntent().getIntExtra("position", 0);
+        cv_id = applicant.getCv_id();
+        user_id_f = applicant.getUser_id_f();
+        adapter = new ProfileCadidateAdapter(this, arrayList, this, applicant, kind, position);
+        recyclerView = (RecyclerView) findViewById(R.id.recycleview);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerView.setAdapter(adapter);
 
 
 

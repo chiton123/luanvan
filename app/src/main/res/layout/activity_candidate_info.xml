@@ -23,137 +23,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="3.5"
-            android:orientation="vertical"
-            >
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="10"
-                >
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:text="Họ tên"
-                    android:textColor="#000000"
-                    android:textSize="16sp"
-                    ></TextView>
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="7"
-                    android:text="Nguyễn A"
-                    android:id="@+id/name"
-                    android:textColor="#000000"
-                    android:textSize="16sp"
-                    ></TextView>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="10"
-                >
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:text="Số điện thoại"
-                    android:textColor="#000000"
-                    android:textSize="16sp"
-                    ></TextView>
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="7"
-                    android:text="03232323"
-                    android:id="@+id/phone"
-                    android:textColor="#000000"
-                    android:textSize="16sp"
-                    ></TextView>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="10"
-                >
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:text="Email"
-                    android:textColor="#000000"
-                    android:textSize="16sp"
-                    ></TextView>
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="7"
-                    android:text="batphuong@gmail.com"
-                    android:id="@+id/email"
-                    android:textColor="#000000"
-                    android:textSize="16sp"
-                    ></TextView>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="10"
-                >
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:text="Vòng"
-                    android:textColor="#000000"
-                    android:textSize="16sp"
-                    ></TextView>
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="7"
-                    android:text="Nguyễn A"
-                    android:id="@+id/round"
-                    android:textColor="#000000"
-                    android:textSize="16sp"
-                    ></TextView>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="10"
-                >
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:text="Trạng thái"
-                    android:textColor="#000000"
-                    android:textSize="16sp"
-                    ></TextView>
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="7"
-                    android:text="Đậu phỏng vấn"
-                    android:id="@+id/status"
-                    android:textColor="#000000"
-                    android:textSize="16sp"
-                    ></TextView>
-            </LinearLayout>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="11"
+            android:layout_weight="13"
             android:orientation="vertical"
             >
             <WebView
@@ -162,9 +32,19 @@
                 android:id="@+id/webview"
                 ></WebView>
         </LinearLayout>
-
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:orientation="vertical"
+            >
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/recycleview"
+                android:scrollbars="horizontal"
+                ></androidx.recyclerview.widget.RecyclerView>
+        </LinearLayout>
 
     </LinearLayout>
-
-
 </LinearLayout>

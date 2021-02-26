@@ -1,7 +1,9 @@
 package com.example.luanvan.ui.fragment.recruting;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,6 +25,7 @@ import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.recruit.CVFilterAdapter;
 import com.example.luanvan.ui.Model.Applicant;
+import com.example.luanvan.ui.recruiter.CVManagement.CVManagementActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,8 +38,7 @@ import java.util.Map;
 
 public class CVFilterFragment extends Fragment {
     RecyclerView recyclerView;
-    CVFilterAdapter adapter;
-    ArrayList<Applicant> arrayList;
+    public static CVFilterAdapter adapter;
     int job_id = 0;
 
     @Override
@@ -44,8 +46,7 @@ public class CVFilterFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_c_v_filter, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
-        arrayList = new ArrayList<>();
-        adapter = new CVFilterAdapter(getActivity(), arrayList, getActivity(),1);
+        adapter = new CVFilterAdapter(getActivity(), CVManagementActivity.arrayListCVFilter, getActivity(),1);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
@@ -69,7 +70,7 @@ public class CVFilterFragment extends Fragment {
                                     JSONObject object = jsonArray.getJSONObject(i);
                                     int status = object.getInt("status");
                                     if(status == 0 || status == 1 || status == 2){
-                                        arrayList.add(new Applicant(
+                                        CVManagementActivity.arrayListCVFilter.add(new Applicant(
                                                 object.getInt("id"),
                                                 object.getInt("job_id"),
                                                 object.getString("job_name"),

@@ -1,26 +1,16 @@
 package com.example.luanvan.ui.Adapter.recruit;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewOutlineProvider;
-import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.PopupMenu;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,9 +23,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
-import com.example.luanvan.ui.Adapter.update_personal_info.SpinnerNewAdapter;
 import com.example.luanvan.ui.Model.Applicant;
-import com.example.luanvan.ui.Model.GeneralObject;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManagementActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CandidateInfoActivity;
 
@@ -51,7 +39,7 @@ public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHo
     ArrayList<Applicant> arrayList;
     Activity activity;
     int kind;
-
+    int REQUEST_CODE = 123;
     int statusApplication = 0;
     String note = "";
 
@@ -203,9 +191,11 @@ public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHo
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, CandidateInfoActivity.class);
+                Intent intent = new Intent(activity, CandidateInfoActivity.class);
                 intent.putExtra("applicant", arrayList.get(position));
-                activity.startActivity(intent);
+                intent.putExtra("kind", kind);
+                intent.putExtra("position", position);
+                activity.startActivityForResult(intent, REQUEST_CODE);
             }
         });
 
@@ -242,10 +232,7 @@ public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHo
         requestQueue.add(stringRequest);
 
     }
-    public void showDialog(int position){
 
-
-    }
     @Override
     public int getItemCount() {
         return arrayList.size();

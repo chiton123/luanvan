@@ -22,6 +22,7 @@ import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.recruit.CVFilterAdapter;
 import com.example.luanvan.ui.Model.Applicant;
+import com.example.luanvan.ui.recruiter.CVManagement.CVManagementActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,8 +34,7 @@ import java.util.Map;
 
 public class InterviewFragment extends Fragment {
     RecyclerView recyclerView;
-    CVFilterAdapter adapter;
-    ArrayList<Applicant> arrayList;
+    public static CVFilterAdapter adapter;
     int job_id = 0;
 
     @Override
@@ -42,8 +42,8 @@ public class InterviewFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_interview, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
-        arrayList = new ArrayList<>();
-        adapter = new CVFilterAdapter(getActivity(), arrayList, getActivity(),2);
+        CVManagementActivity.arrayListInterView = new ArrayList<>();
+        adapter = new CVFilterAdapter(getActivity(), CVManagementActivity.arrayListInterView, getActivity(),2);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
@@ -66,7 +66,7 @@ public class InterviewFragment extends Fragment {
                                     JSONObject object = jsonArray.getJSONObject(i);
                                     int status = object.getInt("status");
                                     if(status == 3 || status == 4 || status == 5){
-                                        arrayList.add(new Applicant(
+                                        CVManagementActivity.arrayListInterView.add(new Applicant(
                                                 object.getInt("id"),
                                                 object.getInt("job_id"),
                                                 object.getString("job_name"),
