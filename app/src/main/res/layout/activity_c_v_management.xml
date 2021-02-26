@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:id="@+id/toolbar"
-            app:title="Nhà tuyển dụng"
+            app:title="Chi tiết vị trí"
             android:background="#fff"
             ></androidx.appcompat.widget.Toolbar>
         <com.google.android.material.tabs.TabLayout

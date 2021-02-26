@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class Applicant implements Serializable {
     private int id;
     private int job_id;
+    private String job_name;
     private int user_id;
     private String user_id_f;
     private String username;
@@ -14,10 +15,12 @@ public class Applicant implements Serializable {
     private int cv_id;
     private int status;
     private String note;
-    public Applicant(int id, int job_id, int user_id, String user_id_f, String username, String email, String address, String phone, int cv_id, int status,
-                     String note) {
+    private String date;
+    public Applicant(int id, int job_id, String job_name, int user_id, String user_id_f, String username, String email, String address, String phone, int cv_id, int status,
+                     String note, String date) {
         this.id = id;
         this.job_id = job_id;
+        this.job_name = job_name;
         this.user_id = user_id;
         this.user_id_f = user_id_f;
         this.username = username;
@@ -27,6 +30,23 @@ public class Applicant implements Serializable {
         this.cv_id = cv_id;
         this.status = status;
         this.note = note;
+        this.date = date;
+    }
+
+    public String getJob_name() {
+        return job_name;
+    }
+
+    public void setJob_name(String job_name) {
+        this.job_name = job_name;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getNote() {

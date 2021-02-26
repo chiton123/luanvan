@@ -14,12 +14,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.AuthFailureError;
@@ -37,7 +39,10 @@ import com.example.luanvan.ui.Model.GeneralObject;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManagementActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CandidateInfoActivity;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -136,114 +141,74 @@ public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHo
     public void onBindViewHolder(@NonNull final ItemHolder holder, final int position) {
         Applicant applicant = arrayList.get(position);
         holder.txtName.setText(applicant.getUsername());
-        holder.txtEmail.setText(applicant.getEmail());
+        holder.txtEmail.setText("Email : " + applicant.getEmail());
+        holder.txtPhone.setText("Số điện thoại: " + applicant.getPhone());
+        holder.txtPosition.setText("Vị trí tuyển dụng: " + applicant.getJob_name());
+        String ngay = applicant.getDate();
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Date date = null;
+        try {
+            date = fmt.parse(ngay);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        SimpleDateFormat fmtOut = new SimpleDateFormat("HH:mm dd/MM/yyyy");
+        holder.txtDate.setText("Thời gian: " + fmtOut.format(date));
         final int status = applicant.getStatus();
         switch (status){
             case 0:
                 holder.txtStatus.setText("Chưa đánh giá");
+                holder.txtRound.setText("Lọc CV");
                 break;
             case 1:
                 holder.txtStatus.setText("Đạt yêu cầu");
+                holder.txtRound.setText("Lọc CV");
                 break;
             case 2:
                 holder.txtStatus.setText("Không đạt yêu cầu");
+                holder.txtRound.setText("Lọc CV");
                 break;
             case 3:
                 holder.txtStatus.setText("Chưa liên hệ");
+                holder.txtRound.setText("Phỏng vấn");
                 break;
             case 4:
                 holder.txtStatus.setText("Đạt phỏng vấn");
+                holder.txtRound.setText("Phỏng vấn");
                 break;
             case 5:
                 holder.txtStatus.setText("Không đạt phỏng vấn");
+                holder.txtRound.setText("Phỏng vấn");
                 break;
             case 6:
                 holder.txtStatus.setText("Đã thông báo kết quả");
+                holder.txtRound.setText("Nhận việc");
                 break;
             case 7:
                 holder.txtStatus.setText("Đã đến nhận việc");
+                holder.txtRound.setText("Nhận việc");
                 break;
             case 8:
                 holder.txtStatus.setText("Từ chối nhận việc");
+                holder.txtRound.setText("Nhận việc");
                 break;
 
         }
-        holder.btnChange.setOnClickListener(new View.OnClickListener() {
+        holder.imgDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PopupMenu popupMenu = new PopupMenu(activity, holder.btnChange);
-                popupMenu.getMenuInflater().inflate(R.menu.menu_popup_filter, popupMenu.getMenu());
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()){
-                            case R.id.show:
-                                Intent intent = new Intent(context, CandidateInfoActivity.class);
-                                intent.putExtra("applicant", arrayList.get(position));
-                                activity.startActivity(intent);
-                                break;
-                            case R.id.access:
-                                final Dialog dialog = new Dialog(activity);
-                                dialog.setTitle("Đánh giá ứng viên");
-                                dialog.setContentView(R.layout.dialog_access_candidate);
-                                dialog.setCancelable(false);
-                                TextView txtName = (TextView) dialog.findViewById(R.id.name);
-                                final EditText editNote = (EditText) dialog.findViewById(R.id.editnote);
-                                Button btnUpdate = (Button) dialog.findViewById(R.id.buttoncapnhat);
-                                Button btnCancel = (Button) dialog.findViewById(R.id.buttonhuy);
-                                editNote.setText(arrayList.get(position).getNote());
-                                btnCancel.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        dialog.dismiss();
-                                    }
-                                });
-                                btnUpdate.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        note = editNote.getText().toString();
-                                        updateStatus(position);
-                                        dialog.dismiss();
-                                    }
-                                });
-                                Spinner spinner = (Spinner) dialog.findViewById(R.id.spinner);
-                                txtName.setText(arrayList.get(position).getUsername());
-                                final String[] mang = new String[] {"Chưa đánh giá","Đạt yêu cầu","Không đạt yêu cầu","Chưa liên hệ","Đạt phỏng vấn"
-                                ,"Không đạt phỏng vấn","Đã thông báo kết quả","Đã đến nhận việc","Từ chối nhận việc"};
-                                // lọc CV: 0 chưa đánh giá, 1: đạt yêu cầu, 2: không đạt yêu cầu
-                                // phỏng vấn: 3: chưa liên hệ, 4: đạt phỏng vấn , 5: không đạt phỏng vấn
-                                // nhận việc: 6: đã thông báo kết quả, 7: đã đến nhận việc, 8: từ chối nhận việc
-                                ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, mang);
-                                adapter.setDropDownViewResource(android.R.layout.simple_list_item_1);
-                                spinner.setAdapter(adapter);
-                                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                    @Override
-                                    public void onItemSelected(AdapterView<?> parent, View view, final int position, long id) {
-                                        //Toast.makeText(context, parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
-                                        statusApplication = position;
-
-                                    }
-
-                                    @Override
-                                    public void onNothingSelected(AdapterView<?> parent) {
-
-                                    }
-                                });
-                                dialog.show();
-                                break;
-                            case R.id.delete:
-                                deleteApplicant(position);
-                                break;
-                        }
-
-                        return false;
-                    }
-                });
-
-                popupMenu.show();
-
+                deleteApplicant(position);
             }
         });
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, CandidateInfoActivity.class);
+                intent.putExtra("applicant", arrayList.get(position));
+                activity.startActivity(intent);
+            }
+        });
+
 
     }
     public void deleteApplicant(final int position){
@@ -287,14 +252,20 @@ public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHo
     }
 
     public class ItemHolder extends RecyclerView.ViewHolder{
-        public TextView txtName, txtEmail, txtStatus;
-        public Button btnChange;
+        public TextView txtName, txtEmail, txtStatus, txtRound, txtPosition, txtPhone, txtDate;
+        public CardView cardView;
+        public ImageView imgDelete;
         public ItemHolder(@NonNull View itemView) {
             super(itemView);
             txtName = (TextView) itemView.findViewById(R.id.cadidateName);
             txtEmail = (TextView) itemView.findViewById(R.id.email);
             txtStatus = (TextView) itemView.findViewById(R.id.status);
-            btnChange = (Button) itemView.findViewById(R.id.buttonthaotac);
+            cardView = (CardView) itemView.findViewById(R.id.cardview);
+            txtRound = (TextView) itemView.findViewById(R.id.round);
+            txtPhone = (TextView) itemView.findViewById(R.id.phone);
+            txtPosition = (TextView) itemView.findViewById(R.id.textviewposition);
+            txtDate = (TextView) itemView.findViewById(R.id.textviewtime);
+            imgDelete = (ImageView) itemView.findViewById(R.id.imgdelete);
 
         }
     }

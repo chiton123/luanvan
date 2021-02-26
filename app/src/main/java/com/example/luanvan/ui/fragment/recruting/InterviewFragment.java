@@ -69,6 +69,7 @@ public class InterviewFragment extends Fragment {
                                         arrayList.add(new Applicant(
                                                 object.getInt("id"),
                                                 object.getInt("job_id"),
+                                                object.getString("job_name"),
                                                 object.getInt("user_id"),
                                                 object.getString("user_id_f"),
                                                 object.getString("username"),
@@ -77,7 +78,8 @@ public class InterviewFragment extends Fragment {
                                                 object.getString("phone"),
                                                 object.getInt("cv_id"),
                                                 object.getInt("status"),
-                                                object.getString("note")
+                                                object.getString("note"),
+                                                object.getString("date")
                                         ));
                                     }
 

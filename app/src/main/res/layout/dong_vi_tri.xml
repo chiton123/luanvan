@@ -17,7 +17,7 @@
             android:id="@+id/name"
             android:text="Lap trinh vien Java"
             android:textColor="#070707"
-            android:textSize="16sp"
+            android:textSize="13sp"
             android:textStyle="bold"
             ></TextView>
         <LinearLayout
@@ -28,8 +28,8 @@
             android:gravity="center_vertical"
             >
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:src="@drawable/deletebin"
                 android:id="@+id/imgdelete"
                 ></ImageView>
@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:text="Xóa"
                 android:textColor="#F30C06"
-                android:textSize="16sp"
+                android:textSize="13sp"
                 ></TextView>
         </LinearLayout>
 
@@ -58,10 +58,9 @@
             android:id="@+id/status"
             android:text="Đang tuyển dụng"
             android:textColor="#03C80B"
-            android:textSize="16sp"
+            android:textSize="13sp"
             ></TextView>
         <TextView
-            android:paddingRight="15dp"
             android:gravity="right"
             android:layout_width="0dp"
             android:layout_weight="6"
@@ -69,7 +68,7 @@
             android:id="@+id/date"
             android:text="20/11/2000 - 20/12/2000"
             android:textColor="#070707"
-            android:textSize="16sp"
+            android:textSize="13sp"
             ></TextView>
     </LinearLayout>
     <LinearLayout
