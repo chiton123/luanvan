@@ -10,6 +10,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.ViewPageAdapter;
 import com.example.luanvan.ui.fragment.recruting.CVFilterFragment;
@@ -29,8 +33,9 @@ public class CVManageActivity extends AppCompatActivity {
         anhxa();
         actionBar();
 
-
     }
+
+
     private void actionBar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

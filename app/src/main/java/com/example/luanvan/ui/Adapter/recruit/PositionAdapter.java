@@ -29,6 +29,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Job;
+import com.example.luanvan.ui.Model.JobList;
 import com.example.luanvan.ui.recruiter.AdjustJobActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManagementActivity;
 
@@ -42,12 +43,12 @@ import java.util.Map;
 
 public class PositionAdapter extends RecyclerView.Adapter<PositionAdapter.ItemHolder> {
     Context context;
-    ArrayList<Job> arrayList;
+    ArrayList<JobList> arrayList;
     Activity activity;
     int REQUEST_CODE = 123;
     // kiểm tra xem có quá ngày hay không, nếu quá ngày thì k dc tiếp tục tuyển
 
-    public PositionAdapter(Context context, ArrayList<Job> arrayList, Activity activity) {
+    public PositionAdapter(Context context, ArrayList<JobList> arrayList, Activity activity) {
         this.context = context;
         this.arrayList = arrayList;
         this.activity = activity;
@@ -63,7 +64,7 @@ public class PositionAdapter extends RecyclerView.Adapter<PositionAdapter.ItemHo
 
     @Override
     public void onBindViewHolder(@NonNull final ItemHolder holder, final int position) {
-        Job job = arrayList.get(position);
+        JobList job = arrayList.get(position);
         Date date1 = null;
         Date date2 = null;
         if(job != null){
@@ -101,6 +102,11 @@ public class PositionAdapter extends RecyclerView.Adapter<PositionAdapter.ItemHo
                 activity.startActivity(intent);
             }
         });
+        holder.txtDocument.setText(job.getTotalDocument() + "");
+        holder.txtNewDocument.setText(job.getNew_document() + "");
+        holder.txtInterview.setText(job.getInterview() + "");
+        holder.txtSkip.setText(job.getSkip() + "");
+        holder.txtGotoWork.setText(job.getWork() + "");
         holder.imgDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -260,7 +266,7 @@ public class PositionAdapter extends RecyclerView.Adapter<PositionAdapter.ItemHo
     }
 
     public class ItemHolder extends RecyclerView.ViewHolder{
-        public TextView txtName, txtDate, txtStatus;
+        public TextView txtName, txtDate, txtStatus, txtDocument, txtNewDocument, txtInterview, txtGotoWork, txtSkip;
         public Button btnAdjust, btnShow, btnEnd;
         public ImageView imgDelete;
 
@@ -273,6 +279,11 @@ public class PositionAdapter extends RecyclerView.Adapter<PositionAdapter.ItemHo
             btnAdjust = (Button) itemView.findViewById(R.id.buttonchinhsua);
             btnEnd = (Button) itemView.findViewById(R.id.buttondungtuyen);
             btnShow = (Button) itemView.findViewById(R.id.buttonxem);
+            txtDocument = (TextView) itemView.findViewById(R.id.txthoso);
+            txtNewDocument = (TextView) itemView.findViewById(R.id.txthosomoi);
+            txtInterview = (TextView) itemView.findViewById(R.id.txtphongvan);
+            txtGotoWork = (TextView) itemView.findViewById(R.id.txtdilam);
+            txtSkip = (TextView) itemView.findViewById(R.id.txtloai);
 
         }
     }
