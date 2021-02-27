@@ -32,7 +32,7 @@ import java.util.ArrayList;
 public class CandidateInfoActivity extends AppCompatActivity {
     Toolbar toolbar;
     WebView webView;
-    Applicant applicant;
+    Applicant applicant = new Applicant();
     int cv_id = 0;
     String user_id_f = "";
     String url1 = "https://docs.google.com/gview?embedded=true&url=";

@@ -16,6 +16,10 @@ public class Applicant implements Serializable {
     private int status;
     private String note;
     private String date;
+
+    public Applicant() {
+    }
+
     public Applicant(int id, int job_id, String job_name, int user_id, String user_id_f, String username, String email, String address, String phone, int cv_id, int status,
                      String note, String date) {
         this.id = id;

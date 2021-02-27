@@ -41,14 +41,13 @@ public class JobListFragment extends Fragment {
     // phỏng vấn: 3: chưa liên hệ, 4: đạt phỏng vấn , 5: không đạt phỏng vấn
     // nhận việc: 6: đã thông báo kết quả, 7: đã đến nhận việc, 8: từ chối nhận việc
     public static PositionAdapter adapter;
-    public static ArrayList<JobList> arrayList;
+
     RecyclerView recyclerView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_job_list, container, false);
-        arrayList = new ArrayList<>();
-        adapter = new PositionAdapter(getActivity(), arrayList, getActivity());
+        adapter = new PositionAdapter(getActivity(), CVManageActivity.arrayListJobList, getActivity());
         recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
@@ -71,7 +70,7 @@ public class JobListFragment extends Fragment {
                             JSONArray jsonArray = new JSONArray(response);
                             for(int i=0; i < jsonArray.length(); i++){
                                 JSONObject object = jsonArray.getJSONObject(i);
-                                arrayList.add(new JobList(
+                                CVManageActivity.arrayListJobList.add(new JobList(
                                         object.getInt("id"),
                                         object.getString("name"),
                                         object.getInt("idcompany"),

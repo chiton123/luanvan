@@ -30,12 +30,15 @@ import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Applicant;
+import com.example.luanvan.ui.Model.Job;
 import com.example.luanvan.ui.Model.Profile;
 import com.example.luanvan.ui.UpdateInfo.ExperienceActivity;
 import com.example.luanvan.ui.UpdateInfo.SkillActivity;
 import com.example.luanvan.ui.UpdateInfo.StudyActivity;
+import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManagementActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CandidateInfoActivity;
+import com.example.luanvan.ui.recruiter.CVManagement.JobListFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,6 +53,7 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
     int positionX; // vị trí arraylist của cvmanagmentactivity
     String note = "";
     int kind;
+    int first_status = 0; // chưa làm gì
 
     public ProfileCadidateAdapter(Context context, ArrayList<Profile> arrayList, Activity activity, Applicant applicant, int kind, int positionX) {
         this.context = context;
@@ -58,6 +62,7 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
         this.applicant = applicant;
         this.kind = kind;
         this.positionX = positionX;
+        this.first_status = applicant.getStatus();
     }
 
     @NonNull
@@ -146,37 +151,77 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
                     @Override
                     public void onResponse(String response) {
                         if(response.equals("success")){
-                            Toast.makeText(context, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Cập nhật thành công " + statusApplication, Toast.LENGTH_SHORT).show();
                             applicant.setStatus(statusApplication);
                             applicant.setNote(note);
 
                             if(kind == 1){
-                                if(statusApplication == 3 || statusApplication == 4 || statusApplication == 5){
-                                    CVManagementActivity.arrayListInterView.add(applicant);
-                                    CVManagementActivity.arrayListCVFilter.remove(position);
-//                                    ((CVManagementActivity) activity).reloadInterview();
-//                                    ((CVManagementActivity) activity).reloadFilterCV();
-                                }else if(statusApplication > 5){
-                                    CVManagementActivity.arrayListGoToWork.add(applicant);
-                                    CVManagementActivity.arrayListCVFilter.remove(position);
-//                                    ((CVManagementActivity) activity).reloadGoToWork();
-//                                    ((CVManagementActivity) activity).reloadFilterCV();
+                                if(first_status == 2){
+                                    // skip
+                                    if(statusApplication == 3 || statusApplication == 4 || statusApplication == 5){
+                                        CVManagementActivity.arrayListInterView.add(applicant);
+                                        CVManagementActivity.arrayListCVFilter.remove(position);
+
+                                        CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setSkip(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getSkip() -1);
+                                        CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setInterview(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getInterview() + 1);
+                                    }else if(statusApplication > 5){
+                                        CVManagementActivity.arrayListGoToWork.add(applicant);
+                                        CVManagementActivity.arrayListCVFilter.remove(position);
+                                        CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setWork(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getWork() + 1);
+                                        CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setSkip(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getSkip() -1);
+
+                                    }else if(statusApplication == 1 || statusApplication == 0){
+                                        CVManagementActivity.arrayListCVFilter.set(positionX, applicant);
+                                        CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setNew_document(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getNew_document() + 1);
+                                        CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setSkip(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getSkip() -1);
+                                    }else {
+                                        CVManagementActivity.arrayListCVFilter.set(positionX, applicant);
+                                    }
+
                                 }else {
-                                    CVManagementActivity.arrayListCVFilter.set(positionX, applicant);
+                                    // new document
+                                    if(statusApplication == 3 || statusApplication == 4 || statusApplication == 5){
+                                        CVManagementActivity.arrayListInterView.add(applicant);
+                                        CVManagementActivity.arrayListCVFilter.remove(position);
+
+                                        CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setNew_document(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getNew_document() -1);
+                                        CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setInterview(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getInterview() + 1);
+                                    }else if(statusApplication > 5){
+                                        CVManagementActivity.arrayListGoToWork.add(applicant);
+                                        CVManagementActivity.arrayListCVFilter.remove(position);
+                                        CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setWork(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getWork() + 1);
+                                        CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setNew_document(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getNew_document() -1);
+
+                                    }else if(statusApplication == 2) {
+                                        CVManagementActivity.arrayListCVFilter.set(positionX, applicant);
+                                        CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setSkip(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getSkip()  + 1);
+                                        CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setNew_document(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getNew_document() -1);
+                                    }
+                                    else {
+                                        CVManagementActivity.arrayListCVFilter.set(positionX, applicant);
+                                    }
                                 }
+
                             }
 
                             if(kind == 2){
                                 if(statusApplication < 3){
                                     CVManagementActivity.arrayListCVFilter.add(applicant);
                                     CVManagementActivity.arrayListInterView.remove(position);
-//                                    ((CVManagementActivity) activity).reloadInterview();
-//                                    ((CVManagementActivity) activity).reloadFilterCV();
+                                    if(statusApplication == 2){
+                                        CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setSkip(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getSkip()  + 1);
+                                        CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setInterview(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getInterview() - 1);
+                                    }else {
+                                        CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setNew_document(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getNew_document()  + 1);
+                                        CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setInterview(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getInterview() - 1);
+                                    }
+
+
                                 }else if(statusApplication > 5){
                                     CVManagementActivity.arrayListGoToWork.add(applicant);
                                     CVManagementActivity.arrayListInterView.remove(position);
-//                                    ((CVManagementActivity) activity).reloadGoToWork();
-//                                    ((CVManagementActivity) activity).reloadInterview();
+                                    CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setInterview(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getInterview() - 1);
+                                    CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setWork(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getWork() + 1);
                                 }else {
                                     CVManagementActivity.arrayListInterView.set(positionX, applicant);
                                 }
@@ -186,13 +231,22 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
                                 if(statusApplication < 6 && statusApplication > 2){
                                     CVManagementActivity.arrayListInterView.add(applicant);
                                     CVManagementActivity.arrayListGoToWork.remove(position);
-//                                    ((CVManagementActivity) activity).reloadInterview();
-//                                    ((CVManagementActivity) activity).reloadGoToWork();
+                                    CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setInterview(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getInterview()  + 1);
+                                    CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setWork(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getWork() - 1);
+
+
                                 }else if(statusApplication < 3){
                                     CVManagementActivity.arrayListCVFilter.add(applicant);
                                     CVManagementActivity.arrayListGoToWork.remove(position);
-//                                    ((CVManagementActivity) activity).reloadGoToWork();
-//                                    ((CVManagementActivity) activity).reloadFilterCV();
+                                    if(statusApplication == 2){
+                                        CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setSkip(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getSkip()  + 1);
+                                        CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setWork(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getWork() - 1);
+                                    }else {
+                                        CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setNew_document(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getNew_document()  + 1);
+                                        CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setWork(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getWork() - 1);
+                                    }
+
+
                                 }else {
                                     CVManagementActivity.arrayListGoToWork.set(positionX, applicant);
                                 }
@@ -200,6 +254,8 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
                             }
 
                             notifyDataSetChanged();
+                            JobListFragment.adapter.notifyDataSetChanged();
+
                             Intent intent = new Intent();
                             intent.putExtra("kind", kind);
                             intent.putExtra("status", statusApplication);

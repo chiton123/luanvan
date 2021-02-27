@@ -99,6 +99,7 @@ public class PositionAdapter extends RecyclerView.Adapter<PositionAdapter.ItemHo
             public void onClick(View v) {
                 Intent intent = new Intent(activity, CVManagementActivity.class);
                 intent.putExtra("job_id", arrayList.get(position).getId());
+                intent.putExtra("position", position); // position của danh sách công việc
                 activity.startActivity(intent);
             }
         });

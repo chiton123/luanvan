@@ -32,7 +32,7 @@ public class CVManagementActivity extends AppCompatActivity {
     // Nhận kết quả trả về rồi reload
     int kind = 0;
     int statusApplication = 0;
-
+    public static int position_job_list = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,6 +136,7 @@ public class CVManagementActivity extends AppCompatActivity {
         viewPageAdapter.addFragment(new GoToWorkFragment(), "Nhận việc");
         viewPager.setAdapter(viewPageAdapter);
         tabLayout.setupWithViewPager(viewPager);
+        position_job_list = getIntent().getIntExtra("position", 0);
 
 
     }

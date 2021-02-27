@@ -16,16 +16,20 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.ViewPageAdapter;
+import com.example.luanvan.ui.Model.JobList;
 import com.example.luanvan.ui.fragment.recruting.CVFilterFragment;
 import com.example.luanvan.ui.fragment.recruting.GoToWorkFragment;
 import com.example.luanvan.ui.fragment.recruting.InterviewFragment;
 import com.google.android.material.tabs.TabLayout;
+
+import java.util.ArrayList;
 
 public class CVManageActivity extends AppCompatActivity {
     Toolbar toolbar;
     TabLayout tabLayout;
     ViewPager viewPager;
     ViewPageAdapter viewPageAdapter;
+    public static ArrayList<JobList> arrayListJobList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +60,7 @@ public class CVManageActivity extends AppCompatActivity {
         viewPageAdapter.addFragment(new JobListFragment(), "DANH SÁCH VỊ TRÍ");
         viewPager.setAdapter(viewPageAdapter);
         tabLayout.setupWithViewPager(viewPager);
+        arrayListJobList = new ArrayList<>();
 
 
     }

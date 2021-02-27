@@ -28,6 +28,7 @@ import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.update_personal_info.SpinnerNewAdapter;
 import com.example.luanvan.ui.Model.GeneralObject;
 import com.example.luanvan.ui.Model.Job;
+import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.JobListFragment;
 
 import java.text.ParseException;
@@ -234,42 +235,42 @@ public class AdjustJobActivity extends AppCompatActivity {
                                 public void onResponse(String response) {
                                     if(response.equals("success")){
                                         Toast.makeText(getApplicationContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
-                                        JobListFragment.arrayList.get(position_job).setName(position);
-                                        JobListFragment.arrayList.get(position_job).setAddress(address);
-                                        JobListFragment.arrayList.get(position_job).setBenefit(benefit);
-                                        JobListFragment.arrayList.get(position_job).setDescription(description);
-                                        JobListFragment.arrayList.get(position_job).setRequirement(requirement);
-                                        JobListFragment.arrayList.get(position_job).setNumber(Integer.parseInt(number));
-                                        JobListFragment.arrayList.get(position_job).setSalary(Integer.parseInt(salary));
-                                        JobListFragment.arrayList.get(position_job).setIdarea(idArea);
-                                        JobListFragment.arrayList.get(position_job).setIdprofession(idProfession);
-                                        JobListFragment.arrayList.get(position_job).setIdtype(idKindJob);
-                                        JobListFragment.arrayList.get(position_job).setStart_date(date_post_start);
-                                        JobListFragment.arrayList.get(position_job).setEnd_date(date_post_end);
+                                        CVManageActivity.arrayListJobList.get(position_job).setName(position);
+                                        CVManageActivity.arrayListJobList.get(position_job).setAddress(address);
+                                        CVManageActivity.arrayListJobList.get(position_job).setBenefit(benefit);
+                                        CVManageActivity.arrayListJobList.get(position_job).setDescription(description);
+                                        CVManageActivity.arrayListJobList.get(position_job).setRequirement(requirement);
+                                        CVManageActivity.arrayListJobList.get(position_job).setNumber(Integer.parseInt(number));
+                                        CVManageActivity.arrayListJobList.get(position_job).setSalary(Integer.parseInt(salary));
+                                        CVManageActivity.arrayListJobList.get(position_job).setIdarea(idArea);
+                                        CVManageActivity.arrayListJobList.get(position_job).setIdprofession(idProfession);
+                                        CVManageActivity.arrayListJobList.get(position_job).setIdtype(idKindJob);
+                                        CVManageActivity.arrayListJobList.get(position_job).setStart_date(date_post_start);
+                                        CVManageActivity.arrayListJobList.get(position_job).setEnd_date(date_post_end);
                                         switch (idExperience){
                                             case 1:
-                                                JobListFragment.arrayList.get(position_job).setExperience("Chưa có kinh nghiệm");
+                                                CVManageActivity.arrayListJobList.get(position_job).setExperience("Chưa có kinh nghiệm");
                                                 break;
                                             case 2:
-                                                JobListFragment.arrayList.get(position_job).setExperience("Dưới 1 năm");
+                                                CVManageActivity.arrayListJobList.get(position_job).setExperience("Dưới 1 năm");
                                                 break;
                                             case 3:
-                                                JobListFragment.arrayList.get(position_job).setExperience("1 năm");
+                                                CVManageActivity.arrayListJobList.get(position_job).setExperience("1 năm");
                                                 break;
                                             case 4:
-                                                JobListFragment.arrayList.get(position_job).setExperience("2 năm");
+                                                CVManageActivity.arrayListJobList.get(position_job).setExperience("2 năm");
                                                 break;
                                             case 5:
-                                                JobListFragment.arrayList.get(position_job).setExperience("3 năm");
+                                                CVManageActivity.arrayListJobList.get(position_job).setExperience("3 năm");
                                                 break;
                                             case 6:
-                                                JobListFragment.arrayList.get(position_job).setExperience("4 năm");
+                                                CVManageActivity.arrayListJobList.get(position_job).setExperience("4 năm");
                                                 break;
                                             case 7:
-                                                JobListFragment.arrayList.get(position_job).setExperience("5 năm");
+                                                CVManageActivity.arrayListJobList.get(position_job).setExperience("5 năm");
                                                 break;
                                             case 8:
-                                                JobListFragment.arrayList.get(position_job).setExperience("Trên 5 năm");
+                                                CVManageActivity.arrayListJobList.get(position_job).setExperience("Trên 5 năm");
                                                 break;
                                         }
                                         handler = new Handler();

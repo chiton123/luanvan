@@ -52,7 +52,10 @@ public class CVFilterFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         job_id = getActivity().getIntent().getIntExtra("job_id", 0);
         // 1: lọc CV, 2: phỏng vấn, 3: nhận việc
-        getData();
+        if(CVManagementActivity.arrayListCVFilter.size() == 0){
+            getData();
+        }
+
 
         return view;
     }
