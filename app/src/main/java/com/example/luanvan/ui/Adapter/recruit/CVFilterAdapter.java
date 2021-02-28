@@ -24,8 +24,10 @@ import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Applicant;
+import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManagementActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CandidateInfoActivity;
+import com.example.luanvan.ui.recruiter.CVManagement.JobListFragment;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -209,8 +211,24 @@ public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHo
                     public void onResponse(String response) {
                         if(response.equals("success")){
                             Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                            if(kind != 0){
+                                int status = arrayList.get(position).getStatus();
+                                if(status == 0 || status == 1){
+                                    CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setNew_document(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getNew_document() - 1);
+                                }else if(status == 2){
+                                    CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setSkip(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getSkip() -1);
+                                }else if(status == 3 || status == 4 || status == 5){
+                                    CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setInterview(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getInterview() -1);
+                                }else {
+                                    CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setWork(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getWork() -1);
+                                }
+                                JobListFragment.adapter.notifyDataSetChanged();
+                            }
+
+
                             arrayList.remove(position);
                             notifyDataSetChanged();
+
                         }else {
                             Toast.makeText(context, "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
                         }

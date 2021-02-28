@@ -245,6 +245,8 @@
                 android:id="@+id/buttondungtuyen"
                 android:textColor="#000000"
                 android:textStyle="bold"
+                android:paddingRight="10dp"
+                android:paddingLeft="10dp"
                 android:background="@drawable/button_dungtuyen"
                 ></Button>
             <Button

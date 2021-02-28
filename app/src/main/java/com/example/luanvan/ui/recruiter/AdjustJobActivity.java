@@ -28,6 +28,7 @@ import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.update_personal_info.SpinnerNewAdapter;
 import com.example.luanvan.ui.Model.GeneralObject;
 import com.example.luanvan.ui.Model.Job;
+import com.example.luanvan.ui.Model.JobList;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.JobListFragment;
 
@@ -46,7 +47,7 @@ public class AdjustJobActivity extends AppCompatActivity {
     Button btnUpdate, btnCancel;
     ArrayList<GeneralObject> dataArea,dataProfession, dataSalary, dataExperience, dataKindJob;
     public static SpinnerNewAdapter khuVucAdapter, nganhNgheAdapter, kinhNghiemAdapter, loaiHinhAdapter;
-    Job job = null;
+    JobList job = null;
     int position_job = 0;
     int check_start = 0;
     String date_post_start = "", date_post_end = "";
@@ -71,7 +72,7 @@ public class AdjustJobActivity extends AppCompatActivity {
     }
 
     private void getInfo() {
-        job = (Job) getIntent().getSerializableExtra("job");
+        job = (JobList) getIntent().getSerializableExtra("job");
         position_job = getIntent().getIntExtra("position", 0);
         job_id = job.getId();
         idArea = job.getIdarea();

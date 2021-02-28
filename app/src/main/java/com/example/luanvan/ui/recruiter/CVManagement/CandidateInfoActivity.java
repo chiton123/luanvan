@@ -120,8 +120,7 @@ public class CandidateInfoActivity extends AppCompatActivity {
         webView = (WebView) findViewById(R.id.webview);
         arrayList = new ArrayList<>();
         arrayList.add(new Profile(1, "Đánh giá ứng viên", R.drawable.star));
-        arrayList.add(new Profile(2, "Ghi chú ứng viên", R.drawable.note4));
-        arrayList.add(new Profile(3, "Đặt lịch hẹn ứng viên", R.drawable.calendar));
+        arrayList.add(new Profile(2, "Đặt lịch hẹn ứng viên", R.drawable.calendar));
         // get info
         applicant = (Applicant) getIntent().getSerializableExtra("applicant");
         kind = getIntent().getIntExtra("kind", 0);

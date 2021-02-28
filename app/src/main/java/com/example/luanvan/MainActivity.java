@@ -111,6 +111,8 @@ public class MainActivity extends AppCompatActivity {
     public static String urlJobList = host + "job_list.php";
     // filter CV
     public static String urlFilterCV = host + "filterCV.php";
+    // Candidate document
+    public static String urlCandidateDocument = host + "candidate_document.php";
     // update application, delete application
     public static String urlUpdateApplication = host + "update_application.php";
     public static String urlDeleteApplication = host + "delete_application.php";

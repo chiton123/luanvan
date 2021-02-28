@@ -46,13 +46,13 @@ public class CVFilterFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_c_v_filter, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
-        adapter = new CVFilterAdapter(getActivity(), CVManagementActivity.arrayListCVFilter, getActivity(),1);
+        adapter = new CVFilterAdapter(getActivity(), CVManagementActivity.arrayListCVFilter, getActivity(), 1);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
         job_id = getActivity().getIntent().getIntExtra("job_id", 0);
         // 1: lọc CV, 2: phỏng vấn, 3: nhận việc
-        if(CVManagementActivity.arrayListCVFilter.size() == 0){
+        if (CVManagementActivity.arrayListCVFilter.size() == 0) {
             getData();
         }
 
@@ -66,13 +66,13 @@ public class CVFilterFragment extends Fragment {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        if(response != null){
+                        if (response != null) {
                             try {
                                 JSONArray jsonArray = new JSONArray(response);
-                                for(int i=0; i < jsonArray.length(); i++){
+                                for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject object = jsonArray.getJSONObject(i);
                                     int status = object.getInt("status");
-                                    if(status == 0 || status == 1 || status == 2){
+                                    if (status == 0 || status == 1 || status == 2) {
                                         CVManagementActivity.arrayListCVFilter.add(new Applicant(
                                                 object.getInt("id"),
                                                 object.getInt("job_id"),
@@ -105,10 +105,10 @@ public class CVFilterFragment extends Fragment {
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
                     }
-                }){
+                }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> map = new HashMap<>();
+                Map<String, String> map = new HashMap<>();
                 map.put("job_id", String.valueOf(job_id));
                 return map;
             }
@@ -116,5 +116,4 @@ public class CVFilterFragment extends Fragment {
         requestQueue.add(stringRequest);
 
     }
-
 }

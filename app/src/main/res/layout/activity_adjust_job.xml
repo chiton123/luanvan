@@ -42,11 +42,15 @@
                         android:textSize="14sp"
                         ></TextView>
                     <EditText
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:textSize="13sp"
+                        android:textColor="#000000"
                         android:layout_marginTop="5dp"
                         android:layout_width="match_parent"
                         android:id="@+id/editposition"
-                        android:layout_marginRight="9dp"
-                        android:layout_marginLeft="9dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp"
                         android:layout_height="?attr/dropdownListPreferredItemHeight"
                         android:background="@drawable/edittext_frame"
                         ></EditText>
@@ -75,6 +79,10 @@
                             android:textSize="14sp"
                             ></TextView>
                         <EditText
+                            android:paddingLeft="8dp"
+                            android:paddingRight="8dp"
+                            android:textSize="13sp"
+                            android:textColor="#000000"
                             android:layout_marginTop="5dp"
                             android:layout_width="120dp"
                             android:layout_height="30dp"
@@ -104,6 +112,10 @@
                             android:textSize="14sp"
                             ></TextView>
                         <EditText
+                            android:paddingLeft="8dp"
+                            android:paddingRight="8dp"
+                            android:textSize="13sp"
+                            android:textColor="#000000"
                             android:layout_marginTop="5dp"
                             android:layout_margin="5dp"
                             android:layout_width="120dp"
@@ -166,10 +178,14 @@
                         android:textSize="14sp"
                         ></TextView>
                     <EditText
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:textSize="13sp"
+                        android:textColor="#000000"
                         android:layout_marginTop="5dp"
                         android:layout_width="match_parent"
-                        android:layout_marginRight="9dp"
-                        android:layout_marginLeft="9dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp"
                         android:layout_height="?attr/dropdownListPreferredItemHeight"
                         android:id="@+id/editaddress"
                         android:background="@drawable/edittext_frame"
@@ -228,10 +244,14 @@
                         android:textSize="14sp"
                         ></TextView>
                     <EditText
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:textSize="13sp"
+                        android:textColor="#000000"
                         android:layout_marginTop="5dp"
                         android:layout_width="match_parent"
-                        android:layout_marginRight="9dp"
-                        android:layout_marginLeft="9dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp"
                         android:layout_height="?attr/dropdownListPreferredItemHeight"
                         android:id="@+id/editnumber"
                         android:inputType="number"
@@ -323,10 +343,14 @@
                         android:textSize="14sp"
                         ></TextView>
                     <EditText
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:textSize="13sp"
+                        android:textColor="#000000"
                         android:layout_marginTop="5dp"
                         android:layout_width="match_parent"
-                        android:layout_marginRight="9dp"
-                        android:layout_marginLeft="9dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp"
                         android:layout_height="?attr/dropdownListPreferredItemHeight"
                         android:id="@+id/editsalary"
                         android:inputType="number"
@@ -348,10 +372,13 @@
                         android:textSize="14sp"
                         ></TextView>
                     <EditText
+                        android:padding="8dp"
+                        android:textSize="13sp"
+                        android:textColor="#000000"
                         android:layout_marginTop="5dp"
                         android:layout_width="match_parent"
-                        android:layout_marginRight="9dp"
-                        android:layout_marginLeft="9dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp"
                         android:layout_height="200dp"
                         android:id="@+id/editdescription"
                         android:maxLines="10"
@@ -375,12 +402,15 @@
                         android:textSize="14sp"
                         ></TextView>
                     <EditText
+                        android:textSize="13sp"
+                        android:textColor="#000000"
                         android:layout_marginTop="5dp"
                         android:layout_width="match_parent"
-                        android:layout_marginRight="9dp"
-                        android:layout_marginLeft="9dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp"
                         android:layout_height="200dp"
                         android:id="@+id/editrequirement"
+                        android:padding="8dp"
                         android:maxLines="10"
                         android:lines="8"
                         android:gravity="top|left"
@@ -404,9 +434,12 @@
                     <EditText
                         android:layout_marginTop="5dp"
                         android:layout_width="match_parent"
-                        android:layout_marginRight="9dp"
-                        android:layout_marginLeft="9dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:textSize="13sp"
+                        android:textColor="#000000"
                         android:layout_height="200dp"
+                        android:padding="8dp"
                         android:id="@+id/editbenefit"
                         android:maxLines="10"
                         android:lines="8"
@@ -427,7 +460,7 @@
                         android:layout_width="100dp"
                         android:layout_height="40dp"
                         android:text="Cập nhật"
-                        android:background="#DC0904"
+                        android:background="@drawable/button_corner"
                         android:id="@+id/buttoncapnhat"
                         android:textColor="#fff"
                         ></Button>
@@ -437,7 +470,7 @@
                         android:layout_width="100dp"
                         android:layout_height="40dp"
                         android:text="Hủy"
-                        android:background="#878585"
+                        android:background="@drawable/button_huy_xam"
                         android:id="@+id/buttonhuy"
                         android:textColor="#fff"
                         ></Button>
