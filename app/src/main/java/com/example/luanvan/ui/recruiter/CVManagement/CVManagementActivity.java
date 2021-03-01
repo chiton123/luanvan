@@ -41,13 +41,11 @@ public class CVManagementActivity extends AppCompatActivity {
     TabLayout tabLayout;
     ViewPager viewPager;
     ViewPageAdapter viewPageAdapter;
-    public static ArrayList<Applicant> arrayListCVFilter = new ArrayList<>();
-    public static ArrayList<Applicant> arrayListInterView = new ArrayList<>();
-    public static ArrayList<Applicant> arrayListGoToWork = new ArrayList<>();
+
     // Nhận kết quả trả về rồi reload
     int kind = 0;
     int statusApplication = 0;
-    public static int position_job_list = 0;
+    public static int position_job_list = 0; // chỉ dùng được cho danh sách vị trí
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

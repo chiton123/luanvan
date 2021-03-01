@@ -30,6 +30,7 @@ import com.example.luanvan.ui.Model.GeneralObject;
 import com.example.luanvan.ui.Model.Job;
 import com.example.luanvan.ui.Model.JobList;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
+import com.example.luanvan.ui.recruiter.CVManagement.CandidateDocumentFragment;
 import com.example.luanvan.ui.recruiter.CVManagement.JobListFragment;
 
 import java.text.ParseException;
@@ -248,6 +249,14 @@ public class AdjustJobActivity extends AppCompatActivity {
                                         CVManageActivity.arrayListJobList.get(position_job).setIdtype(idKindJob);
                                         CVManageActivity.arrayListJobList.get(position_job).setStart_date(date_post_start);
                                         CVManageActivity.arrayListJobList.get(position_job).setEnd_date(date_post_end);
+                                        // cập nhật cho hồ sơ ứng tuyển
+                                        for(int i=0; i < CVManageActivity.arrayListAll.size(); i++){
+                                            if(CVManageActivity.arrayListAll.get(i).getJob_id() == job_id){
+                                                CVManageActivity.arrayListAll.get(i).setJob_name(position);
+                                                CandidateDocumentFragment.adapter.notifyDataSetChanged();
+                                            }
+
+                                        }
                                         switch (idExperience){
                                             case 1:
                                                 CVManageActivity.arrayListJobList.get(position_job).setExperience("Chưa có kinh nghiệm");

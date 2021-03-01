@@ -31,7 +31,9 @@ import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Job;
 import com.example.luanvan.ui.Model.JobList;
 import com.example.luanvan.ui.recruiter.AdjustJobActivity;
+import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManagementActivity;
+import com.example.luanvan.ui.recruiter.CVManagement.CandidateDocumentFragment;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -202,8 +204,15 @@ public class PositionAdapter extends RecyclerView.Adapter<PositionAdapter.ItemHo
                             public void onResponse(String response) {
                                 if(response.equals("success")){
                                     Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                                    for(int i=0; i < CVManageActivity.arrayListAll.size(); i++){
+                                        if(CVManageActivity.arrayListAll.get(i).getJob_id() == arrayList.get(position).getId()){
+                                            CVManageActivity.arrayListAll.remove(i);
+                                            CandidateDocumentFragment.adapter.notifyDataSetChanged();
+                                        }
+                                    }
                                     arrayList.remove(position);
                                     notifyDataSetChanged();
+
                                 }else {
                                     Toast.makeText(context, "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
                                 }

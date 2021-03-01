@@ -41,7 +41,7 @@ public class CandidateInfoActivity extends AppCompatActivity {
     public static ProfileCadidateAdapter adapter;
     ArrayList<Profile> arrayList;
     int kind = 0;
-    int position = 0; // vị trí của mảng ở cvmanagement
+    int position = 0; // vị trí của 1 trong 3 mảng ở cvmanagementactivity
 
 
     @Override

@@ -25,6 +25,7 @@ import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.recruit.CVFilterAdapter;
 import com.example.luanvan.ui.Model.Applicant;
+import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManagementActivity;
 
 import org.json.JSONArray;
@@ -46,13 +47,13 @@ public class CVFilterFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_c_v_filter, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
-        adapter = new CVFilterAdapter(getActivity(), CVManagementActivity.arrayListCVFilter, getActivity(), 1);
+        adapter = new CVFilterAdapter(getActivity(), CVManageActivity.arrayListCVFilter, getActivity(), 1, CVManageActivity.arrayListJobList);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
         job_id = getActivity().getIntent().getIntExtra("job_id", 0);
         // 1: lọc CV, 2: phỏng vấn, 3: nhận việc
-        if (CVManagementActivity.arrayListCVFilter.size() == 0) {
+        if (CVManageActivity.arrayListCVFilter.size() == 0) {
             getData();
         }
 
@@ -73,7 +74,7 @@ public class CVFilterFragment extends Fragment {
                                     JSONObject object = jsonArray.getJSONObject(i);
                                     int status = object.getInt("status");
                                     if (status == 0 || status == 1 || status == 2) {
-                                        CVManagementActivity.arrayListCVFilter.add(new Applicant(
+                                        CVManageActivity.arrayListCVFilter.add(new Applicant(
                                                 object.getInt("id"),
                                                 object.getInt("job_id"),
                                                 object.getString("job_name"),

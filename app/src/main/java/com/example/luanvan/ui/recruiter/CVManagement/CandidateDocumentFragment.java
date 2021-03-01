@@ -35,7 +35,7 @@ import java.util.Map;
 public class CandidateDocumentFragment extends Fragment {
     RecyclerView recyclerView;
     public static CVFilterAdapter adapter;
-    ArrayList<Applicant> arrayList;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,11 +43,12 @@ public class CandidateDocumentFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_candidate_document, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
         recyclerView.setHasFixedSize(true);
-        arrayList = new ArrayList<>();
+
         // 0 : all, 1: cvfilterfragment, 2: interviewfragment, 3: gotoworkfragment
-        adapter = new CVFilterAdapter(getActivity(), arrayList, getActivity(), 0);
+        adapter = new CVFilterAdapter(getActivity(), CVManageActivity.arrayListAll, getActivity(), 0, CVManageActivity.arrayListJobList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
+
         getData();
 
 
@@ -65,7 +66,7 @@ public class CandidateDocumentFragment extends Fragment {
                                 JSONArray jsonArray = new JSONArray(response);
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject object = jsonArray.getJSONObject(i);
-                                    arrayList.add(new Applicant(
+                                    CVManageActivity.arrayListAll.add(new Applicant(
                                             object.getInt("id"),
                                             object.getInt("job_id"),
                                             object.getString("job_name"),

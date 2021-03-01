@@ -24,8 +24,10 @@ import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Applicant;
+import com.example.luanvan.ui.Model.JobList;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManagementActivity;
+import com.example.luanvan.ui.recruiter.CVManagement.CandidateDocumentFragment;
 import com.example.luanvan.ui.recruiter.CVManagement.CandidateInfoActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.JobListFragment;
 
@@ -40,17 +42,21 @@ public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHo
     Context context;
     ArrayList<Applicant> arrayList;
     Activity activity;
+    // để biết vị trí position của danh sách vị trí, để load dữ liệu số hồ sơ, loại,...
+    ArrayList<JobList> arrayListJobList;
     int kind;
     int REQUEST_CODE = 123;
     int statusApplication = 0;
     String note = "";
+    int positionJobList = 0; // để xóa
 
 
-    public CVFilterAdapter(Context context, ArrayList<Applicant> arrayList, Activity activity, int kind) {
+    public CVFilterAdapter(Context context, ArrayList<Applicant> arrayList, Activity activity, int kind, ArrayList<JobList> arrayListJobList) {
         this.context = context;
         this.arrayList = arrayList;
         this.activity = activity;
         this.kind = kind;
+        this.arrayListJobList = arrayListJobList;
     }
 
     @NonNull
@@ -197,6 +203,7 @@ public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHo
                 intent.putExtra("applicant", arrayList.get(position));
                 intent.putExtra("kind", kind);
                 intent.putExtra("position", position);
+
                 activity.startActivityForResult(intent, REQUEST_CODE);
             }
         });
@@ -211,8 +218,11 @@ public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHo
                     public void onResponse(String response) {
                         if(response.equals("success")){
                             Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                            int status = arrayList.get(position).getStatus();
+
+
                             if(kind != 0){
-                                int status = arrayList.get(position).getStatus();
+                                CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setTotalDocument(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getTotalDocument() - 1);
                                 if(status == 0 || status == 1){
                                     CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setNew_document(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getNew_document() - 1);
                                 }else if(status == 2){
@@ -222,11 +232,39 @@ public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHo
                                 }else {
                                     CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setWork(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getWork() -1);
                                 }
-                                JobListFragment.adapter.notifyDataSetChanged();
+                                // xóa bên kia luôn
+                                int x = 0;
+                                for(int i=0; i < CVManageActivity.arrayListAll.size(); i++){
+                                    if(CVManageActivity.arrayListAll.get(i).getId() == arrayList.get(position).getId()){
+                                        x = i;
+                                    }
+                                }
+                                CVManageActivity.arrayListAll.remove(x);
+                                CandidateDocumentFragment.adapter.notifyDataSetChanged();
+
+
+                            }else {
+                                for(int i=0; i < CVManageActivity.arrayListJobList.size(); i++){
+                                    if(CVManageActivity.arrayListJobList.get(i).getId() == arrayList.get(position).getJob_id()){
+                                        positionJobList = i;
+                                    }
+                                }
+                                CVManageActivity.arrayListJobList.get(positionJobList).setTotalDocument(CVManageActivity.arrayListJobList.get(positionJobList).getTotalDocument() - 1);
+                                if(status == 0 || status == 1){
+                                    CVManageActivity.arrayListJobList.get(positionJobList).setNew_document(CVManageActivity.arrayListJobList.get(positionJobList).getNew_document() - 1);
+                                }else if(status == 2){
+                                    CVManageActivity.arrayListJobList.get(positionJobList).setSkip(CVManageActivity.arrayListJobList.get(positionJobList).getSkip() -1);
+                                }else if(status == 3 || status == 4 || status == 5){
+                                    CVManageActivity.arrayListJobList.get(positionJobList).setInterview(CVManageActivity.arrayListJobList.get(positionJobList).getInterview() -1);
+                                }else {
+                                    CVManageActivity.arrayListJobList.get(positionJobList).setWork(CVManageActivity.arrayListJobList.get(positionJobList).getWork() -1);
+                                }
                             }
 
-
+                            JobListFragment.adapter.notifyDataSetChanged();
+                            CandidateDocumentFragment.adapter.notifyDataSetChanged();
                             arrayList.remove(position);
+
                             notifyDataSetChanged();
 
                         }else {
