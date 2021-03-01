@@ -38,10 +38,10 @@ import java.util.Map;
 public class JobListFragment extends Fragment {
     // status của applicant : status
     // lọc CV: 0 chưa đánh giá, 1: đạt yêu cầu, 2: không đạt yêu cầu
-    // phỏng vấn: 3: chưa liên hệ, 4: đạt phỏng vấn , 5: không đạt phỏng vấn
-    // nhận việc: 6: đã thông báo kết quả, 7: đã đến nhận việc, 8: từ chối nhận việc
+    // phỏng vấn: 3: chưa liên hệ, 4: đạt phỏng vấn , 5: không đạt phỏng vấn, 6: không liên hệ được, 7 đến phỏng vấn, 8 không đến phỏng vấn
+    // nhận việc: 9: đã thông báo kết quả, 10: đã đến nhận việc, 11: từ chối nhận việc
     public static PositionAdapter adapter;
-
+    sửa lại nhe, còn thiếu đồng ý phỏng vấn và từ chối phỏng vấn, lùi lịch phỏng vấn
     RecyclerView recyclerView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

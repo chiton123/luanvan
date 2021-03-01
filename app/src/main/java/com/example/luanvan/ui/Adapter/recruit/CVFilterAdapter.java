@@ -177,14 +177,27 @@ public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHo
                 holder.txtRound.setText("Phỏng vấn");
                 break;
             case 6:
+                holder.txtStatus.setText("Không liên hệ được");
+                holder.txtRound.setText("Phỏng vấn");
+                break;
+            case 7:
+                holder.txtStatus.setText("Đến phỏng vấn");
+                holder.txtRound.setText("Phỏng vấn");
+                break;
+            case 8:
+                holder.txtStatus.setText("Không đến phỏng vấn");
+                holder.txtRound.setText("Phỏng vấn");
+                break;
+
+            case 9:
                 holder.txtStatus.setText("Đã thông báo kết quả");
                 holder.txtRound.setText("Nhận việc");
                 break;
-            case 7:
+            case 10:
                 holder.txtStatus.setText("Đã đến nhận việc");
                 holder.txtRound.setText("Nhận việc");
                 break;
-            case 8:
+            case 11:
                 holder.txtStatus.setText("Từ chối nhận việc");
                 holder.txtRound.setText("Nhận việc");
                 break;
@@ -227,7 +240,7 @@ public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHo
                                     CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setNew_document(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getNew_document() - 1);
                                 }else if(status == 2){
                                     CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setSkip(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getSkip() -1);
-                                }else if(status == 3 || status == 4 || status == 5){
+                                }else if(status >= 3 && status <= 8){
                                     CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setInterview(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getInterview() -1);
                                 }else {
                                     CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setWork(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getWork() -1);
@@ -254,7 +267,7 @@ public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHo
                                     CVManageActivity.arrayListJobList.get(positionJobList).setNew_document(CVManageActivity.arrayListJobList.get(positionJobList).getNew_document() - 1);
                                 }else if(status == 2){
                                     CVManageActivity.arrayListJobList.get(positionJobList).setSkip(CVManageActivity.arrayListJobList.get(positionJobList).getSkip() -1);
-                                }else if(status == 3 || status == 4 || status == 5){
+                                }else if(status >= 3 && status <= 8){
                                     CVManageActivity.arrayListJobList.get(positionJobList).setInterview(CVManageActivity.arrayListJobList.get(positionJobList).getInterview() -1);
                                 }else {
                                     CVManageActivity.arrayListJobList.get(positionJobList).setWork(CVManageActivity.arrayListJobList.get(positionJobList).getWork() -1);

@@ -87,10 +87,10 @@ public class CVManagementActivity extends AppCompatActivity {
             kind = data.getIntExtra("kind", 0);
             statusApplication = data.getIntExtra("status", 0);
             if(kind == 1){
-                if(statusApplication == 3 || statusApplication == 4 || statusApplication == 5){
+                if(statusApplication >= 3 && statusApplication <= 8){
                     reloadInterview();
                     reloadFilterCV();
-                }else if(statusApplication > 5){
+                }else if(statusApplication >= 9){
                     reloadGoToWork();
                     reloadFilterCV();
                 }else {
@@ -99,10 +99,10 @@ public class CVManagementActivity extends AppCompatActivity {
             }
 
             if(kind == 2){
-                if(statusApplication < 3){
+                if(statusApplication <= 2){
                     reloadInterview();
                     reloadFilterCV();
-                }else if(statusApplication > 5){
+                }else if(statusApplication >= 9){
                     reloadGoToWork();
                     reloadInterview();
                 }else {
@@ -111,10 +111,10 @@ public class CVManagementActivity extends AppCompatActivity {
 
             }
             if(kind == 3){
-                if(statusApplication < 6 && statusApplication > 2){
+                if(statusApplication >= 3 && statusApplication <= 8){
                     reloadInterview();
                     reloadGoToWork();
-                }else if(statusApplication < 3){
+                }else if(statusApplication <= 2){
                     reloadGoToWork();
                     reloadFilterCV();
                 }else {
