@@ -69,7 +69,7 @@ public class InterviewFragment extends Fragment {
                                 for(int i=0; i < jsonArray.length(); i++){
                                     JSONObject object = jsonArray.getJSONObject(i);
                                     int status = object.getInt("status");
-                                    if(status >= 3 && status <= 8){
+                                    if(status >= 3 && status <= 11){
                                         CVManageActivity.arrayListInterView.add(new Applicant(
                                                 object.getInt("id"),
                                                 object.getInt("job_id"),

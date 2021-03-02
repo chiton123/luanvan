@@ -130,12 +130,27 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
         });
         Spinner spinner = (Spinner) dialog.findViewById(R.id.spinner);
         txtName.setText(applicant.getUsername());
-
-        final String[] mang = new String[] {"Chưa đánh giá","Đạt yêu cầu","Không đạt yêu cầu","Chưa liên hệ","Đạt phỏng vấn"
-                ,"Không đạt phỏng vấn","Không liên hệ được", "Đến phỏng vấn", "Không đến phỏng vấn","Đã thông báo kết quả","Đã đến nhận việc","Từ chối nhận việc"};
         // lọc CV: 0 chưa đánh giá, 1: đạt yêu cầu, 2: không đạt yêu cầu
-        // phỏng vấn: 3: chưa liên hệ, 4: đạt phỏng vấn , 5: không đạt phỏng vấn, 6: không liên hệ được, 7 đến phỏng vấn, 8 không đến phỏng vấn
-        // nhận việc: 9: đã thông báo kết quả, 10: đã đến nhận việc, 11: từ chối nhận việc
+        // phỏng vấn : 3: Chưa liên hệ, 4: Không liên hệ được , 5: Đồng ý phỏng vấn, 6:Từ chối phỏng vấn, 7 Đến phỏng vấn, 8 Không đến phỏng vấn,
+        // 9: Lùi lịch phỏng vấn, 10 Đạt phỏng vấn, 11: Không đạt phỏng vấn
+        // nhận việc: 12: Đã thông báo kết quả, 13: Đã đến nhận việc, 14: Từ chối nhận việc
+        final String[] mang = new String[] {
+                "Chưa đánh giá",
+                "Đạt yêu cầu",
+                "Không đạt yêu cầu",
+                "Chưa liên hệ",
+                "Không liên hệ được",
+                "Đồng ý phỏng vấn",
+                "Từ chối phỏng vấn",
+                "Đến phỏng vấn",
+                "Không đến phỏng vấn",
+                "Lùi lịch phỏng vấn",
+                "Đạt phỏng vấn"
+                ,"Không đạt phỏng vấn",
+                "Đã thông báo kết quả",
+                "Đã đến nhận việc",
+                "Từ chối nhận việc"};
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, mang);
         adapter.setDropDownViewResource(android.R.layout.simple_list_item_1);
         spinner.setAdapter(adapter);
@@ -158,13 +173,13 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
     public void kindOne(final int position){
         if(first_status == 2){
             // skip
-            if(statusApplication >= 3 && statusApplication <= 8){
+            if(statusApplication >= 3 && statusApplication <= 11){
                 CVManageActivity.arrayListInterView.add(applicant);
                 CVManageActivity.arrayListCVFilter.remove(position);
 
                 CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setSkip(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getSkip() -1);
                 CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setInterview(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getInterview() + 1);
-            }else if(statusApplication >= 9){
+            }else if(statusApplication >= 12){
                 CVManageActivity.arrayListGoToWork.add(applicant);
                 CVManageActivity.arrayListCVFilter.remove(position);
                 CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setWork(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getWork() + 1);
@@ -180,13 +195,13 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
 
         }else {
             // new document
-            if(statusApplication >= 3 && statusApplication <= 8){
+            if(statusApplication >= 3 && statusApplication <= 11){
                 CVManageActivity.arrayListInterView.add(applicant);
                 CVManageActivity.arrayListCVFilter.remove(position);
 
                 CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setNew_document(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getNew_document() -1);
                 CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setInterview(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getInterview() + 1);
-            }else if(statusApplication >= 9){
+            }else if(statusApplication >= 12){
                 CVManageActivity.arrayListGoToWork.add(applicant);
                 CVManageActivity.arrayListCVFilter.remove(position);
                 CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setWork(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getWork() + 1);
@@ -216,7 +231,7 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
             }
 
 
-        }else if(statusApplication >= 9){
+        }else if(statusApplication >= 12){
             CVManageActivity.arrayListGoToWork.add(applicant);
             CVManageActivity.arrayListInterView.remove(position);
             CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setInterview(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getInterview() - 1);
@@ -227,7 +242,7 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
 
     }
     public void kindThree(final int position){
-        if(statusApplication >= 3 && statusApplication <= 8){
+        if(statusApplication >= 3 && statusApplication <= 11){
             CVManageActivity.arrayListInterView.add(applicant);
             CVManageActivity.arrayListGoToWork.remove(position);
             CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setInterview(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getInterview()  + 1);
@@ -256,10 +271,10 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
       //  Toast.makeText(context, "Cập nhật thành công 1", Toast.LENGTH_SHORT).show();
         if(first_status == 2){
             // skip
-            if(statusApplication >= 3 && statusApplication <= 8){
+            if(statusApplication >= 3 && statusApplication <= 11){
                 CVManageActivity.arrayListJobList.get(positionJobList).setSkip(CVManageActivity.arrayListJobList.get(positionJobList).getSkip() -1);
                 CVManageActivity.arrayListJobList.get(positionJobList).setInterview(CVManageActivity.arrayListJobList.get(positionJobList).getInterview() + 1);
-            }else if(statusApplication >=  9){
+            }else if(statusApplication >=  12){
                 CVManageActivity.arrayListJobList.get(positionJobList).setWork(CVManageActivity.arrayListJobList.get(positionJobList).getWork() + 1);
                 CVManageActivity.arrayListJobList.get(positionJobList).setSkip(CVManageActivity.arrayListJobList.get(positionJobList).getSkip() -1);
 
@@ -272,10 +287,10 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
 
         }else {
             // new document
-            if(statusApplication >= 3 && statusApplication <= 8){
+            if(statusApplication >= 3 && statusApplication <= 11){
                 CVManageActivity.arrayListJobList.get(positionJobList).setNew_document(CVManageActivity.arrayListJobList.get(positionJobList).getNew_document() -1);
                 CVManageActivity.arrayListJobList.get(positionJobList).setInterview(CVManageActivity.arrayListJobList.get(positionJobList).getInterview() + 1);
-            }else if(statusApplication >= 9){
+            }else if(statusApplication >= 12){
                 CVManageActivity.arrayListJobList.get(positionJobList).setWork(CVManageActivity.arrayListJobList.get(positionJobList).getWork() + 1);
                 CVManageActivity.arrayListJobList.get(positionJobList).setNew_document(CVManageActivity.arrayListJobList.get(positionJobList).getNew_document() -1);
 
@@ -301,7 +316,7 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
             }
 
 
-        }else if(statusApplication >= 9){
+        }else if(statusApplication >= 12){
             CVManageActivity.arrayListJobList.get(positionJobList).setInterview(CVManageActivity.arrayListJobList.get(positionJobList).getInterview() - 1);
             CVManageActivity.arrayListJobList.get(positionJobList).setWork(CVManageActivity.arrayListJobList.get(positionJobList).getWork() + 1);
         }else {
@@ -311,7 +326,7 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
     }
     public void kindThree2(final int position){
      //   Toast.makeText(context, "Cập nhật thành công 3", Toast.LENGTH_SHORT).show();
-        if(statusApplication >= 3 && statusApplication <= 8){
+        if(statusApplication >= 3 && statusApplication <= 11){
             CVManageActivity.arrayListJobList.get(positionJobList).setInterview(CVManageActivity.arrayListJobList.get(positionJobList).getInterview()  + 1);
             CVManageActivity.arrayListJobList.get(positionJobList).setWork(CVManageActivity.arrayListJobList.get(positionJobList).getWork() - 1);
 
@@ -357,7 +372,7 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
                              //   Toast.makeText(context, "Cập nhật thành công " + kind, Toast.LENGTH_SHORT).show();
                                 if(first_status == 0 || first_status == 1 || first_status == 2){
                                     kindOne2(position);
-                                }else if(first_status >= 3 && first_status <= 8) {
+                                }else if(first_status >= 3 && first_status <= 11) {
                                     kindTwo2(position);
                                 }else {
                                     kindThree2(position);

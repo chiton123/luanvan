@@ -15,6 +15,13 @@ import android.webkit.WebView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.recruit.ProfileCadidateAdapter;
@@ -28,13 +35,20 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CandidateInfoActivity extends AppCompatActivity {
     Toolbar toolbar;
     WebView webView;
     Applicant applicant = new Applicant();
     int cv_id = 0;
+    // để gửi thông báo cho ứng viên
     String user_id_f = "";
+    int candidate_id = 0;
+    String content = "";
+    int id_application = 0;
+    String type_notification = "Nhà tuyển dụng vừa xem hồ sơ";
     String url1 = "https://docs.google.com/gview?embedded=true&url=";
     Handler handler;
     RecyclerView recyclerView;
@@ -127,6 +141,15 @@ public class CandidateInfoActivity extends AppCompatActivity {
         position = getIntent().getIntExtra("position", 0);
         cv_id = applicant.getCv_id();
         user_id_f = applicant.getUser_id_f();
+        candidate_id = applicant.getUser_id();
+        id_application = applicant.getId();
+        content = CVManageActivity.arrayListJobList.get(0).getCompany_name() + " đã xem CV ứng tuyển của bạn";
+        if(applicant.getStatus() == 0){
+            postNotification(0);
+        }
+
+
+
         adapter = new ProfileCadidateAdapter(this, arrayList, this, applicant, kind, position);
         recyclerView = (RecyclerView) findViewById(R.id.recycleview);
         recyclerView.setHasFixedSize(true);
@@ -134,6 +157,40 @@ public class CandidateInfoActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
 
+
+    }
+
+    private void postNotification(final int type_user) {
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlPostNotification,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(response.equals("success")){
+                            Toast.makeText(getApplicationContext(), "Thông báo thành công", Toast.LENGTH_SHORT).show();
+                        }else {
+                            Toast.makeText(getApplicationContext(), "Thông báo thất bại", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("type_user", String.valueOf(type_user));
+                map.put("type_notification",  type_notification);
+                map.put("iduser", String.valueOf(candidate_id));
+                map.put("content", content);
+                map.put("id_application", String.valueOf(id_application));
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
 
     }
 }

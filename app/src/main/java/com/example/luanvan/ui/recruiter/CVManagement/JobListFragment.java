@@ -38,10 +38,11 @@ import java.util.Map;
 public class JobListFragment extends Fragment {
     // status của applicant : status
     // lọc CV: 0 chưa đánh giá, 1: đạt yêu cầu, 2: không đạt yêu cầu
-    // phỏng vấn: 3: chưa liên hệ, 4: đạt phỏng vấn , 5: không đạt phỏng vấn, 6: không liên hệ được, 7 đến phỏng vấn, 8 không đến phỏng vấn
-    // nhận việc: 9: đã thông báo kết quả, 10: đã đến nhận việc, 11: từ chối nhận việc
+    // phỏng vấn : 3: Chưa liên hệ, 4: Không liên hệ được , 5: Đồng ý phỏng vấn, 6:Từ chối phỏng vấn, 7 Đến phỏng vấn, 8 Không đến phỏng vấn,
+    // 9: Lùi lịch phỏng vấn, 10 Đạt phỏng vấn, 11: Không đạt phỏng vấn
+    // nhận việc: 12: Đã thông báo kết quả, 13: Đã đến nhận việc, 14: Từ chối nhận việc
     public static PositionAdapter adapter;
-    sửa lại nhe, còn thiếu đồng ý phỏng vấn và từ chối phỏng vấn, lùi lịch phỏng vấn
+
     RecyclerView recyclerView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -125,7 +126,7 @@ public class JobListFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == 123 && resultCode == 123){
-            Toast.makeText(getActivity(), "haha", Toast.LENGTH_SHORT).show();
+          //  Toast.makeText(getActivity(), "haha", Toast.LENGTH_SHORT).show();
             adapter.notifyDataSetChanged();
         }
 

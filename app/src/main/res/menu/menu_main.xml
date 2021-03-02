@@ -10,4 +10,9 @@
         android:title="chat"
         app:showAsAction="always"
         />
+    <item android:id="@+id/notification"
+        android:icon="@drawable/notification"
+        android:title="notify"
+        app:showAsAction="always"/>
+
 </menu>

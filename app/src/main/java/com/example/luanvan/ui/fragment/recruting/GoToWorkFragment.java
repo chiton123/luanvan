@@ -72,7 +72,7 @@ public class GoToWorkFragment extends Fragment {
                                 for(int i=0; i < jsonArray.length(); i++){
                                     JSONObject object = jsonArray.getJSONObject(i);
                                     int status = object.getInt("status");
-                                    if(status >= 9){
+                                    if(status >= 12){
                                         CVManageActivity.arrayListGoToWork.add(new Applicant(
                                                 object.getInt("id"),
                                                 object.getInt("job_id"),

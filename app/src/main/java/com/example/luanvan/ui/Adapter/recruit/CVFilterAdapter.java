@@ -168,16 +168,20 @@ public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHo
                 holder.txtStatus.setText("Chưa liên hệ");
                 holder.txtRound.setText("Phỏng vấn");
                 break;
+            // lọc CV: 0 chưa đánh giá, 1: đạt yêu cầu, 2: không đạt yêu cầu
+            // phỏng vấn : 3: Chưa liên hệ, 4: Không liên hệ được , 5: Đồng ý phỏng vấn, 6:Từ chối phỏng vấn, 7 Đến phỏng vấn, 8 Không đến phỏng vấn,
+            // 9: Lùi lịch phỏng vấn, 10 Đạt phỏng vấn, 11: Không đạt phỏng vấn
+            // nhận việc: 12: Đã thông báo kết quả, 13: Đã đến nhận việc, 14: Từ chối nhận việc
             case 4:
-                holder.txtStatus.setText("Đạt phỏng vấn");
+                holder.txtStatus.setText("Không liên hệ được");
                 holder.txtRound.setText("Phỏng vấn");
                 break;
             case 5:
-                holder.txtStatus.setText("Không đạt phỏng vấn");
+                holder.txtStatus.setText("Đồng ý phỏng vấn");
                 holder.txtRound.setText("Phỏng vấn");
                 break;
             case 6:
-                holder.txtStatus.setText("Không liên hệ được");
+                holder.txtStatus.setText("Từ chối phỏng vấn");
                 holder.txtRound.setText("Phỏng vấn");
                 break;
             case 7:
@@ -188,16 +192,27 @@ public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHo
                 holder.txtStatus.setText("Không đến phỏng vấn");
                 holder.txtRound.setText("Phỏng vấn");
                 break;
-
             case 9:
+                holder.txtStatus.setText("Lùi lịch phỏng vấn");
+                holder.txtRound.setText("Phỏng vấn");
+                break;
+            case 10:
+                holder.txtStatus.setText("Đạt phỏng vấn");
+                holder.txtRound.setText("Phỏng vấn");
+                break;
+            case 11:
+                holder.txtStatus.setText("Không đạt phỏng vấn");
+                holder.txtRound.setText("Phỏng vấn");
+                break;
+            case 12:
                 holder.txtStatus.setText("Đã thông báo kết quả");
                 holder.txtRound.setText("Nhận việc");
                 break;
-            case 10:
+            case 13:
                 holder.txtStatus.setText("Đã đến nhận việc");
                 holder.txtRound.setText("Nhận việc");
                 break;
-            case 11:
+            case 14:
                 holder.txtStatus.setText("Từ chối nhận việc");
                 holder.txtRound.setText("Nhận việc");
                 break;
@@ -240,7 +255,7 @@ public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHo
                                     CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setNew_document(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getNew_document() - 1);
                                 }else if(status == 2){
                                     CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setSkip(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getSkip() -1);
-                                }else if(status >= 3 && status <= 8){
+                                }else if(status >= 3 && status <= 11){
                                     CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setInterview(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getInterview() -1);
                                 }else {
                                     CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setWork(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getWork() -1);
@@ -267,7 +282,7 @@ public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHo
                                     CVManageActivity.arrayListJobList.get(positionJobList).setNew_document(CVManageActivity.arrayListJobList.get(positionJobList).getNew_document() - 1);
                                 }else if(status == 2){
                                     CVManageActivity.arrayListJobList.get(positionJobList).setSkip(CVManageActivity.arrayListJobList.get(positionJobList).getSkip() -1);
-                                }else if(status >= 3 && status <= 8){
+                                }else if(status >= 3 && status <= 11){
                                     CVManageActivity.arrayListJobList.get(positionJobList).setInterview(CVManageActivity.arrayListJobList.get(positionJobList).getInterview() -1);
                                 }else {
                                     CVManageActivity.arrayListJobList.get(positionJobList).setWork(CVManageActivity.arrayListJobList.get(positionJobList).getWork() -1);

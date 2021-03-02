@@ -159,6 +159,8 @@ public class LoginRecruiterActivity extends AppCompatActivity {
         });
 
     }
+
+
     public void showAlert(){
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("Xác nhận");

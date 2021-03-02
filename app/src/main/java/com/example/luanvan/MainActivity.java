@@ -123,6 +123,11 @@ public class MainActivity extends AppCompatActivity {
     // delete job
     public static String urlDeleteJob = host + "delete_job.php";
 
+    // post notification
+    public static String urlPostNotification = host + "post_notification.php";
+    // get notification
+    public static String urlGetNotification =  host + "get_notification.php";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

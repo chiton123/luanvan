@@ -37,6 +37,8 @@ import com.example.luanvan.ui.Adapter.JobAdapter;
 import com.example.luanvan.ui.KindofJob.KindOfJobActivity;
 import com.example.luanvan.ui.Model.Job;
 import com.example.luanvan.ui.Search_Filter.SearchActivity;
+import com.example.luanvan.ui.login.LoginActivity;
+import com.example.luanvan.ui.notification.CandidateNotificationActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -137,6 +139,16 @@ public class HomeFragment extends Fragment {
             case R.id.chat:
                 Toast.makeText(getActivity(), "chat", Toast.LENGTH_SHORT).show();
                 break;
+            case R.id.notification:
+                if(MainActivity.login == 0){
+                    Intent intent2 = new Intent(getActivity(), LoginActivity.class);
+                    startActivity(intent);
+                }else {
+                    Intent intent1 = new Intent(getActivity(), CandidateNotificationActivity.class);
+                    startActivity(intent1);
+                    break;
+                }
+
         }
         return super.onOptionsItemSelected(item);
     }
