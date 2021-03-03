@@ -85,6 +85,7 @@ public class FilterActivity extends AppCompatActivity {
                                                 object.getInt("id"),
                                                 object.getString("name"),
                                                 object.getInt("idcompany"),
+                                                object.getInt("id_recruiter"),
                                                 object.getString("img"),
                                                 object.getString("area"),
                                                 object.getInt("idtype"),

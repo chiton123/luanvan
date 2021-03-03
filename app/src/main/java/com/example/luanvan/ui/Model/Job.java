@@ -6,6 +6,7 @@ public class Job implements Serializable {
     private int id;
     private String name;
     private int idcompany;
+    private int id_recruiter;
     private String company_name;
     private String img;
     private int idtype;
@@ -26,12 +27,13 @@ public class Job implements Serializable {
     public Job() {
     }
 
-    public Job(int id, String name, int idcompany, String img, String address, int idtype, int idprofession, String start_date, String end_date,
+    public Job(int id, String name, int idcompany, int id_recruiter, String img, String address, int idtype, int idprofession, String start_date, String end_date,
                int salary, int idarea, String experience, int number, String description,
                String requirement, String benefit, int status, String company_name, String type_job) {
         this.id = id;
         this.name = name;
         this.idcompany = idcompany;
+        this.id_recruiter = id_recruiter;
         this.img = img;
         this.address = address;
         this.idtype = idtype;
@@ -48,6 +50,14 @@ public class Job implements Serializable {
         this.status = status;
         this.company_name = company_name;
         this.type_job = type_job;
+    }
+
+    public int getId_recruiter() {
+        return id_recruiter;
+    }
+
+    public void setId_recruiter(int id_recruiter) {
+        this.id_recruiter = id_recruiter;
     }
 
     public String getType_job() {

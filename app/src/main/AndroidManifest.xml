@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.notification.CandidateNotificationActivity"></activity>
+        <activity android:name=".ui.notification.RecruiterNotificationActivity"></activity>
+        <activity android:name=".ui.notification.CandidateNotificationActivity" />
         <activity android:name=".ui.recruiter.CVManagement.CandidateInfoActivity" />
         <activity android:name=".ui.recruiter.CVManagement.CVManageActivity" />
         <activity android:name=".ui.recruiter.AdjustJobActivity" />

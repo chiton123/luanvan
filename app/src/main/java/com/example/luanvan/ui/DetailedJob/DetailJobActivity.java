@@ -72,6 +72,9 @@ public class DetailJobActivity extends AppCompatActivity {
     Handler handler;
     Handler handler2;
     ProgressDialog progressDialog;
+    int id_application = 0; // sau khi ứng tuyển xong thì lấy về
+    String type_notification = "Hồ sơ mới ứng tuyển";
+    String content = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,6 +82,7 @@ public class DetailJobActivity extends AppCompatActivity {
         anhxa();
         actionBar();
         getInfo();
+        loading();
         handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -87,8 +91,9 @@ public class DetailJobActivity extends AppCompatActivity {
                 if(MainActivity.login == 1){
                     checkApplyOrNot();
                 }
+                progressDialog.dismiss();
             }
-        },3000);
+        },2500);
 
 
 
@@ -118,6 +123,7 @@ public class DetailJobActivity extends AppCompatActivity {
                                         object.getInt("id"),
                                         object.getString("name"),
                                         object.getInt("idcompany"),
+                                        object.getInt("id_recruiter"),
                                         object.getString("img"),
                                         object.getString("area"),
                                         object.getInt("idtype"),
@@ -210,9 +216,14 @@ public class DetailJobActivity extends AppCompatActivity {
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
-                                if(response.equals("success")){
+                                if(!response.equals("fail")){
                                     Toast.makeText(getApplicationContext(), "Ứng tuyển thành công", Toast.LENGTH_SHORT).show();
                                     checkApplyOrNot();
+                                    int k = response.lastIndexOf('s');
+                                    id_application = Integer.parseInt(response.substring(k+1, response.length()));
+                                    content = "Ứng viên " + MainActivity.username + " - " + job.getName();
+                                   // Toast.makeText(getApplicationContext(), id_application + content , Toast.LENGTH_SHORT).show();
+                                    postNotification(1);
                                 }else {
                                     Toast.makeText(getApplicationContext(), "Ứng tuyển thất bại", Toast.LENGTH_SHORT).show();
                                 }
@@ -241,6 +252,41 @@ public class DetailJobActivity extends AppCompatActivity {
 
         alert.show();
     }
+
+    private void postNotification(final int type_user) {
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlPostNotification,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(response.equals("success")){
+                            Toast.makeText(getApplicationContext(), "Thông báo thành công", Toast.LENGTH_SHORT).show();
+                        }else {
+                            Toast.makeText(getApplicationContext(), "Thông báo thất bại", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("type_user", String.valueOf(type_user));
+                map.put("type_notification",  type_notification);
+                map.put("iduser", String.valueOf(job.getId_recruiter()));
+                map.put("content", content);
+                map.put("id_application", String.valueOf(id_application));
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+
+    }
+
     public void showDialog(){
         dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -323,7 +369,7 @@ public class DetailJobActivity extends AppCompatActivity {
     private void getInfo() {
         kind = getIntent().getIntExtra("kind",0);
         if(kind == 0){
-            Job job = (Job) getIntent().getSerializableExtra("job");
+            job = (Job) getIntent().getSerializableExtra("job");
             job_id = job.getId();
             Glide.with(getApplicationContext()).load(job.getImg()).into(anhcongty);
             txttencongviec.setText(job.getName());

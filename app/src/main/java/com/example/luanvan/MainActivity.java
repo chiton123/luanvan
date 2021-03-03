@@ -127,6 +127,8 @@ public class MainActivity extends AppCompatActivity {
     public static String urlPostNotification = host + "post_notification.php";
     // get notification
     public static String urlGetNotification =  host + "get_notification.php";
+    // get notification recruiter
+    public static String urlGetNotificationRecruiter =  host + "get_notification_recruiter.php";
     // job from notification
     public static String urlJobFromNotification = host + "job_from_notification.php";
 
