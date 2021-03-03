@@ -4,9 +4,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -35,6 +37,11 @@ public class ChooseCVActivity extends AppCompatActivity {
     Button btnBack, btnApply;
     int check = 0; // chọn chưa, chọn rồi thì 1
     int positionCV = 0;
+    int id_application = 0; // sau khi ứng tuyển xong thì lấy về
+    String type_notification = "Hồ sơ mới ứng tuyển";
+    String content = "";
+    Handler handler;
+    ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +51,47 @@ public class ChooseCVActivity extends AppCompatActivity {
         eventChoose();
         eventButton();
 
+
+    }
+    void loading(){
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading");
+        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
+    }
+    private void postNotification(final int type_user) {
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlPostNotification,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(response.equals("success")){
+                            Toast.makeText(getApplicationContext(), "Thông báo thành công", Toast.LENGTH_SHORT).show();
+
+                        }else {
+                            Toast.makeText(getApplicationContext(), "Thông báo thất bại", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("type_user", String.valueOf(type_user));
+                map.put("type_notification",  type_notification);
+                map.put("iduser", String.valueOf(DetailJobActivity.job.getId_recruiter()));
+                map.put("content", content);
+                map.put("id_application", String.valueOf(id_application));
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
 
     }
     public void showAlert(){
@@ -63,11 +111,27 @@ public class ChooseCVActivity extends AppCompatActivity {
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
-                                if(response.equals("success")){
+                                Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
+                                if(!response.equals("fail")){
+                                    loading();
                                     Toast.makeText(getApplicationContext(), "Ứng tuyển thành công", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent();
-                                    setResult(123);
-                                    finish();
+                                    int k = response.lastIndexOf('s');
+                                    id_application = Integer.parseInt(response.substring(k+1, response.length()));
+                                    content = "Ứng viên " + MainActivity.username + " - " + DetailJobActivity.job.getName();
+                                    // Toast.makeText(getApplicationContext(), id_application + content , Toast.LENGTH_SHORT).show();
+                                    postNotification(1);
+                                    handler = new Handler();
+                                    handler.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            progressDialog.dismiss();
+                                            Intent intent = new Intent();
+                                            setResult(123);
+                                            finish();
+                                        }
+                                    },1500);
+
+
                                 }else {
                                     Toast.makeText(getApplicationContext(), "Ứng tuyển thất bại", Toast.LENGTH_SHORT).show();
                                 }

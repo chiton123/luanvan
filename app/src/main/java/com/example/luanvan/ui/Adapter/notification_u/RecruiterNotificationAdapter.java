@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.DetailedJob.DetailJobActivity;
 import com.example.luanvan.ui.Model.Notification;
+import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -62,6 +63,14 @@ public class RecruiterNotificationAdapter extends RecyclerView.Adapter<Recruiter
         }
         SimpleDateFormat fmtOut = new SimpleDateFormat("dd/MM/yyyy");
         holder.txtDate.setText("Ngày ứng tuyển: " + fmtOut.format(date1));
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, CVManageActivity.class);
+                intent.putExtra("kind", 1); // Để nó trỏ tới hồ sơ ứng tuyển
+                activity.startActivity(intent);
+            }
+        });
 
 
 

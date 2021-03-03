@@ -45,12 +45,15 @@ public class CVManageActivity extends AppCompatActivity {
     public static ArrayList<Applicant> arrayListCVFilter = new ArrayList<>();
     public static ArrayList<Applicant> arrayListInterView = new ArrayList<>();
     public static ArrayList<Applicant> arrayListGoToWork = new ArrayList<>();
+    int kind = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_c_v_manage);
         anhxa();
         actionBar();
+        kind = getIntent().getIntExtra("kind", 0);
+        tabLayout.getTabAt(kind).select();
 
 
     }

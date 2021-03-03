@@ -135,6 +135,7 @@ public class CandidateInfoActivity extends AppCompatActivity {
         arrayList = new ArrayList<>();
         arrayList.add(new Profile(1, "Đánh giá ứng viên", R.drawable.star));
         arrayList.add(new Profile(2, "Đặt lịch hẹn ứng viên", R.drawable.calendar));
+        arrayList.add(new Profile(3, "Tải CV PDF", R.drawable.download));
         // get info
         applicant = (Applicant) getIntent().getSerializableExtra("applicant");
         kind = getIntent().getIntExtra("kind", 0);

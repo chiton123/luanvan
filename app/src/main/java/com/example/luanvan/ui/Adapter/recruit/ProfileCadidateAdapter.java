@@ -40,6 +40,7 @@ import com.example.luanvan.ui.recruiter.CVManagement.CVManagementActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CandidateDocumentFragment;
 import com.example.luanvan.ui.recruiter.CVManagement.CandidateInfoActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.JobListFragment;
+import com.example.luanvan.ui.recruiter.CVManagement.ScheduleActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -89,11 +90,10 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
                         showDialogAccessCandidate(positionX);
                         break;
                     case 2:
-
+                        Intent intent = new Intent(activity, ScheduleActivity.class);
+                        activity.startActivity(intent);
                         break;
-                    case 3:
 
-                        break;
                 }
             }
         });

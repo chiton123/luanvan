@@ -66,7 +66,7 @@ public class DetailJobActivity extends AppCompatActivity {
     public static int job_id = 0;
     Dialog dialog;
     // dành cho từ notification chuyển qua
-    Job job;
+    public static Job job;
     int kind = 0; // 0: màn hình chính chuyển, 1: từ notification chuyển
   //  int checkApply = 0; // khi ứng tuyển, xem coi thành công hay thất bại rồi thông báo
     Handler handler;

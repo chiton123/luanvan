@@ -15,10 +15,11 @@ import android.widget.Toast;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.notification.RecruiterNotificationActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
+import com.example.luanvan.ui.recruiter.CVManagement.ScheduleActivity;
 
 public class RecruiterActivity extends AppCompatActivity {
     Toolbar toolbar;
-    ImageView imgCVManagement;
+    ImageView imgCVManagement, imgPostJob;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +61,7 @@ public class RecruiterActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
     }
 
     private void actionBar() {
@@ -76,6 +78,6 @@ public class RecruiterActivity extends AppCompatActivity {
     private void anhxa() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         imgCVManagement = (ImageView) findViewById(R.id.imgcv);
-
+        imgPostJob = (ImageView) findViewById(R.id.imgpost);
     }
 }
