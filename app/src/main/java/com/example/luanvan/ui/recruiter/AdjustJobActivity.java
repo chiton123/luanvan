@@ -5,7 +5,6 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -27,11 +26,9 @@ import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.update_personal_info.SpinnerNewAdapter;
 import com.example.luanvan.ui.Model.GeneralObject;
-import com.example.luanvan.ui.Model.Job;
 import com.example.luanvan.ui.Model.JobList;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CandidateDocumentFragment;
-import com.example.luanvan.ui.recruiter.CVManagement.JobListFragment;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -73,7 +70,7 @@ public class AdjustJobActivity extends AppCompatActivity {
     }
 
     private void getInfo() {
-        job = (JobList) getIntent().getSerializableExtra("job");
+        job = (JobList) getIntent().getSerializableExtra("com/example/luanvan/ui/Adapter/job");
         position_job = getIntent().getIntExtra("position", 0);
         job_id = job.getId();
         idArea = job.getIdarea();

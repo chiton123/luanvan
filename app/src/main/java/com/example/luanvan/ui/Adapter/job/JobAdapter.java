@@ -1,4 +1,4 @@
-package com.example.luanvan.ui.Adapter;
+package com.example.luanvan.ui.Adapter.job;
 
 import android.app.Activity;
 import android.content.Context;
@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -25,7 +23,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class JobAdapter extends RecyclerView.Adapter<JobAdapter.ItemHolder>  {
     Context context;
@@ -76,7 +73,8 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.ItemHolder>  {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, DetailJobActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                // 0: từ màn hình chính, tìm kiếm, lọc chuyển qua, 1: từ notification chuyển qua
+                intent.putExtra("kind", 0);
                 intent.putExtra("job", arrayList.get(position));
                 activity.startActivity(intent);
 

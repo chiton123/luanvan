@@ -22,9 +22,13 @@ public class Job implements Serializable {
     private String benefit;
     private int status;
     private String type_job;
-    public Job(int id, String name,int idcompany, String img,String address, int idtype, int idprofession, String start_date, String end_date,
+
+    public Job() {
+    }
+
+    public Job(int id, String name, int idcompany, String img, String address, int idtype, int idprofession, String start_date, String end_date,
                int salary, int idarea, String experience, int number, String description,
-               String requirement, String benefit, int status,String company_name, String type_job) {
+               String requirement, String benefit, int status, String company_name, String type_job) {
         this.id = id;
         this.name = name;
         this.idcompany = idcompany;

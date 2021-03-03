@@ -6,8 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -16,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.AuthFailureError;
@@ -28,7 +25,6 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
-import com.example.luanvan.ui.Model.Job;
 import com.example.luanvan.ui.Model.JobList;
 import com.example.luanvan.ui.recruiter.AdjustJobActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
@@ -120,7 +116,7 @@ public class PositionAdapter extends RecyclerView.Adapter<PositionAdapter.ItemHo
             @Override
             public void onClick(View v) {
                 Intent intent1 = new Intent(activity, AdjustJobActivity.class);
-                intent1.putExtra("job", arrayList.get(position));
+                intent1.putExtra("com/example/luanvan/ui/Adapter/job", arrayList.get(position));
                 intent1.putExtra("position", position);
                 activity.startActivityForResult(intent1, REQUEST_CODE);
             }

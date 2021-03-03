@@ -8,18 +8,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,12 +23,11 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
-import com.example.luanvan.ui.Adapter.JobAdapter;
+import com.example.luanvan.ui.Adapter.job.JobAdapter;
 import com.example.luanvan.ui.KindofJob.KindOfJobActivity;
 import com.example.luanvan.ui.Model.Job;
 import com.example.luanvan.ui.Search_Filter.SearchActivity;
@@ -142,7 +136,7 @@ public class HomeFragment extends Fragment {
             case R.id.notification:
                 if(MainActivity.login == 0){
                     Intent intent2 = new Intent(getActivity(), LoginActivity.class);
-                    startActivity(intent);
+                    startActivity(intent2);
                 }else {
                     Intent intent1 = new Intent(getActivity(), CandidateNotificationActivity.class);
                     startActivity(intent1);

@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,9 @@ public class CompanyFragment extends Fragment {
     TextView txttencongty, txtdiachi, txtwebsite, txtchitiet, txtgioithieu;
     int idcompany = 0;
     ArrayList<Company> arrayList;
+    Job job;
+    int kind = 0, job_id = 0;
+    Handler handler;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -52,7 +56,65 @@ public class CompanyFragment extends Fragment {
 
         return view;
     }
+    // dành cho từ notification chuyển qua
+    public void getJobInfo(final int job_id){
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlJobFromNotification,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                       // Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_SHORT).show();
+                        if(response != null){
+                            try {
+                                JSONArray jsonArray = new JSONArray(response);
+                                JSONObject object = jsonArray.getJSONObject(0);
+                                job = new Job(
+                                        object.getInt("id"),
+                                        object.getString("name"),
+                                        object.getInt("idcompany"),
+                                        object.getString("img"),
+                                        object.getString("area"),
+                                        object.getInt("idtype"),
+                                        object.getInt("idprofession"),
+                                        object.getString("start_date"),
+                                        object.getString("end_date"),
+                                        object.getInt("salary"),
+                                        object.getInt("idarea"),
+                                        object.getString("experience"),
+                                        object.getInt("number"),
+                                        object.getString("description"),
+                                        object.getString("requirement"),
+                                        object.getString("benefit"),
+                                        object.getInt("status"),
+                                        object.getString("company_name"),
+                                        object.getString("type_job")
+                                );
 
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("job_id", String.valueOf(job_id));
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+
+    }
     private void openWebsite() {
         txtwebsite.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,42 +138,39 @@ public class CompanyFragment extends Fragment {
             return text;
         }
     }
-    private void getCompanyInfo() {
-        Intent intent = (Intent) getActivity().getIntent();
-        Job job = (Job) intent.getSerializableExtra("job");
-        idcompany = job.getIdcompany();
+    public void getCompanyInfomation(){
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlcompany,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         if(response != null){
-
+                        //    Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_SHORT).show();
                             try {
                                 JSONArray jsonArray = new JSONArray(response);
-                                    JSONObject object = jsonArray.getJSONObject(0);
-                                    arrayList.add(new Company(
-                                            object.getInt("id"),
-                                            object.getString("name"),
-                                            object.getString("introduction"),
-                                            object.getString("address"),
-                                            object.getInt("idarea"),
-                                            object.getInt("idowner"),
-                                            object.getString("image"),
-                                            object.getString("website"),
-                                            object.getInt("status"),
-                                            object.getDouble("vido"),
-                                            object.getDouble("kinhdo")
-                                            ));
+                                JSONObject object = jsonArray.getJSONObject(0);
+                                arrayList.add(new Company(
+                                        object.getInt("id"),
+                                        object.getString("name"),
+                                        object.getString("introduction"),
+                                        object.getString("address"),
+                                        object.getInt("idarea"),
+                                        object.getInt("idowner"),
+                                        object.getString("image"),
+                                        object.getString("website"),
+                                        object.getInt("status"),
+                                        object.getDouble("vido"),
+                                        object.getDouble("kinhdo")
+                                ));
 
-                                    Company company = arrayList.get(0);
-                                    txtdiachi.setText(company.getAddress());
-                                    txttencongty.setText(company.getName());
-                                    txtwebsite.setText(company.getWebsite());
-                                    String gioithieu = xuongdong(company.getIntroduction());
-                                    txtgioithieu.setText(gioithieu);
+                                Company company = arrayList.get(0);
+                                txtdiachi.setText(company.getAddress());
+                                txttencongty.setText(company.getName());
+                                txtwebsite.setText(company.getWebsite());
+                                String gioithieu = xuongdong(company.getIntroduction());
+                                txtgioithieu.setText(gioithieu);
 
-                                } catch (JSONException e) {
+                            } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
@@ -131,6 +190,29 @@ public class CompanyFragment extends Fragment {
             }
         };
         requestQueue.add(stringRequest);
+    }
+
+    private void getCompanyInfo() {
+        Intent intent = (Intent) getActivity().getIntent();
+        kind = intent.getIntExtra("kind",0);
+        if(kind == 0){
+            Job job = (Job) intent.getSerializableExtra("job");
+            idcompany = job.getIdcompany();
+            getCompanyInfomation();
+
+        }else {
+            job_id = intent.getIntExtra("job_id",0);
+            getJobInfo(job_id);
+            handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    idcompany = job.getIdcompany();
+                    getCompanyInfomation();
+                }
+            },2000);
+        }
+
 
 
     }

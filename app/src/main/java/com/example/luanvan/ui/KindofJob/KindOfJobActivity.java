@@ -2,11 +2,9 @@ package com.example.luanvan.ui.KindofJob;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.Manifest;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -20,8 +18,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
-import com.example.luanvan.ui.Adapter.JobAdapter;
-import com.example.luanvan.ui.Adapter.KindOfJobAdapter;
+import com.example.luanvan.ui.Adapter.job.KindOfJobAdapter;
 import com.example.luanvan.ui.Model.Job;
 
 import org.json.JSONArray;

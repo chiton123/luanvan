@@ -7,10 +7,12 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -39,6 +41,10 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -59,7 +65,13 @@ public class DetailJobActivity extends AppCompatActivity {
     int REQUEST_CODE_CV = 123, REQUEST_CODE_LOGIN = 222;
     public static int job_id = 0;
     Dialog dialog;
+    // dành cho từ notification chuyển qua
+    Job job;
+    int kind = 0; // 0: màn hình chính chuyển, 1: từ notification chuyển
   //  int checkApply = 0; // khi ứng tuyển, xem coi thành công hay thất bại rồi thông báo
+    Handler handler;
+    Handler handler2;
+    ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,15 +79,88 @@ public class DetailJobActivity extends AppCompatActivity {
         anhxa();
         actionBar();
         getInfo();
-        eventApply();
-        if(MainActivity.login == 1){
-            checkApplyOrNot();
-        }
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                eventApply();
+                if(MainActivity.login == 1){
+                    checkApplyOrNot();
+                }
+            }
+        },3000);
+
+
 
 
 
     }
+    void loading(){
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading");
+        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
+    }
+    // dành cho từ notification chuyển qua
+    public void getJobInfo(final int job_id){
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlJobFromNotification,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                      //  Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
+                        if(response != null){
+                            try {
+                                JSONArray jsonArray = new JSONArray(response);
+                                JSONObject object = jsonArray.getJSONObject(0);
+                                job = new Job(
+                                        object.getInt("id"),
+                                        object.getString("name"),
+                                        object.getInt("idcompany"),
+                                        object.getString("img"),
+                                        object.getString("area"),
+                                        object.getInt("idtype"),
+                                        object.getInt("idprofession"),
+                                        object.getString("start_date"),
+                                        object.getString("end_date"),
+                                        object.getInt("salary"),
+                                        object.getInt("idarea"),
+                                        object.getString("experience"),
+                                        object.getInt("number"),
+                                        object.getString("description"),
+                                        object.getString("requirement"),
+                                        object.getString("benefit"),
+                                        object.getInt("status"),
+                                        object.getString("company_name"),
+                                        object.getString("type_job")
+                                );
 
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("job_id", String.valueOf(job_id));
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+
+    }
     private void checkApplyOrNot() {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlCheckApply,
@@ -236,24 +321,58 @@ public class DetailJobActivity extends AppCompatActivity {
     }
 
     private void getInfo() {
-        Job job = (Job) getIntent().getSerializableExtra("job");
-        job_id = job.getId();
-        Glide.with(getApplicationContext()).load(job.getImg()).into(anhcongty);
-        txttencongviec.setText(job.getName());
-        txtcongty.setText(job.getCompany_name());
-        String ngaybatdau = job.getStart_date();
-        String ngayketthuc = job.getEnd_date();
-        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-        Date date1 = null;
-        Date date2 = null;
-        try {
-            date1 = fmt.parse(ngaybatdau);
-            date2 = fmt.parse(ngayketthuc);
-        } catch (ParseException e) {
-            e.printStackTrace();
+        kind = getIntent().getIntExtra("kind",0);
+        if(kind == 0){
+            Job job = (Job) getIntent().getSerializableExtra("job");
+            job_id = job.getId();
+            Glide.with(getApplicationContext()).load(job.getImg()).into(anhcongty);
+            txttencongviec.setText(job.getName());
+            txtcongty.setText(job.getCompany_name());
+            String ngaybatdau = job.getStart_date();
+            String ngayketthuc = job.getEnd_date();
+            SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+            Date date1 = null;
+            Date date2 = null;
+            try {
+                date1 = fmt.parse(ngaybatdau);
+                date2 = fmt.parse(ngayketthuc);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            SimpleDateFormat fmtOut = new SimpleDateFormat("dd/MM/yyyy");
+            txthannop.setText(fmtOut.format(date2));
+        }else {
+            loading();
+            job_id = getIntent().getIntExtra("job_id",0);
+            getJobInfo(job_id);
+            handler2 = new Handler();
+            handler2.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Glide.with(getApplicationContext()).load(job.getImg()).into(anhcongty);
+                    txttencongviec.setText(job.getName());
+                    txtcongty.setText(job.getCompany_name());
+                    String ngaybatdau = job.getStart_date();
+                    String ngayketthuc = job.getEnd_date();
+                    SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+                    Date date1 = null;
+                    Date date2 = null;
+                    try {
+                        date1 = fmt.parse(ngaybatdau);
+                        date2 = fmt.parse(ngayketthuc);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    SimpleDateFormat fmtOut = new SimpleDateFormat("dd/MM/yyyy");
+                    txthannop.setText(fmtOut.format(date2));
+                    progressDialog.dismiss();
+                }
+            },2000);
+
+
+
         }
-        SimpleDateFormat fmtOut = new SimpleDateFormat("dd/MM/yyyy");
-        txthannop.setText(fmtOut.format(date2));
+
 
 
     }

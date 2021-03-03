@@ -1,4 +1,4 @@
-package com.example.luanvan.ui.Adapter;
+package com.example.luanvan.ui.Adapter.job;
 
 import android.app.Activity;
 import android.content.Context;
@@ -77,7 +77,8 @@ public class KindOfJobAdapter extends RecyclerView.Adapter<KindOfJobAdapter.Item
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, DetailJobActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                // 0: từ màn hình chính, tìm kiếm, lọc chuyển qua, 1: từ notification chuyển qua
+                intent.putExtra("kind", 0);
                 intent.putExtra("job", filterArraylist.get(position));
                 activity.startActivity(intent);
 

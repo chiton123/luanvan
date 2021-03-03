@@ -17,8 +17,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -30,8 +28,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
-import com.example.luanvan.ui.Adapter.JobAdapter;
-import com.example.luanvan.ui.Adapter.KindOfJobAdapter;
+import com.example.luanvan.ui.Adapter.job.KindOfJobAdapter;
 import com.example.luanvan.ui.Model.Job;
 
 import org.json.JSONArray;

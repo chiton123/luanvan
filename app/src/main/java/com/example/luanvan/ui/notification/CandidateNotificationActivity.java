@@ -59,6 +59,7 @@ public class CandidateNotificationActivity extends AppCompatActivity {
                                     arrayList.add(new Notification(
                                             object.getInt("id"),
                                             object.getInt("ap_id"),
+                                            object.getInt("job_id"),
                                             object.getString("type_notification"),
                                             object.getInt("type_user"),
                                             object.getInt("id_user"),
@@ -110,7 +111,7 @@ public class CandidateNotificationActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recycleview);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
-        adapter = new NotificationAdapter(this, arrayList, this);
+        adapter = new NotificationAdapter(this, arrayList, this,0);
         recyclerView.setAdapter(adapter);
 
 
