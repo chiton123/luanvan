@@ -28,7 +28,9 @@ import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.DetailedJob.DetailJobActivity;
 import com.example.luanvan.ui.Model.Notification;
+import com.example.luanvan.ui.home.HomeFragment;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
+import com.example.luanvan.ui.recruiter.RecruiterActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -83,6 +85,13 @@ public class RecruiterNotificationAdapter extends RecyclerView.Adapter<Recruiter
                 updateStatusNotification(position, 1);
                 arrayList.get(position).setStatus(1);
                 notifyDataSetChanged();
+                MainActivity.k--;
+                if(MainActivity.k == 0){
+                    RecruiterActivity.txtNotification.setVisibility(View.GONE);
+                }else {
+                    RecruiterActivity.txtNotification.setText("" + MainActivity.k);
+                    RecruiterActivity.txtNotification.setVisibility(View.VISIBLE);
+                }
                 Intent intent = new Intent(context, CVManageActivity.class);
                 intent.putExtra("kind", 1); // Để nó trỏ tới hồ sơ ứng tuyển
                 activity.startActivity(intent);

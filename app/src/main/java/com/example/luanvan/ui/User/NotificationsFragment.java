@@ -144,6 +144,8 @@ public class NotificationsFragment extends Fragment {
         MainActivity.checkFirstStudy = 0;
         MainActivity.checkFirstVolunteer = 0;
         MainActivity.mAuth.signOut();
+        MainActivity.arrayListNotification.clear();
+        MainActivity.k = 0;
 
     }
 

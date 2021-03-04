@@ -66,7 +66,7 @@ public class DetailJobActivity extends AppCompatActivity {
     public static int job_id = 0;
     Dialog dialog;
     // dành cho từ notification chuyển qua
-    public static Job job = new Job();
+    Job job;
     int kind = 0; // 0: màn hình chính chuyển, 1: từ notification chuyển
   //  int checkApply = 0; // khi ứng tuyển, xem coi thành công hay thất bại rồi thông báo
     Handler handler;
@@ -82,18 +82,11 @@ public class DetailJobActivity extends AppCompatActivity {
         anhxa();
         actionBar();
         getInfo();
-        loading();
-        handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                eventApply();
-                if(MainActivity.login == 1){
-                    checkApplyOrNot();
-                }
-                progressDialog.dismiss();
-            }
-        },2500);
+        eventApply();
+        if(MainActivity.login == 1){
+            checkApplyOrNot();
+        }
+
 
 
 
@@ -107,66 +100,7 @@ public class DetailJobActivity extends AppCompatActivity {
         progressDialog.show();
         progressDialog.setCancelable(false);
     }
-    // dành cho từ notification chuyển qua
-    public void getJobInfo(final int job_id){
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlJobFromNotification,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
-                        if(response != null){
-                            try {
-                                JSONArray jsonArray = new JSONArray(response);
-                                JSONObject object = jsonArray.getJSONObject(0);
-                                job = new Job(
-                                        object.getInt("id"),
-                                        object.getString("name"),
-                                        object.getInt("idcompany"),
-                                        object.getInt("id_recruiter"),
-                                        object.getString("img"),
-                                        object.getString("area"),
-                                        object.getInt("idtype"),
-                                        object.getInt("idprofession"),
-                                        object.getString("start_date"),
-                                        object.getString("end_date"),
-                                        object.getInt("salary"),
-                                        object.getInt("idarea"),
-                                        object.getString("experience"),
-                                        object.getInt("number"),
-                                        object.getString("description"),
-                                        object.getString("requirement"),
-                                        object.getString("benefit"),
-                                        object.getInt("status"),
-                                        object.getString("company_name"),
-                                        object.getString("type_job")
-                                );
 
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
-                    }
-                }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> map = new HashMap<>();
-                map.put("job_id", String.valueOf(job_id));
-                return map;
-            }
-        };
-        requestQueue.add(stringRequest);
-
-    }
     private void checkApplyOrNot() {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlCheckApply,
@@ -328,6 +262,7 @@ public class DetailJobActivity extends AppCompatActivity {
                     dialog.dismiss();
                 }else {
                     Intent intent = new Intent(getApplicationContext(), ChooseCVActivity.class);
+                    intent.putExtra("job", job);
                     startActivityForResult(intent, REQUEST_CODE_CV);
 
                 }
@@ -365,7 +300,66 @@ public class DetailJobActivity extends AppCompatActivity {
         });
 
     }
+    // dành cho từ notification chuyển qua
+    public void getJobInfo(final int job_id){
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlJobFromNotification,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                    //    Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
+                        if(response != null){
+                            try {
+                                JSONArray jsonArray = new JSONArray(response);
+                                JSONObject object = jsonArray.getJSONObject(0);
+                                job = new Job(
+                                        object.getInt("id"),
+                                        object.getString("name"),
+                                        object.getInt("idcompany"),
+                                        object.getInt("id_recruiter"),
+                                        object.getString("img"),
+                                        object.getString("area"),
+                                        object.getInt("idtype"),
+                                        object.getInt("idprofession"),
+                                        object.getString("start_date"),
+                                        object.getString("end_date"),
+                                        object.getInt("salary"),
+                                        object.getInt("idarea"),
+                                        object.getString("experience"),
+                                        object.getInt("number"),
+                                        object.getString("description"),
+                                        object.getString("requirement"),
+                                        object.getString("benefit"),
+                                        object.getInt("status"),
+                                        object.getString("company_name"),
+                                        object.getString("type_job")
+                                );
+                              //  Toast.makeText(getApplicationContext(), job.getName() + job.getStart_date(), Toast.LENGTH_SHORT).show();
 
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("job_id", String.valueOf(job_id));
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+
+    }
     private void getInfo() {
         kind = getIntent().getIntExtra("kind",0);
         if(kind == 0){
@@ -376,6 +370,7 @@ public class DetailJobActivity extends AppCompatActivity {
             txtcongty.setText(job.getCompany_name());
             String ngaybatdau = job.getStart_date();
             String ngayketthuc = job.getEnd_date();
+
             SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
             Date date1 = null;
             Date date2 = null;
@@ -395,29 +390,27 @@ public class DetailJobActivity extends AppCompatActivity {
             handler2.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if(job != null){
-                        Glide.with(getApplicationContext()).load(job.getImg()).into(anhcongty);
-                        txttencongviec.setText(job.getName());
-                        txtcongty.setText(job.getCompany_name());
-                        String ngaybatdau = job.getStart_date();
-                        String ngayketthuc = job.getEnd_date();
-                        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-                        Date date1 = null;
-                        Date date2 = null;
-                       // Toast.makeText(getApplicationContext(), ngaybatdau + ngayketthuc, Toast.LENGTH_SHORT).show();
-                        try {
-                            date1 = fmt.parse(ngaybatdau);
-                            date2 = fmt.parse(ngayketthuc);
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-                        SimpleDateFormat fmtOut = new SimpleDateFormat("dd/MM/yyyy");
-                        txthannop.setText(fmtOut.format(date2));
+                    Glide.with(getApplicationContext()).load(job.getImg()).into(anhcongty);
+                    txttencongviec.setText(job.getName());
+                    txtcongty.setText(job.getCompany_name());
+                    String ngaybatdau = job.getStart_date();
+                    String ngayketthuc = job.getEnd_date();
+                    SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+                    Date date1 = null;
+                    Date date2 = null;
+                    try {
+                        date1 = fmt.parse(ngaybatdau);
+                        date2 = fmt.parse(ngayketthuc);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
                     }
-
+                    SimpleDateFormat fmtOut = new SimpleDateFormat("dd/MM/yyyy");
+                    txthannop.setText(fmtOut.format(date2));
                     progressDialog.dismiss();
+
+
                 }
-            },5000);
+            },3000);
 
 
 

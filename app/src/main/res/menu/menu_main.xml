@@ -13,6 +13,7 @@
     <item android:id="@+id/notification"
         android:icon="@drawable/notification"
         android:title="notify"
+        app:actionLayout="@layout/custom_action_item_layout"
         app:showAsAction="always"/>
 
 </menu>

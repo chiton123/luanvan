@@ -8,6 +8,7 @@ import com.example.luanvan.ui.Adapter.update_personal_info.ExperienceAdapter;
 import com.example.luanvan.ui.Adapter.update_personal_info.SkillAdapter;
 import com.example.luanvan.ui.Adapter.update_personal_info.StudyAdapter;
 import com.example.luanvan.ui.Model.Experience;
+import com.example.luanvan.ui.Model.Notification;
 import com.example.luanvan.ui.Model.Skill;
 import com.example.luanvan.ui.Model.Study;
 import com.example.luanvan.ui.Model.User;
@@ -47,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
     public static int login_recruiter = 0;
     public static int iduser = 0;
     public static int checkCV = 0;
+    public static ArrayList<Notification> arrayListNotification = new ArrayList<>(); // Danh sách thông báo
+    public static int k = 0; // số lương thông báo mới
     // 1: có cv, 2: chưa
     public static String uid = "";
     public static String username = "";
@@ -159,5 +162,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }

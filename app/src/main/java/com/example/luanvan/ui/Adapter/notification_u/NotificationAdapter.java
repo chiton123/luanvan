@@ -27,6 +27,7 @@ import com.example.luanvan.R;
 import com.example.luanvan.ui.DetailedJob.DetailJobActivity;
 import com.example.luanvan.ui.Model.Job;
 import com.example.luanvan.ui.Model.Notification;
+import com.example.luanvan.ui.home.HomeFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -82,9 +83,17 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                updateStatusNotification(position, 1);
-//                arrayList.get(position).setStatus(1);
-//                notifyDataSetChanged();
+                updateStatusNotification(position, 1);
+                arrayList.get(position).setStatus(1);
+                notifyDataSetChanged();
+                MainActivity.k--;
+                if(MainActivity.k == 0){
+                    HomeFragment.txtNotification.setVisibility(View.GONE);
+                }else {
+                    HomeFragment.txtNotification.setText("" + MainActivity.k);
+                    HomeFragment.txtNotification.setVisibility(View.VISIBLE);
+                }
+
                 Intent intent = new Intent(activity, DetailJobActivity.class);
                 // 0: từ màn hình chính, tìm kiếm, lọc chuyển qua, 1: từ notification chuyển qua
                 intent.putExtra("kind", 1);
@@ -93,7 +102,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             }
         });
 
-        if(notification.getStatus() == 0){
+        if(arrayList.get(position).getStatus() == 0){
             holder.layout.setBackgroundResource(R.drawable.backgroud_not_notification);
         }else {
             holder.layout.setBackgroundResource(R.drawable.backgroud_already_notification);
@@ -107,9 +116,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                     @Override
                     public void onResponse(String response) {
                         if(response.equals("success")){
-                            Toast.makeText(context, "Đã xem", Toast.LENGTH_SHORT).show();
+                          //  Toast.makeText(context, "Đã xem", Toast.LENGTH_SHORT).show();
                         }else {
-                            Toast.makeText(context, "Thất bại", Toast.LENGTH_SHORT).show();
+                         //   Toast.makeText(context, "Thất bại", Toast.LENGTH_SHORT).show();
                         }
                     }
                 },

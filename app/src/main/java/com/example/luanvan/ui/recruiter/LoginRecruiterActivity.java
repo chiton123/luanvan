@@ -58,6 +58,8 @@ public class LoginRecruiterActivity extends AppCompatActivity {
         MainActivity.mAuth.signOut();
         MainActivity.uid = "";
         MainActivity.iduser = 0;
+        MainActivity.arrayListNotification.clear();
+        MainActivity.k = 0;
     }
     private void eventLogout() {
         btnLogout.setOnClickListener(new View.OnClickListener() {

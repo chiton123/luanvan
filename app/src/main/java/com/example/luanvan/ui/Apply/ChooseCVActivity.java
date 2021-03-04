@@ -26,6 +26,7 @@ import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.CVChooseAdapter;
 import com.example.luanvan.ui.DetailedJob.DetailJobActivity;
+import com.example.luanvan.ui.Model.Job;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,6 +43,7 @@ public class ChooseCVActivity extends AppCompatActivity {
     String content = "";
     Handler handler;
     ProgressDialog progressDialog;
+    Job job;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,7 +87,7 @@ public class ChooseCVActivity extends AppCompatActivity {
                 Map<String,String> map = new HashMap<>();
                 map.put("type_user", String.valueOf(type_user));
                 map.put("type_notification",  type_notification);
-                map.put("iduser", String.valueOf(DetailJobActivity.job.getId_recruiter()));
+                map.put("iduser", String.valueOf(job.getId_recruiter()));
                 map.put("content", content);
                 map.put("id_application", String.valueOf(id_application));
                 return map;
@@ -114,10 +116,10 @@ public class ChooseCVActivity extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
                                 if(!response.equals("fail")){
                                     loading();
-                                    Toast.makeText(getApplicationContext(), "Ứng tuyển thành công", Toast.LENGTH_SHORT).show();
+                                  //  Toast.makeText(getApplicationContext(), "Ứng tuyển thành công", Toast.LENGTH_SHORT).show();
                                     int k = response.lastIndexOf('s');
                                     id_application = Integer.parseInt(response.substring(k+1, response.length()));
-                                    content = "Ứng viên " + MainActivity.username + " - " + DetailJobActivity.job.getName();
+                                    content = "Ứng viên " + MainActivity.username + " - " + job.getName();
                                     // Toast.makeText(getApplicationContext(), id_application + content , Toast.LENGTH_SHORT).show();
                                     postNotification(1);
                                     handler = new Handler();
@@ -205,6 +207,7 @@ public class ChooseCVActivity extends AppCompatActivity {
     }
 
     private void anhxa() {
+        job = (Job) getIntent().getSerializableExtra("job");
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         listView = (ListView) findViewById(R.id.listview);
         adapter = new CVChooseAdapter(getApplicationContext(), MainActivity.arrayListCV, this);

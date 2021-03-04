@@ -139,24 +139,22 @@ public class InfoFragment extends Fragment {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if(job != null){
-                        txtarea.setText(job.getAddress());
-                        DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-                        txtsalary.setText(decimalFormat.format(job.getSalary())+"đ");
-                        txthinhthuc.setText(job.getType_job());
-                        txtnumber.setText(job.getNumber()+"");
-                        txtexperience.setText(job.getExperience());
+                    txtarea.setText(job.getAddress());
+                    DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
+                    txtsalary.setText(decimalFormat.format(job.getSalary())+"đ");
+                    txthinhthuc.setText(job.getType_job());
+                    txtnumber.setText(job.getNumber()+"");
+                    txtexperience.setText(job.getExperience());
 
-                        String mota = xuongdong(job.getDescription());
-                        String yeucau = xuongdong(job.getRequirement());
-                        String quyenloi = xuongdong(job.getBenefit());
-                        txtdescription.setText(mota);
-                        txtrequirement.setText(yeucau);
-                        txtbenefit.setText(quyenloi);
-                    }
+                    String mota = xuongdong(job.getDescription());
+                    String yeucau = xuongdong(job.getRequirement());
+                    String quyenloi = xuongdong(job.getBenefit());
+                    txtdescription.setText(mota);
+                    txtrequirement.setText(yeucau);
+                    txtbenefit.setText(quyenloi);
 
                 }
-            },5000);
+            },3000);
 
         }
 
