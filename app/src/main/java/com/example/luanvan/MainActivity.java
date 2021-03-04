@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
     // kind CV, only change color
     public static int color = 0;
 
-    public static String host = "http://10.3.74.50:8888/luanvan/";
+    public static String host = "http://10.10.37.48:8888/luanvan/";
     public static String urljob1 = host + "job1.php";
     public static String urlcompany = host + "company.php";
     // dang nhap
@@ -125,10 +125,14 @@ public class MainActivity extends AppCompatActivity {
 
     // post notification
     public static String urlPostNotification = host + "post_notification.php";
+    // check post or not
+    public static String urlCheckPost = host + "check_post.php";
     // get notification
     public static String urlGetNotification =  host + "get_notification.php";
     // get notification recruiter
     public static String urlGetNotificationRecruiter =  host + "get_notification_recruiter.php";
+    // update notification status
+    public static String urlUpdateNotificationStatus = host + "update_status_notification.php";
     // job from notification
     public static String urlJobFromNotification = host + "job_from_notification.php";
 

@@ -66,6 +66,7 @@ public class RecruiterNotificationActivity extends AppCompatActivity {
                                             object.getInt("type_user"),
                                             object.getInt("id_user"),
                                             object.getString("content"),
+                                            object.getInt("status"),
                                             object.getString("img"),
                                             object.getString("date_read")
                                     ));

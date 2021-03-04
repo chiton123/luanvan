@@ -8,10 +8,11 @@ public class Notification {
     private int type_user;
     private int id_user;
     private String content;
+    private int status;
     private String img;
     private String date_read;
 
-    public Notification(int id, int ap_id, int job_id, String type_notification, int type_user, int id_user, String content, String img, String date_read) {
+    public Notification(int id, int ap_id, int job_id, String type_notification, int type_user, int id_user, String content,int status, String img, String date_read) {
         this.id = id;
         this.ap_id = ap_id;
         this.job_id = job_id;
@@ -19,8 +20,17 @@ public class Notification {
         this.type_user = type_user;
         this.id_user = id_user;
         this.content = content;
+        this.status = status;
         this.img = img;
         this.date_read = date_read;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public int getJob_id() {

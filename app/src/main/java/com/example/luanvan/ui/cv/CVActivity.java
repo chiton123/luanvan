@@ -123,7 +123,7 @@ public class CVActivity extends AppCompatActivity {
         MainActivity.mData.child("cv").child(MainActivity.uid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                idCV = snapshot.getChildrenCount();
+                idCV = (snapshot.getChildrenCount() + 1)*10 + 1;
                 cvName.setText("Ứng tuyển "+ String.valueOf(idCV + 1));
             }
 

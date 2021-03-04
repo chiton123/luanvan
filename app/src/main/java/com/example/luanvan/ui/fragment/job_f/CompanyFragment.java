@@ -211,7 +211,7 @@ public class CompanyFragment extends Fragment {
                     idcompany = job.getIdcompany();
                     getCompanyInfomation();
                 }
-            },2000);
+            },5000);
         }
 
 

@@ -76,7 +76,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New"
+            android:text="Lịch hẹn ứng viên"
             android:textSize="18sp"
             android:textColor="#020202"
             ></TextView>
@@ -89,7 +89,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/right4"
-                android:id="@+id/imgnew"
+                android:id="@+id/imgschedule"
                 ></ImageView>
         </RelativeLayout>
 

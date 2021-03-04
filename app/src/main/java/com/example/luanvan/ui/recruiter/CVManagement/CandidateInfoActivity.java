@@ -146,7 +146,7 @@ public class CandidateInfoActivity extends AppCompatActivity {
         id_application = applicant.getId();
         content = CVManageActivity.arrayListJobList.get(0).getCompany_name() + " đã xem CV ứng tuyển của bạn";
         if(applicant.getStatus() == 0){
-            postNotification(0);
+            checkPostOrNot();
         }
 
 
@@ -161,6 +161,37 @@ public class CandidateInfoActivity extends AppCompatActivity {
 
     }
 
+    private void checkPostOrNot() {
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlCheckPost,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(response.equals("success")){
+                           // Toast.makeText(getApplicationContext(), "Đã thông báo", Toast.LENGTH_SHORT).show();
+                        }else {
+                           // Toast.makeText(getApplicationContext(), "Thông báo thất bại", Toast.LENGTH_SHORT).show();
+                            postNotification(0);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("iduser", String.valueOf(candidate_id));
+                map.put("id_application", String.valueOf(id_application));
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
     private void postNotification(final int type_user) {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlPostNotification,
@@ -168,9 +199,9 @@ public class CandidateInfoActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         if(response.equals("success")){
-                            Toast.makeText(getApplicationContext(), "Thông báo thành công", Toast.LENGTH_SHORT).show();
+                         //   Toast.makeText(getApplicationContext(), "Thông báo thành công", Toast.LENGTH_SHORT).show();
                         }else {
-                            Toast.makeText(getApplicationContext(), "Thông báo thất bại", Toast.LENGTH_SHORT).show();
+                        //    Toast.makeText(getApplicationContext(), "Thông báo thất bại", Toast.LENGTH_SHORT).show();
                         }
                     }
                 },

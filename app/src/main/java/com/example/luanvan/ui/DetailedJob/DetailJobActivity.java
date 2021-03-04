@@ -66,7 +66,7 @@ public class DetailJobActivity extends AppCompatActivity {
     public static int job_id = 0;
     Dialog dialog;
     // dành cho từ notification chuyển qua
-    public static Job job;
+    public static Job job = new Job();
     int kind = 0; // 0: màn hình chính chuyển, 1: từ notification chuyển
   //  int checkApply = 0; // khi ứng tuyển, xem coi thành công hay thất bại rồi thông báo
     Handler handler;
@@ -114,7 +114,7 @@ public class DetailJobActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                      //  Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
                         if(response != null){
                             try {
                                 JSONArray jsonArray = new JSONArray(response);
@@ -395,25 +395,29 @@ public class DetailJobActivity extends AppCompatActivity {
             handler2.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Glide.with(getApplicationContext()).load(job.getImg()).into(anhcongty);
-                    txttencongviec.setText(job.getName());
-                    txtcongty.setText(job.getCompany_name());
-                    String ngaybatdau = job.getStart_date();
-                    String ngayketthuc = job.getEnd_date();
-                    SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-                    Date date1 = null;
-                    Date date2 = null;
-                    try {
-                        date1 = fmt.parse(ngaybatdau);
-                        date2 = fmt.parse(ngayketthuc);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
+                    if(job != null){
+                        Glide.with(getApplicationContext()).load(job.getImg()).into(anhcongty);
+                        txttencongviec.setText(job.getName());
+                        txtcongty.setText(job.getCompany_name());
+                        String ngaybatdau = job.getStart_date();
+                        String ngayketthuc = job.getEnd_date();
+                        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+                        Date date1 = null;
+                        Date date2 = null;
+                       // Toast.makeText(getApplicationContext(), ngaybatdau + ngayketthuc, Toast.LENGTH_SHORT).show();
+                        try {
+                            date1 = fmt.parse(ngaybatdau);
+                            date2 = fmt.parse(ngayketthuc);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        SimpleDateFormat fmtOut = new SimpleDateFormat("dd/MM/yyyy");
+                        txthannop.setText(fmtOut.format(date2));
                     }
-                    SimpleDateFormat fmtOut = new SimpleDateFormat("dd/MM/yyyy");
-                    txthannop.setText(fmtOut.format(date2));
+
                     progressDialog.dismiss();
                 }
-            },2000);
+            },5000);
 
 
 

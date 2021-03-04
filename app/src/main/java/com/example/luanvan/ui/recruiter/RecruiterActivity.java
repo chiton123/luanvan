@@ -19,7 +19,7 @@ import com.example.luanvan.ui.recruiter.CVManagement.ScheduleActivity;
 
 public class RecruiterActivity extends AppCompatActivity {
     Toolbar toolbar;
-    ImageView imgCVManagement, imgPostJob;
+    ImageView imgCVManagement, imgPostJob, imgSchedule;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,5 +79,6 @@ public class RecruiterActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         imgCVManagement = (ImageView) findViewById(R.id.imgcv);
         imgPostJob = (ImageView) findViewById(R.id.imgpost);
+        imgSchedule = (ImageView) findViewById(R.id.imgschedule);
     }
 }

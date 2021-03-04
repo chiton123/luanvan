@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -81,6 +82,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                updateStatusNotification(position, 1);
+//                arrayList.get(position).setStatus(1);
+//                notifyDataSetChanged();
                 Intent intent = new Intent(activity, DetailJobActivity.class);
                 // 0: từ màn hình chính, tìm kiếm, lọc chuyển qua, 1: từ notification chuyển qua
                 intent.putExtra("kind", 1);
@@ -89,10 +93,42 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             }
         });
 
-
+        if(notification.getStatus() == 0){
+            holder.layout.setBackgroundResource(R.drawable.backgroud_not_notification);
+        }else {
+            holder.layout.setBackgroundResource(R.drawable.backgroud_already_notification);
+        }
     }
 
-
+    public void updateStatusNotification(final int position, final int status){
+        RequestQueue requestQueue = Volley.newRequestQueue(activity);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlUpdateNotificationStatus,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(response.equals("success")){
+                            Toast.makeText(context, "Đã xem", Toast.LENGTH_SHORT).show();
+                        }else {
+                            Toast.makeText(context, "Thất bại", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("n_id", String.valueOf(arrayList.get(position).getId()));
+                map.put("status", String.valueOf(status));
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
 
 
     @Override
@@ -103,13 +139,14 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     public class ItemHolder extends RecyclerView.ViewHolder{
         public ImageView img;
         public TextView txtNotification, txtContent, txtDate;
+        public RelativeLayout layout;
         public ItemHolder(@NonNull View itemView) {
             super(itemView);
             img = (ImageView) itemView.findViewById(R.id.img);
             txtNotification = (TextView) itemView.findViewById(R.id.txtnotification);
             txtContent = (TextView) itemView.findViewById(R.id.txtcontent);
             txtDate = (TextView) itemView.findViewById(R.id.txtdate);
-
+            layout = (RelativeLayout) itemView.findViewById(R.id.layout);
         }
     }
 
