@@ -1,4 +1,4 @@
-package com.example.luanvan.ui.Adapter;
+package com.example.luanvan.ui.Adapter.cv_all;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -25,10 +25,6 @@ import com.example.luanvan.ui.cv.CVShowActivity;
 import com.example.luanvan.ui.modelCV.PdfCV;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.StorageReference;
 
@@ -114,7 +110,6 @@ public class CVAdapter extends RecyclerView.Adapter<CVAdapter.ItemHolder> {
             @Override
             public void onClick(View v) {
                 StorageReference reference = MainActivity.storage.getReferenceFromUrl(arrayList.get(position).getUrl());
-          //      StorageReference  islandRef = storageRef.child("file.txt");
                 File rootPath = new File(Environment.getExternalStorageDirectory(), "CVdownload");
                 if(!rootPath.exists()) {
                     rootPath.mkdirs();

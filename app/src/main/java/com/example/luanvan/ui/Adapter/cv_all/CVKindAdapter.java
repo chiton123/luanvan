@@ -1,4 +1,4 @@
-package com.example.luanvan.ui.Adapter;
+package com.example.luanvan.ui.Adapter.cv_all;
 
 import android.app.Activity;
 import android.content.Context;
@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.CVKind;
 import com.example.luanvan.ui.cv.CVActivity;
-import com.example.luanvan.ui.cv.CVCreateActivity;
 
 import java.util.ArrayList;
 

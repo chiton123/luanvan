@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +42,12 @@ import com.example.luanvan.ui.recruiter.CVManagement.CandidateDocumentFragment;
 import com.example.luanvan.ui.recruiter.CVManagement.CandidateInfoActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.JobListFragment;
 import com.example.luanvan.ui.recruiter.CVManagement.ScheduleActivity;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -58,8 +64,10 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
     int first_status = 0; // chưa làm gì
     int job_id = 0; // để cập nhật dữ liệu bên joblistFragment
     int positionJobList = 0; // cập nhật tại vị trí trùng job_id
-
-    public ProfileCadidateAdapter(Context context, ArrayList<Profile> arrayList, Activity activity, Applicant applicant, int kind, int positionX) {
+    String url_cv = ""; // url cv
+    String name_cv = "";
+    public ProfileCadidateAdapter(Context context, ArrayList<Profile> arrayList, Activity activity, Applicant applicant, int kind, int positionX,
+                                  String url_cv, String name_cv) {
         this.context = context;
         this.arrayList = arrayList;
         this.activity = activity;
@@ -67,6 +75,8 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
         this.kind = kind;
         this.positionX = positionX;
         this.first_status = applicant.getStatus();
+        this.url_cv = url_cv;
+        this.name_cv = name_cv;
     }
 
     @NonNull
@@ -94,11 +104,35 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
                         intent.putExtra("applicant", applicant);
                         activity.startActivity(intent);
                         break;
-
+                    case 3:
+                        //Toast.makeText(context, url_cv, Toast.LENGTH_SHORT).show();
+                        downLoadCV_PDF(url_cv);
+                        break;
                 }
             }
         });
     }
+    public void downLoadCV_PDF(String url){
+        StorageReference reference = MainActivity.storage.getReferenceFromUrl(url);
+        File rootPath = new File(Environment.getExternalStorageDirectory(), "CVdownload");
+        if(!rootPath.exists()) {
+            rootPath.mkdirs();
+        }
+        final File localFile = new File(rootPath,name_cv + "_TOPCV" + ".pdf");
+        reference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(context, "Tải về thành công", Toast.LENGTH_SHORT).show();
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Toast.makeText(context, "Tải về thất bại", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     public void showDialogAccessCandidate(final int position){
         job_id = applicant.getJob_id();
         for(int i=0; i < CVManageActivity.arrayListJobList.size(); i++){

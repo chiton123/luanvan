@@ -5,9 +5,11 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +31,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Applicant;
+import com.example.luanvan.ui.Model.JavaMailAPI;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.text.ParseException;
@@ -46,8 +49,11 @@ public class ScheduleActivity extends AppCompatActivity {
     int type_schedule = 0; // 1: phỏng vấn,  2: đi làm
     String date_post = "";
     Applicant applicant;
-
-
+    String content = "";
+    String type_notification = "";
+    Handler handler;
+    ProgressDialog progressDialog;
+    Date time_start=null, time_end = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +79,10 @@ public class ScheduleActivity extends AppCompatActivity {
                 if(editKindSchedule.getText().equals("") || editStart.getText().equals("") || editEnd.getText().equals("") || editDate.getText().equals("")
                 ){
                     Toast.makeText(getApplicationContext(), "Vui lòng điền đủ thông tin", Toast.LENGTH_SHORT).show();
-                }else {
+                }else if(time_end.before(time_start)){
+                    Toast.makeText(getApplicationContext(), "Giờ phỏng vấn không hợp lệ", Toast.LENGTH_SHORT).show();
+                }
+                else {
                     final String date = editDate.getText().toString();
                     final String start_hour = editStart.getText().toString();
                     final String end_hour = editEnd.getText().toString();
@@ -85,9 +94,19 @@ public class ScheduleActivity extends AppCompatActivity {
                                 public void onResponse(String response) {
                                     if(response.equals("success")){
                                         Toast.makeText(getApplicationContext(), "Tạo thành công", Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent();
-                                        setResult(123);
-                                        finish();
+                                        loading();
+                                        postNotification(0, date, start_hour, end_hour);
+                                        sendMail();
+                                        handler = new Handler();
+                                        handler.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Intent intent = new Intent();
+                                                setResult(123);
+                                                finish();
+                                            }
+                                        },3000);
+
                                     }else {
                                         Toast.makeText(getApplicationContext(), "Tạo thất bại", Toast.LENGTH_SHORT).show();
                                     }
@@ -118,6 +137,51 @@ public class ScheduleActivity extends AppCompatActivity {
         });
 
     }
+    private void sendMail() {
+        JavaMailAPI mail = new JavaMailAPI(this, applicant.getEmail(), type_notification, content);
+        mail.execute();
+        Toast.makeText(getApplicationContext(), "Đã gửi mail", Toast.LENGTH_SHORT).show();
+    }
+    public void postNotification(final int type_user, String date, String start_hour, String end_hour){
+        if(type_schedule == 1){
+            type_notification = "Nhà tuyển dụng hẹn bạn phỏng vấn";
+            content = "Lịch hẹn vào ngày " + date + " ,bắt đầu lúc "+ start_hour + " ,kết thúc lúc " + end_hour + ", chi tiết xin liên hệ nhà tuyển dụng";
+        }else {
+            type_notification = "Nhà tuyển dụng nhắc bạn đi làm";
+            content = "Lịch đi làm vào ngày " + date + " ,bắt đầu lúc "+ start_hour + " ,kết thúc lúc " + end_hour + ", chi tiết xin liên hệ nhà tuyển dụng";
+        }
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlPostNotification,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(response.equals("success")){
+                            Toast.makeText(getApplicationContext(), "Thông báo thành công", Toast.LENGTH_SHORT).show();
+                        }else {
+                            Toast.makeText(getApplicationContext(), "Thông báo thất bại", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("id_application", String.valueOf(applicant.getId()));
+                map.put("type_notification", type_notification);
+                map.put("content", content);
+                map.put("iduser", String.valueOf(applicant.getUser_id()));
+                map.put("type_user", String.valueOf(type_user));
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+
+    }
 
     public void showDate() throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -135,8 +199,6 @@ public class ScheduleActivity extends AppCompatActivity {
                 if(calendar.getTime().before(today1) ){
                     Toast.makeText(getApplicationContext(), "Phải lớn hơn ngày hiện tại", Toast.LENGTH_SHORT).show();
                 }else {
-
-
                     SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
                     Date date = null;
                     try {
@@ -227,8 +289,10 @@ public class ScheduleActivity extends AppCompatActivity {
                 calendar.set(0,0,0, hourOfDay, minute);
                 if(kind == 1){
                     editStart.setText(simpleDateFormat.format(calendar.getTime()));
+                    time_start = calendar.getTime();
                 }else {
                     editEnd.setText(simpleDateFormat.format(calendar.getTime()));
+                    time_end = calendar.getTime();
                 }
 
             }
@@ -259,5 +323,12 @@ public class ScheduleActivity extends AppCompatActivity {
         btnCancel = (Button) findViewById(R.id.buttonhuy);
         applicant = (Applicant) getIntent().getSerializableExtra("applicant");
 
+    }
+    void loading(){
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading");
+        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
     }
 }

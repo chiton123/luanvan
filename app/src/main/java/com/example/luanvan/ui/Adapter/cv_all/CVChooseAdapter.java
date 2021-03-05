@@ -1,4 +1,4 @@
-package com.example.luanvan.ui.Adapter;
+package com.example.luanvan.ui.Adapter.cv_all;
 
 import android.app.Activity;
 import android.content.Context;

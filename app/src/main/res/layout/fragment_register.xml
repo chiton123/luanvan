@@ -13,7 +13,7 @@
         >
         <EditText
             android:layout_marginTop="50dp"
-            android:layout_width="270dp"
+            android:layout_width="320dp"
             android:layout_height="50dp"
             android:id="@+id/editemail"
             android:hint="Email"
@@ -22,7 +22,7 @@
             ></EditText>
         <EditText
             android:layout_marginTop="20dp"
-            android:layout_width="270dp"
+            android:layout_width="320dp"
             android:layout_height="50dp"
             android:id="@+id/editname"
             android:hint="Họ tên"
@@ -31,7 +31,7 @@
             ></EditText>
         <EditText
             android:layout_marginTop="20dp"
-            android:layout_width="270dp"
+            android:layout_width="320dp"
             android:layout_height="50dp"
             android:id="@+id/editpass"
             android:hint="Mật khẩu"
@@ -41,7 +41,7 @@
             ></EditText>
         <EditText
             android:layout_marginTop="20dp"
-            android:layout_width="270dp"
+            android:layout_width="320dp"
             android:layout_height="50dp"
             android:id="@+id/editpass2"
             android:hint="Nhập lại mật khẩu"

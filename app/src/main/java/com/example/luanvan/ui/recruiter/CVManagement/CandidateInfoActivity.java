@@ -50,6 +50,9 @@ public class CandidateInfoActivity extends AppCompatActivity {
     int id_application = 0;
     String type_notification = "Nhà tuyển dụng vừa xem hồ sơ";
     String url1 = "https://docs.google.com/gview?embedded=true&url=";
+    // name cv
+    String name_cv = "";
+    String url_cv = "";
     Handler handler;
     RecyclerView recyclerView;
     public static ProfileCadidateAdapter adapter;
@@ -64,7 +67,7 @@ public class CandidateInfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_candidate_info);
         anhxa();
         actionBar();
-        eventPDF();
+
 
 
 
@@ -82,6 +85,9 @@ public class CandidateInfoActivity extends AppCompatActivity {
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 String url = snapshot.child("url").getValue(String.class);
                 url1 += url;
+                url_cv = snapshot.child("url").getValue(String.class);;
+                name_cv = snapshot.child("name").getValue(String.class) + applicant.getUsername();
+
                 //  Toast.makeText(getApplicationContext(), url, Toast.LENGTH_SHORT).show();
             }
 
@@ -132,6 +138,7 @@ public class CandidateInfoActivity extends AppCompatActivity {
     private void anhxa() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         webView = (WebView) findViewById(R.id.webview);
+
         arrayList = new ArrayList<>();
         arrayList.add(new Profile(1, "Đánh giá ứng viên", R.drawable.star));
         arrayList.add(new Profile(2, "Đặt lịch hẹn ứng viên", R.drawable.calendar));
@@ -144,21 +151,31 @@ public class CandidateInfoActivity extends AppCompatActivity {
         user_id_f = applicant.getUser_id_f();
         candidate_id = applicant.getUser_id();
         id_application = applicant.getId();
+        eventPDF();
         content = CVManageActivity.arrayListJobList.get(0).getCompany_name() + " đã xem CV ứng tuyển của bạn";
         if(applicant.getStatus() == 0){
             checkPostOrNot();
         }
 
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setRecyclerView();
+            }
+        },3000);
 
 
-        adapter = new ProfileCadidateAdapter(this, arrayList, this, applicant, kind, position);
+
+
+
+    }
+    public void setRecyclerView(){
+        adapter = new ProfileCadidateAdapter(this, arrayList, this, applicant, kind, position, url_cv, name_cv);
         recyclerView = (RecyclerView) findViewById(R.id.recycleview);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         recyclerView.setAdapter(adapter);
-
-
-
     }
 
     private void checkPostOrNot() {

@@ -118,6 +118,9 @@ public class HomeFragment extends Fragment {
         recyclerViewViecLamMoiNhat.setAdapter(adapterViecLamMoiNhat);
 
         eventXemtatca();
+        if(MainActivity.login == 1){
+            setNotification();
+        }
 
 
         return view;

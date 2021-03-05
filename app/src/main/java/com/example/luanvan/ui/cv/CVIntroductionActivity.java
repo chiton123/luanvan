@@ -1,6 +1,5 @@
 package com.example.luanvan.ui.cv;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -12,26 +11,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
-import com.example.luanvan.ui.Adapter.CVAdapter;
+import com.example.luanvan.ui.Adapter.cv_all.CVAdapter;
 import com.example.luanvan.ui.dashboard.DashboardViewModel;
-import com.example.luanvan.ui.login.LoginActivity;
-import com.example.luanvan.ui.modelCV.PdfCV;
 import com.example.luanvan.ui.modelCV.UserCV;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-
-import static com.example.luanvan.MainActivity.experienceCVS;
 
 public class CVIntroductionActivity extends AppCompatActivity {
     Toolbar toolbar;

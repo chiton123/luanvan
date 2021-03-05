@@ -11,7 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.luanvan.R;
-import com.example.luanvan.ui.Adapter.CVKindAdapter;
+import com.example.luanvan.ui.Adapter.cv_all.CVKindAdapter;
 import com.example.luanvan.ui.Model.CVKind;
 
 import java.util.ArrayList;
