@@ -30,12 +30,15 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
+import com.example.luanvan.ui.Adapter.recruit.PositionScheduleAdapter;
 import com.example.luanvan.ui.Model.Applicant;
 import com.example.luanvan.ui.Model.JavaMailAPI;
+import com.example.luanvan.ui.Model.Job;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -54,6 +57,8 @@ public class ScheduleActivity extends AppCompatActivity {
     Handler handler;
     ProgressDialog progressDialog;
     Date time_start=null, time_end = null;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
