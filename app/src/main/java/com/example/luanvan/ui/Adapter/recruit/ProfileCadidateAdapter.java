@@ -91,6 +91,7 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
                         break;
                     case 2:
                         Intent intent = new Intent(activity, ScheduleActivity.class);
+                        intent.putExtra("applicant", applicant);
                         activity.startActivity(intent);
                         break;
 

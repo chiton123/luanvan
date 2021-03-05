@@ -5,6 +5,8 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,17 +15,28 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
+import com.example.luanvan.ui.Model.Applicant;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ScheduleActivity extends AppCompatActivity {
     Toolbar toolbar;
@@ -32,6 +45,7 @@ public class ScheduleActivity extends AppCompatActivity {
     BottomSheetDialog bottomSheetDialog;
     int type_schedule = 0; // 1: phỏng vấn,  2: đi làm
     String date_post = "";
+    Applicant applicant;
 
 
     @Override
@@ -41,9 +55,70 @@ public class ScheduleActivity extends AppCompatActivity {
         anhxa();
         actionBar();
         eventEditText();
+        eventButton();
 
 
     }
+
+    private void eventButton() {
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(editKindSchedule.getText().equals("") || editStart.getText().equals("") || editEnd.getText().equals("") || editDate.getText().equals("")
+                ){
+                    Toast.makeText(getApplicationContext(), "Vui lòng điền đủ thông tin", Toast.LENGTH_SHORT).show();
+                }else {
+                    final String date = editDate.getText().toString();
+                    final String start_hour = editStart.getText().toString();
+                    final String end_hour = editEnd.getText().toString();
+                    final String note = editNote.getText().toString();
+                    RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlSchedule,
+                            new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    if(response.equals("success")){
+                                        Toast.makeText(getApplicationContext(), "Tạo thành công", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent();
+                                        setResult(123);
+                                        finish();
+                                    }else {
+                                        Toast.makeText(getApplicationContext(), "Tạo thất bại", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                                }
+                            }){
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            Map<String,String> map = new HashMap<>();
+                            map.put("ap_id", String.valueOf(applicant.getId()));
+                            map.put("type_schedule", String.valueOf(type_schedule));
+                            map.put("date", date);
+                            map.put("start", start_hour);
+                            map.put("end", end_hour);
+                            map.put("note", note);
+                            return map;
+                        }
+                    };
+                    requestQueue.add(stringRequest);
+
+                }
+            }
+        });
+
+    }
+
     public void showDate() throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String today = dateFormat.format(Calendar.getInstance().getTime());
@@ -71,7 +146,7 @@ public class ScheduleActivity extends AppCompatActivity {
                     }
                     date_post = fmt.format(date);
                     editDate.setText(dateFormat.format(date));
-                    Toast.makeText(getApplicationContext(),date_post , Toast.LENGTH_SHORT).show();
+                //    Toast.makeText(getApplicationContext(),date_post , Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -125,6 +200,41 @@ public class ScheduleActivity extends AppCompatActivity {
             }
         });
 
+        editStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShowTime(1);
+            }
+        });
+        editEnd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShowTime(2);
+            }
+        });
+
+
+    }
+    // kind: 1->start, 2->end
+    public void ShowTime(final int kind){
+        final Calendar calendar = Calendar.getInstance();
+        int gio = calendar.get(Calendar.HOUR_OF_DAY);
+        int phut = calendar.get(Calendar.MINUTE);
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+                calendar.set(0,0,0, hourOfDay, minute);
+                if(kind == 1){
+                    editStart.setText(simpleDateFormat.format(calendar.getTime()));
+                }else {
+                    editEnd.setText(simpleDateFormat.format(calendar.getTime()));
+                }
+
+            }
+        }, gio, phut, true);
+        timePickerDialog.show();
+
     }
 
     private void actionBar() {
@@ -147,6 +257,7 @@ public class ScheduleActivity extends AppCompatActivity {
         editNote = (EditText) findViewById(R.id.editnote);
         btnSave = (Button) findViewById(R.id.buttonluu);
         btnCancel = (Button) findViewById(R.id.buttonhuy);
+        applicant = (Applicant) getIntent().getSerializableExtra("applicant");
 
     }
 }

@@ -50,6 +50,7 @@
                     android:checked="true"
                     android:textColor="#332B2B"
                     android:buttonTint="#332B2B"
+                    android:backgroundTintMode="screen"
                     android:layout_gravity="center_horizontal"
                     ></RadioButton>
                 <View
@@ -69,8 +70,9 @@
                     android:id="@+id/radiodilam"
                     android:buttonTint="#332B2B"
                     android:text="Nhắc lịch đi làm"
+                    android:backgroundTintMode="screen"
                     android:textColor="#000000"
-                    android:paddingLeft="150dp"
+                    android:paddingLeft="145dp"
                     ></RadioButton>
             </RadioGroup>
         </LinearLayout>

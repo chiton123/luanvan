@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
     // kind CV, only change color
     public static int color = 0;
 
-    public static String host = "http://10.3.74.50:8888/luanvan/";
+    public static String host = "http://10.10.35.11:8888/luanvan/";
     public static String urljob1 = host + "job1.php";
     public static String urlcompany = host + "company.php";
     // dang nhap
@@ -138,7 +138,8 @@ public class MainActivity extends AppCompatActivity {
     public static String urlUpdateNotificationStatus = host + "update_status_notification.php";
     // job from notification
     public static String urlJobFromNotification = host + "job_from_notification.php";
-
+    // schedule
+    public static String urlSchedule = host + "create_schedule.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
