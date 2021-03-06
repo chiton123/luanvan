@@ -34,6 +34,7 @@ import com.example.luanvan.ui.Adapter.recruit.CandidateScheduleAdapter;
 import com.example.luanvan.ui.Adapter.recruit.PositionScheduleAdapter;
 import com.example.luanvan.ui.Model.JavaMailAPI;
 import com.example.luanvan.ui.Model.JobList;
+import com.example.luanvan.ui.Model.Schedule;
 import com.example.luanvan.ui.Model.User;
 import com.example.luanvan.ui.Model.UserApplicant;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -146,8 +147,8 @@ public class CreateScheduleActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
 
     }
-
-    ngày giờ khi tạo schedule sai,
+    load lại adapter khi theêm, sửa , xóa
+   // ngày giờ khi tạo schedule sai,
     private void eventButton() {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -174,8 +175,13 @@ public class CreateScheduleActivity extends AppCompatActivity {
                             new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
-                                    if(response.equals("success")){
+                                    if(!response.equals("fail")){
                                         Toast.makeText(getApplicationContext(), "Tạo thành công", Toast.LENGTH_SHORT).show();
+                                        int last = response.lastIndexOf('s');
+                                        int id_schedule = Integer.parseInt(response.substring(last+1, response.length()));
+                                        Schedule schedule = new Schedule(id_schedule, MainActivity.iduser, job_id, job_name, user_id,
+                                                username, type_schedule, date_post, start_hour+":00", end_hour, note+":00");
+                                        ScheduleManagementActivity.arrayList.add(schedule);
                                         loading();
                                         postNotification(0, date, start_hour, end_hour);
                                         sendMail();
@@ -367,8 +373,8 @@ public class CreateScheduleActivity extends AppCompatActivity {
 
 
         recyclerViewCandidate = (RecyclerView) view.findViewById(R.id.recycleview);
-        recyclerViewCandidate.setHasFixedSize(false);
-        recyclerViewCandidate.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+        recyclerViewCandidate.setHasFixedSize(true);
+        recyclerViewCandidate.setLayoutManager(new LinearLayoutManager(CreateScheduleActivity.this, LinearLayoutManager.VERTICAL, false));
         recyclerViewCandidate.setAdapter(candidateScheduleAdapter);
         bottomSheetDialogCandidate.setContentView(view);
         bottomSheetDialogCandidate.show();
@@ -426,11 +432,11 @@ public class CreateScheduleActivity extends AppCompatActivity {
                     Date date = null;
                     try {
                         date = fmt.parse(fmt.format(calendar.getTime()));
-                        date_post = dateFormat.format(date);
+
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-
+                    date_post = fmt.format(date);
                     editDate.setText(dateFormat.format(date));
                     //    Toast.makeText(getApplicationContext(),date_post , Toast.LENGTH_SHORT).show();
                 }
@@ -518,6 +524,7 @@ public class CreateScheduleActivity extends AppCompatActivity {
     }
 
     private void actionBar() {
+        Toast.makeText(getApplicationContext(), "hehe", Toast.LENGTH_SHORT).show();
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {

@@ -31,6 +31,7 @@ import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Applicant;
 import com.example.luanvan.ui.Model.JavaMailAPI;
+import com.example.luanvan.ui.Model.Schedule;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.text.ParseException;
@@ -95,8 +96,15 @@ public class ScheduleActivity extends AppCompatActivity {
                             new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
-                                    if(response.equals("success")){
+                                    if(!response.equals("fail")){
                                         Toast.makeText(getApplicationContext(), "Tạo thành công", Toast.LENGTH_SHORT).show();
+                                        int last = response.lastIndexOf("s");
+                                        int id_schedule = Integer.parseInt(response.substring(last+1, response.length()));
+                                        Schedule schedule = new Schedule(id_schedule, MainActivity.iduser, applicant.getJob_id(),
+                                                applicant.getJob_name(), applicant.getUser_id(),
+                                                applicant.getUsername(), type_schedule, date_post, start_hour, end_hour, note);
+                                        ScheduleManagementActivity.arrayList.add(schedule);
+                                        ScheduleManagementActivity.adapter.notifyDataSetChanged();
                                         loading();
                                         postNotification(0, date, start_hour, end_hour);
                                         sendMail();
@@ -208,11 +216,11 @@ public class ScheduleActivity extends AppCompatActivity {
                     Date date = null;
                     try {
                         date = fmt.parse(fmt.format(calendar.getTime()));
-                        date_post = dateFormat.format(date);
+
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-
+                    date_post = fmt.format(date);
                     editDate.setText(dateFormat.format(date));
                 //    Toast.makeText(getApplicationContext(),date_post , Toast.LENGTH_SHORT).show();
                 }

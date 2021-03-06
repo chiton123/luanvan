@@ -1,5 +1,6 @@
 package com.example.luanvan.ui.schedule;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -37,9 +38,9 @@ public class ScheduleManagementActivity extends AppCompatActivity {
     Toolbar toolbar;
     RecyclerView recyclerView;
     FloatingActionButton buttonAction;
-    ScheduleAdapter adapter;
-    ArrayList<Schedule> arrayList;
-
+    public static ScheduleAdapter adapter;
+    public static ArrayList<Schedule> arrayList;
+    int REQUEST_CODE = 123;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,12 +103,22 @@ public class ScheduleManagementActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == 123 && resultCode == 123){
+            Toast.makeText(getApplicationContext(), "hee0", Toast.LENGTH_SHORT).show();
+            adapter.notifyDataSetChanged();
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
     private void eventButton() {
         buttonAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), CreateScheduleActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_CODE);
             }
         });
 

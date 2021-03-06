@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Schedule;
 
+import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -51,8 +52,20 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ItemHo
         holder.txtCandidate.setText(schedule.getUsername());
         String start = schedule.getStart_hour();
         String end = schedule.getEnd_hour();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
-//        holder.txtTime.setText(simpleDateFormat.format(start) + " - " + simpleDateFormat.format(end));
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
+        Date time1 = null;
+        Date time2 = null;
+        try {
+            time1 =  simpleDateFormat.parse(start);
+            time2 = simpleDateFormat.parse(end);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        SimpleDateFormat formatHour = new SimpleDateFormat("HH:mm");
+        holder.txtTime.setText(formatHour.format(time1) + " - " + formatHour.format(time2));
+
+
+
         String ngay = schedule.getDate();
         SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
         Date date = null;
