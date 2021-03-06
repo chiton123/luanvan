@@ -79,7 +79,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             e.printStackTrace();
         }
         SimpleDateFormat fmtOut = new SimpleDateFormat("dd/MM/yyyy");
-        holder.txtDate.setText("Ngày xem: " + fmtOut.format(date1));
+        holder.txtDate.setText("" + fmtOut.format(date1));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

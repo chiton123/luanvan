@@ -77,6 +77,7 @@ public class ScheduleActivity extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), date_post, Toast.LENGTH_SHORT).show();
                 if(editKindSchedule.getText().equals("") || editStart.getText().equals("") || editEnd.getText().equals("") || editDate.getText().equals("")
                 ){
                     Toast.makeText(getApplicationContext(), "Vui lòng điền đủ thông tin", Toast.LENGTH_SHORT).show();
@@ -88,6 +89,7 @@ public class ScheduleActivity extends AppCompatActivity {
                     final String start_hour = editStart.getText().toString();
                     final String end_hour = editEnd.getText().toString();
                     final String note = editNote.getText().toString();
+
                     RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
                     StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlSchedule,
                             new Response.Listener<String>() {
@@ -126,7 +128,7 @@ public class ScheduleActivity extends AppCompatActivity {
                             map.put("type_schedule", String.valueOf(type_schedule));
                             map.put("idjob", String.valueOf(applicant.getJob_id()));
                             map.put("iduser", String.valueOf(applicant.getUser_id()));
-                            map.put("date", date);
+                            map.put("date", date_post);
                             map.put("start", start_hour);
                             map.put("end", end_hour);
                             map.put("note", note);
@@ -206,10 +208,11 @@ public class ScheduleActivity extends AppCompatActivity {
                     Date date = null;
                     try {
                         date = fmt.parse(fmt.format(calendar.getTime()));
+                        date_post = dateFormat.format(date);
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                    date_post = fmt.format(date);
+
                     editDate.setText(dateFormat.format(date));
                 //    Toast.makeText(getApplicationContext(),date_post , Toast.LENGTH_SHORT).show();
                 }

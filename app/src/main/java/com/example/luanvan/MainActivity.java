@@ -140,6 +140,8 @@ public class MainActivity extends AppCompatActivity {
     public static String urlJobFromNotification = host + "job_from_notification.php";
     // schedule
     public static String urlSchedule = host + "create_schedule.php";
+    // get schedule
+    public static String urlGetSchedule = host + "get_schedule.php";
     // user list
     public static String urlUserList = host + "user_list.php";
     @Override

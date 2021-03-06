@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -29,9 +30,12 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
+import com.example.luanvan.ui.Adapter.recruit.CandidateScheduleAdapter;
 import com.example.luanvan.ui.Adapter.recruit.PositionScheduleAdapter;
+import com.example.luanvan.ui.Model.JavaMailAPI;
 import com.example.luanvan.ui.Model.JobList;
 import com.example.luanvan.ui.Model.User;
+import com.example.luanvan.ui.Model.UserApplicant;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import org.json.JSONArray;
@@ -59,12 +63,15 @@ public class CreateScheduleActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
     Date time_start=null, time_end = null;
     ArrayList<JobList> jobArrayList;
-    ArrayList<User> userArrayList;
+    ArrayList<UserApplicant> candidateArrayList;
     PositionScheduleAdapter positionScheduleAdapter;
-    RecyclerView recyclerViewJob;
-    BottomSheetDialog bottomSheetDialogPosition;
-    public static int job_id = 0; // để put lên
-    public static String job_name = "";
+    CandidateScheduleAdapter candidateScheduleAdapter;
+    RecyclerView recyclerViewJob, recyclerViewCandidate;
+    BottomSheetDialog bottomSheetDialogPosition, bottomSheetDialogCandidate;
+    public static int job_id = 0,  user_id = 0, ap_id = 0; // để put lên
+    public static String job_name = "", username = "", email = "";
+    int check_candidate = 0; // nếu có user list rồi thì k tải nữa
+    int check_position = 0; // nếu thay đổi thì userlist load lại
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,10 +80,11 @@ public class CreateScheduleActivity extends AppCompatActivity {
         anhxa();
         actionBar();
         eventEditText();
- //       eventButton();
+        eventButton();
 
     }
     private void getDataPosition() {
+        check_position = 1;
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlJobList,
                 new Response.Listener<String>() {
@@ -138,136 +146,142 @@ public class CreateScheduleActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
 
     }
-//    private void eventButton() {
-//        btnCancel.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                finish();
-//            }
-//        });
-//        btnSave.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if(editKindSchedule.getText().equals("") || editStart.getText().equals("") || editEnd.getText().equals("") || editDate.getText().equals("")
-//                ){
-//                    Toast.makeText(getApplicationContext(), "Vui lòng điền đủ thông tin", Toast.LENGTH_SHORT).show();
-//                }else if(time_end.before(time_start)){
-//                    Toast.makeText(getApplicationContext(), "Giờ phỏng vấn không hợp lệ", Toast.LENGTH_SHORT).show();
-//                }
-//                else {
-//                    final String date = editDate.getText().toString();
-//                    final String start_hour = editStart.getText().toString();
-//                    final String end_hour = editEnd.getText().toString();
-//                    final String note = editNote.getText().toString();
-//                    RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-//                    StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlSchedule,
-//                            new Response.Listener<String>() {
-//                                @Override
-//                                public void onResponse(String response) {
-//                                    if(response.equals("success")){
-//                                        Toast.makeText(getApplicationContext(), "Tạo thành công", Toast.LENGTH_SHORT).show();
-//                                        loading();
-//                                        postNotification(0, date, start_hour, end_hour);
-//                                        sendMail();
-//                                        handler = new Handler();
-//                                        handler.postDelayed(new Runnable() {
-//                                            @Override
-//                                            public void run() {
-//                                                Intent intent = new Intent();
-//                                                setResult(123);
-//                                                finish();
-//                                            }
-//                                        },3000);
-//
-//                                    }else {
-//                                        Toast.makeText(getApplicationContext(), "Tạo thất bại", Toast.LENGTH_SHORT).show();
-//                                    }
-//                                }
-//                            },
-//                            new Response.ErrorListener() {
-//                                @Override
-//                                public void onErrorResponse(VolleyError error) {
-//                                    Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
-//                                }
-//                            }){
-//                        @Override
-//                        protected Map<String, String> getParams() throws AuthFailureError {
-//                            Map<String,String> map = new HashMap<>();
-//                            map.put("ap_id", String.valueOf(applicant.getId()));
-//                            map.put("type_schedule", String.valueOf(type_schedule));
-//                            map.put("date", date);
-//                            map.put("start", start_hour);
-//                            map.put("end", end_hour);
-//                            map.put("note", note);
-//                            return map;
-//                        }
-//                    };
-//                    requestQueue.add(stringRequest);
-//
-//                }
-//            }
-//        });
-//
-//    }
-//    private void sendMail() {
-//        JavaMailAPI mail = new JavaMailAPI(this, applicant.getEmail(), type_notification, content);
-//        mail.execute();
-//        Toast.makeText(getApplicationContext(), "Đã gửi mail", Toast.LENGTH_SHORT).show();
-//    }
-//    public void postNotification(final int type_user, String date, String start_hour, String end_hour){
-//        if(type_schedule == 1){
-//            type_notification = "Nhà tuyển dụng hẹn bạn phỏng vấn";
-//            content = "Lịch hẹn vào ngày " + date + " ,bắt đầu lúc "+ start_hour + " ,kết thúc lúc " + end_hour + ", chi tiết xin liên hệ nhà tuyển dụng";
-//        }else {
-//            type_notification = "Nhà tuyển dụng nhắc bạn đi làm";
-//            content = "Lịch đi làm vào ngày " + date + " ,bắt đầu lúc "+ start_hour + " ,kết thúc lúc " + end_hour + ", chi tiết xin liên hệ nhà tuyển dụng";
-//        }
-//        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-//        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlPostNotification,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        if(response.equals("success")){
-//                            Toast.makeText(getApplicationContext(), "Thông báo thành công", Toast.LENGTH_SHORT).show();
-//                        }else {
-//                            Toast.makeText(getApplicationContext(), "Thông báo thất bại", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
-//                    }
-//                }){
-//            @Override
-//            protected Map<String, String> getParams() throws AuthFailureError {
-//                Map<String,String> map = new HashMap<>();
-//                map.put("id_application", String.valueOf(applicant.getId()));
-//                map.put("type_notification", type_notification);
-//                map.put("content", content);
-//                map.put("iduser", String.valueOf(applicant.getUser_id()));
-//                map.put("type_user", String.valueOf(type_user));
-//                return map;
-//            }
-//        };
-//        requestQueue.add(stringRequest);
-//
-//    }
+
+    ngày giờ khi tạo schedule sai,
+    private void eventButton() {
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(editKindSchedule.getText().equals("") || editStart.getText().equals("") || editEnd.getText().equals("") || editDate.getText().equals("")
+                || editCandidate.getText().equals("") || editPosition.getText().equals("")){
+                    Toast.makeText(getApplicationContext(), "Vui lòng điền đủ thông tin", Toast.LENGTH_SHORT).show();
+                }else if(time_end.before(time_start)){
+                    Toast.makeText(getApplicationContext(), "Giờ phỏng vấn không hợp lệ", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    final String date = editDate.getText().toString();
+                    final String start_hour = editStart.getText().toString();
+                    final String end_hour = editEnd.getText().toString();
+                    final String note = editNote.getText().toString();
+                    RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlSchedule,
+                            new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    if(response.equals("success")){
+                                        Toast.makeText(getApplicationContext(), "Tạo thành công", Toast.LENGTH_SHORT).show();
+                                        loading();
+                                        postNotification(0, date, start_hour, end_hour);
+                                        sendMail();
+                                        handler = new Handler();
+                                        handler.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Intent intent = new Intent();
+                                                setResult(123);
+                                                finish();
+                                            }
+                                        },3000);
+
+                                    }else {
+                                        Toast.makeText(getApplicationContext(), "Tạo thất bại", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                                }
+                            }){
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            Map<String,String> map = new HashMap<>();
+                            map.put("idrecruiter", String.valueOf(MainActivity.iduser));
+                            map.put("type_schedule", String.valueOf(type_schedule));
+                            map.put("idjob", String.valueOf(job_id));
+                            map.put("iduser", String.valueOf(user_id));
+                            map.put("date", date_post);
+                            map.put("start", start_hour);
+                            map.put("end", end_hour);
+                            map.put("note", note);
+                            return map;
+                        }
+                    };
+                    requestQueue.add(stringRequest);
+
+                }
+            }
+        });
+
+    }
+    private void sendMail() {
+        JavaMailAPI mail = new JavaMailAPI(this, email, type_notification, content);
+        mail.execute();
+        Toast.makeText(getApplicationContext(), "Đã gửi mail", Toast.LENGTH_SHORT).show();
+    }
+    public void postNotification(final int type_user, String date, String start_hour, String end_hour){
+        if(type_schedule == 1){
+            type_notification = "Nhà tuyển dụng hẹn bạn phỏng vấn";
+            content = "Lịch hẹn vào ngày " + date + " ,bắt đầu lúc "+ start_hour + " ,kết thúc lúc " + end_hour + ", chi tiết xin liên hệ nhà tuyển dụng";
+        }else {
+            type_notification = "Nhà tuyển dụng nhắc bạn đi làm";
+            content = "Lịch đi làm vào ngày " + date + " ,bắt đầu lúc "+ start_hour + " ,kết thúc lúc " + end_hour + ", chi tiết xin liên hệ nhà tuyển dụng";
+        }
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlPostNotification,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(response.equals("success")){
+                            Toast.makeText(getApplicationContext(), "Thông báo thành công", Toast.LENGTH_SHORT).show();
+                        }else {
+                            Toast.makeText(getApplicationContext(), "Thông báo thất bại", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("id_application", String.valueOf(ap_id));
+                map.put("type_notification", type_notification);
+                map.put("content", content);
+                map.put("iduser", String.valueOf(user_id));
+                map.put("type_user", String.valueOf(type_user));
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+
+    }
 
     public void getCandidateList(){
+        check_candidate = 1;
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlUserList,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
                             JSONArray jsonArray = new JSONArray(response);
                             for(int i=0; i < jsonArray.length(); i++){
                                 JSONObject object = jsonArray.getJSONObject(i);
-                                userArrayList.add(new User(
+                                candidateArrayList.add(new UserApplicant(
                                         object.getInt("id"),
+                                        object.getInt("ap_id"),
                                         object.getString("name"),
                                         object.getString("birthday"),
                                         object.getInt("gender"),
@@ -329,8 +343,69 @@ public class CreateScheduleActivity extends AppCompatActivity {
         bottomSheetDialogPosition.setContentView(view);
         bottomSheetDialogPosition.show();
 
+    }
+
+    public void eventSheetCandidate(){
+        bottomSheetDialogCandidate = new BottomSheetDialog(CreateScheduleActivity.this, R.style.BottomSheetTheme);
+        final View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_position, (ViewGroup) findViewById(R.id.bottom_sheet));
+        Button btnChoose = (Button) view.findViewById(R.id.buttonchon);
+        Button btnCancel = (Button) view.findViewById(R.id.buttonhuy);
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialogCandidate.dismiss();
+            }
+        });
+        btnChoose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editCandidate.setText(username);
+                bottomSheetDialogCandidate.dismiss();
+
+            }
+        });
+
+
+        recyclerViewCandidate = (RecyclerView) view.findViewById(R.id.recycleview);
+        recyclerViewCandidate.setHasFixedSize(false);
+        recyclerViewCandidate.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+        recyclerViewCandidate.setAdapter(candidateScheduleAdapter);
+        bottomSheetDialogCandidate.setContentView(view);
+        bottomSheetDialogCandidate.show();
 
     }
+
+    public void eventSheetSchedule(){
+        bottomSheetDialog = new BottomSheetDialog(CreateScheduleActivity.this, R.style.BottomSheetTheme);
+        View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_schedule, (ViewGroup) findViewById(R.id.layout_schedule));
+        final RadioButton radioInterView = (RadioButton) view.findViewById(R.id.radiohenpv);
+        final RadioButton radioWork = (RadioButton) view.findViewById(R.id.radiodilam);
+        Button btnChoose = (Button) view.findViewById(R.id.buttonchon);
+        Button btnCancel = (Button) view.findViewById(R.id.buttonhuy);
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
+            }
+        });
+        btnChoose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(radioInterView.isChecked()){
+                    type_schedule = 1;
+                    editKindSchedule.setText("Hẹn phỏng vấn");
+                }else if(radioWork.isChecked()){
+                    type_schedule = 2;
+                    editKindSchedule.setText("Nhắc lịch đi làm");
+                }
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        bottomSheetDialog.setContentView(view);
+        bottomSheetDialog.show();
+    }
+
     public void showDate() throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String today = dateFormat.format(Calendar.getInstance().getTime());
@@ -351,10 +426,11 @@ public class CreateScheduleActivity extends AppCompatActivity {
                     Date date = null;
                     try {
                         date = fmt.parse(fmt.format(calendar.getTime()));
+                        date_post = dateFormat.format(date);
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                    date_post = fmt.format(date);
+
                     editDate.setText(dateFormat.format(date));
                     //    Toast.makeText(getApplicationContext(),date_post , Toast.LENGTH_SHORT).show();
                 }
@@ -365,47 +441,30 @@ public class CreateScheduleActivity extends AppCompatActivity {
 
     }
     private void eventEditText() {
+
         editPosition.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 eventSheetPosition();
+
             }
         });
 
+        editCandidate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(check_candidate == 0 || check_position == 1){
+                    candidateArrayList.clear();
+                    getCandidateList();
+                }
+                eventSheetCandidate();
+            }
+        });
 
         editKindSchedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bottomSheetDialog = new BottomSheetDialog(CreateScheduleActivity.this, R.style.BottomSheetTheme);
-                View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_schedule, (ViewGroup) findViewById(R.id.layout_schedule));
-                final RadioButton radioInterView = (RadioButton) view.findViewById(R.id.radiohenpv);
-                final RadioButton radioWork = (RadioButton) view.findViewById(R.id.radiodilam);
-                Button btnChoose = (Button) view.findViewById(R.id.buttonchon);
-                Button btnCancel = (Button) view.findViewById(R.id.buttonhuy);
-                btnCancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        bottomSheetDialog.dismiss();
-                    }
-                });
-                btnChoose.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if(radioInterView.isChecked()){
-                            type_schedule = 1;
-                            editKindSchedule.setText("Hẹn phỏng vấn");
-                        }else if(radioWork.isChecked()){
-                            type_schedule = 2;
-                            editKindSchedule.setText("Nhắc lịch đi làm");
-                        }
-                        bottomSheetDialog.dismiss();
-                    }
-                });
-
-                bottomSheetDialog.setContentView(view);
-                bottomSheetDialog.show();
-
+                eventSheetSchedule();
             }
         });
         editDate.setOnClickListener(new View.OnClickListener() {
@@ -481,9 +540,10 @@ public class CreateScheduleActivity extends AppCompatActivity {
         editPosition = (EditText) findViewById(R.id.editposition);
         editCandidate = (EditText) findViewById(R.id.editcandidate);
         jobArrayList = new ArrayList<>();
-        userArrayList = new ArrayList<>();
+        candidateArrayList = new ArrayList<>();
         positionScheduleAdapter = new PositionScheduleAdapter(getApplicationContext(), jobArrayList, this);
         getDataPosition();
+        candidateScheduleAdapter = new CandidateScheduleAdapter(getApplicationContext(), candidateArrayList, this);
     }
     void loading(){
         progressDialog = new ProgressDialog(this);
