@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Job;
 import com.example.luanvan.ui.Model.JobList;
+import com.example.luanvan.ui.schedule.CreateScheduleActivity;
 
 import java.util.ArrayList;
 
@@ -20,7 +22,7 @@ public class PositionScheduleAdapter extends RecyclerView.Adapter<PositionSchedu
     Context context;
     ArrayList<JobList> arrayList;
     Activity activity;
-
+    int selectItem = 0;
     public PositionScheduleAdapter(Context context, ArrayList<JobList> arrayList, Activity activity) {
         this.context = context;
         this.arrayList = arrayList;
@@ -39,9 +41,14 @@ public class PositionScheduleAdapter extends RecyclerView.Adapter<PositionSchedu
     public void onBindViewHolder(@NonNull ItemHolder holder, int position) {
         JobList job = arrayList.get(position);
         holder.radioButton.setText(job.getName());
+        holder.radioButton.setChecked(position == selectItem);
+        if(holder.radioButton.isChecked()){
+            CreateScheduleActivity.job_id = arrayList.get(position).getId();
+            CreateScheduleActivity.job_name = arrayList.get(position).getName();
+        }
 
     }
-
+    //https://stackoverflow.com/questions/41251403/using-radio-button-with-recyclerview-in-android
     @Override
     public int getItemCount() {
         return arrayList.size();
@@ -49,11 +56,24 @@ public class PositionScheduleAdapter extends RecyclerView.Adapter<PositionSchedu
 
     public class ItemHolder extends RecyclerView.ViewHolder{
         public RadioButton radioButton;
-
+        public LinearLayout layout;
 
         public ItemHolder(@NonNull View itemView) {
             super(itemView);
             radioButton = (RadioButton) itemView.findViewById(R.id.radioposition);
+            layout = (LinearLayout) itemView.findViewById(R.id.layout);
+
+            View.OnClickListener l = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    selectItem = getAdapterPosition();
+                    notifyItemRangeChanged(0, arrayList.size());
+                }
+            };
+
+            itemView.setOnClickListener(l);
+            radioButton.setOnClickListener(l);
+            layout.setOnClickListener(l);
 
         }
     }

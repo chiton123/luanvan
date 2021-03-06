@@ -1,4 +1,4 @@
-package com.example.luanvan.ui.recruiter.CVManagement;
+package com.example.luanvan.ui.schedule;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -31,10 +30,8 @@ import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.recruit.PositionScheduleAdapter;
-import com.example.luanvan.ui.Model.Applicant;
-import com.example.luanvan.ui.Model.JavaMailAPI;
-import com.example.luanvan.ui.Model.Job;
 import com.example.luanvan.ui.Model.JobList;
+import com.example.luanvan.ui.Model.User;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import org.json.JSONArray;
@@ -62,9 +59,12 @@ public class CreateScheduleActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
     Date time_start=null, time_end = null;
     ArrayList<JobList> jobArrayList;
+    ArrayList<User> userArrayList;
     PositionScheduleAdapter positionScheduleAdapter;
     RecyclerView recyclerViewJob;
     BottomSheetDialog bottomSheetDialogPosition;
+    public static int job_id = 0; // để put lên
+    public static String job_name = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -255,6 +255,53 @@ public class CreateScheduleActivity extends AppCompatActivity {
 //
 //    }
 
+    public void getCandidateList(){
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlUserList,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
+                            JSONArray jsonArray = new JSONArray(response);
+                            for(int i=0; i < jsonArray.length(); i++){
+                                JSONObject object = jsonArray.getJSONObject(i);
+                                userArrayList.add(new User(
+                                        object.getInt("id"),
+                                        object.getString("name"),
+                                        object.getString("birthday"),
+                                        object.getInt("gender"),
+                                        object.getString("address"),
+                                        object.getString("email"),
+                                        object.getString("introduction"),
+                                        object.getString("position"),
+                                        object.getInt("phone"),
+                                        object.getInt("status")
+                                ));
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("job_id", String.valueOf(job_id));
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
     public void eventSheetPosition(){
         bottomSheetDialogPosition = new BottomSheetDialog(CreateScheduleActivity.this, R.style.BottomSheetTheme);
         final View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_position, (ViewGroup) findViewById(R.id.bottom_sheet));
@@ -266,13 +313,19 @@ public class CreateScheduleActivity extends AppCompatActivity {
                 bottomSheetDialogPosition.dismiss();
             }
         });
+        btnChoose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editPosition.setText(job_name);
+                bottomSheetDialogPosition.dismiss();
+            }
+        });
 
 
         recyclerViewJob = (RecyclerView) view.findViewById(R.id.recycleview);
         recyclerViewJob.setHasFixedSize(false);
         recyclerViewJob.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         recyclerViewJob.setAdapter(positionScheduleAdapter);
-     //   Toast.makeText(getApplicationContext(), jobArrayList.size() + "", Toast.LENGTH_SHORT).show();
         bottomSheetDialogPosition.setContentView(view);
         bottomSheetDialogPosition.show();
 
@@ -428,6 +481,7 @@ public class CreateScheduleActivity extends AppCompatActivity {
         editPosition = (EditText) findViewById(R.id.editposition);
         editCandidate = (EditText) findViewById(R.id.editcandidate);
         jobArrayList = new ArrayList<>();
+        userArrayList = new ArrayList<>();
         positionScheduleAdapter = new PositionScheduleAdapter(getApplicationContext(), jobArrayList, this);
         getDataPosition();
     }

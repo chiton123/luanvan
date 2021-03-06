@@ -13,9 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.recruiter.CVManagement.CreateScheduleActivity"></activity>
-        <activity android:name=".ui.recruiter.CVManagement.ScheduleManagementActivity" />
-        <activity android:name=".ui.recruiter.CVManagement.ScheduleActivity" />
+        <activity android:name=".ui.schedule.CreateScheduleActivity"></activity>
+        <activity android:name=".ui.schedule.ScheduleManagementActivity" />
+        <activity android:name=".ui.schedule.ScheduleActivity" />
         <activity android:name=".ui.notification.RecruiterNotificationActivity" />
         <activity android:name=".ui.notification.CandidateNotificationActivity" />
         <activity android:name=".ui.recruiter.CVManagement.CandidateInfoActivity" />

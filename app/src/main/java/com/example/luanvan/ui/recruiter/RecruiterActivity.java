@@ -26,8 +26,7 @@ import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Notification;
 import com.example.luanvan.ui.notification.RecruiterNotificationActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
-import com.example.luanvan.ui.recruiter.CVManagement.ScheduleActivity;
-import com.example.luanvan.ui.recruiter.CVManagement.ScheduleManagementActivity;
+import com.example.luanvan.ui.schedule.ScheduleManagementActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;

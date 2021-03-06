@@ -1,9 +1,8 @@
-package com.example.luanvan.ui.recruiter.CVManagement;
+package com.example.luanvan.ui.schedule;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
@@ -30,15 +29,12 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
-import com.example.luanvan.ui.Adapter.recruit.PositionScheduleAdapter;
 import com.example.luanvan.ui.Model.Applicant;
 import com.example.luanvan.ui.Model.JavaMailAPI;
-import com.example.luanvan.ui.Model.Job;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -126,8 +122,10 @@ public class ScheduleActivity extends AppCompatActivity {
                         @Override
                         protected Map<String, String> getParams() throws AuthFailureError {
                             Map<String,String> map = new HashMap<>();
-                            map.put("ap_id", String.valueOf(applicant.getId()));
+                            map.put("idrecruiter", String.valueOf(MainActivity.iduser));
                             map.put("type_schedule", String.valueOf(type_schedule));
+                            map.put("idjob", String.valueOf(applicant.getJob_id()));
+                            map.put("iduser", String.valueOf(applicant.getUser_id()));
                             map.put("date", date);
                             map.put("start", start_hour);
                             map.put("end", end_hour);
