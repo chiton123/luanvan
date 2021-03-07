@@ -142,6 +142,10 @@ public class MainActivity extends AppCompatActivity {
     public static String urlSchedule = host + "create_schedule.php";
     // get schedule
     public static String urlGetSchedule = host + "get_schedule.php";
+    // delete schedule
+    public static String urlDeleteSchedule = host + "delete_schedule.php";
+    // update schedule
+    public static String urlUpdateSchedule = host + "update_schedule.php";
     // user list
     public static String urlUserList = host + "user_list.php";
     @Override

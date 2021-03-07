@@ -53,13 +53,15 @@ import java.util.Map;
 
 public class CreateScheduleActivity extends AppCompatActivity {
     Toolbar toolbar;
-    EditText editKindSchedule, editDate, editStart, editEnd, editNote, editPosition, editCandidate;
+    EditText editKindSchedule, editDate, editStart, editEnd, editNote, editPosition;
+    public static EditText editCandidate;
     Button btnSave, btnCancel;
     BottomSheetDialog bottomSheetDialog;
     int type_schedule = 0; // 1: phỏng vấn,  2: đi làm
     String date_post = "";
     String content = "";
     String type_notification = "";
+    String start_hour_refresh = "", end_hour_refresh = ""; // để reload lại
     Handler handler;
     ProgressDialog progressDialog;
     Date time_start=null, time_end = null;
@@ -73,6 +75,13 @@ public class CreateScheduleActivity extends AppCompatActivity {
     public static String job_name = "", username = "", email = "";
     int check_candidate = 0; // nếu có user list rồi thì k tải nữa
     int check_position = 0; // nếu thay đổi thì userlist load lại
+    int kind = 0; // kind: 1: create, 2: adjust
+    Schedule scheduleInfo;
+    public static int job_id_update = 0;
+    String moreAnnounceMent = ""; // khi update thì thêm sửa từ ... thành ...
+    String urlCreate = MainActivity.urlSchedule;
+    String urlUpdate = MainActivity.urlUpdateSchedule;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,10 +89,65 @@ public class CreateScheduleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_schedule);
         anhxa();
         actionBar();
+        getInfo();
         eventEditText();
         eventButton();
 
     }
+
+    private void getInfo() {
+        if(kind == 2){
+            scheduleInfo = (Schedule) getIntent().getSerializableExtra("schedule");
+            job_id_update = scheduleInfo.getId_job();
+            editPosition.setText(scheduleInfo.getJob_name());
+            editCandidate.setText(scheduleInfo.getUsername());
+            String ngay = scheduleInfo.getDate();
+            date_post = scheduleInfo.getDate();
+            SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = null;
+            try {
+                date = formatDate.parse(ngay);
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            SimpleDateFormat fmtOut = new SimpleDateFormat("dd/MM/yyyy");
+            editDate.setText(fmtOut.format(date));
+
+            String start = scheduleInfo.getStart_hour();
+            String end = scheduleInfo.getEnd_hour();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
+            Date time1 = null;
+            Date time2 = null;
+            try {
+                time1 =  simpleDateFormat.parse(start);
+                time2 = simpleDateFormat.parse(end);
+                time_start = time1;
+                time_end = time2;
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            SimpleDateFormat formatHour = new SimpleDateFormat("HH:mm");
+            editStart.setText(formatHour.format(time1));
+            editEnd.setText(formatHour.format(time2));
+
+            SimpleDateFormat reloadFormat =  new SimpleDateFormat("HH:mm:ss");
+            start_hour_refresh = reloadFormat.format(time1);
+            end_hour_refresh = reloadFormat.format(time2);
+
+
+            if(scheduleInfo.getType() == 1){
+                editKindSchedule.setText("Hẹn phỏng vấn");
+            }else {
+                editKindSchedule.setText("Nhắc lịch đi làm");
+            }
+            editNote.setText(scheduleInfo.getNote());
+            moreAnnounceMent = "Nhà tuyển dụng thay đổi lịch từ " + fmtOut.format(date) + " lúc " + formatHour.format(time1) + " đến " +
+                    formatHour.format(time2) + " thành ";
+        }
+
+    }
+
     private void getDataPosition() {
         check_position = 1;
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
@@ -147,8 +211,7 @@ public class CreateScheduleActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
 
     }
-    load lại adapter khi theêm, sửa , xóa
-   // ngày giờ khi tạo schedule sai,
+
     private void eventButton() {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,63 +233,130 @@ public class CreateScheduleActivity extends AppCompatActivity {
                     final String start_hour = editStart.getText().toString();
                     final String end_hour = editEnd.getText().toString();
                     final String note = editNote.getText().toString();
-                    RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                    StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlSchedule,
-                            new Response.Listener<String>() {
-                                @Override
-                                public void onResponse(String response) {
-                                    if(!response.equals("fail")){
-                                        Toast.makeText(getApplicationContext(), "Tạo thành công", Toast.LENGTH_SHORT).show();
-                                        int last = response.lastIndexOf('s');
-                                        int id_schedule = Integer.parseInt(response.substring(last+1, response.length()));
-                                        Schedule schedule = new Schedule(id_schedule, MainActivity.iduser, job_id, job_name, user_id,
-                                                username, type_schedule, date_post, start_hour+":00", end_hour, note+":00");
-                                        ScheduleManagementActivity.arrayList.add(schedule);
-                                        loading();
-                                        postNotification(0, date, start_hour, end_hour);
-                                        sendMail();
-                                        handler = new Handler();
-                                        handler.postDelayed(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                Intent intent = new Intent();
-                                                setResult(123);
-                                                finish();
-                                            }
-                                        },3000);
+                    if(kind == 1){
+                        createSchedule(date, start_hour, end_hour, note);
+                    }else {
+                        updateSchedule(date, start_hour, end_hour, note);
+                    }
 
-                                    }else {
-                                        Toast.makeText(getApplicationContext(), "Tạo thất bại", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            },
-                            new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
-                                }
-                            }){
-                        @Override
-                        protected Map<String, String> getParams() throws AuthFailureError {
-                            Map<String,String> map = new HashMap<>();
-                            map.put("idrecruiter", String.valueOf(MainActivity.iduser));
-                            map.put("type_schedule", String.valueOf(type_schedule));
-                            map.put("idjob", String.valueOf(job_id));
-                            map.put("iduser", String.valueOf(user_id));
-                            map.put("date", date_post);
-                            map.put("start", start_hour);
-                            map.put("end", end_hour);
-                            map.put("note", note);
-                            return map;
-                        }
-                    };
-                    requestQueue.add(stringRequest);
+
+
 
                 }
             }
         });
 
     }
+    public void updateSchedule(final String date, final String start_hour, final String end_hour, final String note){
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, urlUpdate,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(response.equals("success")){
+                            Toast.makeText(getApplicationContext(), "Sửa thành công", Toast.LENGTH_SHORT).show();
+
+                            Schedule schedule = new Schedule( scheduleInfo.getId(), MainActivity.iduser, job_id, job_name, user_id,
+                                    username, type_schedule, date_post, start_hour_refresh, end_hour_refresh, note);
+                            ScheduleManagementActivity.arrayList.set(1, schedule);
+                            loading();
+                            postNotification(0, date, start_hour, end_hour);
+                            sendMail();
+                            handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Intent intent = new Intent();
+                                    setResult(345);
+                                    finish();
+                                }
+                            },3000);
+
+                        }else {
+                            Toast.makeText(getApplicationContext(), "Tạo thất bại", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("id_sche", String.valueOf(scheduleInfo.getId()));
+                map.put("type_schedule", String.valueOf(type_schedule));
+                map.put("idjob", String.valueOf(job_id));
+                map.put("iduser", String.valueOf(user_id));
+                map.put("date", date_post);
+                map.put("start", start_hour);
+                map.put("end", end_hour);
+                map.put("note", note);
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+
+    }
+
+
+    public void createSchedule(final String date, final String start_hour, final String end_hour, final String note){
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, urlCreate,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(!response.equals("fail")){
+                            Toast.makeText(getApplicationContext(), "Tạo thành công", Toast.LENGTH_SHORT).show();
+                            int last = response.lastIndexOf('s');
+                            int id_schedule = Integer.parseInt(response.substring(last+1, response.length()));
+                            Schedule schedule = new Schedule(id_schedule, MainActivity.iduser, job_id, job_name, user_id,
+                                    username, type_schedule, date_post, start_hour_refresh, end_hour_refresh, note);
+                            ScheduleManagementActivity.arrayList.add(schedule);
+                            loading();
+                            postNotification(0, date, start_hour, end_hour);
+                            sendMail();
+                            handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Intent intent = new Intent();
+                                    setResult(123);
+                                    finish();
+                                }
+                            },3000);
+
+                        }else {
+                            Toast.makeText(getApplicationContext(), "Tạo thất bại", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("idrecruiter", String.valueOf(MainActivity.iduser));
+                map.put("type_schedule", String.valueOf(type_schedule));
+                map.put("idjob", String.valueOf(job_id));
+                map.put("iduser", String.valueOf(user_id));
+                map.put("date", date_post);
+                map.put("start", start_hour);
+                map.put("end", end_hour);
+                map.put("note", note);
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+
+    }
+
     private void sendMail() {
         JavaMailAPI mail = new JavaMailAPI(this, email, type_notification, content);
         mail.execute();
@@ -235,10 +365,19 @@ public class CreateScheduleActivity extends AppCompatActivity {
     public void postNotification(final int type_user, String date, String start_hour, String end_hour){
         if(type_schedule == 1){
             type_notification = "Nhà tuyển dụng hẹn bạn phỏng vấn";
-            content = "Lịch hẹn vào ngày " + date + " ,bắt đầu lúc "+ start_hour + " ,kết thúc lúc " + end_hour + ", chi tiết xin liên hệ nhà tuyển dụng";
+            if(kind == 1){
+                content = "Lịch hẹn vào ngày " + date + " ,bắt đầu lúc "+ start_hour + " ,kết thúc lúc " + end_hour + ", chi tiết xin liên hệ nhà tuyển dụng";
+            }else {
+                content = moreAnnounceMent + "Lịch hẹn vào ngày " + date + " ,bắt đầu lúc "+ start_hour + " ,kết thúc lúc " + end_hour + ", chi tiết xin liên hệ nhà tuyển dụng";
+            }
+
         }else {
             type_notification = "Nhà tuyển dụng nhắc bạn đi làm";
-            content = "Lịch đi làm vào ngày " + date + " ,bắt đầu lúc "+ start_hour + " ,kết thúc lúc " + end_hour + ", chi tiết xin liên hệ nhà tuyển dụng";
+            if(kind == 1){
+                content = "Lịch đi làm vào ngày " + date + " ,bắt đầu lúc "+ start_hour + " ,kết thúc lúc " + end_hour + ", chi tiết xin liên hệ nhà tuyển dụng";
+            }else {
+                content = moreAnnounceMent + "Lịch đi làm vào ngày " + date + " ,bắt đầu lúc "+ start_hour + " ,kết thúc lúc " + end_hour + ", chi tiết xin liên hệ nhà tuyển dụng";
+            }
         }
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlPostNotification,
@@ -508,13 +647,16 @@ public class CreateScheduleActivity extends AppCompatActivity {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+                SimpleDateFormat reloadFormat =  new SimpleDateFormat("HH:mm:ss");
                 calendar.set(0,0,0, hourOfDay, minute);
                 if(kind == 1){
                     editStart.setText(simpleDateFormat.format(calendar.getTime()));
                     time_start = calendar.getTime();
+                    start_hour_refresh = reloadFormat.format(calendar.getTime());
                 }else {
                     editEnd.setText(simpleDateFormat.format(calendar.getTime()));
                     time_end = calendar.getTime();
+                    end_hour_refresh = reloadFormat.format(calendar.getTime());
                 }
 
             }
@@ -524,7 +666,6 @@ public class CreateScheduleActivity extends AppCompatActivity {
     }
 
     private void actionBar() {
-        Toast.makeText(getApplicationContext(), "hehe", Toast.LENGTH_SHORT).show();
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -536,6 +677,8 @@ public class CreateScheduleActivity extends AppCompatActivity {
     }
 
     private void anhxa() {
+        kind = getIntent().getIntExtra("kind", 0);
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         editKindSchedule = (EditText) findViewById(R.id.editkindschedule);
         editDate = (EditText) findViewById(R.id.editdate);
@@ -548,7 +691,7 @@ public class CreateScheduleActivity extends AppCompatActivity {
         editCandidate = (EditText) findViewById(R.id.editcandidate);
         jobArrayList = new ArrayList<>();
         candidateArrayList = new ArrayList<>();
-        positionScheduleAdapter = new PositionScheduleAdapter(getApplicationContext(), jobArrayList, this);
+        positionScheduleAdapter = new PositionScheduleAdapter(getApplicationContext(), jobArrayList, CreateScheduleActivity.this, kind);
         getDataPosition();
         candidateScheduleAdapter = new CandidateScheduleAdapter(getApplicationContext(), candidateArrayList, this);
     }

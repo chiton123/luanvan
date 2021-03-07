@@ -1,6 +1,8 @@
 package com.example.luanvan.ui.Model;
 
-public class Schedule {
+import java.io.Serializable;
+
+public class Schedule implements Serializable {
     private int id;
     private int id_recruiter;
     private int id_job;

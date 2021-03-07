@@ -54,7 +54,7 @@ public class ScheduleActivity extends AppCompatActivity {
     Handler handler;
     ProgressDialog progressDialog;
     Date time_start=null, time_end = null;
-
+    String start_hour_refresh = "", end_hour_refresh = ""; // để reload lại
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,13 +98,16 @@ public class ScheduleActivity extends AppCompatActivity {
                                 public void onResponse(String response) {
                                     if(!response.equals("fail")){
                                         Toast.makeText(getApplicationContext(), "Tạo thành công", Toast.LENGTH_SHORT).show();
-                                        int last = response.lastIndexOf("s");
-                                        int id_schedule = Integer.parseInt(response.substring(last+1, response.length()));
-                                        Schedule schedule = new Schedule(id_schedule, MainActivity.iduser, applicant.getJob_id(),
-                                                applicant.getJob_name(), applicant.getUser_id(),
-                                                applicant.getUsername(), type_schedule, date_post, start_hour, end_hour, note);
-                                        ScheduleManagementActivity.arrayList.add(schedule);
-                                        ScheduleManagementActivity.adapter.notifyDataSetChanged();
+                                        if(ScheduleManagementActivity.checkLoad == 1){
+                                            int last = response.lastIndexOf("s");
+                                            int id_schedule = Integer.parseInt(response.substring(last+1, response.length()));
+                                            Schedule schedule = new Schedule(id_schedule, MainActivity.iduser, applicant.getJob_id(),
+                                                    applicant.getJob_name(), applicant.getUser_id(),
+                                                    applicant.getUsername(), type_schedule, date_post, start_hour_refresh, end_hour_refresh, note);
+                                            ScheduleManagementActivity.arrayList.add(schedule);
+                                            ScheduleManagementActivity.adapter.notifyDataSetChanged();
+                                        }
+
                                         loading();
                                         postNotification(0, date, start_hour, end_hour);
                                         sendMail();
@@ -300,13 +303,16 @@ public class ScheduleActivity extends AppCompatActivity {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+                SimpleDateFormat reloadFormat =  new SimpleDateFormat("HH:mm:ss");
                 calendar.set(0,0,0, hourOfDay, minute);
                 if(kind == 1){
                     editStart.setText(simpleDateFormat.format(calendar.getTime()));
                     time_start = calendar.getTime();
+                    start_hour_refresh = reloadFormat.format(calendar.getTime());
                 }else {
                     editEnd.setText(simpleDateFormat.format(calendar.getTime()));
                     time_end = calendar.getTime();
+                    end_hour_refresh = reloadFormat.format(calendar.getTime());
                 }
 
             }

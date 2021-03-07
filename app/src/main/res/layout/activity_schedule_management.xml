@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -12,9 +13,10 @@
         app:title="Đặt lịch hẹn ứng viên"
         android:background="#fff"
         ></androidx.appcompat.widget.Toolbar>
-    <RelativeLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
         >
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
@@ -25,15 +27,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
             android:src="@drawable/floatingbutton"
-            android:backgroundTint="#ff0"
-            app:fabSize="auto"
+            app:fabSize="normal"
+            android:elevation="6dp"
             android:id="@+id/buttonaction"
+            android:layout_gravity="bottom|right"
             ></com.google.android.material.floatingactionbutton.FloatingActionButton>
 
-    </RelativeLayout>
+    </FrameLayout>
+
 
 
 </LinearLayout>

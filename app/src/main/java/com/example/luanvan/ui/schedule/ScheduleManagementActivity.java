@@ -2,6 +2,7 @@ package com.example.luanvan.ui.schedule;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,6 +42,7 @@ public class ScheduleManagementActivity extends AppCompatActivity {
     public static ScheduleAdapter adapter;
     public static ArrayList<Schedule> arrayList;
     int REQUEST_CODE = 123;
+    public static int checkLoad = 0; // check xem coi đã vào activity này hay chưa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +54,7 @@ public class ScheduleManagementActivity extends AppCompatActivity {
     }
 
     private void getData() {
+        checkLoad = 1;
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlGetSchedule,
                 new Response.Listener<String>() {
@@ -106,7 +109,11 @@ public class ScheduleManagementActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == 123 && resultCode == 123){
-            Toast.makeText(getApplicationContext(), "hee0", Toast.LENGTH_SHORT).show();
+          //  Toast.makeText(getApplicationContext(), "hee0", Toast.LENGTH_SHORT).show();
+            adapter.notifyDataSetChanged();
+
+        }
+        if(requestCode == 123 && resultCode == 345){
             adapter.notifyDataSetChanged();
         }
 
@@ -118,6 +125,7 @@ public class ScheduleManagementActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), CreateScheduleActivity.class);
+                intent.putExtra("kind", 1); // kind: 1: create, 2: adjust
                 startActivityForResult(intent, REQUEST_CODE);
             }
         });
@@ -127,7 +135,7 @@ public class ScheduleManagementActivity extends AppCompatActivity {
     private void actionBar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setOnClickListener(new View.OnClickListener() {
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
