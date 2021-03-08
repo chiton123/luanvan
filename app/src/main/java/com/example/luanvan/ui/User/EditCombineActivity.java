@@ -12,6 +12,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
@@ -34,6 +36,7 @@ public class EditCombineActivity extends AppCompatActivity {
     ExperienceAdapter experienceAdapter;
     ProgressDialog progressDialog;
     Handler handler;
+    LinearLayout layout, layout_nothing;
     int x = 0;
     int number = 0; // 1: adapter study, 2: experience, 3: skill
     // request_code 1: study, 2: experience, 3: skill
@@ -177,8 +180,10 @@ public class EditCombineActivity extends AppCompatActivity {
                 public void run() {
                     studyAdapter.notifyDataSetChanged();
                     MainActivity.studyAdapter.notifyDataSetChanged();
+                    checkStudy();
                 }
             },1000);
+
 
         }
         if(requestCode == 2 && resultCode == 2){
@@ -189,8 +194,10 @@ public class EditCombineActivity extends AppCompatActivity {
                 public void run() {
                     experienceAdapter.notifyDataSetChanged();
                     MainActivity.experienceAdapter.notifyDataSetChanged();
+                    checkExperience();
                 }
             },1000);
+
         }
         if(requestCode == 3 && resultCode == 3){
             reloadSkill();
@@ -200,13 +207,44 @@ public class EditCombineActivity extends AppCompatActivity {
                 public void run() {
                     skillAdapter.notifyDataSetChanged();
                     MainActivity.skillAdapter.notifyDataSetChanged();
+                    checkSkill();
                 }
             },1000);
+
         }
 
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    public void checkStudy(){
+        if(MainActivity.studies.size() == 0){
+            layout_nothing.setVisibility(View.VISIBLE);
+            layout.setVisibility(View.GONE);
+        }else {
+            layout_nothing.setVisibility(View.GONE);
+            layout.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void checkExperience(){
+        if(MainActivity.experiences.size() == 0){
+            layout_nothing.setVisibility(View.VISIBLE);
+            layout.setVisibility(View.GONE);
+        }else {
+            layout_nothing.setVisibility(View.GONE);
+            layout.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void checkSkill(){
+        if(MainActivity.skills.size() == 0){
+            layout_nothing.setVisibility(View.VISIBLE);
+            layout.setVisibility(View.GONE);
+        }else {
+            layout_nothing.setVisibility(View.GONE);
+            layout.setVisibility(View.VISIBLE);
+        }
+    }
     private void PickAdapter() {
         Intent intent = getIntent();
         number = intent.getIntExtra("number",0);
@@ -215,16 +253,19 @@ public class EditCombineActivity extends AppCompatActivity {
                 studyAdapter = new StudyAdapter(getApplicationContext(), MainActivity.studies, this, 0);
                 recyclerView.setAdapter(studyAdapter);
                 getSupportActionBar().setTitle("Học vấn");
+                checkStudy();
                 break;
             case 2:
                 experienceAdapter = new ExperienceAdapter(getApplicationContext(), MainActivity.experiences, this, 0);
                 recyclerView.setAdapter(experienceAdapter);
                 getSupportActionBar().setTitle("Kinh nghiệm");
+                checkExperience();
                 break;
             case 3:
                 skillAdapter = new SkillAdapter(getApplicationContext(), MainActivity.skills, this, 0);
                 recyclerView.setAdapter(skillAdapter);
                 getSupportActionBar().setTitle("Kỹ năng");
+                checkSkill();
                 break;
         }
 
@@ -248,7 +289,8 @@ public class EditCombineActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recycleview);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
-
+        layout = (LinearLayout) findViewById(R.id.layout);
+        layout_nothing = (LinearLayout) findViewById(R.id.layout_nothing);
 
     }
 

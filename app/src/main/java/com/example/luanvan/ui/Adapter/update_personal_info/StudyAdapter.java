@@ -127,6 +127,7 @@ public class StudyAdapter extends RecyclerView.Adapter<StudyAdapter.ItemHolder> 
                                     MainActivity.studies.remove(position);
                                     notifyDataSetChanged();
                                     MainActivity.studyAdapter.notifyItemRemoved(position);
+                                 //   ((EditCombineActivity) activity).checkStudy();
                                 }
                             });
 

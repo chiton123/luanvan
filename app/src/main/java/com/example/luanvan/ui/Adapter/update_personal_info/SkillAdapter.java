@@ -29,6 +29,7 @@ import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Skill;
 import com.example.luanvan.ui.Model.Study;
 import com.example.luanvan.ui.UpdateInfo.SkillActivity;
+import com.example.luanvan.ui.User.EditCombineActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
@@ -113,6 +114,7 @@ public class SkillAdapter extends RecyclerView.Adapter<SkillAdapter.ItemHolder> 
                                     MainActivity.skills.remove(position);
                                     notifyDataSetChanged();
                                     MainActivity.studyAdapter.notifyItemRemoved(position);
+                                  //  ((EditCombineActivity) activity).checkSkill();
                                 }
                             });
 

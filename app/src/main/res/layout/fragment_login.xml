@@ -26,7 +26,7 @@
             android:layout_height="50dp"
             android:id="@+id/editpass"
             android:hint="Mật khẩu"
-            android:drawableLeft="@drawable/search1"
+            android:drawableLeft="@drawable/search3"
             android:drawablePadding="20dp"
             android:inputType="textPassword"
             ></EditText>

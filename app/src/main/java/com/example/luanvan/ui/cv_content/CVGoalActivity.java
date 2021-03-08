@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -54,6 +55,7 @@ public class CVGoalActivity extends AppCompatActivity {
     public static int x0 = 0, x1 = 0, x2 = 0, x3 = 0;
     // kiem tra xem x1, x2, x3 có nhảy lên bậc nào hay k khi tạo CV
     public static int checkX1 = 0, checkX2 = 0, checkX3 = 0;
+    ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +68,13 @@ public class CVGoalActivity extends AppCompatActivity {
         getInfo();
 
     }
-
+    void loading(){
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading");
+        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
+    }
     private void getData() {
         MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(CVActivity.key).child("goal").addValueEventListener(new ValueEventListener() {
             @Override
@@ -284,8 +292,8 @@ public class CVGoalActivity extends AppCompatActivity {
                 if(editContent.getText().equals("")){
                     Toast.makeText(getApplicationContext(), "Vui lòng nhập đủ thông tin", Toast.LENGTH_SHORT).show();
                 }else {
+                    loading();
                     MainActivity.goal = editContent.getText().toString();
-
                     MainActivity.checkFirstGoal = 1;
                     try {
                         createCV(MainActivity.checkFirstInfo, MainActivity.checkFirstGoal, MainActivity.checkFirstStudy, MainActivity.checkFirstExperience,
@@ -297,6 +305,7 @@ public class CVGoalActivity extends AppCompatActivity {
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
+                            progressDialog.dismiss();
                             Intent intent = new Intent();
                             setResult(101, intent);
                             finish();

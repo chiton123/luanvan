@@ -28,6 +28,7 @@ import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Experience;
 import com.example.luanvan.ui.Model.Study;
 import com.example.luanvan.ui.UpdateInfo.ExperienceActivity;
+import com.example.luanvan.ui.User.EditCombineActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
@@ -128,9 +129,12 @@ public class ExperienceAdapter extends RecyclerView.Adapter<ExperienceAdapter.It
                                         }
                                     });
                                     Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
-                                    MainActivity.experiences.remove(position);
-                                    notifyDataSetChanged();
+                                    arrayList.remove(position);
+//                                    MainActivity.experiences.remove(position);
+                                    notifyItemChanged(position);
+
                                     MainActivity.experienceAdapter.notifyItemRemoved(position);
+                                  //  ((EditCombineActivity) activity).checkExperience();
                                 }
                             });
 

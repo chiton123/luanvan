@@ -28,6 +28,7 @@ public class CandidateScheduleAdapter extends RecyclerView.Adapter<CandidateSche
         this.context = context;
         this.arrayList = arrayList;
         this.activity = activity;
+
     }
 
     @NonNull
@@ -50,6 +51,7 @@ public class CandidateScheduleAdapter extends RecyclerView.Adapter<CandidateSche
             CreateScheduleActivity.ap_id = arrayList.get(position).getAp_id();
         }
 
+
     }
     //https://stackoverflow.com/questions/41251403/using-radio-button-with-recyclerview-in-android
     @Override
@@ -65,6 +67,7 @@ public class CandidateScheduleAdapter extends RecyclerView.Adapter<CandidateSche
             super(itemView);
             radioButton = (RadioButton) itemView.findViewById(R.id.radioposition);
             layout = (LinearLayout) itemView.findViewById(R.id.layout);
+
 
             View.OnClickListener l = new View.OnClickListener() {
                 @Override

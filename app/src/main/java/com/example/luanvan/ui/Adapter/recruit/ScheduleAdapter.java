@@ -153,6 +153,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ItemHo
                         Intent intent = new Intent(context, CreateScheduleActivity.class);
                         intent.putExtra("kind", 2); // kind: 1: create, 2: adjust
                         intent.putExtra("schedule", schedule);
+                        intent.putExtra("position", position); // position trên list
                         activity.startActivityForResult(intent, REQUEST_CODE);
                     }
                 });
@@ -164,6 +165,10 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ItemHo
 
 
     }
+    public void stopBottomSheet(){
+        bottomSheetDialog.dismiss();
+    }
+
     public void deleteSchedule(final int position){
         RequestQueue requestQueue = Volley.newRequestQueue(activity);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlDeleteSchedule,

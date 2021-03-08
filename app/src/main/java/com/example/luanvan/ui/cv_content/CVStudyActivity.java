@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -65,7 +66,7 @@ public class CVStudyActivity extends AppCompatActivity {
     int pageWidth = 1200;
     StorageReference storageReference;
     Handler handler;
-
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +78,13 @@ public class CVStudyActivity extends AppCompatActivity {
         storageReference = FirebaseStorage.getInstance().getReference();
         getInfo();
 
+    }
+    void loading(){
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading");
+        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
     }
     private void getData() {
         MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(CVActivity.key).child("study").addValueEventListener(new ValueEventListener() {
@@ -342,6 +350,7 @@ public class CVStudyActivity extends AppCompatActivity {
                 if(MainActivity.studyCVS.size() == 0){
                     Toast.makeText(getApplicationContext(), "Bạn chưa thêm kinh nghiệm nào", Toast.LENGTH_SHORT).show();
                 }else {
+                    loading();
                     MainActivity.checkFirstStudy = 1;
                     recyclerView.setVisibility(View.INVISIBLE);
                     try {
@@ -354,6 +363,7 @@ public class CVStudyActivity extends AppCompatActivity {
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
+                            progressDialog.dismiss();
                             Toast.makeText(getApplicationContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent();
                             setResult(102, intent);

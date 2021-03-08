@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -56,6 +57,7 @@ public class CVInfoActivity extends AppCompatActivity {
     StorageReference storageReference;
     public static int pageWidth = 1200;
     Handler handler;
+    ProgressDialog progressDialog;
 
 
     @Override
@@ -69,6 +71,13 @@ public class CVInfoActivity extends AppCompatActivity {
         // root path
         storageReference = FirebaseStorage.getInstance().getReference();
 
+    }
+    void loading(){
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading");
+        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
     }
     // x: 1 thì up
     // a: info, 2: goal, 3: study, 4: experience, 5: skill, 1: already check, 0 : not, use default info
@@ -356,6 +365,7 @@ public class CVInfoActivity extends AppCompatActivity {
                 editaddress.getText().equals("") || editgender.getText().equals("") || editbirthday.getText().equals("")){
                     Toast.makeText(getApplicationContext(), "Vui lòng nhập đủ thông tin", Toast.LENGTH_SHORT).show();
                 }else {
+                    loading();
                     String name = editname.getText().toString();
                     String position = editposition.getText().toString();
                     String phone = editphone.getText().toString();
@@ -377,6 +387,7 @@ public class CVInfoActivity extends AppCompatActivity {
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
+                            progressDialog.dismiss();
                             Intent intent = new Intent();
                             setResult(100);
                             finish();

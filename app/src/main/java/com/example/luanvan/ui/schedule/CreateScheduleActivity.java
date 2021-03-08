@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -76,6 +77,7 @@ public class CreateScheduleActivity extends AppCompatActivity {
     int check_candidate = 0; // nếu có user list rồi thì k tải nữa
     int check_position = 0; // nếu thay đổi thì userlist load lại
     int kind = 0; // kind: 1: create, 2: adjust
+    int position_update = 0; // từ bên schedule đưa qua để cập nhật
     Schedule scheduleInfo;
     public static int job_id_update = 0;
     String moreAnnounceMent = ""; // khi update thì thêm sửa từ ... thành ...
@@ -98,6 +100,7 @@ public class CreateScheduleActivity extends AppCompatActivity {
     private void getInfo() {
         if(kind == 2){
             scheduleInfo = (Schedule) getIntent().getSerializableExtra("schedule");
+            position_update = getIntent().getIntExtra("position",0);
             job_id_update = scheduleInfo.getId_job();
             editPosition.setText(scheduleInfo.getJob_name());
             editCandidate.setText(scheduleInfo.getUsername());
@@ -222,8 +225,9 @@ public class CreateScheduleActivity extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+              //  Toast.makeText(getApplicationContext(), "candidate " + editCandidate.getText().toString(), Toast.LENGTH_SHORT).show();
                 if(editKindSchedule.getText().equals("") || editStart.getText().equals("") || editEnd.getText().equals("") || editDate.getText().equals("")
-                || editCandidate.getText().equals("") || editPosition.getText().equals("")){
+                || editCandidate.getText().toString().equals("") || editPosition.getText().equals("")){
                     Toast.makeText(getApplicationContext(), "Vui lòng điền đủ thông tin", Toast.LENGTH_SHORT).show();
                 }else if(time_end.before(time_start)){
                     Toast.makeText(getApplicationContext(), "Giờ phỏng vấn không hợp lệ", Toast.LENGTH_SHORT).show();
@@ -238,9 +242,6 @@ public class CreateScheduleActivity extends AppCompatActivity {
                     }else {
                         updateSchedule(date, start_hour, end_hour, note);
                     }
-
-
-
 
                 }
             }
@@ -258,7 +259,7 @@ public class CreateScheduleActivity extends AppCompatActivity {
 
                             Schedule schedule = new Schedule( scheduleInfo.getId(), MainActivity.iduser, job_id, job_name, user_id,
                                     username, type_schedule, date_post, start_hour_refresh, end_hour_refresh, note);
-                            ScheduleManagementActivity.arrayList.set(1, schedule);
+                            ScheduleManagementActivity.arrayList.set(position_update, schedule);
                             loading();
                             postNotification(0, date, start_hour, end_hour);
                             sendMail();
@@ -495,6 +496,15 @@ public class CreateScheduleActivity extends AppCompatActivity {
         final View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_position, (ViewGroup) findViewById(R.id.bottom_sheet));
         Button btnChoose = (Button) view.findViewById(R.id.buttonchon);
         Button btnCancel = (Button) view.findViewById(R.id.buttonhuy);
+        LinearLayout layout_nothing = (LinearLayout) view.findViewById(R.id.layout_nothing);
+        LinearLayout layout = (LinearLayout) view.findViewById(R.id.layout);
+        if(candidateArrayList.size() == 0){
+            layout.setVisibility(View.GONE);
+            layout_nothing.setVisibility(View.VISIBLE);
+        }else {
+            layout.setVisibility(View.VISIBLE);
+            layout_nothing.setVisibility(View.GONE);
+        }
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -504,7 +514,9 @@ public class CreateScheduleActivity extends AppCompatActivity {
         btnChoose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editCandidate.setText(username);
+                if(user_id != 0){
+                    editCandidate.setText(username);
+                }
                 bottomSheetDialogCandidate.dismiss();
 
             }
@@ -602,7 +614,14 @@ public class CreateScheduleActivity extends AppCompatActivity {
                     candidateArrayList.clear();
                     getCandidateList();
                 }
-                eventSheetCandidate();
+                handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        eventSheetCandidate();
+                    }
+                },1000);
+
             }
         });
 
@@ -694,7 +713,10 @@ public class CreateScheduleActivity extends AppCompatActivity {
         positionScheduleAdapter = new PositionScheduleAdapter(getApplicationContext(), jobArrayList, CreateScheduleActivity.this, kind);
         getDataPosition();
         candidateScheduleAdapter = new CandidateScheduleAdapter(getApplicationContext(), candidateArrayList, this);
+
     }
+
+
     void loading(){
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading");

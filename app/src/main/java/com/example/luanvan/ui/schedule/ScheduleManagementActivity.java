@@ -109,12 +109,11 @@ public class ScheduleManagementActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == 123 && resultCode == 123){
-          //  Toast.makeText(getApplicationContext(), "hee0", Toast.LENGTH_SHORT).show();
             adapter.notifyDataSetChanged();
-
         }
         if(requestCode == 123 && resultCode == 345){
             adapter.notifyDataSetChanged();
+            adapter.stopBottomSheet();
         }
 
         super.onActivityResult(requestCode, resultCode, data);

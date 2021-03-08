@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -100,7 +101,7 @@ public class CVActivity extends AppCompatActivity {
     // kiem tra xem x1, x2, x3 có nhảy lên bậc nào hay k khi tạo CV
     public static int checkX1 = 0, checkX2 = 0, checkX3 = 0; // chưa sử dụng
     String CVNameToPost = "";
-
+    ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,7 +118,13 @@ public class CVActivity extends AppCompatActivity {
 
 
     }
-
+    void loading(){
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading");
+        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
+    }
 
     private void getIDCV() {
         MainActivity.mData.child("cv").child(MainActivity.uid).addValueEventListener(new ValueEventListener() {
@@ -709,6 +716,7 @@ public class CVActivity extends AppCompatActivity {
                 if(cvName.getText().equals("")){
                     Toast.makeText(getApplicationContext(), "Vui lòng điền tên CV", Toast.LENGTH_SHORT).show();
                 }else {
+                    loading();
                     if(kind == 1){
                         pushAddAll();
                     }else {
@@ -724,6 +732,7 @@ public class CVActivity extends AppCompatActivity {
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
+                            progressDialog.dismiss();
                             Intent intent = new Intent();
                             setResult(123);
                             finish();
