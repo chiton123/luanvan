@@ -226,6 +226,27 @@ public class EditCombineActivity extends AppCompatActivity {
         }
     }
 
+    public void refreshStudy(){
+        layout_nothing.setVisibility(View.VISIBLE);
+        layout.setVisibility(View.GONE);
+        MainActivity.studies.clear();
+        studyAdapter.notifyDataSetChanged();
+        MainActivity.studyAdapter.notifyDataSetChanged();
+    }
+    public void refreshExperience(){
+        layout_nothing.setVisibility(View.VISIBLE);
+        layout.setVisibility(View.GONE);
+        MainActivity.experiences.clear();
+        experienceAdapter.notifyDataSetChanged();
+        MainActivity.experienceAdapter.notifyDataSetChanged();
+    }
+    public void refreshSkill(){
+        layout_nothing.setVisibility(View.VISIBLE);
+        layout.setVisibility(View.GONE);
+        MainActivity.skills.clear();
+        skillAdapter.notifyDataSetChanged();
+        MainActivity.skillAdapter.notifyDataSetChanged();
+    }
     public void checkExperience(){
         if(MainActivity.experiences.size() == 0){
             layout_nothing.setVisibility(View.VISIBLE);
@@ -287,7 +308,6 @@ public class EditCombineActivity extends AppCompatActivity {
     private void anhxa() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         recyclerView = (RecyclerView) findViewById(R.id.recycleview);
-        recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         layout = (LinearLayout) findViewById(R.id.layout);
         layout_nothing = (LinearLayout) findViewById(R.id.layout_nothing);

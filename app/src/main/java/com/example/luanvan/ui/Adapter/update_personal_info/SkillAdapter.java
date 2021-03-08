@@ -44,7 +44,7 @@ public class SkillAdapter extends RecyclerView.Adapter<SkillAdapter.ItemHolder> 
     ArrayList<Skill> arrayList;
     Activity activity;
     int visable;
-
+    int last = 0;
     public SkillAdapter(Context context, ArrayList<Skill> arrayList, Activity activity, int visable) {
         this.context = context;
         this.arrayList = arrayList;
@@ -61,7 +61,7 @@ public class SkillAdapter extends RecyclerView.Adapter<SkillAdapter.ItemHolder> 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ItemHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final ItemHolder holder, final int position) {
         Skill skill = arrayList.get(position);
         holder.skill.setText(skill.getName());
         holder.ratingBar.setRating( skill.getStar());
@@ -111,10 +111,20 @@ public class SkillAdapter extends RecyclerView.Adapter<SkillAdapter.ItemHolder> 
                                         }
                                     });
                                     Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
-                                    MainActivity.skills.remove(position);
-                                    notifyDataSetChanged();
-                                    MainActivity.studyAdapter.notifyItemRemoved(position);
-                                  //  ((EditCombineActivity) activity).checkSkill();
+                                    int pos = holder.getAdapterPosition();
+
+                                    if(last == 1 || arrayList.size() == 0) {
+                                        ((EditCombineActivity) activity).refreshSkill();
+                                        MainActivity.skillAdapter.notifyDataSetChanged();
+
+                                    }else {
+                                        if(arrayList.size() == 2){
+                                            last = 1;
+                                        }
+                                        arrayList.remove(position);
+                                        notifyDataSetChanged();
+
+                                    }
                                 }
                             });
 

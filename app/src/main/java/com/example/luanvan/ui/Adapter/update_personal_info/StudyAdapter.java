@@ -39,6 +39,7 @@ public class StudyAdapter extends RecyclerView.Adapter<StudyAdapter.ItemHolder> 
     Activity activity;
     int visable;
     Handler handler;
+    int last = 0;
 
     public StudyAdapter(Context context, ArrayList<Study> arrayList, Activity activity, int visable) {
         this.context = context;
@@ -56,7 +57,7 @@ public class StudyAdapter extends RecyclerView.Adapter<StudyAdapter.ItemHolder> 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ItemHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final ItemHolder holder,  int position) {
         Study study = arrayList.get(position);
         holder.school.setText(study.getSchool());
         holder.major.setText(study.getMajor());
@@ -77,7 +78,7 @@ public class StudyAdapter extends RecyclerView.Adapter<StudyAdapter.ItemHolder> 
         }catch (NullPointerException e){
             Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
         }
-
+        final int positionX = position;
         // 0: hien thi
         if(visable == 0){
             holder.linearLayout.setVisibility(View.VISIBLE);
@@ -87,8 +88,8 @@ public class StudyAdapter extends RecyclerView.Adapter<StudyAdapter.ItemHolder> 
                     Intent intent = new Intent(context, StudyActivity.class);
                     // problem: khi muốn gửi có intent phải gửi 2 lần, xác nhận để không bị lỗi, 10: empty, 3: có đối tượng gửi
                     intent.putExtra("confirm", 3);
-                    intent.putExtra("study", arrayList.get(position));
-                    intent.putExtra("position", position);
+                    intent.putExtra("study", arrayList.get(positionX));
+                    intent.putExtra("position", positionX);
                     activity.startActivityForResult(intent,1);
                 }
             });
@@ -109,7 +110,7 @@ public class StudyAdapter extends RecyclerView.Adapter<StudyAdapter.ItemHolder> 
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Query query = MainActivity.mData.child("study").orderByChild("id").equalTo(arrayList.get(position).getId());
+                                    Query query = MainActivity.mData.child("study").orderByChild("id").equalTo(arrayList.get(positionX).getId());
                                     query.addValueEventListener(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -124,10 +125,22 @@ public class StudyAdapter extends RecyclerView.Adapter<StudyAdapter.ItemHolder> 
                                         }
                                     });
                                     Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
-                                    MainActivity.studies.remove(position);
-                                    notifyDataSetChanged();
-                                    MainActivity.studyAdapter.notifyItemRemoved(position);
-                                 //   ((EditCombineActivity) activity).checkStudy();
+                                    int pos = holder.getAdapterPosition();
+                                    Toast.makeText(context, arrayList.size() + "", Toast.LENGTH_SHORT).show();
+                                    if(last == 1 || arrayList.size() == 1){
+                                        ((EditCombineActivity) activity).refreshStudy();
+                                        MainActivity.studyAdapter.notifyDataSetChanged();
+                                    }else {
+                                        if(arrayList.size() == 2){
+                                            last = 1;
+                                        }
+                                        arrayList.remove(positionX);
+                                        notifyDataSetChanged();
+                                    }
+
+
+
+
                                 }
                             });
 

@@ -46,6 +46,7 @@ public class ExperienceAdapter extends RecyclerView.Adapter<ExperienceAdapter.It
     ArrayList<Experience> arrayList;
     Activity activity;
     int visable;
+    int last = 0;
     public ExperienceAdapter(Context context, ArrayList<Experience> arrayList, Activity activity, int visable) {
         this.context = context;
         this.arrayList = arrayList;
@@ -62,7 +63,7 @@ public class ExperienceAdapter extends RecyclerView.Adapter<ExperienceAdapter.It
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ItemHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final ItemHolder holder, final int position) {
         Experience experience = arrayList.get(position);
         holder.company.setText(experience.getCompany());
         holder.position.setText(experience.getPosition());
@@ -129,12 +130,20 @@ public class ExperienceAdapter extends RecyclerView.Adapter<ExperienceAdapter.It
                                         }
                                     });
                                     Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
-                                    arrayList.remove(position);
-//                                    MainActivity.experiences.remove(position);
-                                    notifyItemChanged(position);
+                                    int pos = holder.getAdapterPosition();
 
-                                    MainActivity.experienceAdapter.notifyItemRemoved(position);
-                                  //  ((EditCombineActivity) activity).checkExperience();
+                                    if(last == 1 || arrayList.size() == 0){
+                                        ((EditCombineActivity) activity).refreshExperience();
+                                        MainActivity.experienceAdapter.notifyDataSetChanged();
+
+                                    }else {
+                                        if(arrayList.size() == 2){
+                                            last = 1;
+                                        }
+                                        arrayList.remove(position);
+                                        notifyDataSetChanged();
+
+                                    }
                                 }
                             });
 
