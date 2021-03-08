@@ -3,6 +3,7 @@ package com.example.luanvan.ui.Search_Filter;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -43,6 +44,7 @@ public class FilterActivity extends AppCompatActivity {
     public static SpinnerNewAdapter khuVucAdapter, nganhNgheAdapter, luongAdapter, kinhNghiemAdapter, loaiHinhAdapter;
     Button btnHuy, btnTimKiem;
     Handler handler;
+    ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,18 +66,25 @@ public class FilterActivity extends AppCompatActivity {
             }
         });
     }
-
+    void loading(){
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading");
+        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
+    }
     private void eventButton() {
         btnTimKiem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loading();
                // Toast.makeText(getApplicationContext(), "idarea:  "+ idArea + " pro " + idProfession , Toast.LENGTH_SHORT).show();
                 RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlFilter,
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
-                              //  Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
+                            //    Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
                                 SearchActivity.arrayList.clear();
                                 try {
                                     JSONArray jsonArray = new JSONArray(response);
@@ -109,6 +118,7 @@ public class FilterActivity extends AppCompatActivity {
                                     handler.postDelayed(new Runnable() {
                                         @Override
                                         public void run() {
+                                            progressDialog.dismiss();
                                             Intent intent  = new Intent();
                                             setResult(123);
                                             finish();

@@ -47,17 +47,22 @@
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:id="@+id/hinhanh"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
                     ></ImageView>
+
                 <TextView
-                    android:layout_below="@id/a"
+                    android:id="@+id/tencongviec"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/tencongviec"
-                    android:textSize="16sp"
-                    android:text="nhan vien kinh doanh"
+                    android:layout_below="@id/a"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="0dp"
                     android:layout_toRightOf="@id/hinhanh"
+                    android:text="nhan vien kinh doanh"
                     android:textColor="#040404"
-                    ></TextView>
+                    android:textSize="15sp"></TextView>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -67,6 +72,7 @@
                     android:layout_toRightOf="@id/hinhanh"
                     android:layout_below="@id/tencongviec"
                     android:textColor="#040404"
+                    android:layout_marginLeft="5dp"
                     ></TextView>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -82,13 +88,13 @@
                         android:layout_marginLeft="5dp"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:src="@drawable/time1"
+                        android:src="@drawable/calendar"
                         ></ImageView>
                     <TextView
                         android:layout_marginLeft="5dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="17sp"
+                        android:textSize="14sp"
                         android:text="Hạn nộp hồ sơ "
                         android:textColor="#040404"
                         ></TextView>
@@ -97,7 +103,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/hannop"
-                        android:textSize="17sp"
+                        android:textSize="14sp"
                         android:text="10/10/2020"
                         android:textColor="#040404"
                         ></TextView>
@@ -146,11 +152,12 @@
             >
             <Button
                 android:layout_width="150dp"
-                android:layout_height="50dp"
+                android:layout_height="45dp"
                 android:text="Ứng tuyển ngay"
                 android:background="@drawable/button_login"
                 android:textColor="#fff"
-                android:layout_margin="2dp"
+                android:layout_margin="5dp"
+                android:textSize="13sp"
                 android:id="@+id/buttonungtuyen"
                 ></Button>
         </LinearLayout>

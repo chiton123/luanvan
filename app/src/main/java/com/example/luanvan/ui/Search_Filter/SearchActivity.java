@@ -13,10 +13,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -46,8 +48,8 @@ public class SearchActivity extends AppCompatActivity {
     public static ArrayList<Job> arrayList;
     RecyclerView recyclerView;
     int REQUEST_CODE_FILTER = 123;
-
-
+    LinearLayout layout, layout_nothing;
+    Handler handler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,8 +58,25 @@ public class SearchActivity extends AppCompatActivity {
         actionBar();
         // all jobs
         getData(0);
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                chechNothing();
+            }
+        },2000);
 
 
+    }
+
+    public void chechNothing(){
+        if(arrayList.size() == 0){
+            layout_nothing.setVisibility(View.VISIBLE);
+            layout.setVisibility(View.GONE);
+        }else {
+            layout.setVisibility(View.VISIBLE);
+            layout_nothing.setVisibility(View.GONE);
+        }
     }
 
     private void getData(final int kind) {
@@ -122,15 +141,24 @@ public class SearchActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        // search
+        // lọc
         if(requestCode == REQUEST_CODE_FILTER && resultCode == 123){
             adapter.notifyDataSetChanged();
-        //    Toast.makeText(getApplicationContext(), "haha", Toast.LENGTH_SHORT).show();
+            chechNothing();
 
         }
+        // hủy bộ lọc
         if(requestCode == REQUEST_CODE_FILTER && resultCode == 234){
             SearchActivity.arrayList.clear();
             getData(0);
+            handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    chechNothing();
+                }
+            },1000);
+
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -172,6 +200,8 @@ public class SearchActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.filterhienthi:
                 Intent intent = new Intent(getApplicationContext(), FilterActivity.class);
+                searchView.setQuery("" , false);
+                searchView.clearFocus();
                 startActivityForResult(intent, REQUEST_CODE_FILTER);
 
         }
@@ -197,11 +227,12 @@ public class SearchActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         recyclerView = (RecyclerView) findViewById(R.id.recycleview);
         arrayList = new ArrayList<>();
-        adapter = new KindOfJobAdapter(getApplicationContext(), arrayList, this);
+        adapter = new KindOfJobAdapter(this, arrayList, this);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
-
+        layout = (LinearLayout) findViewById(R.id.layout);
+        layout_nothing= (LinearLayout) findViewById(R.id.layout_nothing);
 
 
     }

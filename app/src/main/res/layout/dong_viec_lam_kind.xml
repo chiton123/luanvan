@@ -21,6 +21,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:background="#fff"
+                android:padding="5dp"
                 >
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -57,13 +58,14 @@
                         android:layout_toRightOf="@id/anh"
                         ></TextView>
                     <LinearLayout
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="10dp"
                         android:layout_below="@id/tencongty"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:id="@+id/level1"
                         android:background="#fff"
+                        android:gravity="center_vertical"
                         >
                         <ImageView
                             android:layout_width="20dp"
@@ -98,6 +100,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:background="#fff"
+                        android:gravity="center_vertical"
                         >
                         <ImageView
                             android:layout_width="20dp"
@@ -130,6 +133,7 @@
                         android:orientation="horizontal"
                         android:layout_marginTop="5dp"
                         android:background="#fff"
+                        android:gravity="center_vertical"
                         >
                         <ImageView
                             android:layout_width="20dp"

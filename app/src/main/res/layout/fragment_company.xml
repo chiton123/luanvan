@@ -15,7 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Ten cong ty"
-            android:textSize="16sp"
+            android:textSize="15sp"
             android:textColor="#050505"
             android:textStyle="bold"
             android:id="@+id/tencongty"
@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:text="Xem chi tiết"
             android:textColor="#05970B"
-            android:textSize="10sp"
+            android:textSize="12sp"
             android:id="@+id/xemchitiet"
             ></TextView>
         <LinearLayout
@@ -36,8 +36,8 @@
             android:gravity="center_vertical"
             >
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:src="@drawable/map2"
                 ></ImageView>
             <TextView
@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/diachi"
                 android:textColor="#040404"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 android:text="dia chi"
                 ></TextView>
         </LinearLayout>
@@ -58,8 +58,8 @@
             android:gravity="center_vertical"
             >
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:src="@drawable/earth"
                 ></ImageView>
             <TextView
@@ -67,7 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#040404"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 android:text="Website: "
                 ></TextView>
             <TextView
@@ -75,7 +75,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#05970B"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 android:id="@+id/website"
                 android:text="http:www.ctu.edu.vn: "
                 ></TextView>
@@ -90,15 +90,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Giới thiệu công ty"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textColor="#050505"
                 android:textStyle="bold"
                 ></TextView>
             <TextView
+                android:layout_marginTop="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Giới thiệu công ty"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 android:id="@+id/gioithieu"
                 android:textColor="#050505"
                 ></TextView>
