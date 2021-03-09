@@ -10,14 +10,17 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.DetailedJob.DetailJobActivity;
+import com.example.luanvan.ui.Interface.ILoadMore;
 import com.example.luanvan.ui.Model.Job;
 
 import java.text.DecimalFormat;
@@ -28,64 +31,114 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class KindOfJobAdapter extends RecyclerView.Adapter<KindOfJobAdapter.ItemHolder> implements Filterable {
+class LoadingViewHolder extends RecyclerView.ViewHolder{
+    public ProgressBar progressBar;
+    public LoadingViewHolder(@NonNull View itemView) {
+        super(itemView);
+        progressBar = (ProgressBar) itemView.findViewById(R.id.progressbar);
+    }
+}
+
+public class KindOfJobAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable {
     Context context;
     List<Job> filterArraylist;
     Activity activity;
     List<Job> nameList;
-
-    public KindOfJobAdapter(Context context, List<Job> arrayList, Activity activity) {
+    private final int VIEW_TYPE_ITEM = 0, VIEW_TYPE_LOADING = 1;
+    ILoadMore loadmore;
+    boolean isloading;
+    int visableThreadHold = 4;
+    int lastVisableItem,totalItemcount;
+    public KindOfJobAdapter(RecyclerView recyclerView, Context context, List<Job> arrayList, Activity activity) {
         this.context = context;
         this.nameList = arrayList;
         this.activity = activity;
         this.filterArraylist = arrayList;
 
-    }
-
-    @NonNull
-    @Override
-    public ItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.dong_viec_lam_kind, null);
-        ItemHolder itemHolder = new ItemHolder(v);
-        return itemHolder;
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull ItemHolder holder, final int position) {
-        Job job = filterArraylist.get(position);
-        holder.txttencongviec.setText(job.getName());
-        holder.txttencongty.setText(job.getCompany_name());
-        String ngaybatdau = job.getStart_date();
-        String ngayketthuc = job.getEnd_date();
-        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-        Date date1 = null;
-        Date date2 = null;
-        try {
-            date1 = fmt.parse(ngaybatdau);
-            date2 = fmt.parse(ngayketthuc);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        SimpleDateFormat fmtOut = new SimpleDateFormat("dd/MM/yyyy");
-        holder.txttime.setText(fmtOut.format(date2));
-        DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-        holder.txtsalary.setText(decimalFormat.format(job.getSalary()) + "đ");
-        holder.txtarea.setText(job.getAddress());
-        Glide.with(context).load(job.getImg()).into(holder.imganh);
-        holder.imganh.setFocusable(false);
-        holder.layout.setOnClickListener(new View.OnClickListener() {
+        final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, DetailJobActivity.class);
-                // 0: từ màn hình chính, tìm kiếm, lọc chuyển qua, 1: từ notification chuyển qua
-                intent.putExtra("kind", 0);
-                intent.putExtra("job", filterArraylist.get(position));
-                activity.startActivity(intent);
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                totalItemcount = linearLayoutManager.getItemCount();
+                lastVisableItem = linearLayoutManager.findLastVisibleItemPosition();
+                if(!isloading && totalItemcount < (lastVisableItem + visableThreadHold)){
+                    if(loadmore != null){
+                        loadmore.onLoadMore();
+                    }
+                    isloading = true;
+                }
 
             }
         });
 
+    }
 
+    @NonNull
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if(viewType == VIEW_TYPE_ITEM){
+            View view = LayoutInflater.from(context).inflate(R.layout.dong_viec_lam_kind, parent, false);
+            return new ItemHolder(view);
+        }else if(viewType == VIEW_TYPE_LOADING){
+            View view = LayoutInflater.from(context).inflate(R.layout.item_loading, parent, false);
+            return new LoadingViewHolder(view);
+        }
+        return null;
+    }
+    public void setLoadmore(ILoadMore loadmore) {
+        this.loadmore = loadmore;
+    }
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
+        if(holder instanceof ItemHolder){
+            ItemHolder itemHolder = (ItemHolder) holder;
+            Job job = filterArraylist.get(position);
+            itemHolder.txttencongviec.setText(job.getName());
+            itemHolder.txttencongty.setText(job.getCompany_name());
+            String ngaybatdau = job.getStart_date();
+            String ngayketthuc = job.getEnd_date();
+            SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+            Date date1 = null;
+            Date date2 = null;
+            try {
+                date1 = fmt.parse(ngaybatdau);
+                date2 = fmt.parse(ngayketthuc);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            SimpleDateFormat fmtOut = new SimpleDateFormat("dd/MM/yyyy");
+            itemHolder.txttime.setText(fmtOut.format(date2));
+            DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
+            itemHolder.txtsalary.setText(decimalFormat.format(job.getSalary()) + "đ");
+            itemHolder.txtarea.setText(job.getAddress());
+            Glide.with(context).load(job.getImg()).into(itemHolder.imganh);
+            itemHolder.imganh.setFocusable(false);
+            itemHolder.layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, DetailJobActivity.class);
+                    // 0: từ màn hình chính, tìm kiếm, lọc chuyển qua, 1: từ notification chuyển qua
+                    intent.putExtra("kind", 0);
+                    intent.putExtra("job", filterArraylist.get(position));
+                    activity.startActivity(intent);
+
+                }
+            });
+
+        }else if(holder instanceof LoadingViewHolder){
+            LoadingViewHolder loadingViewHoler = (LoadingViewHolder) holder;
+            loadingViewHoler.progressBar.setIndeterminate(true);
+        }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return filterArraylist.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
+    }
+
+    public void setIsloaded(boolean x) {
+        this.isloading = x;
     }
 
     @Override
@@ -147,5 +200,6 @@ public class KindOfJobAdapter extends RecyclerView.Adapter<KindOfJobAdapter.Item
             }
         };
     }
+
 
 }

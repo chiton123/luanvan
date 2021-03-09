@@ -2,10 +2,12 @@ package com.example.luanvan.ui.KindofJob;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Toast;
 
@@ -19,6 +21,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.job.KindOfJobAdapter;
+import com.example.luanvan.ui.Interface.ILoadMore;
 import com.example.luanvan.ui.Model.Job;
 
 import org.json.JSONArray;
@@ -38,23 +41,46 @@ public class KindOfJobActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     ArrayList<Job> arrayList;
     KindOfJobAdapter adapter;
+    Handler handler;
+    int page = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kind_of_job);
         anhxa();
         actionBar();
-        getData();
+        getData(page);
+        loadMore();
 
     }
+    private void loadMore() {
+        adapter.setLoadmore(new ILoadMore() {
+            @Override
+            public void onLoadMore() {
+                getData(++page);
+                handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.notifyDataSetChanged();
+                        adapter.setIsloaded(false);
 
-    private void getData() {
+                    }
+                },2000);
+
+            }
+        });
+    }
+
+    private void getData(int page) {
         final int kind = getIntent().getIntExtra("thuctap",0);
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urljob1,
+        String url = MainActivity.urljob1 + String.valueOf(page);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                       // Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
                         try {
                             JSONArray jsonArray = new JSONArray(response);
                             for(int i=0; i < jsonArray.length(); i++){
@@ -129,10 +155,10 @@ public class KindOfJobActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         arrayList = new ArrayList<>();
         recyclerView = (RecyclerView) findViewById(R.id.recycleview);
-        adapter = new KindOfJobAdapter(getApplicationContext(), arrayList, this);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.setHasFixedSize(true);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        adapter = new KindOfJobAdapter(recyclerView, this, arrayList, this);
         recyclerView.setAdapter(adapter);
 
     }

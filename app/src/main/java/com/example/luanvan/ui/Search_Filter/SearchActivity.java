@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,6 +32,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.job.KindOfJobAdapter;
+import com.example.luanvan.ui.Interface.ILoadMore;
 import com.example.luanvan.ui.Model.Job;
 
 import org.json.JSONArray;
@@ -50,6 +52,7 @@ public class SearchActivity extends AppCompatActivity {
     int REQUEST_CODE_FILTER = 123;
     LinearLayout layout, layout_nothing;
     Handler handler;
+    int page = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +60,8 @@ public class SearchActivity extends AppCompatActivity {
         anhxa();
         actionBar();
         // all jobs
-        getData(0);
+        getData(0, page);
+        loadMore();
         handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -67,6 +71,28 @@ public class SearchActivity extends AppCompatActivity {
         },2000);
 
 
+    }
+
+    public void stopLoadMore(){
+        adapter.setIsloaded(true);
+    }
+    private void loadMore() {
+        adapter.setLoadmore(new ILoadMore() {
+            @Override
+            public void onLoadMore() {
+                getData(0,++page);
+                handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.notifyDataSetChanged();
+                        adapter.setIsloaded(false);
+
+                    }
+                },2000);
+
+            }
+        });
     }
 
     public void chechNothing(){
@@ -79,9 +105,10 @@ public class SearchActivity extends AppCompatActivity {
         }
     }
 
-    private void getData(final int kind) {
+    private void getData(final int kind, int page) {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urljob1,
+        String url = MainActivity.urljob1 + String.valueOf(page);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -145,12 +172,15 @@ public class SearchActivity extends AppCompatActivity {
         if(requestCode == REQUEST_CODE_FILTER && resultCode == 123){
             adapter.notifyDataSetChanged();
             chechNothing();
+            stopLoadMore();
 
         }
         // hủy bộ lọc
         if(requestCode == REQUEST_CODE_FILTER && resultCode == 234){
             SearchActivity.arrayList.clear();
-            getData(0);
+            page = 0;
+            getData(0, ++page);
+            loadMore();
             handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
@@ -227,9 +257,10 @@ public class SearchActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         recyclerView = (RecyclerView) findViewById(R.id.recycleview);
         arrayList = new ArrayList<>();
-        adapter = new KindOfJobAdapter(this, arrayList, this);
         recyclerView.setHasFixedSize(true);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        adapter = new KindOfJobAdapter(recyclerView,this, arrayList, this);
         recyclerView.setAdapter(adapter);
         layout = (LinearLayout) findViewById(R.id.layout);
         layout_nothing= (LinearLayout) findViewById(R.id.layout_nothing);

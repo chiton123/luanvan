@@ -307,7 +307,7 @@ public class HomeFragment extends Fragment {
 
     private void getData(final int kind) {
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urljob1,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlJobHome,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
