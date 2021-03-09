@@ -6,22 +6,21 @@
     android:id="@+id/linear"
     android:layout_height="match_parent">
     <androidx.cardview.widget.CardView
-        android:layout_width="250dp"
+        android:layout_width="320dp"
         android:layout_height="match_parent"
         app:cardCornerRadius="10dp"
         >
         <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             >
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 >
                 <RelativeLayout
-                    android:layout_width="200dp"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
 
                     >
@@ -29,7 +28,7 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:id="@+id/anh"
-                        android:layout_margin="5dp"
+                        android:layout_margin="7dp"
                         ></ImageView>
                     <TextView
                         android:layout_width="wrap_content"
@@ -55,7 +54,7 @@
                         android:layout_toRightOf="@id/anh"
                         ></TextView>
                     <LinearLayout
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="7dp"
                         android:layout_below="@id/tencongty"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -151,6 +150,41 @@
 
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:id="@+id/layout_chat"
+                        android:layout_below="@id/level3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        >
+                        <Button
+                            android:layout_width="120dp"
+                            android:layout_height="35dp"
+                            android:text="Gửi tin nhắn"
+                            android:drawableLeft="@drawable/chat6"
+                            android:textSize="10sp"
+                            android:gravity="center"
+                            android:paddingLeft="10dp"
+                            android:id="@+id/buttonchat"
+                            android:textColor="#05A80C"
+                            android:background="@drawable/background_button_chat"
+                            ></Button>
+                        <Button
+                            android:layout_width="120dp"
+                            android:layout_height="35dp"
+                            android:text="Xem lại CV"
+                            android:textSize="10sp"
+                            android:gravity="center"
+                            android:id="@+id/buttonviewcv"
+                            android:layout_marginLeft="10dp"
+                            android:paddingLeft="10dp"
+                            android:textColor="#000000"
+                            android:background="@drawable/background_button_view_cv"
+                            ></Button>
+                    </LinearLayout>
 
                 </RelativeLayout>
 

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
@@ -49,11 +50,13 @@ public class KindOfJobAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     boolean isloading;
     int visableThreadHold = 4;
     int lastVisableItem,totalItemcount;
-    public KindOfJobAdapter(RecyclerView recyclerView, Context context, List<Job> arrayList, Activity activity) {
+    int kind; // 0: normal, 1: việc đã ứng tuyển
+    public KindOfJobAdapter(RecyclerView recyclerView, Context context, List<Job> arrayList, Activity activity, int kind) {
         this.context = context;
         this.nameList = arrayList;
         this.activity = activity;
         this.filterArraylist = arrayList;
+        this.kind = kind;
 
         final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -125,6 +128,9 @@ public class KindOfJobAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
                 }
             });
+            if(kind == 1){
+                itemHolder.layout_chat.setVisibility(View.GONE);
+            }
 
         }else if(holder instanceof LoadingViewHolder){
             LoadingViewHolder loadingViewHoler = (LoadingViewHolder) holder;
@@ -149,7 +155,8 @@ public class KindOfJobAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public class ItemHolder extends RecyclerView.ViewHolder{
         public TextView txttencongviec, txttencongty, txtarea, txttime, txtsalary;
         public ImageView imganh;
-        public LinearLayout layout;
+        public LinearLayout layout, layout_chat;
+        public Button btnChat, btnViewCV;;
 
         public ItemHolder(@NonNull View itemView) {
             super(itemView);
@@ -160,7 +167,9 @@ public class KindOfJobAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             txttime = (TextView) itemView.findViewById(R.id.time);
             imganh = (ImageView) itemView.findViewById(R.id.anh);
             layout = (LinearLayout) itemView.findViewById(R.id.linear);
-
+            layout_chat = (LinearLayout) itemView.findViewById(R.id.layout_chat);
+            btnChat = (Button) itemView.findViewById(R.id.buttonchat);
+            btnViewCV = (Button) itemView.findViewById(R.id.buttonviewcv);
 
         }
     }

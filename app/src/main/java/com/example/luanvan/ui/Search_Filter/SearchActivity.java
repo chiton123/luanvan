@@ -260,7 +260,7 @@ public class SearchActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        adapter = new KindOfJobAdapter(recyclerView,this, arrayList, this);
+        adapter = new KindOfJobAdapter(recyclerView,this, arrayList, this,0);
         recyclerView.setAdapter(adapter);
         layout = (LinearLayout) findViewById(R.id.layout);
         layout_nothing= (LinearLayout) findViewById(R.id.layout_nothing);

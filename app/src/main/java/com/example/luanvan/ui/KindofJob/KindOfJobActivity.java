@@ -158,7 +158,7 @@ public class KindOfJobActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        adapter = new KindOfJobAdapter(recyclerView, this, arrayList, this);
+        adapter = new KindOfJobAdapter(recyclerView, this, arrayList, this,0);
         recyclerView.setAdapter(adapter);
 
     }

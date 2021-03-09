@@ -53,10 +53,10 @@ public class HomeFragment extends Fragment {
     // getdata 0 : all, 1: luong cao,2: lam tu xa, 3: thuc tap, 4: moi nhat
     Toolbar toolbar;
     private HomeViewModel homeViewModel;
-    RecyclerView recyclerView, recyclerViewthuctap, recyclerViewLuongCao, recyclerViewViecLamTuXa,recyclerViewViecLamMoiNhat;
-    JobAdapter jobAdapter, adapterThuctap, adapterLuongCao, adapterViecLamTuXa, adapterViecLamMoiNhat;
-    ArrayList<Job> arrayList, arrayListThuctap, arrayListLuongCao, arrayListViecLamTuXa, arrayListViecLamMoiNhat;
-    TextView txtthuctap, txtviectotnhat, txtLuongCao, txtViecLamTuXa, txtViecLamMoiNhat;
+    RecyclerView recyclerView, recyclerViewthuctap, recyclerViewLuongCao, recyclerViewViecLamTuXa,recyclerViewViecLamMoiNhat, recyclerViewDaUngTuyen;
+    JobAdapter jobAdapter, adapterThuctap, adapterLuongCao, adapterViecLamTuXa, adapterViecLamMoiNhat, adapterDaUngTuyen;
+    ArrayList<Job> arrayList, arrayListThuctap, arrayListLuongCao, arrayListViecLamTuXa, arrayListViecLamMoiNhat, arrayListDaUngTuyen;
+    TextView txtthuctap, txtviectotnhat, txtLuongCao, txtViecLamTuXa, txtViecLamMoiNhat, txtDaUngTuyen;
     public static TextView txtNotification;
 
     Handler handler;
@@ -71,16 +71,19 @@ public class HomeFragment extends Fragment {
         recyclerViewLuongCao = (RecyclerView) view.findViewById(R.id.recycleviewluongcao);
         recyclerViewViecLamTuXa = (RecyclerView) view.findViewById(R.id.recycleviewlamtuxa);
         recyclerViewViecLamMoiNhat = (RecyclerView) view.findViewById(R.id.recycleviewlammoinhat);
+        recyclerViewDaUngTuyen = (RecyclerView) view.findViewById(R.id.recycleviewdaungtuyen);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewthuctap.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewLuongCao.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewViecLamTuXa.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewViecLamMoiNhat.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerViewDaUngTuyen.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         recyclerView.setHasFixedSize(true);
         recyclerViewthuctap.setHasFixedSize(true);
         recyclerViewLuongCao.setHasFixedSize(true);
         recyclerViewViecLamTuXa.setHasFixedSize(true);
         recyclerViewViecLamMoiNhat.setHasFixedSize(true);
+        recyclerViewDaUngTuyen.setHasFixedSize(true);
         // toolbar menu option
 
         toolbar = (Toolbar)view.findViewById(R.id.toolbar);
@@ -99,27 +102,32 @@ public class HomeFragment extends Fragment {
         arrayListLuongCao = new ArrayList<>();
         arrayListViecLamTuXa = new ArrayList<>();
         arrayListViecLamMoiNhat = new ArrayList<>();
-        jobAdapter = new JobAdapter(getActivity(), arrayList, getActivity());
-        adapterThuctap = new JobAdapter(getActivity(), arrayListThuctap, getActivity());
-        adapterLuongCao = new JobAdapter(getActivity(), arrayListLuongCao, getActivity());
-        adapterViecLamTuXa = new JobAdapter(getActivity(), arrayListViecLamTuXa, getActivity());
-        adapterViecLamMoiNhat = new JobAdapter(getActivity(), arrayListViecLamMoiNhat, getActivity());
+        arrayListDaUngTuyen = new ArrayList<>();
+        jobAdapter = new JobAdapter(getActivity(), arrayList, getActivity(),0);
+        adapterThuctap = new JobAdapter(getActivity(), arrayListThuctap, getActivity(),0);
+        adapterLuongCao = new JobAdapter(getActivity(), arrayListLuongCao, getActivity(),0);
+        adapterViecLamTuXa = new JobAdapter(getActivity(), arrayListViecLamTuXa, getActivity(),0);
+        adapterViecLamMoiNhat = new JobAdapter(getActivity(), arrayListViecLamMoiNhat, getActivity(),0);
+        adapterDaUngTuyen = new JobAdapter(getActivity(), arrayListDaUngTuyen, getActivity(), 1);
         // tất cả job
         getData(0);
+        // getdata 0 : all, 1: luong cao,2: lam tu xa, 3: thuc tap, 4: moi nhat, 5: đã ứng tuyển
         // job thực tập
         getData(3);
         getData(1);
         getData(2);
         getData(4);
+        getData(5);
         recyclerView.setAdapter(jobAdapter);
         recyclerViewthuctap.setAdapter(adapterThuctap);
         recyclerViewLuongCao.setAdapter(adapterLuongCao);
         recyclerViewViecLamTuXa.setAdapter(adapterViecLamTuXa);
         recyclerViewViecLamMoiNhat.setAdapter(adapterViecLamMoiNhat);
-
+        recyclerViewDaUngTuyen.setAdapter(adapterDaUngTuyen);
         eventXemtatca();
         if(MainActivity.login == 1){
             setNotification();
+            getDataApplied();
         }
 
 
@@ -248,6 +256,7 @@ public class HomeFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == 123 && resultCode == 123){
             setNotification();
+            getDataApplied();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -468,6 +477,64 @@ public class HomeFragment extends Fragment {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> map = new HashMap<>();
                 map.put("kind", String.valueOf(kind));
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+
+    }
+    private void getDataApplied() {
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlJobApply,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            for(int i=0; i < jsonArray.length(); i++){
+                                JSONObject object = jsonArray.getJSONObject(i);
+                                arrayListDaUngTuyen.add(new Job(
+                                        object.getInt("id"),
+                                        object.getString("name"),
+                                        object.getInt("idcompany"),
+                                        object.getInt("id_recruiter"),
+                                        object.getString("img"),
+                                        object.getString("area"),
+                                        object.getInt("idtype"),
+                                        object.getInt("idprofession"),
+                                        object.getString("start_date"),
+                                        object.getString("end_date"),
+                                        object.getInt("salary"),
+                                        object.getInt("idarea"),
+                                        object.getString("experience"),
+                                        object.getInt("number"),
+                                        object.getString("description"),
+                                        object.getString("requirement"),
+                                        object.getString("benefit"),
+                                        object.getInt("status"),
+                                        object.getString("company_name"),
+                                        object.getString("type_job")
+                                ));
+
+                            }
+                            adapterDaUngTuyen.notifyDataSetChanged();
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("iduser", String.valueOf(MainActivity.iduser));
                 return map;
             }
         };

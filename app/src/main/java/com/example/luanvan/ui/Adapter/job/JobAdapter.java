@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -28,13 +29,13 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.ItemHolder>  {
     Context context;
     ArrayList<Job> arrayList;
     Activity activity;
+    int kind; // 0: normal, 1: việc đã ứng tuyển
 
-
-    public JobAdapter(Context context, ArrayList<Job> arrayList, Activity activity) {
+    public JobAdapter(Context context, ArrayList<Job> arrayList, Activity activity, int kind) {
         this.context = context;
         this.arrayList = arrayList;
         this.activity = activity;
-
+        this.kind = kind;
     }
 
     @NonNull
@@ -80,6 +81,9 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.ItemHolder>  {
 
             }
         });
+        if(kind == 1){
+            holder.layout_chat.setVisibility(View.VISIBLE);
+        }
 
 
     }
@@ -94,7 +98,8 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.ItemHolder>  {
     public class ItemHolder extends RecyclerView.ViewHolder{
         public TextView txttencongviec, txttencongty, txtarea, txttime, txtsalary;
         public ImageView imganh;
-        public LinearLayout layout;
+        public LinearLayout layout, layout_chat;
+        public Button btnChat, btnViewCV;
 
         public ItemHolder(@NonNull View itemView) {
             super(itemView);
@@ -105,6 +110,9 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.ItemHolder>  {
             txttime = (TextView) itemView.findViewById(R.id.time);
             imganh = (ImageView) itemView.findViewById(R.id.anh);
             layout = (LinearLayout) itemView.findViewById(R.id.linear);
+            layout_chat = (LinearLayout) itemView.findViewById(R.id.layout_chat);
+            btnChat = (Button) itemView.findViewById(R.id.buttonchat);
+            btnViewCV = (Button) itemView.findViewById(R.id.buttonviewcv);
 
 
         }
