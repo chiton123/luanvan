@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +21,7 @@ import com.example.luanvan.ui.DetailedJob.DetailJobActivity;
 import com.example.luanvan.ui.Model.Job;
 import com.example.luanvan.ui.Model.Job_Apply;
 import com.example.luanvan.ui.cv.CVShowActivity;
+import com.example.luanvan.ui.home.HomeFragment;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -72,13 +74,23 @@ public class JobApplyAdapter extends RecyclerView.Adapter<JobApplyAdapter.ItemHo
         holder.txtarea.setText(job.getAddress());
         Glide.with(context).load(job.getImg()).into(holder.imganh);
         holder.imganh.setFocusable(false);
+        holder.btnChat.setFocusable(false);
+        holder.btnViewCV.setFocusable(false);
+        holder.btnViewCV.setClickable(false);
+        holder.btnChat.setClickable(false);
+
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, DetailJobActivity.class);
                 // 0: từ màn hình chính, tìm kiếm, lọc chuyển qua, 1: từ notification chuyển qua
                 intent.putExtra("kind", 0);
-                intent.putExtra("job", arrayList.get(position));
+                for(int i=0; i < HomeFragment.arrayList.size(); i++){
+                    if(arrayList.get(position).getId() == HomeFragment.arrayList.get(i).getId()){
+                        intent.putExtra("job",HomeFragment.arrayList.get(i));
+                    }
+                }
+
                 activity.startActivity(intent);
 
             }
@@ -88,11 +100,15 @@ public class JobApplyAdapter extends RecyclerView.Adapter<JobApplyAdapter.ItemHo
             holder.btnViewCV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, CVShowActivity.class);
+                    Intent intent = new Intent(activity, CVShowActivity.class);
                     intent.putExtra("kind", 2); // 1: show cv , 2: job apply
-                    intent.putExtra("cv_id", job.getId_cv() );
+                    intent.putExtra("cv_id", job.getId_cv());
+                    activity.startActivity(intent);
                 }
             });
+
+        }else {
+            holder.layout_chat.setVisibility(View.GONE);
         }
 
 

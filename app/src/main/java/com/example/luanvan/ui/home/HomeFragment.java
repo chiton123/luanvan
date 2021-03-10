@@ -31,8 +31,10 @@ import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.job.JobAdapter;
+import com.example.luanvan.ui.Adapter.job_apply.JobApplyAdapter;
 import com.example.luanvan.ui.KindofJob.KindOfJobActivity;
 import com.example.luanvan.ui.Model.Job;
+import com.example.luanvan.ui.Model.Job_Apply;
 import com.example.luanvan.ui.Model.Notification;
 import com.example.luanvan.ui.Search_Filter.SearchActivity;
 import com.example.luanvan.ui.login.LoginActivity;
@@ -55,8 +57,10 @@ public class HomeFragment extends Fragment {
     Toolbar toolbar;
     private HomeViewModel homeViewModel;
     RecyclerView recyclerView, recyclerViewthuctap, recyclerViewLuongCao, recyclerViewViecLamTuXa,recyclerViewViecLamMoiNhat, recyclerViewDaUngTuyen;
-    JobAdapter jobAdapter, adapterThuctap, adapterLuongCao, adapterViecLamTuXa, adapterViecLamMoiNhat, adapterDaUngTuyen;
-    ArrayList<Job> arrayList, arrayListThuctap, arrayListLuongCao, arrayListViecLamTuXa, arrayListViecLamMoiNhat, arrayListDaUngTuyen;
+    public static JobAdapter jobAdapter, adapterThuctap, adapterLuongCao, adapterViecLamTuXa, adapterViecLamMoiNhat;
+    public static JobApplyAdapter adapterDaUngTuyen;
+    public static ArrayList<Job> arrayList, arrayListThuctap, arrayListLuongCao, arrayListViecLamTuXa, arrayListViecLamMoiNhat;
+    public static ArrayList<Job_Apply> arrayListDaUngTuyen;
     TextView txtthuctap, txtviectotnhat, txtLuongCao, txtViecLamTuXa, txtViecLamMoiNhat, txtDaUngTuyen;
     public static TextView txtNotification;
     LinearLayout layout_daungtuyen;
@@ -111,7 +115,7 @@ public class HomeFragment extends Fragment {
         adapterLuongCao = new JobAdapter(getActivity(), arrayListLuongCao, getActivity(),0);
         adapterViecLamTuXa = new JobAdapter(getActivity(), arrayListViecLamTuXa, getActivity(),0);
         adapterViecLamMoiNhat = new JobAdapter(getActivity(), arrayListViecLamMoiNhat, getActivity(),0);
-        adapterDaUngTuyen = new JobAdapter(getActivity(), arrayListDaUngTuyen, getActivity(), 1);
+        adapterDaUngTuyen = new JobApplyAdapter(getActivity(), arrayListDaUngTuyen, getActivity(), 1);
         // tất cả job
         getData(0);
         // getdata 0 : all, 1: luong cao,2: lam tu xa, 3: thuc tap, 4: moi nhat, 5: đã ứng tuyển
@@ -509,11 +513,12 @@ public class HomeFragment extends Fragment {
                             JSONArray jsonArray = new JSONArray(response);
                             for(int i=0; i < jsonArray.length(); i++){
                                 JSONObject object = jsonArray.getJSONObject(i);
-                                arrayListDaUngTuyen.add(new Job(
+                                arrayListDaUngTuyen.add(new Job_Apply(
                                         object.getInt("id"),
                                         object.getString("name"),
                                         object.getInt("idcompany"),
                                         object.getInt("id_recruiter"),
+                                        object.getString("id_cv"),
                                         object.getString("img"),
                                         object.getString("area"),
                                         object.getInt("idtype"),

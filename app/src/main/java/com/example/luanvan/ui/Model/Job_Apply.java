@@ -7,7 +7,7 @@ public class Job_Apply implements Serializable {
     private String name;
     private int idcompany;
     private int id_recruiter;
-    private int id_cv;
+    private String id_cv;
     private String company_name;
     private String img;
     private int idtype;
@@ -28,7 +28,7 @@ public class Job_Apply implements Serializable {
     public Job_Apply() {
     }
 
-    public Job_Apply(int id, String name, int idcompany, int id_recruiter, int id_cv, String img, String address, int idtype, int idprofession, String start_date, String end_date,
+    public Job_Apply(int id, String name, int idcompany, int id_recruiter, String id_cv, String img, String address, int idtype, int idprofession, String start_date, String end_date,
                      int salary, int idarea, String experience, int number, String description,
                      String requirement, String benefit, int status, String company_name, String type_job) {
         this.id = id;
@@ -54,11 +54,11 @@ public class Job_Apply implements Serializable {
         this.type_job = type_job;
     }
 
-    public int getId_cv() {
+    public String getId_cv() {
         return id_cv;
     }
 
-    public void setId_cv(int id_cv) {
+    public void setId_cv(String id_cv) {
         this.id_cv = id_cv;
     }
 

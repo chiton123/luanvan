@@ -21,9 +21,11 @@ import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.job.KindOfJobAdapter;
+import com.example.luanvan.ui.Adapter.job_apply.JobApplyAdapter;
 import com.example.luanvan.ui.Interface.ILoadMore;
 import com.example.luanvan.ui.Model.Job;
-
+import com.example.luanvan.ui.Model.Job_Apply;
+import com.example.luanvan.ui.Adapter.job_apply.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,6 +43,8 @@ public class KindOfJobActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     ArrayList<Job> arrayList;
     KindOfJobAdapter adapter;
+    ArrayList<Job_Apply> job_applyArrayList;
+    KindOfJobApplyAdapter jobApplyAdapter;
     Handler handler;
     int page = 1;
     int kind = 0;
@@ -150,7 +154,7 @@ public class KindOfJobActivity extends AppCompatActivity {
 
     private void getDataApply(int page) {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        String url = MainActivity.urljob1 + String.valueOf(page);
+        String url = MainActivity.urlJobApplyLoad + String.valueOf(page);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
@@ -160,40 +164,40 @@ public class KindOfJobActivity extends AppCompatActivity {
                             JSONArray jsonArray = new JSONArray(response);
                             for(int i=0; i < jsonArray.length(); i++){
                                 JSONObject object = jsonArray.getJSONObject(i);
-                                int status = object.getInt("status");
-                                SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-                                Date date = fmt.parse(object.getString("end_date"));
-                                if(status == 0 && date.after(Calendar.getInstance().getTime())){
-                                    arrayList.add(new Job(
-                                            object.getInt("id"),
-                                            object.getString("name"),
-                                            object.getInt("idcompany"),
-                                            object.getInt("id_recruiter"),
-                                            object.getString("img"),
-                                            object.getString("area"),
-                                            object.getInt("idtype"),
-                                            object.getInt("idprofession"),
-                                            object.getString("start_date"),
-                                            object.getString("end_date"),
-                                            object.getInt("salary"),
-                                            object.getInt("idarea"),
-                                            object.getString("experience"),
-                                            object.getInt("number"),
-                                            object.getString("description"),
-                                            object.getString("requirement"),
-                                            object.getString("benefit"),
-                                            object.getInt("status"),
-                                            object.getString("company_name"),
-                                            object.getString("type_job")
-                                    ));
-                                    adapter.notifyDataSetChanged();
+                                job_applyArrayList.add(new Job_Apply(
+                                        object.getInt("id"),
+                                        object.getString("name"),
+                                        object.getInt("idcompany"),
+                                        object.getInt("id_recruiter"),
+                                        object.getString("id_cv"),
+                                        object.getString("img"),
+                                        object.getString("area"),
+                                        object.getInt("idtype"),
+                                        object.getInt("idprofession"),
+                                        object.getString("start_date"),
+                                        object.getString("end_date"),
+                                        object.getInt("salary"),
+                                        object.getInt("idarea"),
+                                        object.getString("experience"),
+                                        object.getInt("number"),
+                                        object.getString("description"),
+                                        object.getString("requirement"),
+                                        object.getString("benefit"),
+                                        object.getInt("status"),
+                                        object.getString("company_name"),
+                                        object.getString("type_job")
+                                ));
+
+
+
+                                    jobApplyAdapter.notifyDataSetChanged();
                                 }
 
 
-                            }
 
 
-                        } catch (JSONException | ParseException e) {
+
+                        } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
@@ -207,7 +211,6 @@ public class KindOfJobActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> map = new HashMap<>();
-                map.put("kind", String.valueOf(kind));
                 map.put("iduser", String.valueOf(MainActivity.iduser));
                 return map;
             }
@@ -253,12 +256,19 @@ public class KindOfJobActivity extends AppCompatActivity {
         kind = getIntent().getIntExtra("thuctap",0);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         arrayList = new ArrayList<>();
+        job_applyArrayList = new ArrayList<>();
         recyclerView = (RecyclerView) findViewById(R.id.recycleview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         adapter = new KindOfJobAdapter(recyclerView, this, arrayList, this,0);
-        recyclerView.setAdapter(adapter);
+        jobApplyAdapter = new KindOfJobApplyAdapter(recyclerView, this, job_applyArrayList, this, 1);
+        if(kind != 5){
+            recyclerView.setAdapter(adapter);
+        }else {
+            recyclerView.setAdapter(jobApplyAdapter); // 5: da ung tuyen
+        }
+
 
     }
 }

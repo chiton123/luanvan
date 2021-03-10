@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     public static ArrayList<Notification> arrayListNotification = new ArrayList<>(); // Danh sách thông báo
     public static int k = 0; // số lương thông báo mới
     // 1: có cv, 2: chưa
-    public static String uid = "";
+    public static String uid = ""; // của firebase
     public static String username = "";
     public static String position = "";
     public static String urlCV = "";
@@ -98,6 +98,8 @@ public class MainActivity extends AppCompatActivity {
     public static String urlJobHome = host + "job_home.php";
     // job apply
     public static String urlJobApply = host + "job_apply.php";
+    public static String urlJobApplyLoad = host + "job_apply_load.php?page=";
+
     public static String urlcompany = host + "company.php";
     // dang nhap
     public static String urlRegister = host + "register.php";

@@ -27,6 +27,8 @@ import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.cv_all.CVChooseAdapter;
 import com.example.luanvan.ui.DetailedJob.DetailJobActivity;
 import com.example.luanvan.ui.Model.Job;
+import com.example.luanvan.ui.Model.Job_Apply;
+import com.example.luanvan.ui.home.HomeFragment;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -122,6 +124,30 @@ public class ChooseCVActivity extends AppCompatActivity {
                                     content = "Ứng viên " + MainActivity.username + " - " + job.getName();
                                     // Toast.makeText(getApplicationContext(), id_application + content , Toast.LENGTH_SHORT).show();
                                     postNotification(1);
+                                    HomeFragment.arrayListDaUngTuyen.add(new Job_Apply(
+                                            job.getId(),
+                                            job.getName(),
+                                            job.getIdcompany(),
+                                            job.getId_recruiter(),
+                                            MainActivity.arrayListCV.get(positionCV).getKey(),
+                                            job.getImg(),
+                                            job.getAddress(),
+                                            job.getIdtype(),
+                                            job.getIdprofession(),
+                                            job.getStart_date(),
+                                            job.getEnd_date(),
+                                            job.getSalary(),
+                                            job.getIdarea(),
+                                            job.getExperience(),
+                                            job.getNumber(),
+                                            job.getDescription(),
+                                            job.getRequirement(),
+                                            job.getBenefit(),
+                                            job.getStatus(),
+                                            job.getCompany_name(),
+                                            job.getType_job()
+                                    ));
+                                    HomeFragment.adapterDaUngTuyen.notifyDataSetChanged();
                                     handler = new Handler();
                                     handler.postDelayed(new Runnable() {
                                         @Override

@@ -84,6 +84,8 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.ItemHolder>  {
         });
         if(kind == 1){
             holder.layout_chat.setVisibility(View.VISIBLE);
+        }else {
+            holder.layout_chat.setVisibility(View.GONE);
         }
 
 

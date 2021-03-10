@@ -1,4 +1,4 @@
-package com.example.luanvan.ui.Adapter.job;
+package com.example.luanvan.ui.Adapter.job_apply;
 
 import android.app.Activity;
 import android.content.Context;
@@ -23,6 +23,9 @@ import com.example.luanvan.R;
 import com.example.luanvan.ui.DetailedJob.DetailJobActivity;
 import com.example.luanvan.ui.Interface.ILoadMore;
 import com.example.luanvan.ui.Model.Job;
+import com.example.luanvan.ui.Model.Job_Apply;
+import com.example.luanvan.ui.cv.CVShowActivity;
+import com.example.luanvan.ui.home.HomeFragment;
 
 import java.text.DecimalFormat;
 import java.text.Normalizer;
@@ -40,18 +43,18 @@ class LoadingViewHolder extends RecyclerView.ViewHolder{
     }
 }
 
-public class KindOfJobAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable {
+public class KindOfJobApplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable {
     Context context;
-    List<Job> filterArraylist;
+    List<Job_Apply> filterArraylist;
     Activity activity;
-    List<Job> nameList;
+    List<Job_Apply> nameList;
     private final int VIEW_TYPE_ITEM = 0, VIEW_TYPE_LOADING = 1;
     ILoadMore loadmore;
     boolean isloading;
     int visableThreadHold = 4;
     int lastVisableItem,totalItemcount;
     int kind; // 0: normal, 1: việc đã ứng tuyển
-    public KindOfJobAdapter(RecyclerView recyclerView, Context context, List<Job> arrayList, Activity activity, int kind) {
+    public KindOfJobApplyAdapter(RecyclerView recyclerView, Context context, List<Job_Apply> arrayList, Activity activity, int kind) {
         this.context = context;
         this.nameList = arrayList;
         this.activity = activity;
@@ -96,7 +99,7 @@ public class KindOfJobAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
         if(holder instanceof ItemHolder){
             ItemHolder itemHolder = (ItemHolder) holder;
-            Job job = filterArraylist.get(position);
+            final Job_Apply job = filterArraylist.get(position);
             itemHolder.txttencongviec.setText(job.getName());
             itemHolder.txttencongty.setText(job.getCompany_name());
             String ngaybatdau = job.getStart_date();
@@ -123,13 +126,26 @@ public class KindOfJobAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     Intent intent = new Intent(context, DetailJobActivity.class);
                     // 0: từ màn hình chính, tìm kiếm, lọc chuyển qua, 1: từ notification chuyển qua
                     intent.putExtra("kind", 0);
-                    intent.putExtra("job", filterArraylist.get(position));
+                    for(int i = 0; i < HomeFragment.arrayList.size(); i++){
+                        if(filterArraylist.get(position).getId() == HomeFragment.arrayList.get(i).getId()){
+                            intent.putExtra("job",HomeFragment.arrayList.get(i));
+                        }
+                    }
                     activity.startActivity(intent);
 
                 }
             });
             if(kind == 1){
                 itemHolder.layout_chat.setVisibility(View.VISIBLE);
+                itemHolder.btnViewCV.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(context, CVShowActivity.class);
+                        intent.putExtra("kind", 2); // 1: show cv , 2: job apply
+                        intent.putExtra("cv_id", job.getId_cv());
+                        activity.startActivity(intent);
+                    }
+                });
             }else {
                 itemHolder.layout_chat.setVisibility(View.GONE);
             }
@@ -190,8 +206,8 @@ public class KindOfJobAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 if(charSequenceString.isEmpty()){
                     filterArraylist = nameList;
                 }else {
-                    List<Job> filteredList = new ArrayList<>();
-                    for(Job job : nameList){
+                    List<Job_Apply> filteredList = new ArrayList<>();
+                    for(Job_Apply job : nameList){
                         String name1 = stripAccents(job.getName()).trim();
                         if(name1.toLowerCase().contains(charSequenceString.toLowerCase())){
                             filteredList.add(job);
@@ -206,7 +222,7 @@ public class KindOfJobAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                filterArraylist = (ArrayList<Job>) results.values;
+                filterArraylist = (ArrayList<Job_Apply>) results.values;
                 notifyDataSetChanged();
             }
         };

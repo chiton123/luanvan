@@ -33,9 +33,11 @@ import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.ViewPageAdapter;
 import com.example.luanvan.ui.Apply.ChooseCVActivity;
 import com.example.luanvan.ui.Model.Job;
+import com.example.luanvan.ui.Model.Job_Apply;
 import com.example.luanvan.ui.fragment.job_f.CompanyFragment;
 import com.example.luanvan.ui.fragment.job_f.InfoFragment;
 import com.example.luanvan.ui.fragment.job_f.RelevantJobFragment;
+import com.example.luanvan.ui.home.HomeFragment;
 import com.example.luanvan.ui.login.LoginActivity;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -158,6 +160,30 @@ public class DetailJobActivity extends AppCompatActivity {
                                     content = "Ứng viên " + MainActivity.username + " - " + job.getName();
                                    // Toast.makeText(getApplicationContext(), id_application + content , Toast.LENGTH_SHORT).show();
                                     postNotification(1);
+                                    HomeFragment.arrayListDaUngTuyen.add(new Job_Apply(
+                                            job.getId(),
+                                            job.getName(),
+                                            job.getIdcompany(),
+                                            job.getId_recruiter(),
+                                            MainActivity.arrayListCV.get(0).getKey(),
+                                            job.getImg(),
+                                            job.getAddress(),
+                                            job.getIdtype(),
+                                            job.getIdprofession(),
+                                            job.getStart_date(),
+                                            job.getEnd_date(),
+                                            job.getSalary(),
+                                            job.getIdarea(),
+                                            job.getExperience(),
+                                            job.getNumber(),
+                                            job.getDescription(),
+                                            job.getRequirement(),
+                                            job.getBenefit(),
+                                            job.getStatus(),
+                                            job.getCompany_name(),
+                                            job.getType_job()
+                                    ));
+                                    HomeFragment.adapterDaUngTuyen.notifyDataSetChanged();
                                 }else {
                                     Toast.makeText(getApplicationContext(), "Ứng tuyển thất bại", Toast.LENGTH_SHORT).show();
                                 }
