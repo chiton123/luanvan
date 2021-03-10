@@ -43,13 +43,18 @@ public class KindOfJobActivity extends AppCompatActivity {
     KindOfJobAdapter adapter;
     Handler handler;
     int page = 1;
+    int kind = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kind_of_job);
         anhxa();
         actionBar();
-        getData(page);
+        if(kind == 5){
+            getDataApply(page);
+        }else {
+            getData(page);
+        }
         loadMore();
 
     }
@@ -57,7 +62,11 @@ public class KindOfJobActivity extends AppCompatActivity {
         adapter.setLoadmore(new ILoadMore() {
             @Override
             public void onLoadMore() {
-                getData(++page);
+                if(kind == 5){
+                    getDataApply(++page);
+                }else {
+                    getData(++page);
+                }
                 handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
@@ -73,7 +82,6 @@ public class KindOfJobActivity extends AppCompatActivity {
     }
 
     private void getData(int page) {
-        final int kind = getIntent().getIntExtra("thuctap",0);
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         String url = MainActivity.urljob1 + String.valueOf(page);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -140,9 +148,99 @@ public class KindOfJobActivity extends AppCompatActivity {
 
     }
 
+    private void getDataApply(int page) {
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        String url = MainActivity.urljob1 + String.valueOf(page);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            for(int i=0; i < jsonArray.length(); i++){
+                                JSONObject object = jsonArray.getJSONObject(i);
+                                int status = object.getInt("status");
+                                SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+                                Date date = fmt.parse(object.getString("end_date"));
+                                if(status == 0 && date.after(Calendar.getInstance().getTime())){
+                                    arrayList.add(new Job(
+                                            object.getInt("id"),
+                                            object.getString("name"),
+                                            object.getInt("idcompany"),
+                                            object.getInt("id_recruiter"),
+                                            object.getString("img"),
+                                            object.getString("area"),
+                                            object.getInt("idtype"),
+                                            object.getInt("idprofession"),
+                                            object.getString("start_date"),
+                                            object.getString("end_date"),
+                                            object.getInt("salary"),
+                                            object.getInt("idarea"),
+                                            object.getString("experience"),
+                                            object.getInt("number"),
+                                            object.getString("description"),
+                                            object.getString("requirement"),
+                                            object.getString("benefit"),
+                                            object.getInt("status"),
+                                            object.getString("company_name"),
+                                            object.getString("type_job")
+                                    ));
+                                    adapter.notifyDataSetChanged();
+                                }
+
+
+                            }
+
+
+                        } catch (JSONException | ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("kind", String.valueOf(kind));
+                map.put("iduser", String.valueOf(MainActivity.iduser));
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+
+    }
+
     private void actionBar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        // 0 : all - việc làm tốt nhất, 1: luong cao,2: lam tu xa, 3: thuc tap, 4: moi nhat, 5: job_apply
+        switch (kind){
+            case 0:
+                getSupportActionBar().setTitle("Việc làm tốt nhất");
+                break;
+            case 1:
+                getSupportActionBar().setTitle("Việc lương cao");
+                break;
+            case 2:
+                getSupportActionBar().setTitle("Việc làm từ xa");
+                break;
+            case 3:
+                getSupportActionBar().setTitle("Việc thực tập");
+                break;
+            case 4:
+                getSupportActionBar().setTitle("Việc làm mới nhất");
+                break;
+            case 5:
+                getSupportActionBar().setTitle("Việc đã ứng tuyển");
+                break;
+        }
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -152,6 +250,7 @@ public class KindOfJobActivity extends AppCompatActivity {
     }
 
     private void anhxa() {
+        kind = getIntent().getIntExtra("thuctap",0);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         arrayList = new ArrayList<>();
         recyclerView = (RecyclerView) findViewById(R.id.recycleview);

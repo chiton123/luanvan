@@ -14,6 +14,7 @@ public class CVShowActivity extends AppCompatActivity {
     Toolbar toolbar;
     WebView webView;
     String url = "";
+    int kind = 0; // 1: show cv , 2: job apply
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,13 +28,18 @@ public class CVShowActivity extends AppCompatActivity {
 
     }
     private void eventPDF() {
-        url = getIntent().getStringExtra("url");
-        webView.requestFocus();
-        WebSettings webSettings = webView.getSettings();
-        webSettings.setJavaScriptEnabled(true);
-        webView.getSettings().setSupportZoom(true);
-        String url1 = "https://docs.google.com/gview?embedded=true&url=" + url;
-        webView.loadUrl(url1);
+        if(kind == 1){
+            url = getIntent().getStringExtra("url");
+            webView.requestFocus();
+            WebSettings webSettings = webView.getSettings();
+            webSettings.setJavaScriptEnabled(true);
+            webView.getSettings().setSupportZoom(true);
+            String url1 = "https://docs.google.com/gview?embedded=true&url=" + url;
+            webView.loadUrl(url1);
+        }else {
+
+        }
+
 
     }
     private void actionBar() {
@@ -49,7 +55,7 @@ public class CVShowActivity extends AppCompatActivity {
     private void anhxa() {
         toolbar = (androidx.appcompat.widget.Toolbar) findViewById(R.id.toolbar);
         webView = (WebView) findViewById(R.id.webview);
-
+        kind = getIntent().getIntExtra("kind", 0);
 
 
     }

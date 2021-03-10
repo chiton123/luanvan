@@ -9,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,7 +59,7 @@ public class HomeFragment extends Fragment {
     ArrayList<Job> arrayList, arrayListThuctap, arrayListLuongCao, arrayListViecLamTuXa, arrayListViecLamMoiNhat, arrayListDaUngTuyen;
     TextView txtthuctap, txtviectotnhat, txtLuongCao, txtViecLamTuXa, txtViecLamMoiNhat, txtDaUngTuyen;
     public static TextView txtNotification;
-
+    LinearLayout layout_daungtuyen;
     Handler handler;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -84,6 +85,7 @@ public class HomeFragment extends Fragment {
         recyclerViewViecLamTuXa.setHasFixedSize(true);
         recyclerViewViecLamMoiNhat.setHasFixedSize(true);
         recyclerViewDaUngTuyen.setHasFixedSize(true);
+        layout_daungtuyen = (LinearLayout) view.findViewById(R.id.layout_daungtuyen);
         // toolbar menu option
 
         toolbar = (Toolbar)view.findViewById(R.id.toolbar);
@@ -97,6 +99,7 @@ public class HomeFragment extends Fragment {
         txtLuongCao = (TextView) view.findViewById(R.id.txtviecluongcao);
         txtViecLamTuXa = (TextView) view.findViewById(R.id.txtvieclamtuxa);
         txtViecLamMoiNhat = (TextView) view.findViewById(R.id.txtvieclammoinhat);
+        txtDaUngTuyen = (TextView) view.findViewById(R.id.txtviecdaungtuyen);
         arrayList = new ArrayList<>();
         arrayListThuctap = new ArrayList<>();
         arrayListLuongCao = new ArrayList<>();
@@ -126,14 +129,19 @@ public class HomeFragment extends Fragment {
         recyclerViewDaUngTuyen.setAdapter(adapterDaUngTuyen);
         eventXemtatca();
         if(MainActivity.login == 1){
-            setNotification();
-            getDataApplied();
+            activateAfterLogin();
+
         }
 
 
         return view;
     }
 
+    public void activateAfterLogin(){
+        setNotification();
+        getDataApplied();
+        layout_daungtuyen.setVisibility(View.VISIBLE);
+    }
 
     private void getDataNotification() {
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
@@ -255,15 +263,14 @@ public class HomeFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == 123 && resultCode == 123){
-            setNotification();
-            getDataApplied();
+            activateAfterLogin();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     // 3: thuc tap
     private void eventXemtatca() {
-        // 0 : all, 1: luong cao,2: lam tu xa, 3: thuc tap, 4: moi nhat
+        // 0 : all, 1: luong cao,2: lam tu xa, 3: thuc tap, 4: moi nhat, 5: job_apply
         txtthuctap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -306,6 +313,15 @@ public class HomeFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), KindOfJobActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("thuctap", 2);
+                startActivity(intent);
+            }
+        });
+        txtDaUngTuyen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), KindOfJobActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("thuctap", 5);
                 startActivity(intent);
             }
         });

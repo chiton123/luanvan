@@ -1,4 +1,4 @@
-package com.example.luanvan.ui.Adapter.job;
+package com.example.luanvan.ui.Adapter.job_apply;
 
 import android.app.Activity;
 import android.content.Context;
@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.DetailedJob.DetailJobActivity;
 import com.example.luanvan.ui.Model.Job;
+import com.example.luanvan.ui.Model.Job_Apply;
 import com.example.luanvan.ui.cv.CVShowActivity;
 
 import java.text.DecimalFormat;
@@ -26,13 +27,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class JobAdapter extends RecyclerView.Adapter<JobAdapter.ItemHolder>  {
+public class JobApplyAdapter extends RecyclerView.Adapter<JobApplyAdapter.ItemHolder>  {
     Context context;
-    ArrayList<Job> arrayList;
+    ArrayList<Job_Apply> arrayList;
     Activity activity;
     int kind; // 0: normal, 1: việc đã ứng tuyển
 
-    public JobAdapter(Context context, ArrayList<Job> arrayList, Activity activity, int kind) {
+    public JobApplyAdapter(Context context, ArrayList<Job_Apply> arrayList, Activity activity, int kind) {
         this.context = context;
         this.arrayList = arrayList;
         this.activity = activity;
@@ -49,7 +50,7 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.ItemHolder>  {
 
     @Override
     public void onBindViewHolder(@NonNull ItemHolder holder, final int position) {
-        final Job job = arrayList.get(position);
+        final Job_Apply job = arrayList.get(position);
         holder.txttencongviec.setText(job.getName());
         holder.txttencongty.setText(job.getCompany_name());
         String ngaybatdau = job.getStart_date();
@@ -84,6 +85,14 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.ItemHolder>  {
         });
         if(kind == 1){
             holder.layout_chat.setVisibility(View.VISIBLE);
+            holder.btnViewCV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, CVShowActivity.class);
+                    intent.putExtra("kind", 2); // 1: show cv , 2: job apply
+                    intent.putExtra("cv_id", job.getId_cv() );
+                }
+            });
         }
 
 

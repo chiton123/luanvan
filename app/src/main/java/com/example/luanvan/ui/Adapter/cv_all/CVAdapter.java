@@ -61,6 +61,7 @@ public class CVAdapter extends RecyclerView.Adapter<CVAdapter.ItemHolder> {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, CVShowActivity.class);
+                intent.putExtra("kind", 1);  // 1: show cv , 2: job apply
                 intent.putExtra("url", arrayList.get(position).getUrl());
                 activity.startActivity(intent);
             }
