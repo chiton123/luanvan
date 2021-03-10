@@ -110,85 +110,160 @@ public class ChooseCVActivity extends AppCompatActivity {
         alert.setPositiveButton("Ứng tuyển", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlApply,
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
-                                if(!response.equals("fail")){
-                                    loading();
-                                  //  Toast.makeText(getApplicationContext(), "Ứng tuyển thành công", Toast.LENGTH_SHORT).show();
-                                    int k = response.lastIndexOf('s');
-                                    id_application = Integer.parseInt(response.substring(k+1, response.length()));
-                                    content = "Ứng viên " + MainActivity.username + " - " + job.getName();
-                                    // Toast.makeText(getApplicationContext(), id_application + content , Toast.LENGTH_SHORT).show();
-                                    postNotification(1);
-                                    HomeFragment.arrayListDaUngTuyen.add(new Job_Apply(
-                                            job.getId(),
-                                            job.getName(),
-                                            job.getIdcompany(),
-                                            job.getId_recruiter(),
-                                            MainActivity.arrayListCV.get(positionCV).getKey(),
-                                            job.getImg(),
-                                            job.getAddress(),
-                                            job.getIdtype(),
-                                            job.getIdprofession(),
-                                            job.getStart_date(),
-                                            job.getEnd_date(),
-                                            job.getSalary(),
-                                            job.getIdarea(),
-                                            job.getExperience(),
-                                            job.getNumber(),
-                                            job.getDescription(),
-                                            job.getRequirement(),
-                                            job.getBenefit(),
-                                            job.getStatus(),
-                                            job.getCompany_name(),
-                                            job.getType_job()
-                                    ));
-                                    HomeFragment.adapterDaUngTuyen.notifyDataSetChanged();
-                                    handler = new Handler();
-                                    handler.postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            progressDialog.dismiss();
-                                            Intent intent = new Intent();
-                                            setResult(123);
-                                            finish();
-                                        }
-                                    },1500);
-
-
-                                }else {
-                                    Toast.makeText(getApplicationContext(), "Ứng tuyển thất bại", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Toast.makeText(getApplicationContext(), "Lỗi", Toast.LENGTH_SHORT).show();
-                            }
-                        }){
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        Map<String,String> map = new HashMap<>();
-                        map.put("job_id", String.valueOf(DetailJobActivity.job_id));
-                        map.put("user_id", String.valueOf(MainActivity.user.getId()));
-                        map.put("user_id_f", MainActivity.uid);
-                        map.put("cv_id", MainActivity.arrayListCV.get(positionCV).getKey());
-                        return map;
-                    }
-                };
-                requestQueue.add(stringRequest);
+                if(DetailJobActivity.checkApplyAgain == 0){
+                    apply();
+                }else {
+                    applyAgain();
+                }
 
             }
         });
 
         alert.show();
     }
+    public void applyAgain(){
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlApplyAgain,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(!response.equals("fail")){
+                            loading();
+                            Toast.makeText(getApplicationContext(), "Ứng tuyển thành công", Toast.LENGTH_SHORT).show();
+                            int k = response.lastIndexOf('s');
+                            id_application = Integer.parseInt(response.substring(k+1, response.length()));
+                            content = "Ứng viên " + MainActivity.username + " - " + job.getName();
+                            // Toast.makeText(getApplicationContext(), id_application + content , Toast.LENGTH_SHORT).show();
+                            postNotification(1);
+                            if(DetailJobActivity.checkApplyAgain == 1){
+                                // remove job trong list đã ứng tuyển
+                                for(int i=0; i < HomeFragment.arrayListDaUngTuyen.size(); i++){
+                                    if(HomeFragment.arrayListDaUngTuyen.get(i).getId() == job.getId()){
+                                        HomeFragment.arrayListDaUngTuyen.remove(i);
+                                    }
+                                }
+                            }
 
+                            HomeFragment.arrayListDaUngTuyen.add(new Job_Apply(
+                                    job.getId(),
+                                    job.getName(),
+                                    job.getIdcompany(),
+                                    job.getId_recruiter(),
+                                    MainActivity.arrayListCV.get(0).getKey(),
+                                    job.getImg(),
+                                    job.getAddress(),
+                                    job.getIdtype(),
+                                    job.getIdprofession(),
+                                    job.getStart_date(),
+                                    job.getEnd_date(),
+                                    job.getSalary(),
+                                    job.getIdarea(),
+                                    job.getExperience(),
+                                    job.getNumber(),
+                                    job.getDescription(),
+                                    job.getRequirement(),
+                                    job.getBenefit(),
+                                    job.getStatus(),
+                                    job.getCompany_name(),
+                                    job.getType_job()
+                            ));
+                            HomeFragment.adapterDaUngTuyen.notifyDataSetChanged();
+                            handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    progressDialog.dismiss();
+                                    Intent intent = new Intent();
+                                    setResult(123);
+                                    finish();
+                                }
+                            },1500);
+                        }else {
+                            Toast.makeText(getApplicationContext(), "Ứng tuyển thất bại", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "Lỗi", Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("job_id", String.valueOf(DetailJobActivity.job_id));
+                map.put("user_id", String.valueOf(MainActivity.user.getId()));
+                map.put("user_id_f", MainActivity.uid);
+                map.put("cv_id", MainActivity.arrayListCV.get(0).getKey());
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
+    public void apply(){
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlApply,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(!response.equals("fail")){
+                            loading();
+                            Toast.makeText(getApplicationContext(), "Ứng tuyển thành công", Toast.LENGTH_SHORT).show();
+                            int k = response.lastIndexOf('s');
+                            id_application = Integer.parseInt(response.substring(k+1, response.length()));
+                            content = "Ứng viên " + MainActivity.username + " - " + job.getName();
+                            // Toast.makeText(getApplicationContext(), id_application + content , Toast.LENGTH_SHORT).show();
+                            postNotification(1);
+
+                            HomeFragment.arrayListDaUngTuyen.add(new Job_Apply(
+                                    job.getId(),
+                                    job.getName(),
+                                    job.getIdcompany(),
+                                    job.getId_recruiter(),
+                                    MainActivity.arrayListCV.get(0).getKey(),
+                                    job.getImg(),
+                                    job.getAddress(),
+                                    job.getIdtype(),
+                                    job.getIdprofession(),
+                                    job.getStart_date(),
+                                    job.getEnd_date(),
+                                    job.getSalary(),
+                                    job.getIdarea(),
+                                    job.getExperience(),
+                                    job.getNumber(),
+                                    job.getDescription(),
+                                    job.getRequirement(),
+                                    job.getBenefit(),
+                                    job.getStatus(),
+                                    job.getCompany_name(),
+                                    job.getType_job()
+                            ));
+                            HomeFragment.adapterDaUngTuyen.notifyDataSetChanged();
+                        }else {
+                            Toast.makeText(getApplicationContext(), "Ứng tuyển thất bại", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "Lỗi", Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("job_id", String.valueOf(DetailJobActivity.job_id));
+                map.put("user_id", String.valueOf(MainActivity.user.getId()));
+                map.put("user_id_f", MainActivity.uid);
+                map.put("cv_id", MainActivity.arrayListCV.get(0).getKey());
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
     private void eventButton() {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -231,7 +231,6 @@ public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHo
                 intent.putExtra("applicant", arrayList.get(position));
                 intent.putExtra("kind", kind);
                 intent.putExtra("position", position);
-
                 activity.startActivityForResult(intent, REQUEST_CODE);
             }
         });
