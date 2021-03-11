@@ -41,7 +41,7 @@ public class CVFilterFragment extends Fragment {
     RecyclerView recyclerView;
     public static CVFilterAdapter adapter;
     int job_id = 0;
-
+    // kind: 1: lọc CV, 2: phỏng vấn, 3: nhận việc để cập nhật sau khi đánh giá, 0: candidateDocument
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -52,6 +52,7 @@ public class CVFilterFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
         job_id = getActivity().getIntent().getIntExtra("job_id", 0);
+        CVManageActivity.arrayListCVFilter.clear();
         // 1: lọc CV, 2: phỏng vấn, 3: nhận việc
         if (CVManageActivity.arrayListCVFilter.size() == 0) {
             getData();
@@ -62,12 +63,14 @@ public class CVFilterFragment extends Fragment {
     }
 
     private void getData() {
+      //  Toast.makeText(getActivity(), "job id " + job_id, Toast.LENGTH_SHORT).show();
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlFilterCV,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         if (response != null) {
+                         //   Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_SHORT).show();
                             try {
                                 JSONArray jsonArray = new JSONArray(response);
                                 for (int i = 0; i < jsonArray.length(); i++) {

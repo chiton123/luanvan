@@ -37,7 +37,7 @@ public class InterviewFragment extends Fragment {
     RecyclerView recyclerView;
     public static CVFilterAdapter adapter;
     int job_id = 0;
-
+    // kind: 1: lọc CV, 2: phỏng vấn, 3: nhận việc để cập nhật sau khi đánh giá, 0: candidateDocument
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -49,6 +49,7 @@ public class InterviewFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
         job_id = getActivity().getIntent().getIntExtra("job_id", 0);
+        CVManageActivity.arrayListInterView.clear();
         // 1: lọc CV, 2: phỏng vấn, 3: nhận việc
         if(CVManageActivity.arrayListInterView.size() == 0){
             getData();
@@ -63,6 +64,7 @@ public class InterviewFragment extends Fragment {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                     //   Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_SHORT).show();
                         if(response != null){
                             try {
                                 JSONArray jsonArray = new JSONArray(response);

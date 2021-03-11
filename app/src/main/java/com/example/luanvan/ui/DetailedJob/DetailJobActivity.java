@@ -537,6 +537,7 @@ public class DetailJobActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                checkApplyAgain = 0;
                 finish();
             }
         });
@@ -565,6 +566,7 @@ public class DetailJobActivity extends AppCompatActivity {
 
 
     private void anhxa() {
+        checkApplyAgain = 0;
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbarcollapse);
         anhcongty = (ImageView) findViewById(R.id.hinhanh);

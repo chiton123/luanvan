@@ -35,7 +35,7 @@ import java.util.Map;
 public class CandidateDocumentFragment extends Fragment {
     RecyclerView recyclerView;
     public static CVFilterAdapter adapter;
-
+    // kind: 1: lọc CV, 2: phỏng vấn, 3: nhận việc để cập nhật sau khi đánh giá, 0: candidateDocument
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

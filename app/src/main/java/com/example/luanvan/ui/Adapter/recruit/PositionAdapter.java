@@ -116,7 +116,7 @@ public class PositionAdapter extends RecyclerView.Adapter<PositionAdapter.ItemHo
             @Override
             public void onClick(View v) {
                 Intent intent1 = new Intent(activity, AdjustJobActivity.class);
-                intent1.putExtra("com/example/luanvan/ui/Adapter/job", arrayList.get(position));
+                intent1.putExtra("job", arrayList.get(position));
                 intent1.putExtra("position", position);
                 activity.startActivityForResult(intent1, REQUEST_CODE);
             }

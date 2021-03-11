@@ -127,6 +127,7 @@ public class ChooseCVActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
                         if(!response.equals("fail")){
                             loading();
                             Toast.makeText(getApplicationContext(), "Ứng tuyển thành công", Toast.LENGTH_SHORT).show();
@@ -241,6 +242,16 @@ public class ChooseCVActivity extends AppCompatActivity {
                                     job.getType_job()
                             ));
                             HomeFragment.adapterDaUngTuyen.notifyDataSetChanged();
+                            handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    progressDialog.dismiss();
+                                    Intent intent = new Intent();
+                                    setResult(123);
+                                    finish();
+                                }
+                            },1500);
                         }else {
                             Toast.makeText(getApplicationContext(), "Ứng tuyển thất bại", Toast.LENGTH_SHORT).show();
                         }

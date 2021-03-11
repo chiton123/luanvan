@@ -25,6 +25,9 @@ import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Applicant;
 import com.example.luanvan.ui.Model.JobList;
+import com.example.luanvan.ui.fragment.recruting.CVFilterFragment;
+import com.example.luanvan.ui.fragment.recruting.GoToWorkFragment;
+import com.example.luanvan.ui.fragment.recruting.InterviewFragment;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManagementActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CandidateDocumentFragment;
@@ -266,7 +269,7 @@ public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHo
                                         x = i;
                                     }
                                 }
-                                CVManageActivity.arrayListAll.remove(x);
+                                CVManageActivity.arrayListAll.remove(x); // bên hồ sơ ứng tuyển
                                 CandidateDocumentFragment.adapter.notifyDataSetChanged();
 
 
@@ -286,6 +289,8 @@ public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHo
                                 }else {
                                     CVManageActivity.arrayListJobList.get(positionJobList).setWork(CVManageActivity.arrayListJobList.get(positionJobList).getWork() -1);
                                 }
+
+
                             }
 
                             JobListFragment.adapter.notifyDataSetChanged();

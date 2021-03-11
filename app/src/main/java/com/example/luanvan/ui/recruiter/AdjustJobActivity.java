@@ -70,7 +70,7 @@ public class AdjustJobActivity extends AppCompatActivity {
     }
 
     private void getInfo() {
-        job = (JobList) getIntent().getSerializableExtra("com/example/luanvan/ui/Adapter/job");
+        job = (JobList) getIntent().getSerializableExtra("job");
         position_job = getIntent().getIntExtra("position", 0);
         job_id = job.getId();
         idArea = job.getIdarea();
