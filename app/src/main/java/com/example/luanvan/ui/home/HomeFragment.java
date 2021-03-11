@@ -63,7 +63,7 @@ public class HomeFragment extends Fragment {
     public static ArrayList<Job_Apply> arrayListDaUngTuyen;
     TextView txtthuctap, txtviectotnhat, txtLuongCao, txtViecLamTuXa, txtViecLamMoiNhat, txtDaUngTuyen;
     public static TextView txtNotification;
-    LinearLayout layout_daungtuyen;
+    public static LinearLayout layout_daungtuyen;
     Handler handler;
 //    public static int check_notification = 0; // kiểm tra đã load số thông báo hay chưa
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -119,13 +119,13 @@ public class HomeFragment extends Fragment {
         adapterDaUngTuyen = new JobApplyAdapter(getActivity(), arrayListDaUngTuyen, getActivity(), 1);
         // tất cả job
         getData(0);
-        // getdata 0 : all, 1: luong cao,2: lam tu xa, 3: thuc tap, 4: moi nhat, 5: đã ứng tuyển
+        // getdata 0 : all, 1: luong cao,2: lam tu xa, 3: thuc tap, 4: moi nhat
         // job thực tập
         getData(3);
         getData(1);
         getData(2);
         getData(4);
-        getData(5);
+
         recyclerView.setAdapter(jobAdapter);
         recyclerViewthuctap.setAdapter(adapterThuctap);
         recyclerViewLuongCao.setAdapter(adapterLuongCao);

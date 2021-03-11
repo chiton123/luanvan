@@ -298,6 +298,8 @@ public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHo
                             arrayList.remove(position);
 
                             notifyDataSetChanged();
+                            infoNothing();
+
 
                         }else {
                             Toast.makeText(context, "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
@@ -319,6 +321,40 @@ public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHo
         };
         requestQueue.add(stringRequest);
 
+    }
+
+    public void infoNothing(){
+        // khi xóa thì xét coi có = 0 -> thông báo là k có ứng viên
+        // candidateDocument
+        if(CVManageActivity.arrayListAll.size() == 0){
+            CandidateDocumentFragment.layout_nothing.setVisibility(View.VISIBLE);
+            CandidateDocumentFragment.layout.setVisibility(View.GONE);
+        }else {
+            CandidateDocumentFragment.layout_nothing.setVisibility(View.GONE);
+            CandidateDocumentFragment.layout.setVisibility(View.VISIBLE);
+        }
+        if(CVManageActivity.arrayListCVFilter.size() == 0){
+            CVFilterFragment.layout_nothing.setVisibility(View.VISIBLE);
+            CVFilterFragment.layout.setVisibility(View.GONE);
+        }else {
+            CVFilterFragment.layout_nothing.setVisibility(View.GONE);
+            CVFilterFragment.layout.setVisibility(View.VISIBLE);
+        }
+        if(CVManageActivity.arrayListInterView.size() == 0){
+            InterviewFragment.layout_nothing.setVisibility(View.VISIBLE);
+            InterviewFragment.layout.setVisibility(View.GONE);
+        }else {
+            InterviewFragment.layout_nothing.setVisibility(View.GONE);
+            InterviewFragment.layout.setVisibility(View.VISIBLE);
+        }
+
+        if(CVManageActivity.arrayListGoToWork.size() == 0){
+            GoToWorkFragment.layout_nothing.setVisibility(View.VISIBLE);
+            GoToWorkFragment.layout.setVisibility(View.GONE);
+        }else {
+            GoToWorkFragment.layout_nothing.setVisibility(View.GONE);
+            GoToWorkFragment.layout.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

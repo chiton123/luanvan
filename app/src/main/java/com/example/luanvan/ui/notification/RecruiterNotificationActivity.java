@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -38,14 +39,20 @@ public class RecruiterNotificationActivity extends AppCompatActivity {
     Toolbar toolbar;
     RecyclerView recyclerView;
     RecruiterNotificationAdapter adapter;
-
+    LinearLayout layout, layout_nothing;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recruiter_notification);
         anhxa();
         actionBar();
-
+        if(RecruiterActivity.arrayListNotificationRecruiter.size() == 0){
+            layout_nothing.setVisibility(View.VISIBLE);
+            layout.setVisibility(View.GONE);
+        }else {
+            layout_nothing.setVisibility(View.GONE);
+            layout.setVisibility(View.VISIBLE);
+        }
 
     }
 
@@ -59,14 +66,15 @@ public class RecruiterNotificationActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.read:
-                adapter.readAll();
-                if(RecruiterActivity.arrayListNotificationRecruiter.size() > 0)
-                for(int i=0; i < RecruiterActivity.arrayListNotificationRecruiter.size(); i++){
-                    RecruiterActivity.arrayListNotificationRecruiter.get(i).setStatus(1);
+                if(RecruiterActivity.arrayListNotificationRecruiter.size() > 0){
+                    adapter.readAll();
+                    for(int i=0; i < RecruiterActivity.arrayListNotificationRecruiter.size(); i++){
+                        RecruiterActivity.arrayListNotificationRecruiter.get(i).setStatus(1);
+                    }
+                    adapter.notifyDataSetChanged();
+                    MainActivity.k = 0;
+                    RecruiterActivity.txtNotification.setVisibility(View.GONE);
                 }
-                adapter.notifyDataSetChanged();
-                MainActivity.k = 0;
-                RecruiterActivity.txtNotification.setVisibility(View.GONE);
                 break;
         }
 
@@ -91,7 +99,8 @@ public class RecruiterNotificationActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         adapter = new RecruiterNotificationAdapter(this, RecruiterActivity.arrayListNotificationRecruiter, this,1);
         recyclerView.setAdapter(adapter);
-
+        layout = (LinearLayout) findViewById(R.id.layout);
+        layout_nothing = (LinearLayout) findViewById(R.id.layout_nothing);
 
     }
 }

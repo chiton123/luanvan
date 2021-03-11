@@ -400,6 +400,7 @@ public class DetailJobActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == REQUEST_CODE_LOGIN && resultCode == 123){
             checkApplyOrNot();
+            getDataApplied();
         }
         if(requestCode == REQUEST_CODE_CV && resultCode == 123){
             checkApplyOrNot();
@@ -577,7 +578,66 @@ public class DetailJobActivity extends AppCompatActivity {
 
     }
 
+    private void getDataApplied() {
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlJobApply,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                      //  Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            for(int i=0; i < jsonArray.length(); i++){
+                                JSONObject object = jsonArray.getJSONObject(i);
+                                HomeFragment.arrayListDaUngTuyen.add(new Job_Apply(
+                                        object.getInt("id"),
+                                        object.getString("name"),
+                                        object.getInt("idcompany"),
+                                        object.getInt("id_recruiter"),
+                                        object.getString("id_cv"),
+                                        object.getString("img"),
+                                        object.getString("area"),
+                                        object.getInt("idtype"),
+                                        object.getInt("idprofession"),
+                                        object.getString("start_date"),
+                                        object.getString("end_date"),
+                                        object.getInt("salary"),
+                                        object.getInt("idarea"),
+                                        object.getString("experience"),
+                                        object.getInt("number"),
+                                        object.getString("description"),
+                                        object.getString("requirement"),
+                                        object.getString("benefit"),
+                                        object.getInt("status"),
+                                        object.getString("company_name"),
+                                        object.getString("type_job")
+                                ));
 
+                            }
+                            HomeFragment.adapterDaUngTuyen.notifyDataSetChanged();
+                            HomeFragment.layout_daungtuyen.setVisibility(View.VISIBLE);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("iduser", String.valueOf(MainActivity.iduser));
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+
+    }
     private void anhxa() {
         checkApplyAgain = 0;
         toolbar = (Toolbar) findViewById(R.id.toolbar);

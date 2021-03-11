@@ -26,6 +26,9 @@ import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.JobList;
+import com.example.luanvan.ui.fragment.recruting.CVFilterFragment;
+import com.example.luanvan.ui.fragment.recruting.GoToWorkFragment;
+import com.example.luanvan.ui.fragment.recruting.InterviewFragment;
 import com.example.luanvan.ui.recruiter.AdjustJobActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManagementActivity;
@@ -210,6 +213,7 @@ public class PositionAdapter extends RecyclerView.Adapter<PositionAdapter.ItemHo
                                     }
                                     arrayList.remove(position);
                                     notifyDataSetChanged();
+                                    infoNothing();
 
                                 }else {
                                     Toast.makeText(context, "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
@@ -266,6 +270,17 @@ public class PositionAdapter extends RecyclerView.Adapter<PositionAdapter.ItemHo
             }
         };
         requestQueue.add(stringRequest);
+    }
+    public void infoNothing(){
+        // khi xóa thì xét coi có = 0 -> thông báo là k có ứng viên
+        // candidateDocument
+        if(CVManageActivity.arrayListAll.size() == 0){
+            CandidateDocumentFragment.layout_nothing.setVisibility(View.VISIBLE);
+            CandidateDocumentFragment.layout.setVisibility(View.GONE);
+        }else {
+            CandidateDocumentFragment.layout_nothing.setVisibility(View.GONE);
+            CandidateDocumentFragment.layout.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

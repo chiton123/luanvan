@@ -6,9 +6,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -38,12 +40,16 @@ public class GoToWorkFragment extends Fragment {
     RecyclerView recyclerView;
     public static CVFilterAdapter adapter;
     int job_id = 0;
+    Handler handler;
+    public static LinearLayout layout, layout_nothing;
     // kind: 1: lọc CV, 2: phỏng vấn, 3: nhận việc để cập nhật sau khi đánh giá, 0: candidateDocument
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_go_to_work, container, false);
+        layout = (LinearLayout) view.findViewById(R.id.layout);
+        layout_nothing = (LinearLayout) view.findViewById(R.id.layout_nothing);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
         CVManageActivity.arrayListGoToWork = new ArrayList<>();
         adapter = new CVFilterAdapter(getActivity(), CVManageActivity.arrayListGoToWork, getActivity(),3, CVManageActivity.arrayListJobList);
@@ -56,7 +62,19 @@ public class GoToWorkFragment extends Fragment {
         if(CVManageActivity.arrayListGoToWork.size() == 0){
             getData();
         }
-
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(CVManageActivity.arrayListGoToWork.size() == 0){
+                    layout_nothing.setVisibility(View.VISIBLE);
+                    layout.setVisibility(View.GONE);
+                }else {
+                    layout_nothing.setVisibility(View.GONE);
+                    layout.setVisibility(View.VISIBLE);
+                }
+            }
+        },1000);
 
         return view;
     }

@@ -31,6 +31,9 @@ import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Applicant;
 import com.example.luanvan.ui.Model.Profile;
+import com.example.luanvan.ui.fragment.recruting.CVFilterFragment;
+import com.example.luanvan.ui.fragment.recruting.GoToWorkFragment;
+import com.example.luanvan.ui.fragment.recruting.InterviewFragment;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManagementActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CandidateDocumentFragment;
@@ -424,6 +427,8 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
                             notifyDataSetChanged();
                             JobListFragment.adapter.notifyDataSetChanged();
 
+                            infoNothing(); // khi k có ứng viên thì báo k có
+
                             Intent intent = new Intent();
                             intent.putExtra("kind", kind);
                             intent.putExtra("status", statusApplication);
@@ -452,6 +457,40 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
         };
         requestQueue.add(stringRequest);
     }
+    public void infoNothing(){
+        // khi xóa thì xét coi có = 0 -> thông báo là k có ứng viên
+        // candidateDocument
+        if(CVManageActivity.arrayListAll.size() == 0){
+            CandidateDocumentFragment.layout_nothing.setVisibility(View.VISIBLE);
+            CandidateDocumentFragment.layout.setVisibility(View.GONE);
+        }else {
+            CandidateDocumentFragment.layout_nothing.setVisibility(View.GONE);
+            CandidateDocumentFragment.layout.setVisibility(View.VISIBLE);
+        }
+        if(CVManageActivity.arrayListCVFilter.size() == 0){
+            CVFilterFragment.layout_nothing.setVisibility(View.VISIBLE);
+            CVFilterFragment.layout.setVisibility(View.GONE);
+        }else {
+            CVFilterFragment.layout_nothing.setVisibility(View.GONE);
+            CVFilterFragment.layout.setVisibility(View.VISIBLE);
+        }
+        if(CVManageActivity.arrayListInterView.size() == 0){
+            InterviewFragment.layout_nothing.setVisibility(View.VISIBLE);
+            InterviewFragment.layout.setVisibility(View.GONE);
+        }else {
+            InterviewFragment.layout_nothing.setVisibility(View.GONE);
+            InterviewFragment.layout.setVisibility(View.VISIBLE);
+        }
+
+        if(CVManageActivity.arrayListGoToWork.size() == 0){
+            GoToWorkFragment.layout_nothing.setVisibility(View.VISIBLE);
+            GoToWorkFragment.layout.setVisibility(View.GONE);
+        }else {
+            GoToWorkFragment.layout_nothing.setVisibility(View.GONE);
+            GoToWorkFragment.layout.setVisibility(View.VISIBLE);
+        }
+    }
+
     @Override
     public int getItemCount() {
         return arrayList.size();
