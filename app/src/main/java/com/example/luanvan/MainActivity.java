@@ -142,6 +142,8 @@ public class MainActivity extends AppCompatActivity {
     public static String urlGetNotificationRecruiter =  host + "get_notification_recruiter.php";
     // update notification status
     public static String urlUpdateNotificationStatus = host + "update_status_notification.php";
+    // read all notification
+    public static String urlUpdateReadAllNotification = host + "update_read_all_notification.php";
     // job from notification
     public static String urlJobFromNotification = host + "job_from_notification.php";
     // schedule

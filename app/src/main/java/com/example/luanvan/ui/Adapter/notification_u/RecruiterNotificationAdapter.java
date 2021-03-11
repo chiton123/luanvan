@@ -106,6 +106,38 @@ public class RecruiterNotificationAdapter extends RecyclerView.Adapter<Recruiter
 
 
     }
+
+    public void readAll(){
+        RequestQueue requestQueue = Volley.newRequestQueue(activity);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlUpdateReadAllNotification,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(response.equals("success")){
+                            Toast.makeText(context, "Bạn đã xem tất cả thông báo", Toast.LENGTH_SHORT).show();
+                        }else {
+                            Toast.makeText(context, "Xem thông báo thất bại", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("iduser", String.valueOf(MainActivity.iduser));
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+
+    }
+
+
     public void updateStatusNotification(final int position, final int status){
         RequestQueue requestQueue = Volley.newRequestQueue(activity);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlUpdateNotificationStatus,

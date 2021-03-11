@@ -62,7 +62,11 @@ public class RecruiterActivity extends AppCompatActivity {
 
 
     }
+
+
     private void getDataNotification() {
+        MainActivity.k = 0;
+        arrayListNotificationRecruiter.clear();
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlGetNotificationRecruiter,
                 new Response.Listener<String>() {

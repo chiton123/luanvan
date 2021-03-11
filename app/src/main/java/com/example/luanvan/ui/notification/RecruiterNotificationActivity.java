@@ -1,9 +1,12 @@
 package com.example.luanvan.ui.notification;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -46,7 +49,29 @@ public class RecruiterNotificationActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_notification_read, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.read:
+                adapter.readAll();
+                if(RecruiterActivity.arrayListNotificationRecruiter.size() > 0)
+                for(int i=0; i < RecruiterActivity.arrayListNotificationRecruiter.size(); i++){
+                    RecruiterActivity.arrayListNotificationRecruiter.get(i).setStatus(1);
+                }
+                adapter.notifyDataSetChanged();
+                MainActivity.k = 0;
+                RecruiterActivity.txtNotification.setVisibility(View.GONE);
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
     private void actionBar() {
         setSupportActionBar(toolbar);

@@ -202,8 +202,10 @@ public class PositionAdapter extends RecyclerView.Adapter<PositionAdapter.ItemHo
                                     Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
                                     for(int i=0; i < CVManageActivity.arrayListAll.size(); i++){
                                         if(CVManageActivity.arrayListAll.get(i).getJob_id() == arrayList.get(position).getId()){
+                                            Toast.makeText(context, "i "+ i, Toast.LENGTH_SHORT).show();
                                             CVManageActivity.arrayListAll.remove(i);
                                             CandidateDocumentFragment.adapter.notifyDataSetChanged();
+                                            i--;
                                         }
                                     }
                                     arrayList.remove(position);

@@ -27,6 +27,7 @@ import com.example.luanvan.ui.Adapter.update_personal_info.SkillAdapter;
 import com.example.luanvan.ui.Adapter.update_personal_info.StudyAdapter;
 import com.example.luanvan.ui.Model.Profile;
 import com.example.luanvan.ui.Model.User;
+import com.example.luanvan.ui.home.HomeFragment;
 import com.example.luanvan.ui.login.LoginActivity;
 import com.example.luanvan.ui.modelCV.UserCV;
 import com.example.luanvan.ui.recruiter.LoginRecruiterActivity;
@@ -146,6 +147,7 @@ public class NotificationsFragment extends Fragment {
         MainActivity.mAuth.signOut();
         MainActivity.arrayListNotification.clear();
         MainActivity.k = 0;
+
 
     }
 

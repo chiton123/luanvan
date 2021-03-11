@@ -100,31 +100,29 @@ public class KindOfJobActivity extends AppCompatActivity {
                                 int status = object.getInt("status");
                                 SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
                                 Date date = fmt.parse(object.getString("end_date"));
-                                if(status == 0 && date.after(Calendar.getInstance().getTime())){
-                                    arrayList.add(new Job(
-                                            object.getInt("id"),
-                                            object.getString("name"),
-                                            object.getInt("idcompany"),
-                                            object.getInt("id_recruiter"),
-                                            object.getString("img"),
-                                            object.getString("area"),
-                                            object.getInt("idtype"),
-                                            object.getInt("idprofession"),
-                                            object.getString("start_date"),
-                                            object.getString("end_date"),
-                                            object.getInt("salary"),
-                                            object.getInt("idarea"),
-                                            object.getString("experience"),
-                                            object.getInt("number"),
-                                            object.getString("description"),
-                                            object.getString("requirement"),
-                                            object.getString("benefit"),
-                                            object.getInt("status"),
-                                            object.getString("company_name"),
-                                            object.getString("type_job")
-                                    ));
-                                    adapter.notifyDataSetChanged();
-                                }
+                                arrayList.add(new Job(
+                                        object.getInt("id"),
+                                        object.getString("name"),
+                                        object.getInt("idcompany"),
+                                        object.getInt("id_recruiter"),
+                                        object.getString("img"),
+                                        object.getString("area"),
+                                        object.getInt("idtype"),
+                                        object.getInt("idprofession"),
+                                        object.getString("start_date"),
+                                        object.getString("end_date"),
+                                        object.getInt("salary"),
+                                        object.getInt("idarea"),
+                                        object.getString("experience"),
+                                        object.getInt("number"),
+                                        object.getString("description"),
+                                        object.getString("requirement"),
+                                        object.getString("benefit"),
+                                        object.getInt("status"),
+                                        object.getString("company_name"),
+                                        object.getString("type_job")
+                                ));
+                                adapter.notifyDataSetChanged();
 
 
                             }

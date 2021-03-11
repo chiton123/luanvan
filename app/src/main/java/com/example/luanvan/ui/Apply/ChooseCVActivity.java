@@ -30,6 +30,10 @@ import com.example.luanvan.ui.Model.Job;
 import com.example.luanvan.ui.Model.Job_Apply;
 import com.example.luanvan.ui.home.HomeFragment;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -110,10 +114,22 @@ public class ChooseCVActivity extends AppCompatActivity {
         alert.setPositiveButton("Ứng tuyển", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(DetailJobActivity.checkApplyAgain == 0){
-                    apply();
+                int status = job.getStatus();
+                SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+                Date date = null;
+                try {
+                    date = fmt.parse(job.getEnd_date());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                if(status == 0 && date.after(Calendar.getInstance().getTime())){
+                    if(DetailJobActivity.checkApplyAgain == 0){
+                        apply();
+                    }else {
+                        applyAgain();
+                    }
                 }else {
-                    applyAgain();
+                    Toast.makeText(getApplicationContext(), "Nhà tuyển dụng đã dừng tuyển", Toast.LENGTH_SHORT).show();
                 }
 
             }
