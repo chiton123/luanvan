@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -24,6 +26,7 @@ import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.recruit.ScheduleAdapter;
 import com.example.luanvan.ui.Model.Schedule;
 import com.example.luanvan.ui.Model.UserApplicant;
+import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
 import com.example.luanvan.ui.schedule.CreateScheduleActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -43,6 +46,8 @@ public class ScheduleManagementActivity extends AppCompatActivity {
     public static ArrayList<Schedule> arrayList;
     int REQUEST_CODE = 123;
     public static int checkLoad = 0; // check xem coi đã vào activity này hay chưa
+    public static LinearLayout layout, layout_nothing;
+    Handler handler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +56,22 @@ public class ScheduleManagementActivity extends AppCompatActivity {
         actionBar();
         eventButton();
         getData();
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                checkNothing();
+            }
+        },1000);
+    }
+    public void checkNothing(){
+        if(arrayList.size() == 0){
+            layout_nothing.setVisibility(View.VISIBLE);
+            layout.setVisibility(View.GONE);
+        }else {
+            layout_nothing.setVisibility(View.GONE);
+            layout.setVisibility(View.VISIBLE);
+        }
     }
 
     private void getData() {
@@ -110,10 +131,12 @@ public class ScheduleManagementActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == 123 && resultCode == 123){
             adapter.notifyDataSetChanged();
+            checkNothing();
         }
         if(requestCode == 123 && resultCode == 345){
             adapter.notifyDataSetChanged();
             adapter.stopBottomSheet();
+            checkNothing();
         }
 
         super.onActivityResult(requestCode, resultCode, data);
@@ -151,5 +174,7 @@ public class ScheduleManagementActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
+        layout = (LinearLayout) findViewById(R.id.layout);
+        layout_nothing = (LinearLayout) findViewById(R.id.layout_nothing);
     }
 }

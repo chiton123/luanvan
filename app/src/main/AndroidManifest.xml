@@ -13,7 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.schedule.CreateScheduleActivity"></activity>
+        <activity android:name=".ui.recruiter.PostNews.RecruitmentNewsActivity" />
+        <activity android:name=".ui.recruiter.PostNews.CreateJobActivity" />
+        <activity android:name=".ui.schedule.CreateScheduleActivity" />
         <activity android:name=".ui.schedule.ScheduleManagementActivity" />
         <activity android:name=".ui.schedule.ScheduleActivity" />
         <activity android:name=".ui.notification.RecruiterNotificationActivity" />

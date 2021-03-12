@@ -29,6 +29,7 @@ import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Schedule;
 import com.example.luanvan.ui.Model.UserApplicant;
 import com.example.luanvan.ui.schedule.CreateScheduleActivity;
+import com.example.luanvan.ui.schedule.ScheduleManagementActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import org.json.JSONArray;
@@ -142,6 +143,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ItemHo
                             public void onClick(DialogInterface dialog, int which) {
                                 deleteSchedule(position);
                                 bottomSheetDialog.dismiss();
+
                             }
                         });
                         alert.show();
@@ -179,6 +181,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ItemHo
                             Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
                             arrayList.remove(position);
                             notifyDataSetChanged();
+                            ((ScheduleManagementActivity)activity).checkNothing();
                         }else {
                             Toast.makeText(context, "Xóa thất bại", Toast.LENGTH_SHORT).show();
                         }

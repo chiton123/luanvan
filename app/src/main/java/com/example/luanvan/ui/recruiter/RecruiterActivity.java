@@ -26,6 +26,7 @@ import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Notification;
 import com.example.luanvan.ui.notification.RecruiterNotificationActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
+import com.example.luanvan.ui.recruiter.PostNews.RecruitmentNewsActivity;
 import com.example.luanvan.ui.schedule.ScheduleManagementActivity;
 
 import org.json.JSONArray;
@@ -168,7 +169,6 @@ public class RecruiterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), CVManageActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
         });
@@ -176,10 +176,17 @@ public class RecruiterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ScheduleManagementActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
         });
+        imgPostJob.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), RecruitmentNewsActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
 
     }
