@@ -60,6 +60,7 @@ public class LoginRecruiterActivity extends AppCompatActivity {
         MainActivity.iduser = 0;
         MainActivity.arrayListNotification.clear();
         MainActivity.k = 0;
+        MainActivity.idcompany = 0;
     }
     private void eventLogout() {
         btnLogout.setOnClickListener(new View.OnClickListener() {
@@ -121,6 +122,7 @@ public class LoginRecruiterActivity extends AppCompatActivity {
                                                     MainActivity.login_recruiter = 1;
                                                     MainActivity.iduser = Integer.parseInt(response);
                                                     checkLogin();
+                                                    getIdCompany();
                                                     Handler handler = new Handler();
                                                     handler.postDelayed(new Runnable() {
                                                         @Override
@@ -160,6 +162,34 @@ public class LoginRecruiterActivity extends AppCompatActivity {
             }
         });
 
+    }
+    public void getIdCompany(){
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlCompanyInfo,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(response != null){
+                            MainActivity.idcompany = Integer.parseInt(response);
+                        }else {
+                            Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("id_recruiter", String.valueOf(MainActivity.iduser));
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
     }
 
 

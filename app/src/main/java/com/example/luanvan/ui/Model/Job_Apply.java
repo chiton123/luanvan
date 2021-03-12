@@ -14,7 +14,8 @@ public class Job_Apply implements Serializable {
     private int idprofession;
     private String start_date;
     private String end_date;
-    private int salary;
+    private int salary_min;
+    private int salary_max;
     private int idarea;
     private String address;
     private String experience;
@@ -29,7 +30,7 @@ public class Job_Apply implements Serializable {
     }
 
     public Job_Apply(int id, String name, int idcompany, int id_recruiter, String id_cv, String img, String address, int idtype, int idprofession, String start_date, String end_date,
-                     int salary, int idarea, String experience, int number, String description,
+                     int salary_min, int salary_max, int idarea, String experience, int number, String description,
                      String requirement, String benefit, int status, String company_name, String type_job) {
         this.id = id;
         this.name = name;
@@ -42,7 +43,8 @@ public class Job_Apply implements Serializable {
         this.idprofession = idprofession;
         this.start_date = start_date;
         this.end_date = end_date;
-        this.salary = salary;
+        this.salary_min = salary_min;
+        this.salary_max = salary_max;
         this.idarea = idarea;
         this.experience = experience;
         this.number = number;
@@ -52,6 +54,22 @@ public class Job_Apply implements Serializable {
         this.status = status;
         this.company_name = company_name;
         this.type_job = type_job;
+    }
+
+    public int getSalary_min() {
+        return salary_min;
+    }
+
+    public void setSalary_min(int salary_min) {
+        this.salary_min = salary_min;
+    }
+
+    public int getSalary_max() {
+        return salary_max;
+    }
+
+    public void setSalary_max(int salary_max) {
+        this.salary_max = salary_max;
     }
 
     public String getId_cv() {
@@ -143,13 +161,6 @@ public class Job_Apply implements Serializable {
     }
 
 
-    public int getSalary() {
-        return salary;
-    }
-
-    public void setSalary(int salary) {
-        this.salary = salary;
-    }
 
     public int getIdarea() {
         return idarea;

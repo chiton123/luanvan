@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     public static int login = 0;
     public static int login_recruiter = 0;
     public static int iduser = 0;
+    public static int idcompany = 0;
     public static int checkCV = 0;
     public static ArrayList<Notification> arrayListNotification = new ArrayList<>(); // Danh sách thông báo
     public static int k = 0; // số lương thông báo mới
@@ -99,8 +100,9 @@ public class MainActivity extends AppCompatActivity {
     // job apply
     public static String urlJobApply = host + "job_apply.php";
     public static String urlJobApplyLoad = host + "job_apply_load.php?page=";
-
+    // company
     public static String urlcompany = host + "company.php";
+    public static String urlCompanyInfo = host + "get_company_info.php";
     // dang nhap
     public static String urlRegister = host + "register.php";
     public static String urllogin = host + "login.php";

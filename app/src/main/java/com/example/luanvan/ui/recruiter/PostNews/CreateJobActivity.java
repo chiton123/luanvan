@@ -173,6 +173,7 @@ public class CreateJobActivity extends AppCompatActivity {
                     requirement = editRequirement.getText().toString();
                     number = editNumber.getText().toString();
                     salary = editSalary.getText().toString();
+                    //status: đang hiển thị -> 0, chờ xác thực : 1, 2: từ chối
                     RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
                     StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlUpdateJob,
                             new Response.Listener<String>() {
@@ -251,7 +252,6 @@ public class CreateJobActivity extends AppCompatActivity {
                         @Override
                         protected Map<String, String> getParams() throws AuthFailureError {
                             Map<String, String> map = new HashMap<>();
-                            map.put("job_id", String.valueOf(job_id));
                             map.put("position", position);
                             map.put("address", address);
                             map.put("benefit", benefit);
@@ -265,6 +265,7 @@ public class CreateJobActivity extends AppCompatActivity {
                             map.put("idprofession", String.valueOf(idProfession));
                             map.put("idexperience", String.valueOf(idExperience));
                             map.put("idKindJob", String.valueOf(idKindJob));
+                            map.put("idcompany", String.valueOf(MainActivity.idcompany));
                             return map;
                         }
                     };
@@ -420,7 +421,6 @@ public class CreateJobActivity extends AppCompatActivity {
         dataSalary.add(new GeneralObject(8, "20 - 25 triệu"));
         dataSalary.add(new GeneralObject(9, "25 - 30 triệu"));
         dataSalary.add(new GeneralObject(10, "Trên 30 triệu"));
-        dataSalary.add(new GeneralObject(11, "Thỏa thuận"));
 
     }
 

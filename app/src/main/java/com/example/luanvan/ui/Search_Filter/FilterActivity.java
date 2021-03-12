@@ -357,7 +357,6 @@ public class FilterActivity extends AppCompatActivity {
         dataSalary.add(new GeneralObject(8, "20 - 25 triệu"));
         dataSalary.add(new GeneralObject(9, "25 - 30 triệu"));
         dataSalary.add(new GeneralObject(10, "Trên 30 triệu"));
-        dataSalary.add(new GeneralObject(11, "Thỏa thuận"));
 
     }
 
