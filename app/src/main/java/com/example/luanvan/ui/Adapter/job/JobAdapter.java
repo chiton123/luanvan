@@ -67,7 +67,7 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.ItemHolder>  {
         // chỉ để hạn chót nộp hồ sơ
         holder.txttime.setText(fmtOut.format(date2));
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-        holder.txtsalary.setText(decimalFormat.format(job.getSalary()) + "đ");
+        holder.txtsalary.setText("Từ " + decimalFormat.format( + job.getSalary_min()) + "đ đến " + decimalFormat.format(job.getSalary_max()) + "đ" );
         holder.txtarea.setText(job.getAddress());
         Glide.with(context).load(job.getImg()).into(holder.imganh);
         holder.imganh.setFocusable(false);

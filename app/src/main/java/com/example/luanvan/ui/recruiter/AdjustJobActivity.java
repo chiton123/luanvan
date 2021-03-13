@@ -109,7 +109,7 @@ public class AdjustJobActivity extends AppCompatActivity {
         editRequirement.setText(job.getRequirement());
         editDescription.setText(job.getDescription());
         editBenefit.setText(job.getBenefit());
-        editSalary.setText(job.getSalary() + "");
+        editSalary.setText(job.getSalary_min() + "");
         editNumber.setText(job.getNumber()+"");
 
 
@@ -240,7 +240,7 @@ public class AdjustJobActivity extends AppCompatActivity {
                                         CVManageActivity.arrayListJobList.get(position_job).setDescription(description);
                                         CVManageActivity.arrayListJobList.get(position_job).setRequirement(requirement);
                                         CVManageActivity.arrayListJobList.get(position_job).setNumber(Integer.parseInt(number));
-                                        CVManageActivity.arrayListJobList.get(position_job).setSalary(Integer.parseInt(salary));
+                                        CVManageActivity.arrayListJobList.get(position_job).setSalary_min(Integer.parseInt(salary));
                                         CVManageActivity.arrayListJobList.get(position_job).setIdarea(idArea);
                                         CVManageActivity.arrayListJobList.get(position_job).setIdprofession(idProfession);
                                         CVManageActivity.arrayListJobList.get(position_job).setIdtype(idKindJob);

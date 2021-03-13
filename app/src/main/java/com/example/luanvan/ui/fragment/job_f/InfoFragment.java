@@ -77,7 +77,8 @@ public class InfoFragment extends Fragment {
                                         object.getInt("idprofession"),
                                         object.getString("start_date"),
                                         object.getString("end_date"),
-                                        object.getInt("salary"),
+                                        object.getInt("salary_min"),
+                                        object.getInt("salary_max"),
                                         object.getInt("idarea"),
                                         object.getString("experience"),
                                         object.getInt("number"),
@@ -121,7 +122,7 @@ public class InfoFragment extends Fragment {
             Job job = (Job) intent.getSerializableExtra("job");
             txtarea.setText(job.getAddress());
             DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-            txtsalary.setText(decimalFormat.format(job.getSalary())+"đ");
+            txtsalary.setText("Từ " + decimalFormat.format( + job.getSalary_min()) + "đ đến " + decimalFormat.format(job.getSalary_max()) + "đ" );
             txthinhthuc.setText(job.getType_job());
             txtnumber.setText(job.getNumber()+"");
             txtexperience.setText(job.getExperience());
@@ -141,7 +142,7 @@ public class InfoFragment extends Fragment {
                 public void run() {
                     txtarea.setText(job.getAddress());
                     DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-                    txtsalary.setText(decimalFormat.format(job.getSalary())+"đ");
+                    txtsalary.setText("Từ " + decimalFormat.format( + job.getSalary_min()) + "đ đến " + decimalFormat.format(job.getSalary_max()) + "đ" );
                     txthinhthuc.setText(job.getType_job());
                     txtnumber.setText(job.getNumber()+"");
                     txtexperience.setText(job.getExperience());

@@ -40,7 +40,9 @@ public class FilterActivity extends AppCompatActivity {
     Spinner spinnerKhuvuc, spinnerNganhnghe, spinnerLuong, spinnerKinhnghiem, spinnerLoaiHinh;
     GeneralObject area, profession, salary, experience, kindJob;
     int idArea = 0, idProfession = 0, idSalary = 0, idExperience = 0, idKindJob = 0;
-    ArrayList<GeneralObject> dataArea,dataProfession, dataSalary, dataExperience, dataKindJob;
+    int min_salary = 0, max_salary = 0;
+    ArrayList<GeneralObject> dataArea = new ArrayList<>(),dataProfession = new ArrayList<>(), dataSalary = new ArrayList<>(),
+            dataExperience = new ArrayList<>(), dataKindJob = new ArrayList<>();
     public static SpinnerNewAdapter khuVucAdapter, nganhNgheAdapter, luongAdapter, kinhNghiemAdapter, loaiHinhAdapter;
     Button btnHuy, btnTimKiem;
     Handler handler;
@@ -62,6 +64,8 @@ public class FilterActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SharedPreferences sharedPreferences = getSharedPreferences("FileName", 0);
+                sharedPreferences.edit().clear().commit();
                 finish();
             }
         });
@@ -101,7 +105,8 @@ public class FilterActivity extends AppCompatActivity {
                                                 object.getInt("idprofession"),
                                                 object.getString("start_date"),
                                                 object.getString("end_date"),
-                                                object.getInt("salary"),
+                                                object.getInt("salary_min"),
+                                                object.getInt("salary_max"),
                                                 object.getInt("idarea"),
                                                 object.getString("experience"),
                                                 object.getInt("number"),
@@ -144,6 +149,8 @@ public class FilterActivity extends AppCompatActivity {
                         map.put("idarea", String.valueOf(idArea));
                         map.put("idprofession", String.valueOf(idProfession));
                         map.put("idkindjob", String.valueOf(idKindJob));
+                        map.put("min_salary", String.valueOf(min_salary));
+                        map.put("max_salary", String.valueOf(max_salary));
                         map.put("idsalary", String.valueOf(idSalary));
                         map.put("idexperience", String.valueOf(idExperience));
                         return map;
@@ -251,6 +258,54 @@ public class FilterActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 salary = luongAdapter.getObject(position);
                 idSalary = salary.getId();
+                switch (idSalary){
+                    case 0:
+                        min_salary = 0;
+                        max_salary = 1000000000;
+                        break;
+                    case 1:
+                        min_salary = 0;
+                        max_salary = 3000000;
+                        break;
+                    case 2:
+                        min_salary = 3000000;
+                        max_salary = 5000000;
+                        break;
+                    case 3:
+                        min_salary = 5000000;
+                        max_salary = 7000000;
+                        break;
+                    case 4:
+                        min_salary = 7000000;
+                        max_salary = 10000000;
+                        break;
+                    case 5:
+                        min_salary = 10000000;
+                        max_salary = 12000000;
+                        break;
+                    case 6:
+                        min_salary = 12000000;
+                        max_salary = 15000000;
+                        break;
+                    case 7:
+                        min_salary = 15000000;
+                        max_salary = 20000000;
+                        break;
+                    case 8:
+                        min_salary = 20000000;
+                        max_salary = 25000000;
+                        break;
+                    case 9:
+                        min_salary = 25000000;
+                        max_salary = 30000000;
+                        break;
+                    case 10:
+                        min_salary = 30000000;
+                        max_salary = 1000000000;
+                        break;
+
+                }
+
                 int userChoice = spinnerLuong.getSelectedItemPosition();
                 SharedPreferences sharedPref = getSharedPreferences("FileName",0);
                 SharedPreferences.Editor prefEditor = sharedPref.edit();
