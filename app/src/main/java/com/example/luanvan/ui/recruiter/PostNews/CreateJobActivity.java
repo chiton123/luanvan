@@ -40,7 +40,7 @@ import java.util.Map;
 
 public class CreateJobActivity extends AppCompatActivity {
     Toolbar toolbar;
-    EditText editPosition, editStart, editEnd, editAddress, editNumber, editSalary, editDescription, editRequirement, editBenefit;
+    EditText editPosition, editStart, editEnd, editAddress, editNumber, editSalaryMin, editSalaryMax, editDescription, editRequirement, editBenefit;
     Spinner spinnerKhuvuc, spinnerNganhnghe, spinnerKinhnghiem, spinnerLoaiHinh;
     Button btnPost;
     ArrayList<GeneralObject> dataArea,dataProfession, dataSalary, dataExperience, dataKindJob;
@@ -50,7 +50,8 @@ public class CreateJobActivity extends AppCompatActivity {
     int check_start = 0;
     String date_post_start = "", date_post_end = "";
     Date date_start = null, date_end = null;
-    String position = "", address = "", number = "", salary = "", description = "", requirement = "", benefit = "";
+    String position = "", address = "", number = "", description = "", requirement = "", benefit = "";
+    int salary_min = 0, salary_max = 0;
     int x = 0; // check end date có trước start date hay k, nếu có thì 1
     GeneralObject area, profession, experience, kindJob;
     int idArea = 0, idProfession = 0, idExperience = 0, idKindJob = 0, job_id = 0;
@@ -83,8 +84,8 @@ public class CreateJobActivity extends AppCompatActivity {
                 calendar.set(year, month, dayOfMonth);
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
-                if(calendar.getTime().after(today1) && kind == 1){
-                    Toast.makeText(getApplicationContext(), "Phải lớn nhỏ ngày hiện tại", Toast.LENGTH_SHORT).show();
+                if(calendar.getTime().before(today1) && kind == 1){
+                    Toast.makeText(getApplicationContext(), "Phải lớn hơn ngày hiện tại", Toast.LENGTH_SHORT).show();
                 }else {
                     if(kind == 1){
                         editStart.setText(dateFormat.format(calendar.getTime()));
@@ -153,8 +154,8 @@ public class CreateJobActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(editEnd.getText().equals("") || editStart.getText().equals("") || editAddress.getText().equals("") || editBenefit.getText().equals("")
-                        || editDescription.getText().equals("") || editRequirement.getText().equals("") || editNumber.getText().equals("") || editSalary.getText().equals("")
-                        || editPosition.getText().equals("")){
+                        || editDescription.getText().equals("") || editRequirement.getText().equals("") || editNumber.getText().equals("") || editSalaryMin.getText().equals("")
+                        || editPosition.getText().equals("") || editSalaryMax.getText().equals("")){
                     Toast.makeText(getApplicationContext(), "Vui lòng điền đủ thông tin", Toast.LENGTH_SHORT).show();
                 }else if(idExperience == 0){
                     Toast.makeText(getApplicationContext(), "Vui lòng chọn kinh nghiệm", Toast.LENGTH_SHORT).show();
@@ -164,6 +165,8 @@ public class CreateJobActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Vui lòng chọn khu vực", Toast.LENGTH_SHORT).show();
                 }else if(idKindJob == 0){
                     Toast.makeText(getApplicationContext(), "Vui lòng chọn loại hình công việc", Toast.LENGTH_SHORT).show();
+                }else if(Integer.parseInt(editSalaryMin.getText().toString()) >= Integer.parseInt(editSalaryMax.getText().toString())){
+                    Toast.makeText(getApplicationContext(), "Mức lương không hợp lệ", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     position = editPosition.getText().toString();
@@ -172,10 +175,11 @@ public class CreateJobActivity extends AppCompatActivity {
                     description = editDescription.getText().toString();
                     requirement = editRequirement.getText().toString();
                     number = editNumber.getText().toString();
-                    salary = editSalary.getText().toString();
+                    salary_min = Integer.parseInt(editSalaryMin.getText().toString());
+                    salary_max = Integer.parseInt(editSalaryMax.getText().toString());
                     //status: đang hiển thị -> 0, chờ xác thực : 1, 2: từ chối
                     RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                    StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlUpdateJob,
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlCreateJob,
                             new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
@@ -258,7 +262,8 @@ public class CreateJobActivity extends AppCompatActivity {
                             map.put("description", description);
                             map.put("requirement", requirement);
                             map.put("number", number);
-                            map.put("salary", salary);
+                            map.put("salary_min", String.valueOf(salary_min));
+                            map.put("salary_max", String.valueOf(salary_max));
                             map.put("start", date_post_start);
                             map.put("end", date_post_end);
                             map.put("idarea", String.valueOf(idArea));
@@ -366,7 +371,8 @@ public class CreateJobActivity extends AppCompatActivity {
         editEnd = (EditText) findViewById(R.id.editend);
         editAddress = (EditText) findViewById(R.id.editaddress);
         editNumber = (EditText) findViewById(R.id.editnumber);
-        editSalary = (EditText) findViewById(R.id.editsalary);
+        editSalaryMin = (EditText) findViewById(R.id.editsalarymin);
+        editSalaryMax = (EditText) findViewById(R.id.editsalarymax);
         editDescription = (EditText) findViewById(R.id.editdescription);
         editRequirement = (EditText) findViewById(R.id.editrequirement);
         editBenefit = (EditText) findViewById(R.id.editbenefit);

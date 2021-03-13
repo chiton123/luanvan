@@ -105,13 +105,15 @@ public class SearchActivity extends AppCompatActivity {
         }
     }
 
-    private void getData(final int kind, int page) {
+    private void getData(final int kind, final int page) {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         String url = MainActivity.urljob1 + String.valueOf(page);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                    //    Toast.makeText(getApplicationContext(), "page " + page, Toast.LENGTH_SHORT ).show();
+                   //     Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
                         try {
                             JSONArray jsonArray = new JSONArray(response);
                             for(int i=0; i < jsonArray.length(); i++){
@@ -173,14 +175,16 @@ public class SearchActivity extends AppCompatActivity {
         if(requestCode == REQUEST_CODE_FILTER && resultCode == 123){
             adapter.notifyDataSetChanged();
             chechNothing();
-            stopLoadMore();
+            page = 1;
+            adapter.setIsloaded(true);
 
         }
         // hủy bộ lọc
         if(requestCode == REQUEST_CODE_FILTER && resultCode == 234){
             SearchActivity.arrayList.clear();
-            page = 0;
-            getData(0, ++page);
+            page = 1;
+            getData(0, page);
+            adapter.setIsloaded(false);
             loadMore();
             handler = new Handler();
             handler.postDelayed(new Runnable() {
@@ -188,7 +192,7 @@ public class SearchActivity extends AppCompatActivity {
                 public void run() {
                     chechNothing();
                 }
-            },1000);
+            },2000);
 
         }
         super.onActivityResult(requestCode, resultCode, data);

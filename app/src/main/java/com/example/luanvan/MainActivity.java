@@ -131,6 +131,8 @@ public class MainActivity extends AppCompatActivity {
     public static String urlStartEndRecruiting = host + "recruit_start_end.php";
     // update job
     public static String urlUpdateJob = host + "update_job.php";
+    // create job
+    public static String urlCreateJob = host + "create_job.php";
     // delete job
     public static String urlDeleteJob = host + "delete_job.php";
 
