@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="8dp">
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="10dp"
+        android:id="@+id/cardview"
+        >
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            >
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="vertical"
+               android:padding="10dp"
+               >
+               <LinearLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:orientation="horizontal"
+                   android:gravity="center_vertical"
+                   android:weightSum="10"
+                   >
+                   <TextView
+                       android:layout_width="0dp"
+                       android:layout_weight="9"
+                       android:layout_height="wrap_content"
+                       android:id="@+id/txtposition"
+                       android:text="Nhan vien"
+                       android:textColor="#070707"
+                       android:textSize="15sp"
+                       android:textStyle="bold"
+                       ></TextView>
+                   <ImageView
+                       android:layout_margin="8dp"
+                       android:layout_width="0dp"
+                       android:layout_weight="1"
+                       android:layout_height="20dp"
+                       android:src="@drawable/deletebin"
+                       android:id="@+id/imgdelete"/>
+               </LinearLayout>
+
+               <LinearLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:orientation="horizontal"
+                   android:gravity="center_vertical"
+                   android:layout_marginTop="5dp"
+                   >
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="Mã TTD: "
+                       android:textColor="#070707"
+                       android:textSize="15sp"
+                       ></TextView>
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:id="@+id/txtjobid"
+                       android:text="032 "
+                       android:textColor="#070707"
+                       android:textSize="15sp"
+                       ></TextView>
+               </LinearLayout>
+
+               <LinearLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:orientation="horizontal"
+                   android:gravity="center_vertical"
+                   android:layout_marginTop="5dp"
+                   >
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="Hạn nhận hồ sơ: "
+                       android:textColor="#070707"
+                       android:textSize="14sp"
+                       ></TextView>
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:id="@+id/txtend"
+                       android:text="20/11/2021 "
+                       android:textColor="#070707"
+                       android:textSize="14sp"
+                       ></TextView>
+               </LinearLayout>
+
+               <LinearLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:orientation="horizontal"
+                   android:gravity="center_vertical"
+                   android:id="@+id/layout_show"
+                   android:layout_marginTop="5dp"
+                   >
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="Thời gian hiển thị: "
+                       android:textColor="#070707"
+                       android:textSize="14sp"
+                       ></TextView>
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:id="@+id/txtdate"
+                       android:text="20/11/2021 "
+                       android:textColor="#070707"
+                       android:textSize="14sp"
+                       ></TextView>
+               </LinearLayout>
+
+               <LinearLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:orientation="horizontal"
+                   android:gravity="center_vertical"
+                   android:layout_marginTop="5dp"
+                   >
+                  <LinearLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="horizontal"
+                      android:weightSum="10"
+                      >
+                      <LinearLayout
+                          android:layout_width="0dp"
+                          android:layout_height="wrap_content"
+                          android:orientation="vertical"
+                          android:layout_weight="5"
+                          >
+                          <TextView
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:text="Tổng CV"
+                              android:textColor="#070707"
+                              android:textSize="14sp"
+                              ></TextView>
+                          <TextView
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:text="5"
+                              android:textColor="#070707"
+                              android:textSize="14sp"
+                              android:id="@+id/txttotalcv"
+                              ></TextView>
+
+                      </LinearLayout>
+
+                      <LinearLayout
+                          android:layout_width="0dp"
+                          android:layout_height="wrap_content"
+                          android:orientation="vertical"
+                          android:layout_weight="5"
+                          >
+                          <TextView
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:text="CV mới"
+                              android:textColor="#070707"
+                              android:textSize="14sp"
+                              ></TextView>
+                          <TextView
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:text="2"
+                              android:textColor="#070707"
+                              android:textSize="14sp"
+                              android:id="@+id/txtnewcv"
+                              ></TextView>
+
+                      </LinearLayout>
+
+                  </LinearLayout>
+
+
+               </LinearLayout>
+
+               <LinearLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:orientation="vertical"
+                   android:layout_marginTop="10dp"
+                   >
+                   <Button
+                       android:layout_width="match_parent"
+                       android:layout_height="40dp"
+                       android:text="Sửa tin"
+                       android:textColor="#000000"
+                       android:background="@drawable/button_chinhsuatin"
+                       android:id="@+id/buttonadjust"
+                       ></Button>
+               </LinearLayout>
+           </LinearLayout>
+
+
+        </FrameLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>
