@@ -2,6 +2,7 @@ package com.example.luanvan.ui.Adapter.recruit;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.JobList;
+import com.example.luanvan.ui.recruiter.AdjustJobActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,6 +28,7 @@ public class NewPostAdapter extends RecyclerView.Adapter<NewPostAdapter.ItemHold
     ArrayList<JobList> arrayList;
     Activity activity;
     int kind;
+    int REQUEST_CODE = 123;
 
     public NewPostAdapter(Context context, ArrayList<JobList> arrayList, Activity activity, int kind) {
         this.context = context;
@@ -43,7 +46,7 @@ public class NewPostAdapter extends RecyclerView.Adapter<NewPostAdapter.ItemHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ItemHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ItemHolder holder, final int position) {
         JobList job = arrayList.get(position);
         holder.txtPosition.setText(job.getName());
         holder.txtIDJob.setText(job.getId() + "");
@@ -63,6 +66,19 @@ public class NewPostAdapter extends RecyclerView.Adapter<NewPostAdapter.ItemHold
         holder.txtEndDate.setText(fmtOut.format(date2));
         holder.txtTotalCV.setText(job.getTotalDocument() + "");
         holder.txtNewCV.setText(job.getNew_document() + "");
+
+        holder.btnAdjust.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(activity, AdjustJobActivity.class);
+                intent1.putExtra("kind", 1); // kind: 0 JoblistFragment, 1: NewPostFragment
+                intent1.putExtra("job", arrayList.get(position));
+                intent1.putExtra("position", position);
+                activity.startActivityForResult(intent1, REQUEST_CODE);
+            }
+        });
+
+
     }
 
     @Override

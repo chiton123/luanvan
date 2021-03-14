@@ -1,17 +1,23 @@
 package com.example.luanvan.ui.recruiter.PostNews;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.ViewPageAdapter;
+import com.example.luanvan.ui.Model.JobList;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+
+import java.util.ArrayList;
 
 public class RecruitmentNewsActivity extends AppCompatActivity {
     Toolbar toolbar;
@@ -19,6 +25,7 @@ public class RecruitmentNewsActivity extends AppCompatActivity {
     ViewPageAdapter viewPageAdapter;
     ViewPager viewPager;
     FloatingActionButton btnAdd;
+    public static ArrayList<JobList> arrayListDisplay = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +44,15 @@ public class RecruitmentNewsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == 123 && resultCode == 123){
+            DisplayJobFragment displayJobFragment = (DisplayJobFragment) viewPageAdapter.getItem(0);
+            displayJobFragment.onActivityResult(requestCode, resultCode, data);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void actionBar() {

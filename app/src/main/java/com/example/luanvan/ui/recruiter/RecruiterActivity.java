@@ -23,6 +23,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
+import com.example.luanvan.ui.Model.JobList;
 import com.example.luanvan.ui.Model.Notification;
 import com.example.luanvan.ui.notification.RecruiterNotificationActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
@@ -43,6 +44,7 @@ public class RecruiterActivity extends AppCompatActivity {
     public static TextView txtNotification;
     Handler handler;
     public static ArrayList<Notification> arrayListNotificationRecruiter = new ArrayList<>();
+    public static ArrayList<JobList> arrayListJobList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

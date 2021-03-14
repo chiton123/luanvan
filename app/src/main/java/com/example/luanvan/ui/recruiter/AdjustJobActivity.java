@@ -29,6 +29,8 @@ import com.example.luanvan.ui.Model.GeneralObject;
 import com.example.luanvan.ui.Model.JobList;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CandidateDocumentFragment;
+import com.example.luanvan.ui.recruiter.PostNews.DisplayJobFragment;
+import com.example.luanvan.ui.recruiter.PostNews.RecruitmentNewsActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -56,6 +58,7 @@ public class AdjustJobActivity extends AppCompatActivity {
     GeneralObject area, profession, experience, kindJob;
     int idArea = 0, idProfession = 0, idExperience = 0, idKindJob = 0, job_id = 0;
     Handler handler;
+    int kind = 0; // kind: 0 JoblistFragment, 1: NewPostFragment chuyển qua
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +74,7 @@ public class AdjustJobActivity extends AppCompatActivity {
     }
 
     private void getInfo() {
+        kind = getIntent().getIntExtra("kind", 0);
         job = (JobList) getIntent().getSerializableExtra("job");
         position_job = getIntent().getIntExtra("position", 0);
         job_id = job.getId();
@@ -240,52 +244,10 @@ public class AdjustJobActivity extends AppCompatActivity {
                                 public void onResponse(String response) {
                                     if(response.equals("success")){
                                         Toast.makeText(getApplicationContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
-                                        CVManageActivity.arrayListJobList.get(position_job).setName(position);
-                                        CVManageActivity.arrayListJobList.get(position_job).setAddress(address);
-                                        CVManageActivity.arrayListJobList.get(position_job).setBenefit(benefit);
-                                        CVManageActivity.arrayListJobList.get(position_job).setDescription(description);
-                                        CVManageActivity.arrayListJobList.get(position_job).setRequirement(requirement);
-                                        CVManageActivity.arrayListJobList.get(position_job).setNumber(Integer.parseInt(number));
-                                        CVManageActivity.arrayListJobList.get(position_job).setSalary_min(salary_min);
-                                        CVManageActivity.arrayListJobList.get(position_job).setSalary_max(salary_max);
-                                        CVManageActivity.arrayListJobList.get(position_job).setIdarea(idArea);
-                                        CVManageActivity.arrayListJobList.get(position_job).setIdprofession(idProfession);
-                                        CVManageActivity.arrayListJobList.get(position_job).setIdtype(idKindJob);
-                                        CVManageActivity.arrayListJobList.get(position_job).setStart_date(date_post_start);
-                                        CVManageActivity.arrayListJobList.get(position_job).setEnd_date(date_post_end);
-                                        // cập nhật cho hồ sơ ứng tuyển
-                                        for(int i=0; i < CVManageActivity.arrayListAll.size(); i++){
-                                            if(CVManageActivity.arrayListAll.get(i).getJob_id() == job_id){
-                                                CVManageActivity.arrayListAll.get(i).setJob_name(position);
-                                                CandidateDocumentFragment.adapter.notifyDataSetChanged();
-                                            }
-
-                                        }
-                                        switch (idExperience){
-                                            case 1:
-                                                CVManageActivity.arrayListJobList.get(position_job).setExperience("Chưa có kinh nghiệm");
-                                                break;
-                                            case 2:
-                                                CVManageActivity.arrayListJobList.get(position_job).setExperience("Dưới 1 năm");
-                                                break;
-                                            case 3:
-                                                CVManageActivity.arrayListJobList.get(position_job).setExperience("1 năm");
-                                                break;
-                                            case 4:
-                                                CVManageActivity.arrayListJobList.get(position_job).setExperience("2 năm");
-                                                break;
-                                            case 5:
-                                                CVManageActivity.arrayListJobList.get(position_job).setExperience("3 năm");
-                                                break;
-                                            case 6:
-                                                CVManageActivity.arrayListJobList.get(position_job).setExperience("4 năm");
-                                                break;
-                                            case 7:
-                                                CVManageActivity.arrayListJobList.get(position_job).setExperience("5 năm");
-                                                break;
-                                            case 8:
-                                                CVManageActivity.arrayListJobList.get(position_job).setExperience("Trên 5 năm");
-                                                break;
+                                        if(kind == 0){
+                                            updatePreviousJoblist();
+                                        }else {
+                                            updatePreviousJobDisplay();
                                         }
                                         handler = new Handler();
                                         handler.postDelayed(new Runnable() {
@@ -336,6 +298,97 @@ public class AdjustJobActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+    public void updatePreviousJoblist(){
+        CVManageActivity.arrayListJobList.get(position_job).setName(position);
+        CVManageActivity.arrayListJobList.get(position_job).setAddress(address);
+        CVManageActivity.arrayListJobList.get(position_job).setBenefit(benefit);
+        CVManageActivity.arrayListJobList.get(position_job).setDescription(description);
+        CVManageActivity.arrayListJobList.get(position_job).setRequirement(requirement);
+        CVManageActivity.arrayListJobList.get(position_job).setNumber(Integer.parseInt(number));
+        CVManageActivity.arrayListJobList.get(position_job).setSalary_min(salary_min);
+        CVManageActivity.arrayListJobList.get(position_job).setSalary_max(salary_max);
+        CVManageActivity.arrayListJobList.get(position_job).setIdarea(idArea);
+        CVManageActivity.arrayListJobList.get(position_job).setIdprofession(idProfession);
+        CVManageActivity.arrayListJobList.get(position_job).setIdtype(idKindJob);
+        CVManageActivity.arrayListJobList.get(position_job).setStart_date(date_post_start);
+        CVManageActivity.arrayListJobList.get(position_job).setEnd_date(date_post_end);
+        // cập nhật cho hồ sơ ứng tuyển
+        for(int i=0; i < CVManageActivity.arrayListAll.size(); i++){
+            if(CVManageActivity.arrayListAll.get(i).getJob_id() == job_id){
+                CVManageActivity.arrayListAll.get(i).setJob_name(position);
+                CandidateDocumentFragment.adapter.notifyDataSetChanged();
+            }
+
+        }
+        switch (idExperience){
+            case 1:
+                CVManageActivity.arrayListJobList.get(position_job).setExperience("Chưa có kinh nghiệm");
+                break;
+            case 2:
+                CVManageActivity.arrayListJobList.get(position_job).setExperience("Dưới 1 năm");
+                break;
+            case 3:
+                CVManageActivity.arrayListJobList.get(position_job).setExperience("1 năm");
+                break;
+            case 4:
+                CVManageActivity.arrayListJobList.get(position_job).setExperience("2 năm");
+                break;
+            case 5:
+                CVManageActivity.arrayListJobList.get(position_job).setExperience("3 năm");
+                break;
+            case 6:
+                CVManageActivity.arrayListJobList.get(position_job).setExperience("4 năm");
+                break;
+            case 7:
+                CVManageActivity.arrayListJobList.get(position_job).setExperience("5 năm");
+                break;
+            case 8:
+                CVManageActivity.arrayListJobList.get(position_job).setExperience("Trên 5 năm");
+                break;
+        }
+    }
+    public void updatePreviousJobDisplay(){
+        RecruitmentNewsActivity.arrayListDisplay.get(position_job).setName(position);
+        RecruitmentNewsActivity.arrayListDisplay.get(position_job).setAddress(address);
+        RecruitmentNewsActivity.arrayListDisplay.get(position_job).setBenefit(benefit);
+        RecruitmentNewsActivity.arrayListDisplay.get(position_job).setDescription(description);
+        RecruitmentNewsActivity.arrayListDisplay.get(position_job).setRequirement(requirement);
+        RecruitmentNewsActivity.arrayListDisplay.get(position_job).setNumber(Integer.parseInt(number));
+        RecruitmentNewsActivity.arrayListDisplay.get(position_job).setSalary_min(salary_min);
+        RecruitmentNewsActivity.arrayListDisplay.get(position_job).setSalary_max(salary_max);
+        RecruitmentNewsActivity.arrayListDisplay.get(position_job).setIdarea(idArea);
+        RecruitmentNewsActivity.arrayListDisplay.get(position_job).setIdprofession(idProfession);
+        RecruitmentNewsActivity.arrayListDisplay.get(position_job).setIdtype(idKindJob);
+        RecruitmentNewsActivity.arrayListDisplay.get(position_job).setStart_date(date_post_start);
+        RecruitmentNewsActivity.arrayListDisplay.get(position_job).setEnd_date(date_post_end);
+    //    DisplayJobFragment.adapter.notifyDataSetChanged();
+        switch (idExperience){
+            case 1:
+                RecruitmentNewsActivity.arrayListDisplay.get(position_job).setExperience("Chưa có kinh nghiệm");
+                break;
+            case 2:
+                RecruitmentNewsActivity.arrayListDisplay.get(position_job).setExperience("Dưới 1 năm");
+                break;
+            case 3:
+                RecruitmentNewsActivity.arrayListDisplay.get(position_job).setExperience("1 năm");
+                break;
+            case 4:
+                RecruitmentNewsActivity.arrayListDisplay.get(position_job).setExperience("2 năm");
+                break;
+            case 5:
+                RecruitmentNewsActivity.arrayListDisplay.get(position_job).setExperience("3 năm");
+                break;
+            case 6:
+                RecruitmentNewsActivity.arrayListDisplay.get(position_job).setExperience("4 năm");
+                break;
+            case 7:
+                RecruitmentNewsActivity.arrayListDisplay.get(position_job).setExperience("5 năm");
+                break;
+            case 8:
+                RecruitmentNewsActivity.arrayListDisplay.get(position_job).setExperience("Trên 5 năm");
+                break;
+        }
     }
 
     private void eventSpinner() {
