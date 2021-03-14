@@ -33,6 +33,7 @@ import com.example.luanvan.ui.recruiter.CVManagement.CVManagementActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CandidateDocumentFragment;
 import com.example.luanvan.ui.recruiter.CVManagement.CandidateInfoActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.JobListFragment;
+import com.example.luanvan.ui.recruiter.RecruiterActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -252,15 +253,15 @@ public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHo
 
 
                             if(kind != 0){
-                                CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setTotalDocument(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getTotalDocument() - 1);
+                                RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setTotalDocument(RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getTotalDocument() - 1);
                                 if(status == 0 || status == 1){
-                                    CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setNew_document(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getNew_document() - 1);
+                                    RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setNew_document(RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getNew_document() - 1);
                                 }else if(status == 2){
-                                    CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setSkip(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getSkip() -1);
+                                    RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setSkip(RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getSkip() -1);
                                 }else if(status >= 3 && status <= 11){
-                                    CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setInterview(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getInterview() -1);
+                                    RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setInterview(RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getInterview() -1);
                                 }else {
-                                    CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setWork(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getWork() -1);
+                                    RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setWork(RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getWork() -1);
                                 }
                                 // xóa bên kia luôn
                                 int x = 0;
@@ -274,20 +275,20 @@ public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHo
 
 
                             }else {
-                                for(int i=0; i < CVManageActivity.arrayListJobList.size(); i++){
-                                    if(CVManageActivity.arrayListJobList.get(i).getId() == arrayList.get(position).getJob_id()){
+                                for(int i=0; i < RecruiterActivity.arrayListJobList.size(); i++){
+                                    if(RecruiterActivity.arrayListJobList.get(i).getId() == arrayList.get(position).getJob_id()){
                                         positionJobList = i;
                                     }
                                 }
-                                CVManageActivity.arrayListJobList.get(positionJobList).setTotalDocument(CVManageActivity.arrayListJobList.get(positionJobList).getTotalDocument() - 1);
+                                RecruiterActivity.arrayListJobList.get(positionJobList).setTotalDocument(RecruiterActivity.arrayListJobList.get(positionJobList).getTotalDocument() - 1);
                                 if(status == 0 || status == 1){
-                                    CVManageActivity.arrayListJobList.get(positionJobList).setNew_document(CVManageActivity.arrayListJobList.get(positionJobList).getNew_document() - 1);
+                                    RecruiterActivity.arrayListJobList.get(positionJobList).setNew_document(RecruiterActivity.arrayListJobList.get(positionJobList).getNew_document() - 1);
                                 }else if(status == 2){
-                                    CVManageActivity.arrayListJobList.get(positionJobList).setSkip(CVManageActivity.arrayListJobList.get(positionJobList).getSkip() -1);
+                                    RecruiterActivity.arrayListJobList.get(positionJobList).setSkip(RecruiterActivity.arrayListJobList.get(positionJobList).getSkip() -1);
                                 }else if(status >= 3 && status <= 11){
-                                    CVManageActivity.arrayListJobList.get(positionJobList).setInterview(CVManageActivity.arrayListJobList.get(positionJobList).getInterview() -1);
+                                    RecruiterActivity.arrayListJobList.get(positionJobList).setInterview(RecruiterActivity.arrayListJobList.get(positionJobList).getInterview() -1);
                                 }else {
-                                    CVManageActivity.arrayListJobList.get(positionJobList).setWork(CVManageActivity.arrayListJobList.get(positionJobList).getWork() -1);
+                                    RecruiterActivity.arrayListJobList.get(positionJobList).setWork(RecruiterActivity.arrayListJobList.get(positionJobList).getWork() -1);
                                 }
 
 
@@ -333,28 +334,37 @@ public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHo
             CandidateDocumentFragment.layout_nothing.setVisibility(View.GONE);
             CandidateDocumentFragment.layout.setVisibility(View.VISIBLE);
         }
-        if(CVManageActivity.arrayListCVFilter.size() == 0){
-            CVFilterFragment.layout_nothing.setVisibility(View.VISIBLE);
-            CVFilterFragment.layout.setVisibility(View.GONE);
-        }else {
-            CVFilterFragment.layout_nothing.setVisibility(View.GONE);
-            CVFilterFragment.layout.setVisibility(View.VISIBLE);
-        }
-        if(CVManageActivity.arrayListInterView.size() == 0){
-            InterviewFragment.layout_nothing.setVisibility(View.VISIBLE);
-            InterviewFragment.layout.setVisibility(View.GONE);
-        }else {
-            InterviewFragment.layout_nothing.setVisibility(View.GONE);
-            InterviewFragment.layout.setVisibility(View.VISIBLE);
+        if(kind == 1){
+            if(CVManageActivity.arrayListCVFilter.size() == 0){
+                CVFilterFragment.layout_nothing.setVisibility(View.VISIBLE);
+                CVFilterFragment.layout.setVisibility(View.GONE);
+            }else {
+                CVFilterFragment.layout_nothing.setVisibility(View.GONE);
+                CVFilterFragment.layout.setVisibility(View.VISIBLE);
+            }
         }
 
-        if(CVManageActivity.arrayListGoToWork.size() == 0){
-            GoToWorkFragment.layout_nothing.setVisibility(View.VISIBLE);
-            GoToWorkFragment.layout.setVisibility(View.GONE);
-        }else {
-            GoToWorkFragment.layout_nothing.setVisibility(View.GONE);
-            GoToWorkFragment.layout.setVisibility(View.VISIBLE);
+        if(kind == 2){
+            if(CVManageActivity.arrayListInterView.size() == 0){
+                InterviewFragment.layout_nothing.setVisibility(View.VISIBLE);
+                InterviewFragment.layout.setVisibility(View.GONE);
+            }else {
+                InterviewFragment.layout_nothing.setVisibility(View.GONE);
+                InterviewFragment.layout.setVisibility(View.VISIBLE);
+            }
         }
+
+        if(kind == 3){
+            if(CVManageActivity.arrayListGoToWork.size() == 0){
+                GoToWorkFragment.layout_nothing.setVisibility(View.VISIBLE);
+                GoToWorkFragment.layout.setVisibility(View.GONE);
+            }else {
+                GoToWorkFragment.layout_nothing.setVisibility(View.GONE);
+                GoToWorkFragment.layout.setVisibility(View.VISIBLE);
+            }
+        }
+
+
     }
 
     @Override

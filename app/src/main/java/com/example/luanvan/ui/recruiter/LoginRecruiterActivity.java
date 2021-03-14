@@ -25,6 +25,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
+import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
+import com.example.luanvan.ui.recruiter.CVManagement.CVManagementActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -61,6 +63,13 @@ public class LoginRecruiterActivity extends AppCompatActivity {
         MainActivity.arrayListNotification.clear();
         MainActivity.k = 0;
         MainActivity.idcompany = 0;
+        RecruiterActivity.arrayListJobList.clear();
+        RecruiterActivity.arrayListNotificationRecruiter.clear();
+        CVManageActivity.arrayListInterView.clear();
+        CVManageActivity.arrayListGoToWork.clear();
+        CVManageActivity.arrayListCVFilter.clear();
+        CVManageActivity.arrayListAll.clear();
+        CVManagementActivity.position_job_list = 0;
     }
     private void eventLogout() {
         btnLogout.setOnClickListener(new View.OnClickListener() {

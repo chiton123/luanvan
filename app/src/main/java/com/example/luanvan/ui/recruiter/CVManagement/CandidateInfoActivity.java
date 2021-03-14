@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -30,6 +31,7 @@ import com.example.luanvan.ui.Model.Applicant;
 import com.example.luanvan.ui.Model.Pdf;
 import com.example.luanvan.ui.Model.Profile;
 import com.example.luanvan.ui.modelCV.PdfCV;
+import com.example.luanvan.ui.recruiter.RecruiterActivity;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -60,7 +62,7 @@ public class CandidateInfoActivity extends AppCompatActivity {
     int kind = 0;
     int position = 0; // vị trí của 1 trong 3 mảng ở cvmanagementactivity
 
-
+    ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +74,13 @@ public class CandidateInfoActivity extends AppCompatActivity {
 
 
     }
-
+    void loading(){
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading");
+        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
+    }
 
     private void eventPDF() {
         webView.requestFocus();
@@ -143,6 +151,7 @@ public class CandidateInfoActivity extends AppCompatActivity {
         arrayList.add(new Profile(1, "Đánh giá ứng viên", R.drawable.star));
         arrayList.add(new Profile(2, "Đặt lịch hẹn ứng viên", R.drawable.calendar));
         arrayList.add(new Profile(3, "Tải CV PDF", R.drawable.download));
+        loading();
         // get info
         applicant = (Applicant) getIntent().getSerializableExtra("applicant");
         kind = getIntent().getIntExtra("kind", 0);
@@ -152,7 +161,7 @@ public class CandidateInfoActivity extends AppCompatActivity {
         candidate_id = applicant.getUser_id();
         id_application = applicant.getId();
         eventPDF();
-        content = CVManageActivity.arrayListJobList.get(0).getCompany_name() + " đã xem CV ứng tuyển của bạn";
+        content = RecruiterActivity.arrayListJobList.get(0).getCompany_name() + " đã xem CV ứng tuyển của bạn";
         if(applicant.getStatus() == 0){
             checkPostOrNot();
         }
@@ -162,6 +171,7 @@ public class CandidateInfoActivity extends AppCompatActivity {
             @Override
             public void run() {
                 setRecyclerView();
+                progressDialog.dismiss();
             }
         },3000);
 

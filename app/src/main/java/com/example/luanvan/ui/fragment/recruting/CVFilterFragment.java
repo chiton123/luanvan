@@ -29,6 +29,7 @@ import com.example.luanvan.ui.Adapter.recruit.CVFilterAdapter;
 import com.example.luanvan.ui.Model.Applicant;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManagementActivity;
+import com.example.luanvan.ui.recruiter.RecruiterActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,7 +54,7 @@ public class CVFilterFragment extends Fragment {
         layout = (LinearLayout) view.findViewById(R.id.layout);
         layout_nothing = (LinearLayout) view.findViewById(R.id.layout_nothing);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
-        adapter = new CVFilterAdapter(getActivity(), CVManageActivity.arrayListCVFilter, getActivity(), 1, CVManageActivity.arrayListJobList);
+        adapter = new CVFilterAdapter(getActivity(), CVManageActivity.arrayListCVFilter, getActivity(), 1, RecruiterActivity.arrayListJobList);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);

@@ -102,6 +102,9 @@ public class CreateScheduleActivity extends AppCompatActivity {
             scheduleInfo = (Schedule) getIntent().getSerializableExtra("schedule");
             position_update = getIntent().getIntExtra("position",0);
             job_id_update = scheduleInfo.getId_job();
+            job_id = scheduleInfo.getId_job();
+            job_name = scheduleInfo.getJob_name();
+            getCandidateList(job_id_update);
             editPosition.setText(scheduleInfo.getJob_name());
             editCandidate.setText(scheduleInfo.getUsername());
             String ngay = scheduleInfo.getDate();
@@ -152,7 +155,6 @@ public class CreateScheduleActivity extends AppCompatActivity {
     }
 
     private void getDataPosition() {
-        check_position = 1;
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlJobList,
                 new Response.Listener<String>() {
@@ -414,7 +416,7 @@ public class CreateScheduleActivity extends AppCompatActivity {
 
     }
 
-    public void getCandidateList(){
+    public void getCandidateList(final int job_id){
         check_candidate = 1;
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlUserList,
@@ -603,6 +605,7 @@ public class CreateScheduleActivity extends AppCompatActivity {
         editPosition.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                check_position = 1;
                 eventSheetPosition();
 
             }
@@ -611,9 +614,10 @@ public class CreateScheduleActivity extends AppCompatActivity {
         editCandidate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "positoon " + check_position + " can " + check_candidate, Toast.LENGTH_SHORT).show();
                 if(check_candidate == 0 || check_position == 1){
                     candidateArrayList.clear();
-                    getCandidateList();
+                    getCandidateList(job_id);
                 }
                 handler = new Handler();
                 handler.postDelayed(new Runnable() {

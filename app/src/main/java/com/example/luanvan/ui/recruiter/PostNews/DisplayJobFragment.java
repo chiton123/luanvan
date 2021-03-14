@@ -25,6 +25,7 @@ import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.recruit.NewPostAdapter;
 import com.example.luanvan.ui.Model.JobList;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
+import com.example.luanvan.ui.recruiter.RecruiterActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,9 +48,11 @@ public class DisplayJobFragment extends Fragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        adapter = new NewPostAdapter(getActivity(), RecruitmentNewsActivity.arrayListDisplay, getActivity(), 0);
+        adapter = new NewPostAdapter(getActivity(), RecruiterActivity.arrayListJobList, getActivity(), 0);
         recyclerView.setAdapter(adapter);
-        getData();
+        if(RecruiterActivity.arrayListJobList.size() == 0){
+            getData();
+        }
 
         return view;
     }
@@ -65,7 +68,7 @@ public class DisplayJobFragment extends Fragment {
                             JSONArray jsonArray = new JSONArray(response);
                             for(int i=0; i < jsonArray.length(); i++){
                                 JSONObject object = jsonArray.getJSONObject(i);
-                                RecruitmentNewsActivity.arrayListDisplay.add(new JobList(
+                                RecruiterActivity.arrayListJobList.add(new JobList(
                                         object.getInt("id"),
                                         object.getString("name"),
                                         object.getInt("idcompany"),
@@ -121,7 +124,7 @@ public class DisplayJobFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == 123 && resultCode == 123){
-              Toast.makeText(getActivity(), "haha", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getActivity(), "haha", Toast.LENGTH_SHORT).show();
             adapter.notifyDataSetChanged();
         }
         super.onActivityResult(requestCode, resultCode, data);

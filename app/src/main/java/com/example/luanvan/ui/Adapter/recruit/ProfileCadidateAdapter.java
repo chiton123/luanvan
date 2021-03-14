@@ -38,6 +38,7 @@ import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManagementActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CandidateDocumentFragment;
 import com.example.luanvan.ui.recruiter.CVManagement.JobListFragment;
+import com.example.luanvan.ui.recruiter.RecruiterActivity;
 import com.example.luanvan.ui.schedule.ScheduleActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -132,8 +133,8 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
 
     public void showDialogAccessCandidate(final int position){
         job_id = applicant.getJob_id();
-        for(int i=0; i < CVManageActivity.arrayListJobList.size(); i++){
-            if(CVManageActivity.arrayListJobList.get(i).getId() == job_id){
+        for(int i=0; i < RecruiterActivity.arrayListJobList.size(); i++){
+            if(RecruiterActivity.arrayListJobList.get(i).getId() == job_id){
                 positionJobList = i;
             }
         }
@@ -209,18 +210,18 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
                 CVManageActivity.arrayListInterView.add(applicant);
                 CVManageActivity.arrayListCVFilter.remove(position);
 
-                CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setSkip(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getSkip() -1);
-                CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setInterview(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getInterview() + 1);
+                RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setSkip(RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getSkip() -1);
+                RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setInterview(RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getInterview() + 1);
             }else if(statusApplication >= 12){
                 CVManageActivity.arrayListGoToWork.add(applicant);
                 CVManageActivity.arrayListCVFilter.remove(position);
-                CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setWork(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getWork() + 1);
-                CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setSkip(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getSkip() -1);
+                RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setWork(RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getWork() + 1);
+                RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setSkip(RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getSkip() -1);
 
             }else if(statusApplication == 1 || statusApplication == 0){
                 CVManageActivity.arrayListCVFilter.set(positionX, applicant);
-                CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setNew_document(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getNew_document() + 1);
-                CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setSkip(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getSkip() -1);
+                RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setNew_document(RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getNew_document() + 1);
+                RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setSkip(RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getSkip() -1);
             }else {
                 CVManageActivity.arrayListCVFilter.set(positionX, applicant);
             }
@@ -231,18 +232,18 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
                 CVManageActivity.arrayListInterView.add(applicant);
                 CVManageActivity.arrayListCVFilter.remove(position);
 
-                CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setNew_document(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getNew_document() -1);
-                CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setInterview(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getInterview() + 1);
+                RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setNew_document(RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getNew_document() -1);
+                RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setInterview(RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getInterview() + 1);
             }else if(statusApplication >= 12){
                 CVManageActivity.arrayListGoToWork.add(applicant);
                 CVManageActivity.arrayListCVFilter.remove(position);
-                CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setWork(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getWork() + 1);
-                CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setNew_document(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getNew_document() -1);
+                RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setWork(RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getWork() + 1);
+                RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setNew_document(RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getNew_document() -1);
 
             }else if(statusApplication == 2) {
                 CVManageActivity.arrayListCVFilter.set(positionX, applicant);
-                CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setSkip(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getSkip()  + 1);
-                CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setNew_document(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getNew_document() -1);
+                RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setSkip(RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getSkip()  + 1);
+                RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setNew_document(RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getNew_document() -1);
             }
             else {
                 CVManageActivity.arrayListCVFilter.set(positionX, applicant);
@@ -255,19 +256,19 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
             CVManageActivity.arrayListCVFilter.add(applicant);
             CVManageActivity.arrayListInterView.remove(position);
             if(statusApplication == 2){
-                CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setSkip(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getSkip()  + 1);
-                CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setInterview(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getInterview() - 1);
+                RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setSkip(RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getSkip()  + 1);
+                RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setInterview(RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getInterview() - 1);
             }else {
-                CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setNew_document(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getNew_document()  + 1);
-                CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setInterview(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getInterview() - 1);
+                RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setNew_document(RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getNew_document()  + 1);
+                RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setInterview(RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getInterview() - 1);
             }
 
 
         }else if(statusApplication >= 12){
             CVManageActivity.arrayListGoToWork.add(applicant);
             CVManageActivity.arrayListInterView.remove(position);
-            CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setInterview(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getInterview() - 1);
-            CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setWork(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getWork() + 1);
+            RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setInterview(RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getInterview() - 1);
+            RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setWork(RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getWork() + 1);
         }else {
             CVManageActivity.arrayListInterView.set(positionX, applicant);
         }
@@ -277,19 +278,19 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
         if(statusApplication >= 3 && statusApplication <= 11){
             CVManageActivity.arrayListInterView.add(applicant);
             CVManageActivity.arrayListGoToWork.remove(position);
-            CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setInterview(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getInterview()  + 1);
-            CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setWork(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getWork() - 1);
+            RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setInterview(RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getInterview()  + 1);
+            RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setWork(RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getWork() - 1);
 
 
         }else if(statusApplication <= 2){
             CVManageActivity.arrayListCVFilter.add(applicant);
             CVManageActivity.arrayListGoToWork.remove(position);
             if(statusApplication == 2){
-                CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setSkip(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getSkip()  + 1);
-                CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setWork(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getWork() - 1);
+                RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setSkip(RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getSkip()  + 1);
+                RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setWork(RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getWork() - 1);
             }else {
-                CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setNew_document(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getNew_document()  + 1);
-                CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setWork(CVManageActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getWork() - 1);
+                RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setNew_document(RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getNew_document()  + 1);
+                RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).setWork(RecruiterActivity.arrayListJobList.get(CVManagementActivity.position_job_list).getWork() - 1);
             }
 
 
@@ -304,15 +305,15 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
         if(first_status == 2){
             // skip
             if(statusApplication >= 3 && statusApplication <= 11){
-                CVManageActivity.arrayListJobList.get(positionJobList).setSkip(CVManageActivity.arrayListJobList.get(positionJobList).getSkip() -1);
-                CVManageActivity.arrayListJobList.get(positionJobList).setInterview(CVManageActivity.arrayListJobList.get(positionJobList).getInterview() + 1);
+                RecruiterActivity.arrayListJobList.get(positionJobList).setSkip(RecruiterActivity.arrayListJobList.get(positionJobList).getSkip() -1);
+                RecruiterActivity.arrayListJobList.get(positionJobList).setInterview(RecruiterActivity.arrayListJobList.get(positionJobList).getInterview() + 1);
             }else if(statusApplication >=  12){
-                CVManageActivity.arrayListJobList.get(positionJobList).setWork(CVManageActivity.arrayListJobList.get(positionJobList).getWork() + 1);
-                CVManageActivity.arrayListJobList.get(positionJobList).setSkip(CVManageActivity.arrayListJobList.get(positionJobList).getSkip() -1);
+                RecruiterActivity.arrayListJobList.get(positionJobList).setWork(RecruiterActivity.arrayListJobList.get(positionJobList).getWork() + 1);
+                RecruiterActivity.arrayListJobList.get(positionJobList).setSkip(RecruiterActivity.arrayListJobList.get(positionJobList).getSkip() -1);
 
             }else if(statusApplication == 1 || statusApplication == 0){
-                CVManageActivity.arrayListJobList.get(positionJobList).setNew_document(CVManageActivity.arrayListJobList.get(positionJobList).getNew_document() + 1);
-                CVManageActivity.arrayListJobList.get(positionJobList).setSkip(CVManageActivity.arrayListJobList.get(positionJobList).getSkip() -1);
+                RecruiterActivity.arrayListJobList.get(positionJobList).setNew_document(RecruiterActivity.arrayListJobList.get(positionJobList).getNew_document() + 1);
+                RecruiterActivity.arrayListJobList.get(positionJobList).setSkip(RecruiterActivity.arrayListJobList.get(positionJobList).getSkip() -1);
             }else {
 
             }
@@ -320,15 +321,15 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
         }else {
             // new document
             if(statusApplication >= 3 && statusApplication <= 11){
-                CVManageActivity.arrayListJobList.get(positionJobList).setNew_document(CVManageActivity.arrayListJobList.get(positionJobList).getNew_document() -1);
-                CVManageActivity.arrayListJobList.get(positionJobList).setInterview(CVManageActivity.arrayListJobList.get(positionJobList).getInterview() + 1);
+                RecruiterActivity.arrayListJobList.get(positionJobList).setNew_document(RecruiterActivity.arrayListJobList.get(positionJobList).getNew_document() -1);
+                RecruiterActivity.arrayListJobList.get(positionJobList).setInterview(RecruiterActivity.arrayListJobList.get(positionJobList).getInterview() + 1);
             }else if(statusApplication >= 12){
-                CVManageActivity.arrayListJobList.get(positionJobList).setWork(CVManageActivity.arrayListJobList.get(positionJobList).getWork() + 1);
-                CVManageActivity.arrayListJobList.get(positionJobList).setNew_document(CVManageActivity.arrayListJobList.get(positionJobList).getNew_document() -1);
+                RecruiterActivity.arrayListJobList.get(positionJobList).setWork(RecruiterActivity.arrayListJobList.get(positionJobList).getWork() + 1);
+                RecruiterActivity.arrayListJobList.get(positionJobList).setNew_document(RecruiterActivity.arrayListJobList.get(positionJobList).getNew_document() -1);
 
             }else if(statusApplication == 2) {
-                CVManageActivity.arrayListJobList.get(positionJobList).setSkip(CVManageActivity.arrayListJobList.get(positionJobList).getSkip()  + 1);
-                CVManageActivity.arrayListJobList.get(positionJobList).setNew_document(CVManageActivity.arrayListJobList.get(positionJobList).getNew_document() -1);
+                RecruiterActivity.arrayListJobList.get(positionJobList).setSkip(RecruiterActivity.arrayListJobList.get(positionJobList).getSkip()  + 1);
+                RecruiterActivity.arrayListJobList.get(positionJobList).setNew_document(RecruiterActivity.arrayListJobList.get(positionJobList).getNew_document() -1);
             }
             else {
 
@@ -340,17 +341,17 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
    //     Toast.makeText(context, "Cập nhật thành công 2", Toast.LENGTH_SHORT).show();
         if(statusApplication <= 2){
             if(statusApplication == 2){
-                CVManageActivity.arrayListJobList.get(positionJobList).setSkip(CVManageActivity.arrayListJobList.get(positionJobList).getSkip()  + 1);
-                CVManageActivity.arrayListJobList.get(positionJobList).setInterview(CVManageActivity.arrayListJobList.get(positionJobList).getInterview() - 1);
+                RecruiterActivity.arrayListJobList.get(positionJobList).setSkip(RecruiterActivity.arrayListJobList.get(positionJobList).getSkip()  + 1);
+                RecruiterActivity.arrayListJobList.get(positionJobList).setInterview(RecruiterActivity.arrayListJobList.get(positionJobList).getInterview() - 1);
             }else {
-                CVManageActivity.arrayListJobList.get(positionJobList).setNew_document(CVManageActivity.arrayListJobList.get(positionJobList).getNew_document()  + 1);
-                CVManageActivity.arrayListJobList.get(positionJobList).setInterview(CVManageActivity.arrayListJobList.get(positionJobList).getInterview() - 1);
+                RecruiterActivity.arrayListJobList.get(positionJobList).setNew_document(RecruiterActivity.arrayListJobList.get(positionJobList).getNew_document()  + 1);
+                RecruiterActivity.arrayListJobList.get(positionJobList).setInterview(RecruiterActivity.arrayListJobList.get(positionJobList).getInterview() - 1);
             }
 
 
         }else if(statusApplication >= 12){
-            CVManageActivity.arrayListJobList.get(positionJobList).setInterview(CVManageActivity.arrayListJobList.get(positionJobList).getInterview() - 1);
-            CVManageActivity.arrayListJobList.get(positionJobList).setWork(CVManageActivity.arrayListJobList.get(positionJobList).getWork() + 1);
+            RecruiterActivity.arrayListJobList.get(positionJobList).setInterview(RecruiterActivity.arrayListJobList.get(positionJobList).getInterview() - 1);
+            RecruiterActivity.arrayListJobList.get(positionJobList).setWork(RecruiterActivity.arrayListJobList.get(positionJobList).getWork() + 1);
         }else {
 
         }
@@ -359,17 +360,17 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
     public void kindThree2(final int position){
      //   Toast.makeText(context, "Cập nhật thành công 3", Toast.LENGTH_SHORT).show();
         if(statusApplication >= 3 && statusApplication <= 11){
-            CVManageActivity.arrayListJobList.get(positionJobList).setInterview(CVManageActivity.arrayListJobList.get(positionJobList).getInterview()  + 1);
-            CVManageActivity.arrayListJobList.get(positionJobList).setWork(CVManageActivity.arrayListJobList.get(positionJobList).getWork() - 1);
+            RecruiterActivity.arrayListJobList.get(positionJobList).setInterview(RecruiterActivity.arrayListJobList.get(positionJobList).getInterview()  + 1);
+            RecruiterActivity.arrayListJobList.get(positionJobList).setWork(RecruiterActivity.arrayListJobList.get(positionJobList).getWork() - 1);
 
 
         }else if(statusApplication <= 2){
             if(statusApplication == 2){
-                CVManageActivity.arrayListJobList.get(positionJobList).setSkip(CVManageActivity.arrayListJobList.get(positionJobList).getSkip()  + 1);
-                CVManageActivity.arrayListJobList.get(positionJobList).setWork(CVManageActivity.arrayListJobList.get(positionJobList).getWork() - 1);
+                RecruiterActivity.arrayListJobList.get(positionJobList).setSkip(RecruiterActivity.arrayListJobList.get(positionJobList).getSkip()  + 1);
+                RecruiterActivity.arrayListJobList.get(positionJobList).setWork(RecruiterActivity.arrayListJobList.get(positionJobList).getWork() - 1);
             }else {
-                CVManageActivity.arrayListJobList.get(positionJobList).setNew_document(CVManageActivity.arrayListJobList.get(positionJobList).getNew_document()  + 1);
-                CVManageActivity.arrayListJobList.get(positionJobList).setWork(CVManageActivity.arrayListJobList.get(positionJobList).getWork() - 1);
+                RecruiterActivity.arrayListJobList.get(positionJobList).setNew_document(RecruiterActivity.arrayListJobList.get(positionJobList).getNew_document()  + 1);
+                RecruiterActivity.arrayListJobList.get(positionJobList).setWork(RecruiterActivity.arrayListJobList.get(positionJobList).getWork() - 1);
             }
 
 

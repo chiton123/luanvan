@@ -9,9 +9,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -26,6 +28,7 @@ import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.recruit.PositionAdapter;
 import com.example.luanvan.ui.Model.Job;
 import com.example.luanvan.ui.Model.JobList;
+import com.example.luanvan.ui.recruiter.RecruiterActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,20 +47,41 @@ public class JobListFragment extends Fragment {
     public static PositionAdapter adapter;
 
     RecyclerView recyclerView;
+    LinearLayout layout, layout_nothing;
+    Handler handler;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_job_list, container, false);
-        adapter = new PositionAdapter(getActivity(), CVManageActivity.arrayListJobList, getActivity());
+        adapter = new PositionAdapter(getActivity(), RecruiterActivity.arrayListJobList, getActivity());
         recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
+        layout = (LinearLayout) view.findViewById(R.id.layout);
+        layout_nothing = (LinearLayout) view.findViewById(R.id.layout_nothing);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
-
-
-        getData();
+        if(RecruiterActivity.arrayListJobList.size() == 0){
+            getData();
+        }
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                checkNothing();
+            }
+        },1000);
 
         return view;
+
+    }
+    public void checkNothing(){
+        if(RecruiterActivity.arrayListJobList.size() == 0){
+            layout_nothing.setVisibility(View.VISIBLE);
+            layout.setVisibility(View.GONE);
+        }else {
+            layout_nothing.setVisibility(View.GONE);
+            layout.setVisibility(View.VISIBLE);
+        }
     }
 
     private void getData() {
@@ -71,7 +95,7 @@ public class JobListFragment extends Fragment {
                             JSONArray jsonArray = new JSONArray(response);
                             for(int i=0; i < jsonArray.length(); i++){
                                 JSONObject object = jsonArray.getJSONObject(i);
-                                CVManageActivity.arrayListJobList.add(new JobList(
+                                RecruiterActivity.arrayListJobList.add(new JobList(
                                         object.getInt("id"),
                                         object.getString("name"),
                                         object.getInt("idcompany"),

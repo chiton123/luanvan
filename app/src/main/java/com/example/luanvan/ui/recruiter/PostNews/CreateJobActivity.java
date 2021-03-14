@@ -185,18 +185,18 @@ public class CreateJobActivity extends AppCompatActivity {
                                 public void onResponse(String response) {
                                     if(response.equals("success")){
                                         Toast.makeText(getApplicationContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
-//                                        CVManageActivity.arrayListJobList.get(position_job).setName(position);
-//                                        CVManageActivity.arrayListJobList.get(position_job).setAddress(address);
-//                                        CVManageActivity.arrayListJobList.get(position_job).setBenefit(benefit);
-//                                        CVManageActivity.arrayListJobList.get(position_job).setDescription(description);
-//                                        CVManageActivity.arrayListJobList.get(position_job).setRequirement(requirement);
-//                                        CVManageActivity.arrayListJobList.get(position_job).setNumber(Integer.parseInt(number));
-//                                        CVManageActivity.arrayListJobList.get(position_job).setSalary(Integer.parseInt(salary));
-//                                        CVManageActivity.arrayListJobList.get(position_job).setIdarea(idArea);
-//                                        CVManageActivity.arrayListJobList.get(position_job).setIdprofession(idProfession);
-//                                        CVManageActivity.arrayListJobList.get(position_job).setIdtype(idKindJob);
-//                                        CVManageActivity.arrayListJobList.get(position_job).setStart_date(date_post_start);
-//                                        CVManageActivity.arrayListJobList.get(position_job).setEnd_date(date_post_end);
+//                                        RecruiterActivity.arrayListJobList.get(position_job).setName(position);
+//                                        RecruiterActivity.arrayListJobList.get(position_job).setAddress(address);
+//                                        RecruiterActivity.arrayListJobList.get(position_job).setBenefit(benefit);
+//                                        RecruiterActivity.arrayListJobList.get(position_job).setDescription(description);
+//                                        RecruiterActivity.arrayListJobList.get(position_job).setRequirement(requirement);
+//                                        RecruiterActivity.arrayListJobList.get(position_job).setNumber(Integer.parseInt(number));
+//                                        RecruiterActivity.arrayListJobList.get(position_job).setSalary(Integer.parseInt(salary));
+//                                        RecruiterActivity.arrayListJobList.get(position_job).setIdarea(idArea);
+//                                        RecruiterActivity.arrayListJobList.get(position_job).setIdprofession(idProfession);
+//                                        RecruiterActivity.arrayListJobList.get(position_job).setIdtype(idKindJob);
+//                                        RecruiterActivity.arrayListJobList.get(position_job).setStart_date(date_post_start);
+//                                        RecruiterActivity.arrayListJobList.get(position_job).setEnd_date(date_post_end);
 //                                        // cập nhật cho hồ sơ ứng tuyển
 //                                        for(int i=0; i < CVManageActivity.arrayListAll.size(); i++){
 //                                            if(CVManageActivity.arrayListAll.get(i).getJob_id() == job_id){
@@ -207,28 +207,28 @@ public class CreateJobActivity extends AppCompatActivity {
 //                                        }
 //                                        switch (idExperience){
 //                                            case 1:
-//                                                CVManageActivity.arrayListJobList.get(position_job).setExperience("Chưa có kinh nghiệm");
+//                                                RecruiterActivity.arrayListJobList.get(position_job).setExperience("Chưa có kinh nghiệm");
 //                                                break;
 //                                            case 2:
-//                                                CVManageActivity.arrayListJobList.get(position_job).setExperience("Dưới 1 năm");
+//                                                RecruiterActivity.arrayListJobList.get(position_job).setExperience("Dưới 1 năm");
 //                                                break;
 //                                            case 3:
-//                                                CVManageActivity.arrayListJobList.get(position_job).setExperience("1 năm");
+//                                                RecruiterActivity.arrayListJobList.get(position_job).setExperience("1 năm");
 //                                                break;
 //                                            case 4:
-//                                                CVManageActivity.arrayListJobList.get(position_job).setExperience("2 năm");
+//                                                RecruiterActivity.arrayListJobList.get(position_job).setExperience("2 năm");
 //                                                break;
 //                                            case 5:
-//                                                CVManageActivity.arrayListJobList.get(position_job).setExperience("3 năm");
+//                                                RecruiterActivity.arrayListJobList.get(position_job).setExperience("3 năm");
 //                                                break;
 //                                            case 6:
-//                                                CVManageActivity.arrayListJobList.get(position_job).setExperience("4 năm");
+//                                                RecruiterActivity.arrayListJobList.get(position_job).setExperience("4 năm");
 //                                                break;
 //                                            case 7:
-//                                                CVManageActivity.arrayListJobList.get(position_job).setExperience("5 năm");
+//                                                RecruiterActivity.arrayListJobList.get(position_job).setExperience("5 năm");
 //                                                break;
 //                                            case 8:
-//                                                CVManageActivity.arrayListJobList.get(position_job).setExperience("Trên 5 năm");
+//                                                RecruiterActivity.arrayListJobList.get(position_job).setExperience("Trên 5 năm");
 //                                                break;
 //                                        }
                                         handler = new Handler();

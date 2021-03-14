@@ -40,7 +40,7 @@ public class CVManageActivity extends AppCompatActivity {
     TabLayout tabLayout;
     ViewPager viewPager;
     ViewPageAdapter viewPageAdapter;
-    public static ArrayList<JobList> arrayListJobList = new ArrayList<>();
+
     public static ArrayList<Applicant> arrayListAll = new ArrayList<>();// mảng tổng của 3 cái dưới
     public static ArrayList<Applicant> arrayListCVFilter = new ArrayList<>();
     public static ArrayList<Applicant> arrayListInterView = new ArrayList<>();
@@ -82,7 +82,7 @@ public class CVManageActivity extends AppCompatActivity {
 
         viewPager.setAdapter(viewPageAdapter);
         tabLayout.setupWithViewPager(viewPager);
-        arrayListJobList = new ArrayList<>();
+      //  arrayListJobList = new ArrayList<>();
         arrayListAll = new ArrayList<>();
 
 

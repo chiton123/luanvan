@@ -25,7 +25,7 @@ public class RecruitmentNewsActivity extends AppCompatActivity {
     ViewPageAdapter viewPageAdapter;
     ViewPager viewPager;
     FloatingActionButton btnAdd;
-    public static ArrayList<JobList> arrayListDisplay = new ArrayList<>();
+  //  public static ArrayList<JobList> arrayListDisplay = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

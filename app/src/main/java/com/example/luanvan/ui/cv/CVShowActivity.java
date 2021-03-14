@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -25,6 +26,7 @@ public class CVShowActivity extends AppCompatActivity {
     int kind = 0; // 1: show cv , 2: job apply
     String cv_id = "";
     Handler handler;
+    ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +39,17 @@ public class CVShowActivity extends AppCompatActivity {
 
 
     }
+
+    void loading(){
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading");
+        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
+    }
+
     private void eventPDF() {
+        loading();
         webView.requestFocus();
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
@@ -81,6 +93,7 @@ public class CVShowActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     webView.loadUrl(url1);
+                    progressDialog.dismiss();
                 }
             },3000);
 
@@ -103,6 +116,7 @@ public class CVShowActivity extends AppCompatActivity {
         toolbar = (androidx.appcompat.widget.Toolbar) findViewById(R.id.toolbar);
         webView = (WebView) findViewById(R.id.webview);
         kind = getIntent().getIntExtra("kind", 0);
+
 
 
     }

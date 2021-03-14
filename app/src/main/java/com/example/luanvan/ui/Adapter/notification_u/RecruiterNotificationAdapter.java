@@ -82,15 +82,17 @@ public class RecruiterNotificationAdapter extends RecyclerView.Adapter<Recruiter
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateStatusNotification(position, 1);
-                arrayList.get(position).setStatus(1);
-                notifyDataSetChanged();
-                MainActivity.k--;
-                if(MainActivity.k == 0){
-                    RecruiterActivity.txtNotification.setVisibility(View.GONE);
-                }else {
-                    RecruiterActivity.txtNotification.setText("" + MainActivity.k);
-                    RecruiterActivity.txtNotification.setVisibility(View.VISIBLE);
+                if(notification.getStatus() == 0){
+                    updateStatusNotification(position, 1);
+                    arrayList.get(position).setStatus(1);
+                    notifyDataSetChanged();
+                    MainActivity.k--;
+                    if(MainActivity.k == 0){
+                        RecruiterActivity.txtNotification.setVisibility(View.GONE);
+                    }else {
+                        RecruiterActivity.txtNotification.setText("" + MainActivity.k);
+                        RecruiterActivity.txtNotification.setVisibility(View.VISIBLE);
+                    }
                 }
                 Intent intent = new Intent(context, CVManageActivity.class);
                 intent.putExtra("kind", 1); // Để nó trỏ tới hồ sơ ứng tuyển

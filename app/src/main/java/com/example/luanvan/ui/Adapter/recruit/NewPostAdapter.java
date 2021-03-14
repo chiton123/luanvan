@@ -1,7 +1,9 @@
 package com.example.luanvan.ui.Adapter.recruit;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,19 +11,32 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.JobList;
 import com.example.luanvan.ui.recruiter.AdjustJobActivity;
+import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
+import com.example.luanvan.ui.recruiter.CVManagement.CandidateDocumentFragment;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class NewPostAdapter extends RecyclerView.Adapter<NewPostAdapter.ItemHolder> {
     Context context;
@@ -77,7 +92,68 @@ public class NewPostAdapter extends RecyclerView.Adapter<NewPostAdapter.ItemHold
                 activity.startActivityForResult(intent1, REQUEST_CODE);
             }
         });
+        holder.imgDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteJob(position);
+            }
+        });
 
+    }
+
+    public void deleteJob(final int position){
+        AlertDialog.Builder alert = new AlertDialog.Builder(activity);
+        alert.setTitle("Xác nhận");
+        alert.setMessage("Bạn có muốn xóa công việc này không ?");
+        alert.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        alert.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                RequestQueue requestQueue = Volley.newRequestQueue(context);
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlDeleteJob,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                if(response.equals("success")){
+                                    Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
+//                                    for(int i = 0; i < CVManageActivity.arrayListAll.size(); i++){
+//                                        if(CVManageActivity.arrayListAll.get(i).getJob_id() == arrayList.get(position).getId()){
+//                                            Toast.makeText(context, "i "+ i, Toast.LENGTH_SHORT).show();
+//                                            CVManageActivity.arrayListAll.remove(i);
+//                                            CandidateDocumentFragment.adapter.notifyDataSetChanged();
+//                                            i--;
+//                                        }
+//                                    }
+                                    arrayList.remove(position);
+                                    notifyDataSetChanged();
+
+                                }else {
+                                    Toast.makeText(context, "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                            }
+                        }){
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String,String> map = new HashMap<>();
+                        map.put("job_id", String.valueOf(arrayList.get(position).getId()));
+                        return map;
+                    }
+                };
+                requestQueue.add(stringRequest);
+            }
+        });
+        alert.show();
 
     }
 
