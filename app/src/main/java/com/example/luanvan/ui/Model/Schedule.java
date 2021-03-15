@@ -14,8 +14,11 @@ public class Schedule implements Serializable {
     private String start_hour;
     private String end_hour;
     private String note;
+    private String note_candidate;
+    private int status;
 
-    public Schedule(int id, int id_recruiter, int id_job,String job_name, int id_user, String username, int type, String date, String start_hour, String end_hour, String note) {
+    public Schedule(int id, int id_recruiter, int id_job,String job_name, int id_user, String username, int type, String date,
+                    String start_hour, String end_hour, String note, String note_candidate, int status) {
         this.id = id;
         this.id_recruiter = id_recruiter;
         this.id_job = id_job;
@@ -27,6 +30,24 @@ public class Schedule implements Serializable {
         this.start_hour = start_hour;
         this.end_hour = end_hour;
         this.note = note;
+        this.note_candidate = note_candidate;
+        this.status = status;
+    }
+
+    public String getNote_candidate() {
+        return note_candidate;
+    }
+
+    public void setNote_candidate(String note_candidate) {
+        this.note_candidate = note_candidate;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public int getId() {

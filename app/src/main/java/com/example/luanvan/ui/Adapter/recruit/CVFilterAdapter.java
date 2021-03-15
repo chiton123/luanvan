@@ -3,6 +3,7 @@ package com.example.luanvan.ui.Adapter.recruit;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -226,7 +227,23 @@ public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHo
         holder.imgDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteApplicant(position);
+                AlertDialog.Builder alert = new AlertDialog.Builder(activity);
+                alert.setTitle("Xác nhận");
+                alert.setMessage("Bạn có chắc chắn xóa CV này không ?" );
+                alert.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                alert.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteApplicant(position);
+                    }
+                });
+                alert.show();
+
             }
         });
         holder.cardView.setOnClickListener(new View.OnClickListener() {

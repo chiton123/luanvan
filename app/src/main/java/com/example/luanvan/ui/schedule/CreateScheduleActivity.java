@@ -261,7 +261,7 @@ public class CreateScheduleActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Sửa thành công", Toast.LENGTH_SHORT).show();
 
                             Schedule schedule = new Schedule( scheduleInfo.getId(), MainActivity.iduser, job_id, job_name, user_id,
-                                    username, type_schedule, date_post, start_hour_refresh, end_hour_refresh, note);
+                                    username, type_schedule, date_post, start_hour_refresh, end_hour_refresh, note, "",0);
                             ScheduleManagementActivity.arrayList.set(position_update, schedule);
                             loading();
                             postNotification(0, date, start_hour, end_hour);
@@ -317,7 +317,7 @@ public class CreateScheduleActivity extends AppCompatActivity {
                             int last = response.lastIndexOf('s');
                             int id_schedule = Integer.parseInt(response.substring(last+1, response.length()));
                             Schedule schedule = new Schedule(id_schedule, MainActivity.iduser, job_id, job_name, user_id,
-                                    username, type_schedule, date_post, start_hour_refresh, end_hour_refresh, note);
+                                    username, type_schedule, date_post, start_hour_refresh, end_hour_refresh, note,"",0);
                             ScheduleManagementActivity.arrayList.add(schedule);
                             loading();
                             postNotification(0, date, start_hour, end_hour);
@@ -614,7 +614,7 @@ public class CreateScheduleActivity extends AppCompatActivity {
         editCandidate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "positoon " + check_position + " can " + check_candidate, Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getApplicationContext(), "positoon " + check_position + " can " + check_candidate, Toast.LENGTH_SHORT).show();
                 if(check_candidate == 0 || check_position == 1){
                     candidateArrayList.clear();
                     getCandidateList(job_id);

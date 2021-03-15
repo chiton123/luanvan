@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
     // kind CV, only change color
     public static int color = 0;
 
-    public static String host = "http://10.10.34.253:8888/luanvan/";
+    public static String host = "http://10.3.74.100:8888/luanvan/";
     public static String urljob1 = host + "job1.php?page=";
     public static String urlJobHome = host + "job_home.php";
     // job apply
@@ -155,6 +155,7 @@ public class MainActivity extends AppCompatActivity {
     public static String urlSchedule = host + "create_schedule.php";
     // get schedule
     public static String urlGetSchedule = host + "get_schedule.php";
+    public static String urlGetScheduleCandidate = host + "get_schedule_candidate.php";
     // delete schedule
     public static String urlDeleteSchedule = host + "delete_schedule.php";
     // update schedule

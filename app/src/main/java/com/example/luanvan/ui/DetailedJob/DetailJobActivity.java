@@ -13,9 +13,12 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +37,7 @@ import com.example.luanvan.ui.Adapter.ViewPageAdapter;
 import com.example.luanvan.ui.Apply.ChooseCVActivity;
 import com.example.luanvan.ui.Model.Job;
 import com.example.luanvan.ui.Model.Job_Apply;
+import com.example.luanvan.ui.Model.Schedule;
 import com.example.luanvan.ui.fragment.job_f.CompanyFragment;
 import com.example.luanvan.ui.fragment.job_f.InfoFragment;
 import com.example.luanvan.ui.fragment.job_f.RelevantJobFragment;
@@ -41,6 +45,7 @@ import com.example.luanvan.ui.home.HomeFragment;
 import com.example.luanvan.ui.login.LoginActivity;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
 
 import org.json.JSONArray;
@@ -79,6 +84,9 @@ public class DetailJobActivity extends AppCompatActivity {
     String type_notification = "Hồ sơ mới ứng tuyển";
     String content = "";
     public static int checkApplyAgain = 0;  // kiểm tra xem job đã ứng tuyển hay chưa
+    BottomSheetDialog bottomSheetDialogAnswer;
+    Button btnSchedule; // button lịch hẹn khi có thì xuất hiện
+    Schedule schedule;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,14 +97,100 @@ public class DetailJobActivity extends AppCompatActivity {
         eventApply();
         if(MainActivity.login == 1){
             checkApplyOrNot();
+            getSchedule();
         }
-
+        eventSchedule();
 
 
 
 
 
     }
+
+    private void eventSchedule() {
+        btnSchedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogAnswerSchedule();
+            }
+        });
+    }
+
+    private void getSchedule() {
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlGetScheduleCandidate,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            // Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
+                            JSONArray jsonArray = new JSONArray(response);
+                            if(jsonArray.length() > 0){
+                                btnSchedule.setVisibility(View.VISIBLE);
+                            }
+                            for(int i=0; i < jsonArray.length(); i++){
+                                JSONObject object = jsonArray.getJSONObject(i);
+                                schedule = new Schedule(
+                                        object.getInt("id"),
+                                        object.getInt("id_recruiter"),
+                                        object.getInt("id_job"),
+                                        object.getString("job_name"),
+                                        object.getInt("id_user"),
+                                        object.getString("username"),
+                                        object.getInt("type"),
+                                        object.getString("date"),
+                                        object.getString("start_hour"),
+                                        object.getString("end_hour"),
+                                        object.getString("note"),
+                                        object.getString("note_candidate"),
+                                        object.getInt("status")
+                                );
+
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("iduser", String.valueOf(MainActivity.iduser));
+                map.put("idjob", String.valueOf(job_id));
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
+    public void dialogAnswerSchedule(){
+        bottomSheetDialogAnswer = new BottomSheetDialog(DetailJobActivity.this, R.style.BottomSheetTheme);
+        View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_answer, (ViewGroup) findViewById(R.id.bottom_sheet));
+        TextView txtSchedule = (TextView) view.findViewById(R.id.name);
+        EditText editNote = (EditText) view.findViewById(R.id.editnote);
+        Button btnDongY = (Button) view.findViewById(R.id.buttondongy);
+        Button btnTuChoi = (Button) view.findViewById(R.id.buttontuchoi);
+        Button btnLuiLich = (Button) view.findViewById(R.id.buttonluilich);
+        if(schedule.getType() == 0){
+            txtSchedule.setText("Hẹn phỏng vấn");
+        }else {
+            txtSchedule.setText("Hẹn làm việc");
+        }
+        bottomSheetDialogAnswer.setContentView(view);
+
+
+        bottomSheetDialogAnswer.show();
+
+    }
+
+
     void loading(){
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading");
@@ -403,6 +497,7 @@ public class DetailJobActivity extends AppCompatActivity {
         if(requestCode == REQUEST_CODE_LOGIN && resultCode == 123){
             checkApplyOrNot();
             getDataApplied();
+            getSchedule();
         }
         if(requestCode == REQUEST_CODE_CV && resultCode == 123){
             checkApplyOrNot();
@@ -652,6 +747,7 @@ public class DetailJobActivity extends AppCompatActivity {
     private void anhxa() {
         checkApplyAgain = 0;
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        btnSchedule = (Button) findViewById(R.id.buttonschedule);
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbarcollapse);
         anhcongty = (ImageView) findViewById(R.id.hinhanh);
         txtcongty = (TextView) findViewById(R.id.tencongty);

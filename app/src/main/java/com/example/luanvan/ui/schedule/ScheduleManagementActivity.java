@@ -98,8 +98,9 @@ public class ScheduleManagementActivity extends AppCompatActivity {
                                         object.getString("date"),
                                         object.getString("start_hour"),
                                         object.getString("end_hour"),
-                                        object.getString("note")
-
+                                        object.getString("note"),
+                                        object.getString("note_candidate"),
+                                        object.getInt("status")
                                 ));
                             }
 

@@ -103,7 +103,7 @@ public class ScheduleActivity extends AppCompatActivity {
                                             int id_schedule = Integer.parseInt(response.substring(last+1, response.length()));
                                             Schedule schedule = new Schedule(id_schedule, MainActivity.iduser, applicant.getJob_id(),
                                                     applicant.getJob_name(), applicant.getUser_id(),
-                                                    applicant.getUsername(), type_schedule, date_post, start_hour_refresh, end_hour_refresh, note);
+                                                    applicant.getUsername(), type_schedule, date_post, start_hour_refresh, end_hour_refresh, note,"",0);
                                             ScheduleManagementActivity.arrayList.add(schedule);
                                             ScheduleManagementActivity.adapter.notifyDataSetChanged();
                                         }

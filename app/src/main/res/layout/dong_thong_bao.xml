@@ -40,6 +40,8 @@
             android:text="notification"
             android:id="@+id/txtcontent"
             android:textSize="13sp"
+            android:ellipsize="end"
+            android:maxLines="3"
             ></TextView>
         <TextView
             android:layout_marginTop="3dp"
