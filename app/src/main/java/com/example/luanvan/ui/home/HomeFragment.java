@@ -169,7 +169,9 @@ public class HomeFragment extends Fragment {
                                             object.getString("content"),
                                             object.getInt("status"),
                                             object.getString("img"),
-                                            object.getString("date_read")
+                                            object.getString("date_read"),
+                                            object.getInt("ap_status"),
+                                            object.getString("ap_note")
                                     ));
 
                                 }

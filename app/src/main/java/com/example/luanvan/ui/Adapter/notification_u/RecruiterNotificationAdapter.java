@@ -28,6 +28,7 @@ import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.DetailedJob.DetailJobActivity;
 import com.example.luanvan.ui.Model.Notification;
+import com.example.luanvan.ui.Model.NotificationRecruiter;
 import com.example.luanvan.ui.home.HomeFragment;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
 import com.example.luanvan.ui.recruiter.RecruiterActivity;
@@ -41,13 +42,13 @@ import java.util.Map;
 
 public class RecruiterNotificationAdapter extends RecyclerView.Adapter<RecruiterNotificationAdapter.ItemHolder> {
     Context context;
-    ArrayList<Notification> arrayList;
+    ArrayList<NotificationRecruiter> arrayList;
     Activity activity;
     int kind;
 
     // 0: ứng viên xem, 1: nhà tuyển dụng xem
 
-    public RecruiterNotificationAdapter(Context context, ArrayList<Notification> arrayList, Activity activity, int kind) {
+    public RecruiterNotificationAdapter(Context context, ArrayList<NotificationRecruiter> arrayList, Activity activity, int kind) {
         this.context = context;
         this.arrayList = arrayList;
         this.activity = activity;
@@ -65,7 +66,7 @@ public class RecruiterNotificationAdapter extends RecyclerView.Adapter<Recruiter
 
     @Override
     public void onBindViewHolder(@NonNull ItemHolder holder, final int position) {
-        final Notification notification = arrayList.get(position);
+        final NotificationRecruiter notification = arrayList.get(position);
         Glide.with(context).load(notification.getImg());
         holder.txtContent.setText(notification.getContent());
         holder.txtNotification.setText(notification.getType_notification());

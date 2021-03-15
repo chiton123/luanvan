@@ -75,7 +75,7 @@ public class GoToWorkFragment extends Fragment {
                     layout.setVisibility(View.VISIBLE);
                 }
             }
-        },1000);
+        },2000);
 
         return view;
     }

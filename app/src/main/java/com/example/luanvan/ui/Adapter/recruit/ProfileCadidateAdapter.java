@@ -64,6 +64,9 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
     int positionJobList = 0; // cập nhật tại vị trí trùng job_id
     String url_cv = ""; // url cv
     String name_cv = "";
+    String type_notification = "";
+    String content = "";
+
     public ProfileCadidateAdapter(Context context, ArrayList<Profile> arrayList, Activity activity, Applicant applicant, int kind, int positionX,
                                   String url_cv, String name_cv) {
         this.context = context;
@@ -156,9 +159,23 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                note = editNote.getText().toString();
-                updateStatus(position);
-                dialog.dismiss();
+                if((statusApplication == 2 || statusApplication == 11)){
+                    if(editNote.getText().toString().equals("")){
+                        Toast.makeText(context, "Vui lòng điền lý do không đạt vào ghi chú", Toast.LENGTH_SHORT).show();
+                    }else {
+                        note = editNote.getText().toString();
+                        updateStatus(position);
+                        postNotification(0);
+                        dialog.dismiss();
+                    }
+
+                }else {
+                    note = editNote.getText().toString();
+                    updateStatus(position);
+                    postNotification(0);
+                    dialog.dismiss();
+                }
+
             }
         });
         Spinner spinner = (Spinner) dialog.findViewById(R.id.spinner);
@@ -458,9 +475,78 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
         };
         requestQueue.add(stringRequest);
     }
+    // lọc CV: 0 chưa đánh giá, 1: đạt yêu cầu, 2: không đạt yêu cầu
+    // phỏng vấn : 3: Chưa liên hệ, 4: Không liên hệ được , 5: Đồng ý phỏng vấn, 6:Từ chối phỏng vấn, 7 Đến phỏng vấn, 8 Không đến phỏng vấn,
+    // 9: Lùi lịch phỏng vấn, 10 Đạt phỏng vấn, 11: Không đạt phỏng vấn
+    // nhận việc: 12: Đã thông báo kết quả, 13: Đã đến nhận việc, 14: Từ chối nhận việc
+    private void postNotification(final int type_user) {
+
+        switch (statusApplication){
+            case 1:
+                type_notification = "Nhà tuyển dụng vừa đánh giá bạn";
+                content = RecruiterActivity.arrayListJobList.get(0).getCompany_name() + " đánh giá hồ sơ của bạn đạt yêu cầu";
+                break;
+            case 2:
+                type_notification = "Nhà tuyển dụng vừa đánh giá bạn";
+                content = RecruiterActivity.arrayListJobList.get(0).getCompany_name() + " đánh giá hồ sơ của bạn không đạt yêu cầu";
+                break;
+            case 4:
+                type_notification = "Nhà tuyển dụng vừa đánh giá bạn";
+                content = RecruiterActivity.arrayListJobList.get(0).getCompany_name() + " liên hệ với bạn không được";
+                break;
+            case 8:
+                type_notification = "Phỏng vấn";
+                content = RecruiterActivity.arrayListJobList.get(0).getCompany_name() + " xem xét việc bạn không đến phỏng vấn";
+                break;
+            case 10:
+                type_notification = "Phỏng vấn";
+                content = RecruiterActivity.arrayListJobList.get(0).getCompany_name() + " đã duyệt bạn đậu phỏng vấn";
+                break;
+            case 11:
+                type_notification = "Phỏng vấn";
+                content = RecruiterActivity.arrayListJobList.get(0).getCompany_name() + " đã duyệt bạn không đậu phỏng vấn";
+                break;
+
+        }
+        RequestQueue requestQueue = Volley.newRequestQueue(activity);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlPostNotification,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(response.equals("success")){
+                            Toast.makeText(context, "Thông báo thành công", Toast.LENGTH_SHORT).show();
+                        }else {
+                            Toast.makeText(context, "Thông báo thất bại", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("type_user", String.valueOf(type_user));
+                map.put("type_notification",  type_notification);
+                map.put("iduser", String.valueOf(applicant.getUser_id()));
+                map.put("content", content);
+                map.put("id_application", String.valueOf(applicant.getId()));
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+
+    }
+
+
+
     public void infoNothing(){
         // khi xóa thì xét coi có = 0 -> thông báo là k có ứng viên
         // candidateDocument
+
         if(CVManageActivity.arrayListAll.size() == 0){
             CandidateDocumentFragment.layout_nothing.setVisibility(View.VISIBLE);
             CandidateDocumentFragment.layout.setVisibility(View.GONE);
@@ -468,28 +554,38 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
             CandidateDocumentFragment.layout_nothing.setVisibility(View.GONE);
             CandidateDocumentFragment.layout.setVisibility(View.VISIBLE);
         }
-        if(CVManageActivity.arrayListCVFilter.size() == 0){
-            CVFilterFragment.layout_nothing.setVisibility(View.VISIBLE);
-            CVFilterFragment.layout.setVisibility(View.GONE);
-        }else {
-            CVFilterFragment.layout_nothing.setVisibility(View.GONE);
-            CVFilterFragment.layout.setVisibility(View.VISIBLE);
-        }
-        if(CVManageActivity.arrayListInterView.size() == 0){
-            InterviewFragment.layout_nothing.setVisibility(View.VISIBLE);
-            InterviewFragment.layout.setVisibility(View.GONE);
-        }else {
-            InterviewFragment.layout_nothing.setVisibility(View.GONE);
-            InterviewFragment.layout.setVisibility(View.VISIBLE);
+
+        if(kind == 1){
+            if(CVManageActivity.arrayListCVFilter.size() == 0){
+                CVFilterFragment.layout_nothing.setVisibility(View.VISIBLE);
+                CVFilterFragment.layout.setVisibility(View.GONE);
+            }else {
+                CVFilterFragment.layout_nothing.setVisibility(View.GONE);
+                CVFilterFragment.layout.setVisibility(View.VISIBLE);
+            }
         }
 
-        if(CVManageActivity.arrayListGoToWork.size() == 0){
-            GoToWorkFragment.layout_nothing.setVisibility(View.VISIBLE);
-            GoToWorkFragment.layout.setVisibility(View.GONE);
-        }else {
-            GoToWorkFragment.layout_nothing.setVisibility(View.GONE);
-            GoToWorkFragment.layout.setVisibility(View.VISIBLE);
+        if(kind == 2){
+            if(CVManageActivity.arrayListInterView.size() == 0){
+                InterviewFragment.layout_nothing.setVisibility(View.VISIBLE);
+                InterviewFragment.layout.setVisibility(View.GONE);
+            }else {
+                InterviewFragment.layout_nothing.setVisibility(View.GONE);
+                InterviewFragment.layout.setVisibility(View.VISIBLE);
+            }
         }
+
+
+        if(kind == 3){
+            if(CVManageActivity.arrayListGoToWork.size() == 0){
+                GoToWorkFragment.layout_nothing.setVisibility(View.VISIBLE);
+                GoToWorkFragment.layout.setVisibility(View.GONE);
+            }else {
+                GoToWorkFragment.layout_nothing.setVisibility(View.GONE);
+                GoToWorkFragment.layout.setVisibility(View.VISIBLE);
+            }
+        }
+
     }
 
     @Override

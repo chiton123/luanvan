@@ -1,5 +1,6 @@
 package com.example.luanvan.ui.recruiter.CVManagement;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -41,10 +42,12 @@ public class CandidateDocumentFragment extends Fragment {
     // kind: 1: lọc CV, 2: phỏng vấn, 3: nhận việc để cập nhật sau khi đánh giá, 0: candidateDocument
     public static LinearLayout layout, layout_nothing;
     Handler handler;
+    ProgressDialog progressDialog;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_candidate_document, container, false);
+        loading();
         recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
         recyclerView.setHasFixedSize(true);
 
@@ -66,12 +69,19 @@ public class CandidateDocumentFragment extends Fragment {
                     layout_nothing.setVisibility(View.GONE);
                     layout.setVisibility(View.VISIBLE);
                 }
+                progressDialog.dismiss();
             }
-        },1000);
+        },1500);
 
         return view;
     }
-
+    void loading(){
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Loading");
+        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
+    }
     private void getData() {
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlCandidateDocument,

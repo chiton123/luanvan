@@ -198,7 +198,7 @@ public class CandidateInfoActivity extends AppCompatActivity {
                            // Toast.makeText(getApplicationContext(), "Đã thông báo", Toast.LENGTH_SHORT).show();
                         }else {
                            // Toast.makeText(getApplicationContext(), "Thông báo thất bại", Toast.LENGTH_SHORT).show();
-                            postNotification(0);
+                            postNotification(0, content); // 0: candidate, 1: recruiter
                         }
                     }
                 },
@@ -219,7 +219,7 @@ public class CandidateInfoActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
 
-    private void postNotification(final int type_user) {
+    private void postNotification(final int type_user, final String content) {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlPostNotification,
                 new Response.Listener<String>() {

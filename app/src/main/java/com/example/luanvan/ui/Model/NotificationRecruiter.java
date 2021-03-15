@@ -1,6 +1,6 @@
 package com.example.luanvan.ui.Model;
 
-public class Notification {
+public class NotificationRecruiter {
     private int id;
     private int ap_id;
     private int job_id;
@@ -13,8 +13,8 @@ public class Notification {
     private String date_read;
     private int ap_status;
     private String ap_note;
-    public Notification(int id, int ap_id, int job_id, String type_notification, int type_user, int id_user, String content,int status, String img, String date_read,
-                        int ap_status, String ap_note) {
+    public NotificationRecruiter(int id, int ap_id, int job_id, String type_notification, int type_user, int id_user, String content, int status, String img, String date_read,
+                                 int ap_status, String ap_note) {
         this.id = id;
         this.ap_id = ap_id;
         this.job_id = job_id;

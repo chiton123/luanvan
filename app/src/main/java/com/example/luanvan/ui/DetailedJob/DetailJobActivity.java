@@ -513,6 +513,8 @@ public class DetailJobActivity extends AppCompatActivity {
             loading();
             job_id = getIntent().getIntExtra("job_id",0);
             getJobInfo(job_id);
+            final int ap_status = getIntent().getIntExtra("ap_status" ,0);
+            final String ap_note = getIntent().getStringExtra("ap_note");
             handler2 = new Handler();
             handler2.postDelayed(new Runnable() {
                 @Override
@@ -534,11 +536,16 @@ public class DetailJobActivity extends AppCompatActivity {
                     SimpleDateFormat fmtOut = new SimpleDateFormat("dd/MM/yyyy");
                     txthannop.setText(fmtOut.format(date2));
                     progressDialog.dismiss();
+                    if(ap_status == 2 ){
+                        Toast.makeText(getApplicationContext(), "Lý do bạn không đạt yêu cầu là : " + ap_note, Toast.LENGTH_SHORT).show();
+                    }else if(ap_status == 11) {
+                        Toast.makeText(getApplicationContext(), "Lý do bạn không đạt phỏng vấn là : " + ap_note, Toast.LENGTH_SHORT).show();
+                    }
+
 
 
                 }
             },3000);
-
 
 
         }

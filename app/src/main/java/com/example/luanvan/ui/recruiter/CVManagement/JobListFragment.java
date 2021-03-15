@@ -1,5 +1,6 @@
 package com.example.luanvan.ui.recruiter.CVManagement;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -49,10 +50,12 @@ public class JobListFragment extends Fragment {
     RecyclerView recyclerView;
     LinearLayout layout, layout_nothing;
     Handler handler;
+    ProgressDialog progressDialog;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_job_list, container, false);
+        loading();
         adapter = new PositionAdapter(getActivity(), RecruiterActivity.arrayListJobList, getActivity());
         recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
         layout = (LinearLayout) view.findViewById(R.id.layout);
@@ -68,11 +71,19 @@ public class JobListFragment extends Fragment {
             @Override
             public void run() {
                 checkNothing();
+                progressDialog.dismiss();
             }
-        },1000);
+        },1500);
 
         return view;
 
+    }
+    void loading(){
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Loading");
+        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
     }
     public void checkNothing(){
         if(RecruiterActivity.arrayListJobList.size() == 0){
@@ -91,7 +102,7 @@ public class JobListFragment extends Fragment {
                     @Override
                     public void onResponse(String response) {
                         try {
-                          //  Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_SHORT).show();
                             JSONArray jsonArray = new JSONArray(response);
                             for(int i=0; i < jsonArray.length(); i++){
                                 JSONObject object = jsonArray.getJSONObject(i);

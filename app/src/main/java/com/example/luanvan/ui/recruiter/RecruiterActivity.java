@@ -25,6 +25,7 @@ import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.JobList;
 import com.example.luanvan.ui.Model.Notification;
+import com.example.luanvan.ui.Model.NotificationRecruiter;
 import com.example.luanvan.ui.notification.RecruiterNotificationActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
 import com.example.luanvan.ui.recruiter.PostNews.RecruitmentNewsActivity;
@@ -43,7 +44,7 @@ public class RecruiterActivity extends AppCompatActivity {
     ImageView imgCVManagement, imgPostJob, imgSchedule;
     public static TextView txtNotification;
     Handler handler;
-    public static ArrayList<Notification> arrayListNotificationRecruiter = new ArrayList<>();
+    public static ArrayList<NotificationRecruiter> arrayListNotificationRecruiter = new ArrayList<>();
     public static ArrayList<JobList> arrayListJobList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +82,7 @@ public class RecruiterActivity extends AppCompatActivity {
                                 JSONArray jsonArray = new JSONArray(response);
                                 for(int i=0; i < jsonArray.length(); i++){
                                     JSONObject object = jsonArray.getJSONObject(i);
-                                    arrayListNotificationRecruiter.add(new Notification(
+                                    arrayListNotificationRecruiter.add(new NotificationRecruiter(
                                             object.getInt("id"),
                                             object.getInt("ap_id"),
                                             object.getInt("job_id"),
@@ -91,7 +92,9 @@ public class RecruiterActivity extends AppCompatActivity {
                                             object.getString("content"),
                                             object.getInt("status"),
                                             object.getString("img"),
-                                            object.getString("date_read")
+                                            object.getString("date_read"),
+                                            object.getInt("ap_status"),
+                                            object.getString("ap_note")
                                     ));
 
                                 }

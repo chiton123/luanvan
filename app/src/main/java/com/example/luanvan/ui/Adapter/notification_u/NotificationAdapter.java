@@ -99,6 +99,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 // 0: từ màn hình chính, tìm kiếm, lọc chuyển qua, 1: từ notification chuyển qua
                 intent.putExtra("kind", 1);
                 intent.putExtra("job_id", arrayList.get(position).getJob_id());
+                intent.putExtra("ap_status", arrayList.get(position).getAp_status());
+                intent.putExtra("ap_note", arrayList.get(position).getAp_note());
                 activity.startActivity(intent);
             }
         });

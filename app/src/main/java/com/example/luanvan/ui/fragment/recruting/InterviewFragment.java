@@ -73,7 +73,7 @@ public class InterviewFragment extends Fragment {
                     layout.setVisibility(View.VISIBLE);
                 }
             }
-        },1000);
+        },2000);
 
         return view;
     }
@@ -83,7 +83,7 @@ public class InterviewFragment extends Fragment {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                     //   Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_SHORT).show();
+                  //      Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_SHORT).show();
                         if(response != null){
                             try {
                                 JSONArray jsonArray = new JSONArray(response);

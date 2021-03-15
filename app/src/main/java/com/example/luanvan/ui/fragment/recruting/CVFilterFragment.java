@@ -76,7 +76,7 @@ public class CVFilterFragment extends Fragment {
                     layout.setVisibility(View.VISIBLE);
                 }
             }
-        },1000);
+        },2000);
 
         return view;
     }
@@ -89,7 +89,7 @@ public class CVFilterFragment extends Fragment {
                     @Override
                     public void onResponse(String response) {
                         if (response != null) {
-                         //   Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_SHORT).show();
+                      //      Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_SHORT).show();
                             try {
                                 JSONArray jsonArray = new JSONArray(response);
                                 for (int i = 0; i < jsonArray.length(); i++) {
