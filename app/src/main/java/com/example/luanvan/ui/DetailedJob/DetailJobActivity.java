@@ -86,7 +86,8 @@ public class DetailJobActivity extends AppCompatActivity {
     public static int checkApplyAgain = 0;  // kiểm tra xem job đã ứng tuyển hay chưa
     BottomSheetDialog bottomSheetDialogAnswer;
     Button btnSchedule; // button lịch hẹn khi có thì xuất hiện
-    Schedule schedule;
+    Schedule schedule; // status : 0 chưa xác nhận, 1 đồng ý , 2 từ chối , 3 dời lịch pv
+    int ap_id = 0; // id application của job đó với user hiện tại;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,7 +112,11 @@ public class DetailJobActivity extends AppCompatActivity {
         btnSchedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogAnswerSchedule();
+                try {
+                    dialogAnswerSchedule();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -170,23 +175,143 @@ public class DetailJobActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
 
-    public void dialogAnswerSchedule(){
+    public void dialogAnswerSchedule() throws ParseException {
         bottomSheetDialogAnswer = new BottomSheetDialog(DetailJobActivity.this, R.style.BottomSheetTheme);
         View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_answer, (ViewGroup) findViewById(R.id.bottom_sheet));
         TextView txtSchedule = (TextView) view.findViewById(R.id.name);
-        EditText editNote = (EditText) view.findViewById(R.id.editnote);
+        final EditText editNote = (EditText) view.findViewById(R.id.editnote);
         Button btnDongY = (Button) view.findViewById(R.id.buttondongy);
         Button btnTuChoi = (Button) view.findViewById(R.id.buttontuchoi);
         Button btnLuiLich = (Button) view.findViewById(R.id.buttonluilich);
+        TextView txtDate = (TextView) view.findViewById(R.id.txtdate);
         if(schedule.getType() == 0){
             txtSchedule.setText("Hẹn phỏng vấn");
         }else {
             txtSchedule.setText("Hẹn làm việc");
         }
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-mm-dd");
+        Date date = null;
+        date = simpleDateFormat.parse(schedule.getDate());
+        SimpleDateFormat fmtOut  = new SimpleDateFormat("dd/mm/yyyy");
+        String start = schedule.getStart_hour();
+        String end = schedule.getEnd_hour();
+        SimpleDateFormat fmtTime = new SimpleDateFormat("HH:mm:ss");
+        Date time1 = null;
+        Date time2 = null;
+        try {
+            time1 =  fmtTime.parse(start);
+            time2 = fmtTime.parse(end);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        SimpleDateFormat formatHour = new SimpleDateFormat("HH:mm");
+        txtDate.setText("Ngày: "+ fmtOut.format(date) + ", từ " + formatHour.format(time1) + " đến " + formatHour.format(time2));
+        // status : 0 chưa xác nhận, 1 đồng ý , 2 từ chối , 3 dời lịch pv
+        btnDongY.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateSchedule(schedule.getId(), 1, editNote.getText().toString());
+                postNotificationSchedule(1,1);
+                bottomSheetDialogAnswer.dismiss();
+            }
+        });
+        btnTuChoi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateSchedule(schedule.getId(), 2, editNote.getText().toString());
+                postNotificationSchedule(1,2);
+                bottomSheetDialogAnswer.dismiss();
+            }
+        });
+        btnLuiLich.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateSchedule(schedule.getId(), 3, editNote.getText().toString());
+                postNotificationSchedule(1,3);
+                bottomSheetDialogAnswer.dismiss();
+            }
+        });
+
+
         bottomSheetDialogAnswer.setContentView(view);
 
 
         bottomSheetDialogAnswer.show();
+
+    }
+    public void postNotificationSchedule(final int type_user, int status){
+        type_notification = "Trả lời lịch hẹn của ứng viên";
+        if(status == 1){
+            content = "Ứng viên " + MainActivity.username +" đồng ý phỏng vấn";
+        }else if(status == 2) {
+            content = "Ứng viên " + MainActivity.username +" từ chối phỏng vấn";
+        }else {
+            content = "Ứng viên " + MainActivity.username +" muốn dời lịch phỏng vấn";
+        }
+        Toast.makeText(getApplicationContext(), ap_id + "", Toast.LENGTH_SHORT).show();
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlPostNotification,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(response.equals("success")){
+                            Toast.makeText(getApplicationContext(), "Thông báo thành công", Toast.LENGTH_SHORT).show();
+                        }else {
+                            Toast.makeText(getApplicationContext(), "Thông báo thất bại", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("id_application", String.valueOf(ap_id));
+                map.put("type_notification", type_notification);
+                map.put("content", content);
+                map.put("iduser", String.valueOf(job.getId_recruiter()));
+                map.put("type_user", String.valueOf(type_user));
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+
+    }
+
+
+    public void updateSchedule(final int id_sche, final int status, final String note_candidate){
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlUpdateScheduleCandidate,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                       if(response.equals("success")){
+                           Toast.makeText(getApplicationContext(), "Cập nhật schedule thành công", Toast.LENGTH_SHORT).show();
+                       }else {
+                           Toast.makeText(getApplicationContext(), "Cập nhật schedule thất bại", Toast.LENGTH_SHORT).show();
+                       }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("id_sche", String.valueOf(id_sche));
+                map.put("status", String.valueOf(status));
+                map.put("note_candidate", note_candidate);
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
 
     }
 
@@ -205,15 +330,21 @@ public class DetailJobActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        if(response.equals("apply")){
-                            btnApply.setClickable(false);
-                            btnApply.setBackgroundColor(Color.BLACK);
-                            btnApply.setTextColor(Color.WHITE);
-                            btnApply.setText("Đã ứng tuyển");
-                        }else if(response.equals("again")){
-                            btnApply.setText("Ứng tuyển lại");
-                            checkApplyAgain = 1;
+                        if(response.length() > 4){
+                            String test = response.substring(0,5);
+                            ap_id = Integer.parseInt(response.substring(5, response.length()));
+                         //   Toast.makeText(getApplicationContext(), test, Toast.LENGTH_SHORT).show();
+                            if(test.equals("apply")){
+                                btnApply.setClickable(false);
+                                btnApply.setBackgroundColor(Color.BLACK);
+                                btnApply.setTextColor(Color.WHITE);
+                                btnApply.setText("Đã ứng tuyển");
+                            }else if(test.equals("again")){
+                                btnApply.setText("Ứng tuyển lại");
+                                checkApplyAgain = 1;
+                            }
                         }
+
                     }
                 },
                 new Response.ErrorListener() {

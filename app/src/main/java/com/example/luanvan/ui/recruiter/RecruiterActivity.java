@@ -60,7 +60,7 @@ public class RecruiterActivity extends AppCompatActivity {
             public void run() {
                 setNotification();
             }
-        },3000);
+        },2000);
 
 
 
@@ -76,7 +76,7 @@ public class RecruiterActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        //  Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
+                          Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
                         if(response != null){
                             try {
                                 JSONArray jsonArray = new JSONArray(response);
@@ -145,6 +145,7 @@ public class RecruiterActivity extends AppCompatActivity {
                 MainActivity.k++;
             }
         }
+        Toast.makeText(getApplicationContext(), MainActivity.k + " k", Toast.LENGTH_SHORT).show();
         if(MainActivity.k == 0){
             txtNotification.setVisibility(View.GONE);
         }else {
