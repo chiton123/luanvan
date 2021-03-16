@@ -164,6 +164,22 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ItemHo
                 bottomSheetDialog.show();
             }
         });
+        if(schedule.getStatus() == 0){
+            holder.txtStatusCandidate.setText("Đang chờ ứng viên phản hồi");
+            holder.txtNoteCandidate.setVisibility(View.GONE);
+        }else if(schedule.getStatus() == 1){
+            holder.txtStatusCandidate.setText("Ứng viên đồng ý lịch hẹn");
+        }else if(schedule.getStatus() == 2) {
+            holder.txtStatusCandidate.setText("Ứng viên từ chối lịch hẹn");
+        }else {
+            holder.txtStatusCandidate.setText("Ứng viên muốn dời lịch hẹn");
+        }
+        if(schedule.getNote_candidate().length() > 0){
+            holder.txtNoteCandidate.setVisibility(View.VISIBLE);
+            holder.txtNoteCandidate.setText("Ghi chú: " + schedule.getNote_candidate());
+        }else {
+            holder.txtNoteCandidate.setVisibility(View.GONE);
+        }
 
 
     }
@@ -211,9 +227,9 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ItemHo
     }
 
     public class ItemHolder extends RecyclerView.ViewHolder{
-        public TextView txtPosition, txtCandidate, txtTypeSchedule, txtTime, txtDay, txtMonth, txtNote;
+        public TextView txtPosition, txtCandidate, txtTypeSchedule, txtTime, txtDay, txtMonth, txtNote, txtStatusCandidate, txtNoteCandidate;
         public ImageView img;
-        public LinearLayout layout;
+        public LinearLayout layout, layout_candidate;
         public View view_straight;
 
         public ItemHolder(@NonNull View itemView) {
@@ -228,6 +244,10 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ItemHo
             txtNote = (TextView) itemView.findViewById(R.id.txtnote);
             layout = (LinearLayout) itemView.findViewById(R.id.layout);
             view_straight = (View) itemView.findViewById(R.id.view);
+            layout_candidate = (LinearLayout) itemView.findViewById(R.id.layout_candidate);
+            txtStatusCandidate = (TextView) itemView.findViewById(R.id.txtstatus);
+            txtNoteCandidate = (TextView) itemView.findViewById(R.id.txtnotecandidate);
+
         }
     }
 }

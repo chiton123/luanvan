@@ -164,6 +164,8 @@ public class MainActivity extends AppCompatActivity {
     public static String urlUpdateScheduleCandidate = host + "update_schedule_candidate.php";
     // user list
     public static String urlUserList = host + "user_list.php";
+    // ap id
+    public static String urlGetApplicationId = host + "get_ap_id.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

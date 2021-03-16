@@ -248,7 +248,7 @@ public class DetailJobActivity extends AppCompatActivity {
         }else {
             content = "Ứng viên " + MainActivity.username +" muốn dời lịch phỏng vấn";
         }
-        Toast.makeText(getApplicationContext(), ap_id + "", Toast.LENGTH_SHORT).show();
+    //    Toast.makeText(getApplicationContext(), ap_id + "", Toast.LENGTH_SHORT).show();
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlPostNotification,
                 new Response.Listener<String>() {

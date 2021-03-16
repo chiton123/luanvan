@@ -83,7 +83,8 @@ public class CreateScheduleActivity extends AppCompatActivity {
     String moreAnnounceMent = ""; // khi update thì thêm sửa từ ... thành ...
     String urlCreate = MainActivity.urlSchedule;
     String urlUpdate = MainActivity.urlUpdateSchedule;
-
+    // schedule ban đầu với jobid, userid, khi 1 trong 2 thay đổi thì k thêm moreAnnounceMent
+    int first_jobid = 0, first_userid = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +104,12 @@ public class CreateScheduleActivity extends AppCompatActivity {
             position_update = getIntent().getIntExtra("position",0);
             job_id_update = scheduleInfo.getId_job();
             job_id = scheduleInfo.getId_job();
+            first_jobid = scheduleInfo.getId_job();
+            first_userid = scheduleInfo.getId_user();
+            user_id = scheduleInfo.getId_user();
             job_name = scheduleInfo.getJob_name();
+            username = scheduleInfo.getUsername();
+            getAp_ID();
             getCandidateList(job_id_update);
             editPosition.setText(scheduleInfo.getJob_name());
             editCandidate.setText(scheduleInfo.getUsername());
@@ -152,6 +158,37 @@ public class CreateScheduleActivity extends AppCompatActivity {
                     formatHour.format(time2) + " thành ";
         }
 
+    }
+
+    private void getAp_ID() {
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlGetApplicationId,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                       if(!response.equals("fail")){
+                           ap_id = Integer.parseInt(response.toString());
+                       }else {
+                           Toast.makeText(getApplicationContext(), "Lấy application id fail", Toast.LENGTH_SHORT).show();
+                       }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("idjob", String.valueOf(job_id));
+                map.put("iduser", String.valueOf(user_id));
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
     }
 
     private void getDataPosition() {
@@ -371,8 +408,13 @@ public class CreateScheduleActivity extends AppCompatActivity {
             type_notification = "Nhà tuyển dụng hẹn bạn phỏng vấn";
             if(kind == 1){
                 content = "Lịch hẹn vào ngày " + date + " ,bắt đầu lúc "+ start_hour + " ,kết thúc lúc " + end_hour + ", chi tiết xin liên hệ nhà tuyển dụng";
-            }else {
-                content = moreAnnounceMent + "Lịch hẹn vào ngày " + date + " ,bắt đầu lúc "+ start_hour + " ,kết thúc lúc " + end_hour + ", chi tiết xin liên hệ nhà tuyển dụng";
+            }else  {
+                if(job_id == first_jobid && user_id == first_userid){
+                    content = "Lịch hẹn vào ngày " + date + " ,bắt đầu lúc "+ start_hour + " ,kết thúc lúc " + end_hour + ", chi tiết xin liên hệ nhà tuyển dụng";
+                }else {
+                    content = moreAnnounceMent + "Lịch hẹn vào ngày " + date + " ,bắt đầu lúc "+ start_hour + " ,kết thúc lúc " + end_hour + ", chi tiết xin liên hệ nhà tuyển dụng";
+                }
+
             }
 
         }else {
@@ -380,9 +422,15 @@ public class CreateScheduleActivity extends AppCompatActivity {
             if(kind == 1){
                 content = "Lịch đi làm vào ngày " + date + " ,bắt đầu lúc "+ start_hour + " ,kết thúc lúc " + end_hour + ", chi tiết xin liên hệ nhà tuyển dụng";
             }else {
-                content = moreAnnounceMent + "Lịch đi làm vào ngày " + date + " ,bắt đầu lúc "+ start_hour + " ,kết thúc lúc " + end_hour + ", chi tiết xin liên hệ nhà tuyển dụng";
+                if(job_id == first_jobid && user_id == first_userid){
+                    content = "Lịch đi làm vào ngày " + date + " ,bắt đầu lúc "+ start_hour + " ,kết thúc lúc " + end_hour + ", chi tiết xin liên hệ nhà tuyển dụng";
+                }else {
+                    content = moreAnnounceMent + "Lịch đi làm vào ngày " + date + " ,bắt đầu lúc "+ start_hour + " ,kết thúc lúc " + end_hour + ", chi tiết xin liên hệ nhà tuyển dụng";
+                }
             }
         }
+    //    Toast.makeText(getApplicationContext(), "userid : " + user_id + " jobid : " + job_id, Toast.LENGTH_SHORT).show();
+   //     Toast.makeText(getApplicationContext(), "ap_id  : " + ap_id + " content : " + content, Toast.LENGTH_SHORT).show();
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlPostNotification,
                 new Response.Listener<String>() {

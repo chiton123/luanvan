@@ -79,7 +79,7 @@ public class RecruiterNotificationAdapter extends RecyclerView.Adapter<Recruiter
             e.printStackTrace();
         }
         SimpleDateFormat fmtOut = new SimpleDateFormat("dd/MM/yyyy");
-        holder.txtDate.setText("Ngày ứng tuyển: " + fmtOut.format(date1));
+        holder.txtDate.setText(fmtOut.format(date1));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -148,9 +148,9 @@ public class RecruiterNotificationAdapter extends RecyclerView.Adapter<Recruiter
                     @Override
                     public void onResponse(String response) {
                         if(response.equals("success")){
-                               Toast.makeText(context, "Đã xem", Toast.LENGTH_SHORT).show();
+                             //  Toast.makeText(context, "Đã xem", Toast.LENGTH_SHORT).show();
                         }else {
-                               Toast.makeText(context, "Thất bại", Toast.LENGTH_SHORT).show();
+                             //  Toast.makeText(context, "Thất bại", Toast.LENGTH_SHORT).show();
                         }
                     }
                 },

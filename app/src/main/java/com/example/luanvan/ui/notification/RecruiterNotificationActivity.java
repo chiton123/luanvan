@@ -1,6 +1,7 @@
 package com.example.luanvan.ui.notification;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,19 +41,28 @@ public class RecruiterNotificationActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     RecruiterNotificationAdapter adapter;
     LinearLayout layout, layout_nothing;
+    Handler handler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recruiter_notification);
         anhxa();
         actionBar();
-        if(RecruiterActivity.arrayListNotificationRecruiter.size() == 0){
-            layout_nothing.setVisibility(View.VISIBLE);
-            layout.setVisibility(View.GONE);
-        }else {
-            layout_nothing.setVisibility(View.GONE);
-            layout.setVisibility(View.VISIBLE);
-        }
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+           //     Toast.makeText(getApplicationContext(), "size " + RecruiterActivity.arrayListNotificationRecruiter.size(), Toast.LENGTH_SHORT).show();
+                if(RecruiterActivity.arrayListNotificationRecruiter.size() == 0){
+                    layout_nothing.setVisibility(View.VISIBLE);
+                    layout.setVisibility(View.GONE);
+                }else {
+                    layout_nothing.setVisibility(View.GONE);
+                    layout.setVisibility(View.VISIBLE);
+                }
+            }
+        },1000);
+
 
     }
 

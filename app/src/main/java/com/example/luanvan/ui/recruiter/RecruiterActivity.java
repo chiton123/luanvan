@@ -69,14 +69,12 @@ public class RecruiterActivity extends AppCompatActivity {
 
 
     private void getDataNotification() {
-        MainActivity.k = 0;
-        arrayListNotificationRecruiter.clear();
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlGetNotificationRecruiter,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                          Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
+                      //    Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
                         if(response != null){
                             try {
                                 JSONArray jsonArray = new JSONArray(response);
@@ -145,7 +143,7 @@ public class RecruiterActivity extends AppCompatActivity {
                 MainActivity.k++;
             }
         }
-        Toast.makeText(getApplicationContext(), MainActivity.k + " k", Toast.LENGTH_SHORT).show();
+      //  Toast.makeText(getApplicationContext(), MainActivity.k + " k", Toast.LENGTH_SHORT).show();
         if(MainActivity.k == 0){
             txtNotification.setVisibility(View.GONE);
         }else {

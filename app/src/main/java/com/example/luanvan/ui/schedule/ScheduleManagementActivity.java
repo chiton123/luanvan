@@ -24,6 +24,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.recruit.ScheduleAdapter;
+import com.example.luanvan.ui.Model.Applicant;
 import com.example.luanvan.ui.Model.Schedule;
 import com.example.luanvan.ui.Model.UserApplicant;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
@@ -48,6 +49,7 @@ public class ScheduleManagementActivity extends AppCompatActivity {
     public static int checkLoad = 0; // check xem coi đã vào activity này hay chưa
     public static LinearLayout layout, layout_nothing;
     Handler handler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
