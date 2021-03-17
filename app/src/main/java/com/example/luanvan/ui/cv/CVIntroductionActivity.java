@@ -3,6 +3,7 @@ package com.example.luanvan.ui.cv;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
@@ -24,12 +26,11 @@ public class CVIntroductionActivity extends AppCompatActivity {
     int REQUEST_CODE = 234;
     private DashboardViewModel dashboardViewModel;
     RecyclerView recyclerView;
-
     CVAdapter adapter;
     // position to remove
     public static int position = 0;
     Handler handler;
-
+    LinearLayout layout, layout_nothing;
 
 
     @Override
@@ -38,10 +39,20 @@ public class CVIntroductionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_c_v_introduction);
         anhxa();
         actionBar();
-     //   getData();
-
+        // get cv sau khi đăng nhập rồi
+        checkNothing();
         eventCreateCV();
 
+    }
+
+    public void checkNothing(){
+        if(MainActivity.arrayListCV.size() == 0){
+            layout_nothing.setVisibility(View.VISIBLE);
+            layout.setVisibility(View.GONE);
+        }else {
+            layout.setVisibility(View.VISIBLE);
+            layout_nothing.setVisibility(View.GONE);
+        }
     }
 
     private void actionBar() {
@@ -79,7 +90,6 @@ public class CVIntroductionActivity extends AppCompatActivity {
         // update nhe
         if(resultCode == 123 && requestCode == 123){
          //   Toast.makeText(getApplicationContext(), "haha", Toast.LENGTH_SHORT).show();
-
             MainActivity.arrayListCV.remove(position);
             adapter.notifyDataSetChanged();
             handler = new Handler();
@@ -89,11 +99,9 @@ public class CVIntroductionActivity extends AppCompatActivity {
                     getBackDefault();
                 }
             },5000);
-
         }
         // them
         if(resultCode == 123 && requestCode == REQUEST_CODE){
-
             adapter.notifyDataSetChanged();
             handler = new Handler();
             handler.postDelayed(new Runnable() {
@@ -102,7 +110,6 @@ public class CVIntroductionActivity extends AppCompatActivity {
                     getBackDefault();
                 }
             },5000);
-
         }
 
         super.onActivityResult(requestCode, resultCode, data);
@@ -127,9 +134,12 @@ public class CVIntroductionActivity extends AppCompatActivity {
         adapter = new CVAdapter(getApplicationContext(), MainActivity.arrayListCV, this);
         recyclerView.setAdapter(adapter);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-
+        layout = (LinearLayout) findViewById(R.id.layout);
+        layout_nothing = (LinearLayout) findViewById(R.id.layout_nothing);
         btnThem = (Button)findViewById(R.id.buttontaomoi);
 
+        RecyclerView.ItemDecoration divider = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        recyclerView.addItemDecoration(divider);
 
     }
 }

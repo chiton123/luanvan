@@ -54,21 +54,6 @@
         android:background="@drawable/stroke"
         android:gravity="center_horizontal"
         >
-        <LinearLayout
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="#fff"
-            android:layout_margin="5dp"
-            >
-            <ListView
-                android:layout_width="220dp"
-                android:layout_height="30dp"
-                android:id="@+id/listviewthongtinlienhe"
-                >
-            </ListView>
-
-        </LinearLayout>
 
 
     </LinearLayout>

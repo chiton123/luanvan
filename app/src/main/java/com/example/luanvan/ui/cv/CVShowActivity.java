@@ -57,7 +57,15 @@ public class CVShowActivity extends AppCompatActivity {
         if(kind == 1){
             url = getIntent().getStringExtra("url");
             url1 +=  url;
-            webView.loadUrl(url1);
+            handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    webView.loadUrl(url1);
+                    progressDialog.dismiss();
+                }
+            },1500);
+
         }else {
             cv_id = getIntent().getStringExtra("cv_id");
             MainActivity.mData.child("cv").child(MainActivity.uid).child(cv_id).addChildEventListener(new ChildEventListener() {
@@ -95,7 +103,7 @@ public class CVShowActivity extends AppCompatActivity {
                     webView.loadUrl(url1);
                     progressDialog.dismiss();
                 }
-            },3000);
+            },2000);
 
 
         }

@@ -17,7 +17,7 @@
     <ImageView
         android:layout_width="300dp"
         android:layout_height="400dp"
-        android:src="@drawable/cv1"
+        android:src="@drawable/ic_launcher_background"
         android:layout_centerInParent="true"
         android:id="@+id/image"
         ></ImageView>

@@ -261,6 +261,7 @@ public class LoginFragment extends Fragment {
                 if(editPass.getText().equals("") || editEmail.getText().equals("")){
                     Toast.makeText(getActivity(), "Vui lòng nhập đủ thông tin", Toast.LENGTH_SHORT).show();
                 }else {
+                    loading();
                     final String email = editEmail.getText().toString();
                     final String pass = editPass.getText().toString();
                     RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
@@ -274,7 +275,6 @@ public class LoginFragment extends Fragment {
                                                     @Override
                                                     public void onComplete(@NonNull Task<AuthResult> task) {
                                                         if(task.isSuccessful()){
-                                                            loading();
                                                             Toast.makeText(getActivity(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                                                             MainActivity.mUser = MainActivity.mAuth.getCurrentUser();
 
@@ -303,6 +303,7 @@ public class LoginFragment extends Fragment {
                                                             },4000);
                                                         }else {
                                                             Toast.makeText(getActivity(), "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
+                                                            progressDialog.dismiss();
                                                         }
                                                     }
                                                 });
@@ -310,6 +311,7 @@ public class LoginFragment extends Fragment {
 
                                     }else {
                                         Toast.makeText(getActivity(), "Sai tên hoặc mật khẩu", Toast.LENGTH_SHORT).show();
+                                        progressDialog.dismiss();
                                     }
                                 }
                             },
@@ -317,6 +319,7 @@ public class LoginFragment extends Fragment {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
                                     Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
+                                    progressDialog.dismiss();
                                 }
                             }){
                         @Override

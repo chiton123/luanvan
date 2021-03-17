@@ -78,7 +78,7 @@ public class ScheduleActivity extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), date_post, Toast.LENGTH_SHORT).show();
+            //    Toast.makeText(getApplicationContext(), date_post, Toast.LENGTH_SHORT).show();
                 if(editKindSchedule.getText().equals("") || editStart.getText().equals("") || editEnd.getText().equals("") || editDate.getText().equals("")
                 ){
                     Toast.makeText(getApplicationContext(), "Vui lòng điền đủ thông tin", Toast.LENGTH_SHORT).show();

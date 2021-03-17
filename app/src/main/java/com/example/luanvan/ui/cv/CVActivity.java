@@ -69,9 +69,9 @@ public class CVActivity extends AppCompatActivity {
     Button  btnnoidung;
     EditText cvName;
     Dialog dialog;
-    ListView listViewThongtinLienHe, listViewRemove, listViewAdd;
-    public static TitleAdapter titleAdapterTTLH, titleAdapterRemove;
-    public static ArrayList<Title> arrayListTTLH, arrayListRemove, arrayListAdd, arrayListTongHop;
+    ListView  listViewRemove, listViewAdd;
+    public static TitleAdapter titleAdapterRemove;
+    public static ArrayList<Title>  arrayListRemove, arrayListAdd, arrayListTongHop;
     public static AddAdapter addAdapter;
     StorageReference storageReference;
     ImageView imgCancel;
@@ -106,6 +106,7 @@ public class CVActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_c_v);
+        loading();
         anhxa();
         actionBar();
         if(kind == 1){
@@ -152,6 +153,7 @@ public class CVActivity extends AppCompatActivity {
 
     }
     public void reloadWebview(){
+        loading();
         final String url1 = "https://docs.google.com/gview?embedded=true&url=" + MainActivity.urlCV;
         handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -190,16 +192,13 @@ public class CVActivity extends AppCompatActivity {
         dialog.setCancelable(false);
         View v = getWindow().getDecorView();
         v.setBackgroundResource(android.R.color.transparent);
-        listViewThongtinLienHe = (ListView) dialog.findViewById(R.id.listviewthongtinlienhe);
         listViewRemove = (ListView) dialog.findViewById(R.id.listviewRemove);
         listViewAdd = (ListView) dialog.findViewById(R.id.listviewAdd);
         imgCancel = (ImageView) dialog.findViewById(R.id.cancel);
 
-        titleAdapterTTLH = new TitleAdapter(getApplicationContext(), arrayListTTLH, this, 1);
         titleAdapterRemove = new TitleAdapter(getApplicationContext(), arrayListRemove, this, 0);
         addAdapter = new AddAdapter(getApplicationContext(), arrayListAdd);
         listViewAdd.setAdapter(addAdapter);
-        listViewThongtinLienHe.setAdapter(titleAdapterTTLH);
         listViewRemove.setAdapter(titleAdapterRemove);
         imgCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -207,6 +206,7 @@ public class CVActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
+
 
 
         dialog.show();
@@ -231,7 +231,16 @@ public class CVActivity extends AppCompatActivity {
         }else {
             url1 += urlX;
         }
-        webView.loadUrl(url1);
+        handler = new Handler();
+        final String finalUrl = url1;
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                webView.loadUrl(finalUrl);
+                progressDialog.dismiss();
+            }
+        },2000);
+
     }
 
     @Override
@@ -811,7 +820,6 @@ public class CVActivity extends AppCompatActivity {
             MainActivity.urlCV = urlX;
         }
         arrayListRemove = new ArrayList<>();
-        arrayListTTLH = new ArrayList<>();
         arrayListAdd = new ArrayList<>();
         arrayListTongHop = new ArrayList<>();
         arrayListTongHop.add(new Title(0, "Thông tin liên hệ"));

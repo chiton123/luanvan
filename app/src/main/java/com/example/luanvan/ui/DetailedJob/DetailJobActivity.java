@@ -184,7 +184,7 @@ public class DetailJobActivity extends AppCompatActivity {
         Button btnTuChoi = (Button) view.findViewById(R.id.buttontuchoi);
         Button btnLuiLich = (Button) view.findViewById(R.id.buttonluilich);
         TextView txtDate = (TextView) view.findViewById(R.id.txtdate);
-        if(schedule.getType() == 0){
+        if(schedule.getType() == 1){
             txtSchedule.setText("Hẹn phỏng vấn");
         }else {
             txtSchedule.setText("Hẹn làm việc");
@@ -213,6 +213,7 @@ public class DetailJobActivity extends AppCompatActivity {
                 updateSchedule(schedule.getId(), 1, editNote.getText().toString());
                 postNotificationSchedule(1,1);
                 bottomSheetDialogAnswer.dismiss();
+                btnSchedule.setVisibility(View.GONE);
             }
         });
         btnTuChoi.setOnClickListener(new View.OnClickListener() {
@@ -221,6 +222,7 @@ public class DetailJobActivity extends AppCompatActivity {
                 updateSchedule(schedule.getId(), 2, editNote.getText().toString());
                 postNotificationSchedule(1,2);
                 bottomSheetDialogAnswer.dismiss();
+                btnSchedule.setVisibility(View.GONE);
             }
         });
         btnLuiLich.setOnClickListener(new View.OnClickListener() {
@@ -229,6 +231,7 @@ public class DetailJobActivity extends AppCompatActivity {
                 updateSchedule(schedule.getId(), 3, editNote.getText().toString());
                 postNotificationSchedule(1,3);
                 bottomSheetDialogAnswer.dismiss();
+                btnSchedule.setVisibility(View.GONE);
             }
         });
 

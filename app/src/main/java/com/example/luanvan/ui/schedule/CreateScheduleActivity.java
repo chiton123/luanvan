@@ -109,6 +109,7 @@ public class CreateScheduleActivity extends AppCompatActivity {
             user_id = scheduleInfo.getId_user();
             job_name = scheduleInfo.getJob_name();
             username = scheduleInfo.getUsername();
+            type_schedule = scheduleInfo.getType();
             getAp_ID();
             getCandidateList(job_id_update);
             editPosition.setText(scheduleInfo.getJob_name());

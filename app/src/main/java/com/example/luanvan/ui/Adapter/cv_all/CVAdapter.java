@@ -86,6 +86,7 @@ public class CVAdapter extends RecyclerView.Adapter<CVAdapter.ItemHolder> {
                         MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(arrayList.get(position).getKey()).removeValue();
                         MainActivity.arrayListCV.remove(position);
                         notifyDataSetChanged();
+                        ((CVIntroductionActivity)activity).checkNothing();
 
                     }
                 });

@@ -57,6 +57,7 @@
             android:hint="Ghi chú"
             android:textColor="#000000"
             android:textSize="14sp"
+            android:maxLines="3"
             ></EditText>
 
     </LinearLayout>

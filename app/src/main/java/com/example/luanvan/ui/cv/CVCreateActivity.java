@@ -47,9 +47,9 @@ public class CVCreateActivity extends AppCompatActivity {
     }
 
     private void getKind() {
-        arrayList.add(new CVKind(1, "Loại 1", R.drawable.cv1));
-        arrayList.add(new CVKind(2, "Loại 2", R.drawable.cv2));
-        arrayList.add(new CVKind(3, "Loại 3", R.drawable.cv3));
+        arrayList.add(new CVKind(1, "Loại 1", R.drawable.cv1_1));
+        arrayList.add(new CVKind(2, "Loại 2", R.drawable.cv2_1));
+        arrayList.add(new CVKind(3, "Loại 3", R.drawable.cv3_1));
 
         adapter.notifyDataSetChanged();
     }
