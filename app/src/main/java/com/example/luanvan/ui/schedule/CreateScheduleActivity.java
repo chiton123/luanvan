@@ -80,7 +80,6 @@ public class CreateScheduleActivity extends AppCompatActivity {
     int position_update = 0; // từ bên schedule đưa qua để cập nhật
     Schedule scheduleInfo;
     public static int job_id_update = 0;
-    String moreAnnounceMent = ""; // khi update thì thêm sửa từ ... thành ...
     String urlCreate = MainActivity.urlSchedule;
     String urlUpdate = MainActivity.urlUpdateSchedule;
     // schedule ban đầu với jobid, userid, khi 1 trong 2 thay đổi thì k thêm moreAnnounceMent
@@ -155,8 +154,6 @@ public class CreateScheduleActivity extends AppCompatActivity {
                 editKindSchedule.setText("Nhắc lịch đi làm");
             }
             editNote.setText(scheduleInfo.getNote());
-            moreAnnounceMent = "Nhà tuyển dụng thay đổi lịch từ " + fmtOut.format(date) + " lúc " + formatHour.format(time1) + " đến " +
-                    formatHour.format(time2) + " thành ";
         }
 
     }
@@ -407,28 +404,11 @@ public class CreateScheduleActivity extends AppCompatActivity {
     public void postNotification(final int type_user, String date, String start_hour, String end_hour){
         if(type_schedule == 1){
             type_notification = "Nhà tuyển dụng hẹn bạn phỏng vấn";
-            if(kind == 1){
-                content = "Lịch hẹn vào ngày " + date + " ,bắt đầu lúc "+ start_hour + " ,kết thúc lúc " + end_hour + ", chi tiết xin liên hệ nhà tuyển dụng";
-            }else  {
-                if(job_id == first_jobid && user_id == first_userid){
-                    content = "Lịch hẹn vào ngày " + date + " ,bắt đầu lúc "+ start_hour + " ,kết thúc lúc " + end_hour + ", chi tiết xin liên hệ nhà tuyển dụng";
-                }else {
-                    content = moreAnnounceMent + "Lịch hẹn vào ngày " + date + " ,bắt đầu lúc "+ start_hour + " ,kết thúc lúc " + end_hour + ", chi tiết xin liên hệ nhà tuyển dụng";
-                }
-
-            }
+            content = "Lịch hẹn vào ngày " + date + " ,bắt đầu lúc "+ start_hour + " ,kết thúc lúc " + end_hour + ", chi tiết xin liên hệ nhà tuyển dụng";
 
         }else {
             type_notification = "Nhà tuyển dụng nhắc bạn đi làm";
-            if(kind == 1){
-                content = "Lịch đi làm vào ngày " + date + " ,bắt đầu lúc "+ start_hour + " ,kết thúc lúc " + end_hour + ", chi tiết xin liên hệ nhà tuyển dụng";
-            }else {
-                if(job_id == first_jobid && user_id == first_userid){
-                    content = "Lịch đi làm vào ngày " + date + " ,bắt đầu lúc "+ start_hour + " ,kết thúc lúc " + end_hour + ", chi tiết xin liên hệ nhà tuyển dụng";
-                }else {
-                    content = moreAnnounceMent + "Lịch đi làm vào ngày " + date + " ,bắt đầu lúc "+ start_hour + " ,kết thúc lúc " + end_hour + ", chi tiết xin liên hệ nhà tuyển dụng";
-                }
-            }
+            content = "Lịch đi làm vào ngày " + date + " ,bắt đầu lúc "+ start_hour + " ,kết thúc lúc " + end_hour + ", chi tiết xin liên hệ nhà tuyển dụng";
         }
     //    Toast.makeText(getApplicationContext(), "userid : " + user_id + " jobid : " + job_id, Toast.LENGTH_SHORT).show();
    //     Toast.makeText(getApplicationContext(), "ap_id  : " + ap_id + " content : " + content, Toast.LENGTH_SHORT).show();

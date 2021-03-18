@@ -1,6 +1,7 @@
 package com.example.luanvan.ui.recruiter;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -37,11 +38,11 @@ import java.util.Map;
 public class LoginRecruiterActivity extends AppCompatActivity {
     Toolbar toolbar;
     EditText editEmail, editPass;
-    Button btnDangnhap, btnLogout;
+    Button btnDangnhap;
     ProgressDialog progressDialog;
     Handler handler = new Handler();
-    LinearLayout layoutLogin, layoutLogout;
-
+    LinearLayout layoutLogin;
+    int REQUEST_CODE = 123;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,9 +50,6 @@ public class LoginRecruiterActivity extends AppCompatActivity {
         anhxa();
         actionBar();
         eventButton();
-        eventLogout();
-        checkLogin();
-
 
     }
 
@@ -71,27 +69,17 @@ public class LoginRecruiterActivity extends AppCompatActivity {
         CVManageActivity.arrayListAll.clear();
         CVManagementActivity.position_job_list = 0;
     }
-    private void eventLogout() {
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logOut();
-                checkLogin();
 
-            }
-        });
 
-    }
-
-    public void checkLogin(){
-        if(MainActivity.login_recruiter == 0){
-            layoutLogout.setVisibility(View.INVISIBLE);
-            layoutLogin.setVisibility(View.VISIBLE);
-        }else {
-            layoutLogout.setVisibility(View.VISIBLE);
-            layoutLogin.setVisibility(View.INVISIBLE);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == REQUEST_CODE && resultCode == RESULT_OK){
+            logOut();
+            finish();
         }
+        super.onActivityResult(requestCode, resultCode, data);
     }
+
 
     void loading(){
         progressDialog = new ProgressDialog(this);
@@ -130,7 +118,6 @@ public class LoginRecruiterActivity extends AppCompatActivity {
 
                                                     MainActivity.login_recruiter = 1;
                                                     MainActivity.iduser = Integer.parseInt(response);
-                                                    checkLogin();
                                                     getIdCompany();
                                                     Handler handler = new Handler();
                                                     handler.postDelayed(new Runnable() {
@@ -138,7 +125,7 @@ public class LoginRecruiterActivity extends AppCompatActivity {
                                                         public void run() {
                                                             progressDialog.dismiss();
                                                             Intent intent = new Intent(getApplicationContext(), RecruiterActivity.class);
-                                                            startActivity(intent);
+                                                            startActivityForResult(intent, REQUEST_CODE);
                                                         }
                                                     },2000);
                                                 }else {
@@ -242,8 +229,6 @@ public class LoginRecruiterActivity extends AppCompatActivity {
         editPass = (EditText) findViewById(R.id.editpass);
         btnDangnhap = (Button) findViewById(R.id.buttondangnhap);
         layoutLogin = (LinearLayout) findViewById(R.id.lineardangnhap);
-        layoutLogout = (LinearLayout) findViewById(R.id.lineardangxuat);
-        btnLogout = (Button) findViewById(R.id.buttonlogout);
 
 
     }

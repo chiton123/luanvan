@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
     public static SkillAdapter skillAdapter;
     public static int login = 0;
     public static int login_recruiter = 0;
+    public static int login_admin = 0;
+
     public static int iduser = 0;
     public static int idcompany = 0;
     public static int checkCV = 0;
@@ -94,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
     // kind CV, only change color
     public static int color = 0;
 
-    public static String host = "http://10.10.43.138:8888/luanvan/";
+    public static String host = "http://10.10.35.53:8888/luanvan/";
     public static String urljob1 = host + "job1.php?page=";
     public static String urlJobHome = host + "job_home.php";
     // job apply
@@ -108,6 +110,8 @@ public class MainActivity extends AppCompatActivity {
     public static String urllogin = host + "login.php";
     // Đăng nhập nhà tuyển dụng
     public static String urlLoginRecruiter = host + "login_recruiter.php";
+    // Đăng nhập admin
+    public static String urlLoginAdmin = host + "login_admin.php";
     public static String urluserinfo = host + "userinfo.php";
     public static String urlupdateuser = host + "updateuser.php";
     // filter
@@ -166,6 +170,11 @@ public class MainActivity extends AppCompatActivity {
     public static String urlUserList = host + "user_list.php";
     // ap id
     public static String urlGetApplicationId = host + "get_ap_id.php";
+    // admin
+    // duyệt tin
+    public static String urlJobPost = host + "job_post.php";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

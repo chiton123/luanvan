@@ -64,7 +64,7 @@ public class ScheduleManagementActivity extends AppCompatActivity {
             public void run() {
                 checkNothing();
             }
-        },1000);
+        },1800);
     }
     public void checkNothing(){
         if(arrayList.size() == 0){

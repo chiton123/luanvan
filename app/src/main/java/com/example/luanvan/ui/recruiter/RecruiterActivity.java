@@ -3,6 +3,8 @@ package com.example.luanvan.ui.recruiter;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +12,10 @@ import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,13 +28,18 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
+import com.example.luanvan.ui.Adapter.admin_a.AdminAdapter;
+import com.example.luanvan.ui.Adapter.admin_a.AdminAdapter_a;
+import com.example.luanvan.ui.Model.Admin;
 import com.example.luanvan.ui.Model.JobList;
 import com.example.luanvan.ui.Model.Notification;
 import com.example.luanvan.ui.Model.NotificationRecruiter;
+import com.example.luanvan.ui.admin.AdminActivity;
 import com.example.luanvan.ui.notification.RecruiterNotificationActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
 import com.example.luanvan.ui.recruiter.PostNews.RecruitmentNewsActivity;
 import com.example.luanvan.ui.schedule.ScheduleManagementActivity;
+import com.google.android.material.navigation.NavigationView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,8 +50,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RecruiterActivity extends AppCompatActivity {
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
     Toolbar toolbar;
-    ImageView imgCVManagement, imgPostJob, imgSchedule;
+    ArrayList<Admin> arrayList;
+    GridView gridView;
+    AdminAdapter adminAdapter;
+    ListView listView;
+    AdminAdapter_a adapter ;
+    ArrayList<String> arrayListMenu;
     public static TextView txtNotification;
     Handler handler;
     public static ArrayList<NotificationRecruiter> arrayListNotificationRecruiter = new ArrayList<>();
@@ -52,7 +69,7 @@ public class RecruiterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recruiter);
         anhxa();
         actionBar();
-        eventCVManagement();
+        eventGridView();
         getDataNotification();
         handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -61,9 +78,26 @@ public class RecruiterActivity extends AppCompatActivity {
                 setNotification();
             }
         },2000);
+        eventListViewNavigation();
 
 
 
+    }
+    private void eventListViewNavigation() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (position){
+                    case 0:
+                        MainActivity.login_recruiter = 0;
+                        Intent intent = new Intent();
+                        setResult(RESULT_OK);
+                        finish();
+                        break;
+
+                }
+            }
+        });
 
     }
 
@@ -168,26 +202,27 @@ public class RecruiterActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void eventCVManagement() {
-        imgCVManagement.setOnClickListener(new View.OnClickListener() {
+    private void eventGridView() {
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), CVManageActivity.class);
-                startActivity(intent);
-            }
-        });
-        imgSchedule.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ScheduleManagementActivity.class);
-                startActivity(intent);
-            }
-        });
-        imgPostJob.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), RecruitmentNewsActivity.class);
-                startActivity(intent);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (position){
+                    case 0:
+                        Intent intent = new Intent(getApplicationContext(), CVManageActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 1:
+                        Intent intent1 = new Intent(getApplicationContext(), RecruitmentNewsActivity.class);
+                        startActivity(intent1);
+                        break;
+                    case 2:
+                        Intent intent2 = new Intent(getApplicationContext(), ScheduleManagementActivity.class);
+                        startActivity(intent2);
+                        break;
+                    case 3:
+
+                        break;
+                }
             }
         });
 
@@ -197,19 +232,39 @@ public class RecruiterActivity extends AppCompatActivity {
 
     private void actionBar() {
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationIcon(android.R.drawable.ic_menu_sort_by_size);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                drawerLayout.openDrawer(GravityCompat.START);
             }
         });
     }
+    public void addItem(){
+        arrayList.add(new Admin(0, "Quản lý CV", R.drawable.cv_recruiter));
+        arrayList.add(new Admin(1, "Tin tuyển dụng", R.drawable.news));
+        arrayList.add(new Admin(2, "Lịch hẹn ứng viên", R.drawable.schedule));
+        arrayList.add(new Admin(3, "Thống kê", R.drawable.stastitics));
 
+    }
     private void anhxa() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        imgCVManagement = (ImageView) findViewById(R.id.imgcv);
-        imgPostJob = (ImageView) findViewById(R.id.imgpost);
-        imgSchedule = (ImageView) findViewById(R.id.imgschedule);
+        arrayListMenu = new ArrayList<>();
+        arrayListMenu.add("Logout");
+        adapter = new AdminAdapter_a(RecruiterActivity.this, arrayListMenu);
+        listView = (ListView) findViewById(R.id.listview);
+        listView.setAdapter(adapter);
+        gridView = (GridView) findViewById(R.id.gridview);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawerlayout);
+        navigationView = (NavigationView) findViewById(R.id.navi);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        arrayList = new ArrayList<>();
+        addItem();
+        adminAdapter = new AdminAdapter(RecruiterActivity.this, arrayList);
+        try{
+            gridView.setAdapter(adminAdapter);
+        }catch (NullPointerException e){
+            Toast.makeText(getApplicationContext(), "NullPointerException" ,Toast.LENGTH_SHORT).show();
+        }
     }
 }

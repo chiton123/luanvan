@@ -774,7 +774,7 @@ public class DetailJobActivity extends AppCompatActivity {
 
 
                 }
-            },3000);
+            },4000);
 
 
         }

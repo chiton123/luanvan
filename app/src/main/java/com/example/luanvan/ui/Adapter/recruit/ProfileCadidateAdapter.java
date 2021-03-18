@@ -204,6 +204,7 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, mang);
         adapter.setDropDownViewResource(android.R.layout.simple_list_item_1);
         spinner.setAdapter(adapter);
+        spinner.setSelection(applicant.getStatus());
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, final int position, long id) {

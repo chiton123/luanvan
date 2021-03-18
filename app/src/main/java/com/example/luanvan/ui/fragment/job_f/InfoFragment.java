@@ -155,7 +155,7 @@ public class InfoFragment extends Fragment {
                     txtbenefit.setText(quyenloi);
 
                 }
-            },3000);
+            },4000);
 
         }
 

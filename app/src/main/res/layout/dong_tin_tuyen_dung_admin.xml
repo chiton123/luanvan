@@ -3,53 +3,43 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:background="#fff"
+    android:layout_height="wrap_content"
+    >
     <androidx.cardview.widget.CardView
-        android:layout_width="320dp"
-        android:layout_height="match_parent"
-        app:cardCornerRadius="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
         >
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#fff"
             >
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-
+                android:background="#fff"
+                android:padding="5dp"
                 >
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:id="@+id/linear"
+                    android:id="@id/layout"
                     >
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-
+                        android:layout_height="wrap_content"
+                        android:background="#fff"
                         >
-
-
                         <ImageView
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:id="@+id/anh"
-                            android:layout_margin="7dp"
+                            android:layout_margin="5dp"
                             ></ImageView>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Ten cong viec"
-                            android:textSize="15sp"
-                            android:id="@+id/tencongviec"
-                            android:textColor="#050505"
-                            android:layout_toRightOf="@id/anh"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:textStyle="bold"
-                            ></TextView>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -58,17 +48,32 @@
                             android:id="@+id/tencongty"
                             android:ellipsize="end"
                             android:maxLines="1"
-                            android:layout_below="@+id/tencongviec"
                             android:textColor="#050505"
                             android:layout_toRightOf="@id/anh"
+                            android:textStyle="bold"
                             ></TextView>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ten cong viec"
+                            android:textSize="15sp"
+                            android:id="@+id/tencongviec"
+                            android:textColor="#050505"
+                            android:layout_toRightOf="@id/anh"
+                            android:layout_below="@id/tencongty"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            ></TextView>
+
                         <LinearLayout
                             android:layout_marginTop="10dp"
-                            android:layout_below="@id/tencongty"
+                            android:layout_below="@id/anh"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:id="@+id/level1"
+                            android:background="#fff"
+                            android:gravity="center_vertical"
                             >
                             <ImageView
                                 android:layout_width="20dp"
@@ -89,9 +94,9 @@
                                 android:text="Hà nội"
                                 android:id="@+id/area"
                                 android:textColor="#040404"
-                                android:layout_marginLeft="3dp"
                                 android:ellipsize="end"
                                 android:maxLines="1"
+                                android:layout_marginLeft="3dp"
                                 ></TextView>
 
                         </LinearLayout>
@@ -102,6 +107,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
+                            android:background="#fff"
+                            android:gravity="center_vertical"
                             >
                             <ImageView
                                 android:layout_width="20dp"
@@ -133,6 +140,8 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:layout_marginTop="5dp"
+                            android:background="#fff"
+                            android:gravity="center_vertical"
                             >
                             <ImageView
                                 android:layout_width="20dp"
@@ -148,17 +157,15 @@
                                 android:layout_marginLeft="3dp"
                                 ></TextView>
                             <TextView
-                                android:layout_width="120dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="10000"
                                 android:id="@+id/time"
                                 android:textColor="#040404"
                                 android:layout_marginLeft="3dp"
-                                android:maxLines="1"
                                 ></TextView>
 
                         </LinearLayout>
-
 
 
                     </RelativeLayout>
@@ -166,9 +173,8 @@
 
 
                 </LinearLayout>
+
                 <LinearLayout
-                    android:id="@+id/layout_chat"
-                    android:layout_below="@id/level3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -178,24 +184,21 @@
                     <Button
                         android:layout_width="120dp"
                         android:layout_height="35dp"
-                        android:text="Gửi tin nhắn"
-                        android:drawableLeft="@drawable/chat6"
+                        android:text="Xác nhận"
                         android:textSize="10sp"
                         android:gravity="center"
-                        android:paddingLeft="10dp"
-                        android:id="@+id/buttonchat"
-                        android:textColor="#05A80C"
-                        android:background="@drawable/background_button_chat"
+                        android:id="@+id/buttonxacnhan"
+                        android:textColor="#FFFFFF"
+                        android:background="@drawable/button_xacnhan"
                         ></Button>
                     <Button
                         android:layout_width="120dp"
                         android:layout_height="35dp"
-                        android:text="Xem lại CV"
+                        android:text="Từ chối"
                         android:textSize="10sp"
                         android:gravity="center"
-                        android:id="@+id/buttonviewcv"
-                        android:layout_marginLeft="10dp"
-                        android:paddingLeft="10dp"
+                        android:id="@+id/buttontuchoi"
+                        android:layout_marginLeft="30dp"
                         android:textColor="#000000"
                         android:background="@drawable/background_button_view_cv"
                         ></Button>
