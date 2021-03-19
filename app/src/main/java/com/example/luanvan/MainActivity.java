@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static int iduser = 0;
     public static int idcompany = 0;
+    public static String company_name = "";
     public static int checkCV = 0;
     public static ArrayList<Notification> arrayListNotification = new ArrayList<>(); // Danh sách thông báo
     public static int k = 0; // số lương thông báo mới
@@ -96,7 +97,8 @@ public class MainActivity extends AppCompatActivity {
     // kind CV, only change color
     public static int color = 0;
 
-    public static String host = "http://10.10.35.53:8888/luanvan/";
+
+    public static String host = "http://10.10.38.34:8888/luanvan/";
     public static String urljob1 = host + "job1.php?page=";
     public static String urlJobHome = host + "job_home.php";
     // job apply
@@ -142,6 +144,8 @@ public class MainActivity extends AppCompatActivity {
 
     // post notification
     public static String urlPostNotification = host + "post_notification.php";
+    // post notification admin
+    public static String urlPostNotificationForAdmin = host + "post_notification_admin.php";
     // check post or not
     public static String urlCheckPost = host + "check_post.php";
     // get notification
@@ -173,6 +177,8 @@ public class MainActivity extends AppCompatActivity {
     // admin
     // duyệt tin
     public static String urlJobPost = host + "job_post.php";
+    // accept, reject job
+    public static String urlAcceptJob = host + "accept_job.php";
 
 
     @Override

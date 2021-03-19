@@ -56,6 +56,7 @@ public class CreateJobActivity extends AppCompatActivity {
     GeneralObject area, profession, experience, kindJob;
     int idArea = 0, idProfession = 0, idExperience = 0, idKindJob = 0, job_id = 0;
     Handler handler;
+    String type_notification = "", content = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -149,6 +150,41 @@ public class CreateJobActivity extends AppCompatActivity {
             }
         });
     }
+    private void postNotificationForAdmin(final int type_user) {
+        type_notification = "Duyệt tin tuyển dụng";
+        content = "Công ty " + MainActivity.company_name + " đăng một tin tuyển dụng mới";
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlPostNotificationForAdmin,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(response.equals("success")){
+                            Toast.makeText(getApplicationContext(), "Thông báo thành công", Toast.LENGTH_SHORT).show();
+                        }else {
+                            Toast.makeText(getApplicationContext(), "Thông báo thất bại", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("type_user", String.valueOf(type_user));
+                map.put("type_notification",  type_notification);
+                map.put("iduser", String.valueOf(1)); // 1: admin
+                map.put("content", content);
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+
+    }
+
     private void eventButton() {
         btnPost.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -185,6 +221,7 @@ public class CreateJobActivity extends AppCompatActivity {
                                 public void onResponse(String response) {
                                     if(response.equals("success")){
                                         Toast.makeText(getApplicationContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                                        postNotificationForAdmin(0); // 0: cho admin
 //                                        RecruiterActivity.arrayListJobList.get(position_job).setName(position);
 //                                        RecruiterActivity.arrayListJobList.get(position_job).setAddress(address);
 //                                        RecruiterActivity.arrayListJobList.get(position_job).setBenefit(benefit);

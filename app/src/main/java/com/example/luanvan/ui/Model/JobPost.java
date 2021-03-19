@@ -24,6 +24,7 @@ public class JobPost implements Serializable {
     private String benefit;
     private int status;
     private int status_post;
+    private String note_reject;
     private String type_job;
 
     public JobPost() {
@@ -31,7 +32,7 @@ public class JobPost implements Serializable {
 
     public JobPost(int id, String name, int idcompany, int id_recruiter, String img, String address, int idtype, int idprofession, String start_date, String end_date,
                    int salary_min, int salary_max, int idarea, String experience, int number, String description,
-                   String requirement, String benefit, int status, int status_post, String company_name,  String type_job) {
+                   String requirement, String benefit, int status, int status_post, String note_reject, String company_name,  String type_job) {
         this.id = id;
         this.name = name;
         this.idcompany = idcompany;
@@ -52,8 +53,17 @@ public class JobPost implements Serializable {
         this.benefit = benefit;
         this.status = status;
         this.status_post = status_post;
+        this.note_reject = note_reject;
         this.company_name = company_name;
         this.type_job = type_job;
+    }
+
+    public String getNote_reject() {
+        return note_reject;
+    }
+
+    public void setNote_reject(String note_reject) {
+        this.note_reject = note_reject;
     }
 
     public int getStatus_post() {

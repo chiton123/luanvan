@@ -32,6 +32,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,6 +65,7 @@ public class LoginRecruiterActivity extends AppCompatActivity {
         MainActivity.arrayListNotification.clear();
         MainActivity.k = 0;
         MainActivity.idcompany = 0;
+        MainActivity.company_name = "";
         RecruiterActivity.arrayListJobList.clear();
         RecruiterActivity.arrayListNotificationRecruiter.clear();
         CVManageActivity.arrayListInterView.clear();
@@ -118,7 +123,7 @@ public class LoginRecruiterActivity extends AppCompatActivity {
 
                                                     MainActivity.login_recruiter = 1;
                                                     MainActivity.iduser = Integer.parseInt(response);
-                                                    getIdCompany();
+                                                    getCompanyInfo();
                                                     Handler handler = new Handler();
                                                     handler.postDelayed(new Runnable() {
                                                         @Override
@@ -159,14 +164,23 @@ public class LoginRecruiterActivity extends AppCompatActivity {
         });
 
     }
-    public void getIdCompany(){
+    public void getCompanyInfo(){
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlCompanyInfo,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         if(response != null){
-                            MainActivity.idcompany = Integer.parseInt(response);
+                            try {
+                                JSONArray jsonArray = new JSONArray(response);
+                                JSONObject object = jsonArray.getJSONObject(0);
+                                MainActivity.idcompany = object.getInt("id");
+                                MainActivity.company_name = object.getString("name");
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
                         }else {
                             Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
                         }

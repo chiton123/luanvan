@@ -1,10 +1,12 @@
 package com.example.luanvan.ui.admin;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -34,7 +36,7 @@ public class JobReviewActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     LinearLayout layout, layout_nothing;
     JobReviewAdapter adapter;
-    ArrayList<JobPost> jobPostArrayList;
+    public static ArrayList<JobPost> jobPostArrayList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +79,7 @@ public class JobReviewActivity extends AppCompatActivity {
                                             object.getString("benefit"),
                                             object.getInt("status"),
                                             object.getInt("status_post"),
+                                            object.getString("note_reject"),
                                             object.getString("company_name"),
                                             object.getString("type_job")
                                     ));
@@ -102,6 +105,15 @@ public class JobReviewActivity extends AppCompatActivity {
         };
         requestQueue.add(jsonArrayRequest);
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == 123 && resultCode == 123){
+            //Toast.makeText(getApplicationContext(), "ee", Toast.LENGTH_SHORT).show();
+            adapter.notifyDataSetChanged();
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void actionBar() {

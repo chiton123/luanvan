@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/bottom_sheet">
+    <TextView
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Lý do từ chối"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        ></TextView>
+    <View
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#000000"
+        ></View>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        >
+        <EditText
+            android:layout_margin="5dp"
+            android:layout_width="300dp"
+            android:layout_height="100dp"
+            android:background="@drawable/edittext_frame"
+            android:id="@+id/editnote"
+            android:lines="8"
+            android:gravity="top|left"
+            android:hint="Ghi chú"
+            android:textColor="#000000"
+            android:textSize="14sp"
+            android:maxLines="3"
+            ></EditText>
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_below="@id/layout_a"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        >
+
+        <Button
+            android:id="@+id/buttonxacnhan"
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:background="@drawable/button_shape"
+            android:text="Xác nhận"
+            android:textSize="13sp"
+            android:textColor="#fff"></Button>
+
+        <Button
+            android:layout_marginLeft="20dp"
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:text="Hủy"
+            android:background="@drawable/button_huy"
+            android:id="@+id/buttonhuy"
+            android:textColor="#000000"
+            android:textSize="13sp"
+            ></Button>
+
+    </LinearLayout>
+</LinearLayout>
