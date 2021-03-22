@@ -2,12 +2,20 @@ package com.example.luanvan.ui.admin;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -22,6 +30,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.admin_a.JobReviewAdapter;
+import com.example.luanvan.ui.Interface.ILoadMore;
 import com.example.luanvan.ui.Model.JobPost;
 
 import org.json.JSONArray;
@@ -37,19 +46,42 @@ public class JobReviewActivity extends AppCompatActivity {
     LinearLayout layout, layout_nothing;
     JobReviewAdapter adapter;
     public static ArrayList<JobPost> jobPostArrayList;
+    Handler handler;
+    int page = 1;
+    SearchView searchView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_job_review);
         anhxa();
         actionBar();
-        getData();
+        getData(page);
+        loadMore();
 
     }
+    private void loadMore() {
+        adapter.setLoadmore(new ILoadMore() {
+            @Override
+            public void onLoadMore() {
+                getData(++page);
+                handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.notifyDataSetChanged();
+                        adapter.setIsloaded(false);
 
-    private void getData() {
+                    }
+                },2000);
+
+            }
+        });
+    }
+
+    private void getData(int page) {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, MainActivity.urlJobPost, null,
+        String url = MainActivity.urlJobPost + String.valueOf(page);
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
@@ -106,6 +138,37 @@ public class JobReviewActivity extends AppCompatActivity {
         requestQueue.add(jsonArrayRequest);
 
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_search_kindjob, menu);
+        MenuItem searchItem = menu.findItem(R.id.searchhienthithongtin);
+        SearchManager searchManager = (SearchManager) this.getSystemService(Context.SEARCH_SERVICE);
+
+        searchView = null;
+        if (searchItem != null) {
+            searchView = (SearchView) searchItem.getActionView();
+        }
+        if (searchView != null) {
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(this.getComponentName()));
+        }
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                adapter.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+
+        return super.onCreateOptionsMenu(menu);
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -129,13 +192,14 @@ public class JobReviewActivity extends AppCompatActivity {
 
     private void anhxa() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        recyclerView = (RecyclerView) findViewById(R.id.recycleview);
-        recyclerView.setHasFixedSize(true);
         layout = (LinearLayout) findViewById(R.id.layout);
         layout_nothing = (LinearLayout) findViewById(R.id.layout_nothing);
         jobPostArrayList = new ArrayList<>();
-        adapter = new JobReviewAdapter(JobReviewActivity.this, jobPostArrayList, JobReviewActivity.this);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+        recyclerView = (RecyclerView) findViewById(R.id.recycleview);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        adapter = new JobReviewAdapter(recyclerView,this, jobPostArrayList, this);
         recyclerView.setAdapter(adapter);
 
     }

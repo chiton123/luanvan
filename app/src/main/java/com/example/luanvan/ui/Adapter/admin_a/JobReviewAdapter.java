@@ -10,12 +10,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.AuthFailureError;
@@ -28,126 +32,184 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
+import com.example.luanvan.ui.Adapter.job.KindOfJobAdapter;
 import com.example.luanvan.ui.DetailedJob.DetailJobActivity;
 import com.example.luanvan.ui.DetailedJob.DetailJobAdminActivity;
+import com.example.luanvan.ui.Interface.ILoadMore;
 import com.example.luanvan.ui.Model.Job;
 import com.example.luanvan.ui.Model.JobPost;
 import com.example.luanvan.ui.admin.JobReviewActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.text.DecimalFormat;
+import java.text.Normalizer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class JobReviewAdapter extends RecyclerView.Adapter<JobReviewAdapter.ItemHolder> {
+class LoadingViewHolder extends RecyclerView.ViewHolder{
+    public ProgressBar progressBar;
+    public LoadingViewHolder(@NonNull View itemView) {
+        super(itemView);
+        progressBar = (ProgressBar) itemView.findViewById(R.id.progressbar);
+    }
+}
+
+public class JobReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable {
     Context context;
-    ArrayList<JobPost> arrayList;
+    ArrayList<JobPost> filterArraylist;
+    ArrayList<JobPost> nameList;
     Activity activity;
     int REQUEST_CODE = 123;
     BottomSheetDialog bottomSheetDialog;
     String note_reject = "";
-    public JobReviewAdapter(Context context, ArrayList<JobPost> arrayList, Activity activity) {
+    private final int VIEW_TYPE_ITEM = 0, VIEW_TYPE_LOADING = 1;
+    ILoadMore loadmore;
+    boolean isloading;
+    int visableThreadHold = 3;
+    int lastVisableItem,totalItemcount;
+    public JobReviewAdapter(RecyclerView recyclerView, Context context, ArrayList<JobPost> arrayList, Activity activity) {
         this.context = context;
-        this.arrayList = arrayList;
+        this.nameList = arrayList;
+        this.filterArraylist = arrayList;
         this.activity = activity;
+        final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                totalItemcount = linearLayoutManager.getItemCount();
+                lastVisableItem = linearLayoutManager.findLastVisibleItemPosition();
+                if(!isloading && totalItemcount < (lastVisableItem + visableThreadHold)){
+                    if(loadmore != null){
+                        loadmore.onLoadMore();
+                    }
+                    isloading = true;
+                }
+
+            }
+        });
+
     }
 
     @NonNull
     @Override
-    public ItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.dong_tin_tuyen_dung_admin, null);
-        ItemHolder itemHolder = new ItemHolder(view);
-        return itemHolder;
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if(viewType == VIEW_TYPE_ITEM){
+            View view = LayoutInflater.from(context).inflate(R.layout.dong_tin_tuyen_dung_admin, parent, false);
+            return new ItemHolder(view);
+        }else if(viewType == VIEW_TYPE_LOADING){
+            View view = LayoutInflater.from(context).inflate(R.layout.item_loading, parent, false);
+            return new LoadingViewHolder(view);
+        }
+        return null;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ItemHolder holder, final int position) {
-        final JobPost job = arrayList.get(position);
-        holder.txttencongviec.setText(job.getName());
-        holder.txttencongty.setText(job.getCompany_name());
-        String ngaybatdau = job.getStart_date();
-        String ngayketthuc = job.getEnd_date();
-        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-        Date date1 = null;
-        Date date2 = null;
-        try {
-            date1 = fmt.parse(ngaybatdau);
-            date2 = fmt.parse(ngayketthuc);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        SimpleDateFormat fmtOut = new SimpleDateFormat("dd/MM/yyyy");
-        // chỉ để hạn chót nộp hồ sơ
-        holder.txttime.setText(fmtOut.format(date2));
-        DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-        holder.txtsalary.setText("Từ " + decimalFormat.format( + job.getSalary_min()) + "đ đến " + decimalFormat.format(job.getSalary_max()) + "đ" );
-        holder.txtarea.setText(job.getAddress());
-        Glide.with(context).load(job.getImg()).into(holder.imganh);
-        if(job.getStatus_post() == 0){
-            holder.txtstatus_post.setText("Đồng ý");
-        }else if(job.getStatus_post() == 1){
-            holder.txtstatus_post.setText("Đang chờ xác thực");
-        }else {
-            holder.txtstatus_post.setText("Từ chối");
-        }
-        holder.imganh.setFocusable(false);
-        holder.imganh.setFocusable(false);
-        holder.btnReject.setFocusable(false);
-        holder.btnConfirm.setFocusable(false);
-        holder.btnConfirm.setClickable(false);
-        holder.btnReject.setClickable(false);
-        holder.layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, DetailJobAdminActivity.class);
-                intent.putExtra("job", arrayList.get(position));
-                intent.putExtra("position", position); // position trong mảng để load lại
-                activity.startActivityForResult(intent, REQUEST_CODE);
-
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
+        if(holder instanceof ItemHolder){
+            ItemHolder itemHolder = (ItemHolder) holder;
+            JobPost job = filterArraylist.get(position);
+            itemHolder.txttencongviec.setText(job.getName());
+            itemHolder.txttencongty.setText(job.getCompany_name());
+            String ngaybatdau = job.getStart_date();
+            String ngayketthuc = job.getEnd_date();
+            SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+            Date date1 = null;
+            Date date2 = null;
+            try {
+                date1 = fmt.parse(ngaybatdau);
+                date2 = fmt.parse(ngayketthuc);
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
-        });
-        if(job.getStatus_post() != 1){
-            holder.btnReject.setClickable(false);
-            holder.btnConfirm.setClickable(false);
-            holder.btnConfirm.setBackgroundResource(R.drawable.button_black);
-            holder.btnReject.setBackgroundResource(R.drawable.button_black);
-            holder.btnReject.setTextColor(Color.WHITE);
-            holder.btnConfirm.setOnClickListener(new View.OnClickListener() {
+            SimpleDateFormat fmtOut = new SimpleDateFormat("dd/MM/yyyy");
+            // chỉ để hạn chót nộp hồ sơ
+            itemHolder.txttime.setText(fmtOut.format(date2));
+            DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
+            itemHolder.txtsalary.setText("Từ " + decimalFormat.format( + job.getSalary_min()) + "đ đến " + decimalFormat.format(job.getSalary_max()) + "đ" );
+            itemHolder.txtarea.setText(job.getAddress());
+            Glide.with(context).load(job.getImg()).into(itemHolder.imganh);
+            if(job.getStatus_post() == 0){
+                itemHolder.txtstatus_post.setText("Đồng ý");
+            }else if(job.getStatus_post() == 1){
+                itemHolder.txtstatus_post.setText("Đang chờ xác thực");
+            }else {
+                itemHolder.txtstatus_post.setText("Từ chối");
+            }
+            itemHolder.imganh.setFocusable(false);
+            itemHolder.imganh.setFocusable(false);
+            itemHolder.btnReject.setFocusable(false);
+            itemHolder.btnConfirm.setFocusable(false);
+            itemHolder.btnConfirm.setClickable(false);
+            itemHolder.btnReject.setClickable(false);
+            itemHolder.layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, "Bạn đã xác nhận", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(context, DetailJobAdminActivity.class);
+                    intent.putExtra("job", filterArraylist.get(position));
+                    intent.putExtra("position", position); // position trong mảng để load lại
+                    activity.startActivityForResult(intent, REQUEST_CODE);
+
                 }
             });
-            holder.btnReject.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(context, "Bạn đã xác nhận", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }else {
-            holder.btnConfirm.setBackgroundResource(R.drawable.button_xacnhan);
-            holder.btnReject.setBackgroundResource(R.drawable.background_button_view_cv);
-            holder.btnReject.setTextColor(Color.BLACK);
-            holder.btnConfirm.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    acceptOrRejectJob(0, position);
-                }
-            });
-            holder.btnReject.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    rejectDialog(position);
-                }
-            });
+            if(job.getStatus_post() != 1){
+                itemHolder.btnReject.setClickable(false);
+                itemHolder.btnConfirm.setClickable(false);
+                itemHolder.btnConfirm.setBackgroundResource(R.drawable.button_black);
+                itemHolder.btnReject.setBackgroundResource(R.drawable.button_black);
+                itemHolder.btnReject.setTextColor(Color.WHITE);
+                itemHolder.btnConfirm.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(context, "Bạn đã xác nhận", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                itemHolder.btnReject.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(context, "Bạn đã xác nhận", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }else {
+                itemHolder.btnConfirm.setBackgroundResource(R.drawable.button_xacnhan);
+                itemHolder.btnReject.setBackgroundResource(R.drawable.background_button_view_cv);
+                itemHolder.btnReject.setTextColor(Color.BLACK);
+                itemHolder.btnConfirm.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        acceptOrRejectJob(0, position);
+                    }
+                });
+                itemHolder.btnReject.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        rejectDialog(position);
+                    }
+                });
+            }
+
+
+        }else if(holder instanceof LoadingViewHolder) {
+            LoadingViewHolder loadingViewHoler = (LoadingViewHolder) holder;
+            loadingViewHoler.progressBar.setIndeterminate(true);
         }
 
+    }
+    public void setLoadmore(ILoadMore loadmore) {
+        this.loadmore = loadmore;
+    }
+    @Override
+    public int getItemViewType(int position) {
+        return filterArraylist.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
+    }
 
-
+    public void setIsloaded(boolean x) {
+        this.isloading = x;
     }
 
     public void rejectDialog(final int position){
@@ -189,8 +251,8 @@ public class JobReviewAdapter extends RecyclerView.Adapter<JobReviewAdapter.Item
                     public void onResponse(String response) {
                         if(response.equals("success")){
                             Toast.makeText(context, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
-                            arrayList.get(position).setStatus_post(status);
-                            arrayList.get(position).setNote_reject(note_reject);
+                            filterArraylist.get(position).setStatus_post(status);
+                            filterArraylist.get(position).setNote_reject(note_reject);
                             notifyDataSetChanged();
 
                         }else {
@@ -207,7 +269,7 @@ public class JobReviewAdapter extends RecyclerView.Adapter<JobReviewAdapter.Item
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> map = new HashMap<>();
-                map.put("job_id", String.valueOf(arrayList.get(position).getId()));
+                map.put("job_id", String.valueOf(filterArraylist.get(position).getId()));
                 map.put("status", String.valueOf(status));
                 map.put("note_reject", note_reject);
                 return map;
@@ -220,7 +282,43 @@ public class JobReviewAdapter extends RecyclerView.Adapter<JobReviewAdapter.Item
 
     @Override
     public int getItemCount() {
-        return arrayList.size();
+        return filterArraylist.size();
+    }
+    public static String stripAccents(String s)
+    {
+        s = Normalizer.normalize(s, Normalizer.Form.NFD);
+        s = s.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
+        return s;
+    }
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String charSequenceString = stripAccents(constraint.toString()).trim();
+                if(charSequenceString.isEmpty()){
+                    filterArraylist = nameList;
+                }else {
+                    ArrayList<JobPost> filteredList = new ArrayList<>();
+                    for(JobPost job : nameList){
+                        String name1 = stripAccents(job.getName()).trim();
+                        if(name1.toLowerCase().contains(charSequenceString.toLowerCase())){
+                            filteredList.add(job);
+                        }
+                        filterArraylist = filteredList;
+                    }
+                }
+                FilterResults results = new FilterResults();
+                results.values = filterArraylist;
+                return results;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                filterArraylist = (ArrayList<JobPost>) results.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 
     public class ItemHolder extends RecyclerView.ViewHolder{

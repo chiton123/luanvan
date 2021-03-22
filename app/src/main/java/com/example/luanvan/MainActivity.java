@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
     public static int color = 0;
 
 
-    public static String host = "http://10.10.38.34:8888/luanvan/";
+    public static String host = "http://10.10.34.151:8888/luanvan/";
     public static String urljob1 = host + "job1.php?page=";
     public static String urlJobHome = host + "job_home.php";
     // job apply
@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
     public static String urlGetApplicationId = host + "get_ap_id.php";
     // admin
     // duyệt tin
-    public static String urlJobPost = host + "job_post.php";
+    public static String urlJobPost = host + "job_post.php?page=";
     // accept, reject job
     public static String urlAcceptJob = host + "accept_job.php";
 
