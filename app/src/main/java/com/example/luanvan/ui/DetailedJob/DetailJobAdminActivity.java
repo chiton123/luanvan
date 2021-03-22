@@ -58,6 +58,8 @@ public class DetailJobAdminActivity extends AppCompatActivity {
     int status_post = 0;
     String note_reject = "";
     BottomSheetDialog bottomSheetDialog;
+    String type_notification = "";
+    String content = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,39 +109,39 @@ public class DetailJobAdminActivity extends AppCompatActivity {
 
     }
 
-//    private void postNotification(final int type_user) {
-//        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-//        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlPostNotification,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        if(response.equals("success")){
-//                            Toast.makeText(getApplicationContext(), "Thông báo thành công", Toast.LENGTH_SHORT).show();
-//                        }else {
-//                            Toast.makeText(getApplicationContext(), "Thông báo thất bại", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
-//                    }
-//                }){
-//            @Override
-//            protected Map<String, String> getParams() throws AuthFailureError {
-//                Map<String,String> map = new HashMap<>();
-//                map.put("type_user", String.valueOf(type_user));
-//                map.put("type_notification",  type_notification);
-//                map.put("iduser", String.valueOf(jobPost.getId_recruiter()));
-//                map.put("content", content);
-//                map.put("id_application", String.valueOf(id_application));
-//                return map;
-//            }
-//        };
-//        requestQueue.add(stringRequest);
-//
-//    }
+    private void postNotification(final int type_user) {
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlPostNotificationForAdmin,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(response.equals("success")){
+                            Toast.makeText(getApplicationContext(), "Thông báo thành công", Toast.LENGTH_SHORT).show();
+                        }else {
+                            Toast.makeText(getApplicationContext(), "Thông báo thất bại", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("type_user", String.valueOf(type_user));
+                map.put("type_notification",  type_notification);
+                map.put("iduser", String.valueOf(jobPost.getId_recruiter()));
+                map.put("content", content);
+                map.put("idjob", String.valueOf(job_id));
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+
+    }
 
 
 
@@ -196,6 +198,14 @@ public class DetailJobAdminActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
                             JobReviewActivity.jobPostArrayList.get(position).setStatus_post(status);
                             JobReviewActivity.jobPostArrayList.get(position).setNote_reject(note_reject);
+                            if(status == 0){
+                                type_notification = "Tin tuyển dụng được duyệt";
+                                content = "Vị trí " + jobPost.getName();
+                            }else if(status == 2) {
+                                type_notification = "Tin tuyển dụng bị từ chối";
+                                content = "Vị trí " + jobPost.getName();
+                            }
+                            postNotification(1);
 
                         }else {
                             Toast.makeText(getApplicationContext(), "Cập nhật thất bại", Toast.LENGTH_SHORT).show();

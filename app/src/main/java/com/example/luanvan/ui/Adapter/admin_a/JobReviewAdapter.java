@@ -72,6 +72,8 @@ public class JobReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     boolean isloading;
     int visableThreadHold = 3;
     int lastVisableItem,totalItemcount;
+    String type_notification = "";
+    String content = "";
     public JobReviewAdapter(RecyclerView recyclerView, Context context, ArrayList<JobPost> arrayList, Activity activity) {
         this.context = context;
         this.nameList = arrayList;
@@ -253,6 +255,14 @@ public class JobReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                             Toast.makeText(context, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
                             filterArraylist.get(position).setStatus_post(status);
                             filterArraylist.get(position).setNote_reject(note_reject);
+                            if(status == 0){
+                                type_notification = "Tin tuyển dụng được duyệt";
+                                content = "Vị trí " + filterArraylist.get(position).getName();
+                            }else if(status == 2) {
+                                type_notification = "Tin tuyển dụng bị từ chối";
+                                content = "Vị trí " + filterArraylist.get(position).getName();
+                            }
+                            postNotification(1, position);
                             notifyDataSetChanged();
 
                         }else {
@@ -280,6 +290,39 @@ public class JobReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     }
 
+    private void postNotification(final int type_user, final int position) {
+        RequestQueue requestQueue = Volley.newRequestQueue(activity);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlPostNotificationForAdmin,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(response.equals("success")){
+                            Toast.makeText(context, "Thông báo thành công", Toast.LENGTH_SHORT).show();
+                        }else {
+                            Toast.makeText(context, "Thông báo thất bại", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("type_user", String.valueOf(type_user));
+                map.put("type_notification",  type_notification);
+                map.put("iduser", String.valueOf(filterArraylist.get(position).getId_recruiter()));
+                map.put("content", content);
+                map.put("idjob", String.valueOf(filterArraylist.get(position).getId()));
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+
+    }
     @Override
     public int getItemCount() {
         return filterArraylist.size();
