@@ -9,6 +9,7 @@ import com.example.luanvan.ui.Adapter.update_personal_info.SkillAdapter;
 import com.example.luanvan.ui.Adapter.update_personal_info.StudyAdapter;
 import com.example.luanvan.ui.Model.Experience;
 import com.example.luanvan.ui.Model.Notification;
+import com.example.luanvan.ui.Model.NotificationAdmin;
 import com.example.luanvan.ui.Model.Skill;
 import com.example.luanvan.ui.Model.Study;
 import com.example.luanvan.ui.Model.User;
@@ -53,7 +54,9 @@ public class MainActivity extends AppCompatActivity {
     public static String company_name = "";
     public static int checkCV = 0;
     public static ArrayList<Notification> arrayListNotification = new ArrayList<>(); // Danh sách thông báo
+    public static ArrayList<NotificationAdmin> arrayListAdminNotification = new ArrayList<>(); // Danh sách thông báo của admin
     public static int k = 0; // số lương thông báo mới
+    public static int k_admin = 0; // số lương thông báo mới của admin
     // 1: có cv, 2: chưa
     public static String uid = ""; // của firebase
     public static String username = "";
@@ -152,8 +155,12 @@ public class MainActivity extends AppCompatActivity {
     public static String urlGetNotification =  host + "get_notification.php";
     // get notification recruiter
     public static String urlGetNotificationRecruiter =  host + "get_notification_recruiter.php";
+    // get notification admin
+    public static String getUrlGetNotificationAdmin = host + "get_notification_admin.php";
     // update notification status
     public static String urlUpdateNotificationStatus = host + "update_status_notification.php";
+    // update notification status admin
+    public static String urlUpdateNotificationAdminStatus = host + "update_notification_admin.php";
     // read all notification
     public static String urlUpdateReadAllNotification = host + "update_read_all_notification.php";
     // job from notification

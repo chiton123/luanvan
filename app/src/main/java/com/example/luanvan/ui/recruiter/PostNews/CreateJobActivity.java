@@ -57,6 +57,8 @@ public class CreateJobActivity extends AppCompatActivity {
     int idArea = 0, idProfession = 0, idExperience = 0, idKindJob = 0, job_id = 0;
     Handler handler;
     String type_notification = "", content = "";
+    // id job vừa đăng
+    int idjobJust = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -174,6 +176,7 @@ public class CreateJobActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> map = new HashMap<>();
+                map.put("idjob", String.valueOf(idjobJust));
                 map.put("type_user", String.valueOf(type_user));
                 map.put("type_notification",  type_notification);
                 map.put("iduser", String.valueOf(1)); // 1: admin
@@ -219,8 +222,12 @@ public class CreateJobActivity extends AppCompatActivity {
                             new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
-                                    if(response.equals("success")){
+                                    if(!response.equals("fail")){
                                         Toast.makeText(getApplicationContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                                        int k = response.lastIndexOf("s");
+
+                                        idjobJust = Integer.parseInt(response.substring(k+1, response.length()));
+                                     //   Toast.makeText(getApplicationContext(), idjobJust + " id", Toast.LENGTH_SHORT).show();
                                         postNotificationForAdmin(0); // 0: cho admin
 //                                        RecruiterActivity.arrayListJobList.get(position_job).setName(position);
 //                                        RecruiterActivity.arrayListJobList.get(position_job).setAddress(address);

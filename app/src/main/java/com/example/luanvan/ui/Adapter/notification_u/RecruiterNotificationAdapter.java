@@ -132,6 +132,7 @@ public class RecruiterNotificationAdapter extends RecyclerView.Adapter<Recruiter
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> map = new HashMap<>();
+                map.put("kind", String.valueOf(1)); // 1: candidate, recruiter, 2: admin
                 map.put("iduser", String.valueOf(MainActivity.iduser));
                 return map;
             }

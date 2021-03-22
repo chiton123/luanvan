@@ -25,13 +25,11 @@ import com.bumptech.glide.Glide;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.DetailedJob.DetailJobActivity;
-import com.example.luanvan.ui.Model.Job;
 import com.example.luanvan.ui.Model.Notification;
+import com.example.luanvan.ui.Model.NotificationAdmin;
+import com.example.luanvan.ui.admin.AdminActivity;
+import com.example.luanvan.ui.admin.JobReviewActivity;
 import com.example.luanvan.ui.home.HomeFragment;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -40,19 +38,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.ItemHolder> {
+public class AdminNotificationAdapter extends RecyclerView.Adapter<AdminNotificationAdapter.ItemHolder> {
     Context context;
-    ArrayList<Notification> arrayList;
+    ArrayList<NotificationAdmin> arrayList;
     Activity activity;
-    int kind;
 
-    // 0: ứng viên xem, 1: nhà tuyển dụng xem
-
-    public NotificationAdapter(Context context, ArrayList<Notification> arrayList, Activity activity, int kind) {
+    public AdminNotificationAdapter(Context context, ArrayList<NotificationAdmin> arrayList, Activity activity) {
         this.context = context;
         this.arrayList = arrayList;
         this.activity = activity;
-        this.kind = kind;
     }
 
 
@@ -66,7 +60,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ItemHolder holder, final int position) {
-        final Notification notification = arrayList.get(position);
+        final NotificationAdmin notification = arrayList.get(position);
         Glide.with(context).load(notification.getImg());
         holder.txtContent.setText(notification.getContent());
         holder.txtNotification.setText(notification.getType_notification());
@@ -87,20 +81,15 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                     updateStatusNotification(position, 1);
                     arrayList.get(position).setStatus(1);
                     notifyDataSetChanged();
-                    MainActivity.k--;
-                    if(MainActivity.k == 0){
-                        HomeFragment.txtNotification.setVisibility(View.GONE);
+                    MainActivity.k_admin--;
+                    if(MainActivity.k_admin == 0){
+                        AdminActivity.txtNotification.setVisibility(View.GONE);
                     }else {
-                        HomeFragment.txtNotification.setText("" + MainActivity.k);
-                        HomeFragment.txtNotification.setVisibility(View.VISIBLE);
+                        AdminActivity.txtNotification.setText("" + MainActivity.k_admin);
+                        AdminActivity.txtNotification.setVisibility(View.VISIBLE);
                     }
                 }
-                Intent intent = new Intent(activity, DetailJobActivity.class);
-                // 0: từ màn hình chính, tìm kiếm, lọc chuyển qua, 1: từ notification chuyển qua
-                intent.putExtra("kind", 1);
-                intent.putExtra("job_id", arrayList.get(position).getJob_id());
-                intent.putExtra("ap_status", arrayList.get(position).getAp_status());
-                intent.putExtra("ap_note", arrayList.get(position).getAp_note());
+                Intent intent = new Intent(activity, JobReviewActivity.class);
                 activity.startActivity(intent);
             }
         });
@@ -134,8 +123,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> map = new HashMap<>();
-                map.put("kind", String.valueOf(1)); // 1: candidate, recruiter, 2: admin
-                map.put("iduser", String.valueOf(MainActivity.iduser));
+                map.put("kind", String.valueOf(2)); // 1: candidate, recruiter, 2: admin
+                map.put("iduser", String.valueOf(0));
                 return map;
             }
         };
@@ -145,14 +134,14 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     public void updateStatusNotification(final int position, final int status){
         RequestQueue requestQueue = Volley.newRequestQueue(activity);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlUpdateNotificationStatus,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlUpdateNotificationAdminStatus,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         if(response.equals("success")){
-                          //  Toast.makeText(context, "Đã xem", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Đã xem", Toast.LENGTH_SHORT).show();
                         }else {
-                         //   Toast.makeText(context, "Thất bại", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Thất bại", Toast.LENGTH_SHORT).show();
                         }
                     }
                 },
