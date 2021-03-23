@@ -1,6 +1,7 @@
 package com.example.luanvan.ui.recruiter;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -63,6 +64,8 @@ public class RecruiterActivity extends AppCompatActivity {
     Handler handler;
     public static ArrayList<NotificationRecruiter> arrayListNotificationRecruiter = new ArrayList<>();
     public static ArrayList<JobList> arrayListJobList = new ArrayList<>();
+    public static ArrayList<JobList> arrayListAuthenticationJobs = new ArrayList<>();
+    public static ArrayList<JobList> arrayListRejectJobs = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,33 +111,32 @@ public class RecruiterActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                      //    Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
-                        if(response != null){
-                            try {
-                                JSONArray jsonArray = new JSONArray(response);
-                                for(int i=0; i < jsonArray.length(); i++){
-                                    JSONObject object = jsonArray.getJSONObject(i);
-                                    arrayListNotificationRecruiter.add(new NotificationRecruiter(
-                                            object.getInt("id"),
-                                            object.getInt("ap_id"),
-                                            object.getInt("job_id"),
-                                            object.getString("type_notification"),
-                                            object.getInt("type_user"),
-                                            object.getInt("id_user"),
-                                            object.getString("content"),
-                                            object.getInt("status"),
-                                            object.getString("img"),
-                                            object.getString("date_read"),
-                                            object.getInt("ap_status"),
-                                            object.getString("ap_note")
-                                    ));
+                      //  Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            for(int i=0; i < jsonArray.length(); i++){
+                                JSONObject object = jsonArray.getJSONObject(i);
+                                arrayListNotificationRecruiter.add(new NotificationRecruiter(
+                                        object.getInt("id"),
+                                        object.getInt("ap_id"),
+                                        object.getInt("job_id"),
+                                        object.getString("type_notification"),
+                                        object.getInt("type_user"),
+                                        object.getInt("id_user"),
+                                        object.getString("content"),
+                                        object.getInt("status"),
+                                        object.getInt("kind"),
+                                        object.getString("img"),
+                                        object.getString("date_read"),
+                                        object.getInt("ap_status"),
+                                        object.getString("ap_note")
+                                ));
 
-                                }
 
-                            } catch (JSONException e) {
-                                e.printStackTrace();
                             }
 
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
                     }
                 },
@@ -201,6 +203,7 @@ public class RecruiterActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 
     private void eventGridView() {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

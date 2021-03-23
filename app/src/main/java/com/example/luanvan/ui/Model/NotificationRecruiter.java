@@ -2,18 +2,20 @@ package com.example.luanvan.ui.Model;
 
 public class NotificationRecruiter {
     private int id;
-    private int ap_id;
+    private Integer ap_id;
     private int job_id;
     private String type_notification;
     private int type_user;
     private int id_user;
     private String content;
     private int status;
+    private int kind;
     private String img;
     private String date_read;
     private int ap_status;
     private String ap_note;
-    public NotificationRecruiter(int id, int ap_id, int job_id, String type_notification, int type_user, int id_user, String content, int status, String img, String date_read,
+    public NotificationRecruiter(int id, Integer ap_id, int job_id, String type_notification, int type_user, int id_user, String content, int status,
+                                 int kind, String img, String date_read,
                                  int ap_status, String ap_note) {
         this.id = id;
         this.ap_id = ap_id;
@@ -23,10 +25,19 @@ public class NotificationRecruiter {
         this.id_user = id_user;
         this.content = content;
         this.status = status;
+        this.kind = kind;
         this.img = img;
         this.date_read = date_read;
         this.ap_status = ap_status;
         this.ap_note = ap_note;
+    }
+
+    public int getKind() {
+        return kind;
+    }
+
+    public void setKind(int kind) {
+        this.kind = kind;
     }
 
     public int getAp_status() {

@@ -59,6 +59,8 @@ public class AdjustJobActivity extends AppCompatActivity {
     int idArea = 0, idProfession = 0, idExperience = 0, idKindJob = 0, job_id = 0;
     Handler handler;
     int kind = 0; // kind: 0 JoblistFragment, 1: NewPostFragment chuyển qua
+    int fragment; // 1: Đang hiển thị, 2 : Chờ xác thực, 3: Hết hạn, 4: Từ chối ,
+    // khi NewPostAdapter chuyển qua bên adjustJob thì cập nhật tương ứng với fragment
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +79,11 @@ public class AdjustJobActivity extends AppCompatActivity {
         kind = getIntent().getIntExtra("kind", 0);
         job = (JobList) getIntent().getSerializableExtra("job");
         position_job = getIntent().getIntExtra("position", 0);
+        if(kind == 1){
+            fragment = getIntent().getIntExtra("fragment", 0);
+        }
+       // Toast.makeText(getApplicationContext(), "kind: " + kind + "fragment " + fragment, Toast.LENGTH_SHORT).show();
+
         job_id = job.getId();
         idArea = job.getIdarea();
         idKindJob = job.getIdtype();
@@ -247,14 +254,32 @@ public class AdjustJobActivity extends AppCompatActivity {
                                         if(kind == 0){
                                             updatePreviousJoblist();
                                         }else {
-                                            updatePreviousJobDisplay();
+                                            switch (fragment){
+                                                case 1:
+                                                    updatePreviousJobDisplay();
+                                                    break;
+                                                case 2:
+                                                    updatePreviousAuthenticationJob();
+                                                    break;
+                                                case 4:
+                                                    updatePreviousRejectJob();
+                                                    break;
+                                            }
+
                                         }
                                         handler = new Handler();
                                         handler.postDelayed(new Runnable() {
                                             @Override
                                             public void run() {
                                                 Intent intent = new Intent();
-                                                setResult(123);
+                                                if(fragment == 1){
+                                                    setResult(123);
+                                                }else if(fragment == 2){
+                                                    setResult(234);
+                                                }else if(fragment == 4){
+                                                    setResult(345);
+                                                }
+
                                                 finish();
                                             }
                                         },1000);
@@ -391,6 +416,91 @@ public class AdjustJobActivity extends AppCompatActivity {
         }
     }
 
+    public void updatePreviousRejectJob(){
+        RecruiterActivity.arrayListRejectJobs.get(position_job).setName(position);
+        RecruiterActivity.arrayListRejectJobs.get(position_job).setAddress(address);
+        RecruiterActivity.arrayListRejectJobs.get(position_job).setBenefit(benefit);
+        RecruiterActivity.arrayListRejectJobs.get(position_job).setDescription(description);
+        RecruiterActivity.arrayListRejectJobs.get(position_job).setRequirement(requirement);
+        RecruiterActivity.arrayListRejectJobs.get(position_job).setNumber(Integer.parseInt(number));
+        RecruiterActivity.arrayListRejectJobs.get(position_job).setSalary_min(salary_min);
+        RecruiterActivity.arrayListRejectJobs.get(position_job).setSalary_max(salary_max);
+        RecruiterActivity.arrayListRejectJobs.get(position_job).setIdarea(idArea);
+        RecruiterActivity.arrayListRejectJobs.get(position_job).setIdprofession(idProfession);
+        RecruiterActivity.arrayListRejectJobs.get(position_job).setIdtype(idKindJob);
+        RecruiterActivity.arrayListRejectJobs.get(position_job).setStart_date(date_post_start);
+        RecruiterActivity.arrayListRejectJobs.get(position_job).setEnd_date(date_post_end);
+        //    DisplayJobFragment.adapter.notifyDataSetChanged();
+        switch (idExperience){
+            case 1:
+                RecruiterActivity.arrayListRejectJobs.get(position_job).setExperience("Chưa có kinh nghiệm");
+                break;
+            case 2:
+                RecruiterActivity.arrayListRejectJobs.get(position_job).setExperience("Dưới 1 năm");
+                break;
+            case 3:
+                RecruiterActivity.arrayListRejectJobs.get(position_job).setExperience("1 năm");
+                break;
+            case 4:
+                RecruiterActivity.arrayListRejectJobs.get(position_job).setExperience("2 năm");
+                break;
+            case 5:
+                RecruiterActivity.arrayListRejectJobs.get(position_job).setExperience("3 năm");
+                break;
+            case 6:
+                RecruiterActivity.arrayListRejectJobs.get(position_job).setExperience("4 năm");
+                break;
+            case 7:
+                RecruiterActivity.arrayListRejectJobs.get(position_job).setExperience("5 năm");
+                break;
+            case 8:
+                RecruiterActivity.arrayListRejectJobs.get(position_job).setExperience("Trên 5 năm");
+                break;
+        }
+    }
+
+    public void updatePreviousAuthenticationJob(){
+        RecruiterActivity.arrayListAuthenticationJobs.get(position_job).setName(position);
+        RecruiterActivity.arrayListAuthenticationJobs.get(position_job).setAddress(address);
+        RecruiterActivity.arrayListAuthenticationJobs.get(position_job).setBenefit(benefit);
+        RecruiterActivity.arrayListAuthenticationJobs.get(position_job).setDescription(description);
+        RecruiterActivity.arrayListAuthenticationJobs.get(position_job).setRequirement(requirement);
+        RecruiterActivity.arrayListAuthenticationJobs.get(position_job).setNumber(Integer.parseInt(number));
+        RecruiterActivity.arrayListAuthenticationJobs.get(position_job).setSalary_min(salary_min);
+        RecruiterActivity.arrayListAuthenticationJobs.get(position_job).setSalary_max(salary_max);
+        RecruiterActivity.arrayListAuthenticationJobs.get(position_job).setIdarea(idArea);
+        RecruiterActivity.arrayListAuthenticationJobs.get(position_job).setIdprofession(idProfession);
+        RecruiterActivity.arrayListAuthenticationJobs.get(position_job).setIdtype(idKindJob);
+        RecruiterActivity.arrayListAuthenticationJobs.get(position_job).setStart_date(date_post_start);
+        RecruiterActivity.arrayListAuthenticationJobs.get(position_job).setEnd_date(date_post_end);
+        //    DisplayJobFragment.adapter.notifyDataSetChanged();
+        switch (idExperience){
+            case 1:
+                RecruiterActivity.arrayListAuthenticationJobs.get(position_job).setExperience("Chưa có kinh nghiệm");
+                break;
+            case 2:
+                RecruiterActivity.arrayListAuthenticationJobs.get(position_job).setExperience("Dưới 1 năm");
+                break;
+            case 3:
+                RecruiterActivity.arrayListAuthenticationJobs.get(position_job).setExperience("1 năm");
+                break;
+            case 4:
+                RecruiterActivity.arrayListAuthenticationJobs.get(position_job).setExperience("2 năm");
+                break;
+            case 5:
+                RecruiterActivity.arrayListAuthenticationJobs.get(position_job).setExperience("3 năm");
+                break;
+            case 6:
+                RecruiterActivity.arrayListAuthenticationJobs.get(position_job).setExperience("4 năm");
+                break;
+            case 7:
+                RecruiterActivity.arrayListAuthenticationJobs.get(position_job).setExperience("5 năm");
+                break;
+            case 8:
+                RecruiterActivity.arrayListAuthenticationJobs.get(position_job).setExperience("Trên 5 năm");
+                break;
+        }
+    }
     private void eventSpinner() {
         khuVucAdapter = new SpinnerNewAdapter(this,R.layout.dong_spinner, dataArea);
 

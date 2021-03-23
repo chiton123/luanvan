@@ -49,8 +49,19 @@ public class RecruitmentNewsActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == 123 && resultCode == 123){
+            Toast.makeText(getApplicationContext(), "display ", Toast.LENGTH_SHORT).show();
             DisplayJobFragment displayJobFragment = (DisplayJobFragment) viewPageAdapter.getItem(0);
             displayJobFragment.onActivityResult(requestCode, resultCode, data);
+        }
+        if(requestCode == 123 && resultCode == 234){
+            Toast.makeText(getApplicationContext(), "auth ", Toast.LENGTH_SHORT).show();
+            AuthenticationFragment authenticationFragment = (AuthenticationFragment) viewPageAdapter.getItem(1);
+            authenticationFragment.onActivityResult(requestCode, resultCode, data);
+        }
+        if(requestCode == 123 && resultCode == 345){
+            Toast.makeText(getApplicationContext(), "reject ", Toast.LENGTH_SHORT).show();
+            RejectJobFragment rejectJobFragment = (RejectJobFragment) viewPageAdapter.getItem(3);
+            rejectJobFragment.onActivityResult(requestCode, resultCode, data);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

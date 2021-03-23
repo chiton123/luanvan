@@ -44,12 +44,14 @@ public class NewPostAdapter extends RecyclerView.Adapter<NewPostAdapter.ItemHold
     Activity activity;
     int kind;
     int REQUEST_CODE = 123;
+    int fragment; // 1: Đang hiển thị, 2 : Chờ xác thực, 3: Hết hạn, 4: Từ chối , khi chuyển qua bên adjustJob thì cập nhật tương ứng với fragment
 
-    public NewPostAdapter(Context context, ArrayList<JobList> arrayList, Activity activity, int kind) {
+    public NewPostAdapter(Context context, ArrayList<JobList> arrayList, Activity activity, int kind, int fragment) {
         this.context = context;
         this.arrayList = arrayList;
         this.activity = activity;
         this.kind = kind;
+        this.fragment = fragment;
     }
 
     @NonNull
@@ -86,9 +88,10 @@ public class NewPostAdapter extends RecyclerView.Adapter<NewPostAdapter.ItemHold
             @Override
             public void onClick(View v) {
                 Intent intent1 = new Intent(activity, AdjustJobActivity.class);
-                intent1.putExtra("kind", 1); // kind: 0 JoblistFragment, 1: NewPostFragment
+                intent1.putExtra("kind", kind); // kind: 0 JoblistFragment, 1: NewPostFragment
                 intent1.putExtra("job", arrayList.get(position));
                 intent1.putExtra("position", position);
+                intent1.putExtra("fragment", fragment);
                 activity.startActivityForResult(intent1, REQUEST_CODE);
             }
         });

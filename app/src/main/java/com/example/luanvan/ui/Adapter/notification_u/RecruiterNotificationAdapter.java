@@ -31,6 +31,7 @@ import com.example.luanvan.ui.Model.Notification;
 import com.example.luanvan.ui.Model.NotificationRecruiter;
 import com.example.luanvan.ui.home.HomeFragment;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
+import com.example.luanvan.ui.recruiter.PostNews.RecruitmentNewsActivity;
 import com.example.luanvan.ui.recruiter.RecruiterActivity;
 
 import java.text.ParseException;
@@ -45,6 +46,7 @@ public class RecruiterNotificationAdapter extends RecyclerView.Adapter<Recruiter
     ArrayList<NotificationRecruiter> arrayList;
     Activity activity;
     int kind;
+    String url = MainActivity.urlUpdateNotificationStatus;
 
     // 0: ứng viên xem, 1: nhà tuyển dụng xem
 
@@ -84,6 +86,11 @@ public class RecruiterNotificationAdapter extends RecyclerView.Adapter<Recruiter
             @Override
             public void onClick(View v) {
                 if(notification.getStatus() == 0){
+                    if(notification.getKind() == 2){
+                        url = MainActivity.urlUpdateNotificationAdminStatus;
+                    }else {
+                        url = MainActivity.urlUpdateNotificationStatus;
+                    }
                     updateStatusNotification(position, 1);
                     arrayList.get(position).setStatus(1);
                     notifyDataSetChanged();
@@ -95,9 +102,16 @@ public class RecruiterNotificationAdapter extends RecyclerView.Adapter<Recruiter
                         RecruiterActivity.txtNotification.setVisibility(View.VISIBLE);
                     }
                 }
-                Intent intent = new Intent(context, CVManageActivity.class);
-                intent.putExtra("kind", 1); // Để nó trỏ tới hồ sơ ứng tuyển
-                activity.startActivity(intent);
+                if(notification.getKind() == 1){
+                    Intent intent = new Intent(context, CVManageActivity.class);
+                    intent.putExtra("kind", 1); // Để nó trỏ tới hồ sơ ứng tuyển
+                    activity.startActivity(intent);
+                }else {
+                    Intent intent = new Intent(context, RecruitmentNewsActivity.class);
+                    activity.startActivity(intent);
+                }
+
+
             }
         });
         if(notification.getStatus() == 0){
@@ -144,7 +158,7 @@ public class RecruiterNotificationAdapter extends RecyclerView.Adapter<Recruiter
 
     public void updateStatusNotification(final int position, final int status){
         RequestQueue requestQueue = Volley.newRequestQueue(activity);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlUpdateNotificationStatus,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

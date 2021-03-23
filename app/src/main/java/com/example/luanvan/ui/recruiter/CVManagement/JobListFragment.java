@@ -64,7 +64,7 @@ public class JobListFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
         if(RecruiterActivity.arrayListJobList.size() == 0){
-            getData();
+            getData(0);
         }
         handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -95,7 +95,7 @@ public class JobListFragment extends Fragment {
         }
     }
 
-    private void getData() {
+    private void getData(final int status_post) {
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlJobList,
                 new Response.Listener<String>() {
@@ -152,6 +152,7 @@ public class JobListFragment extends Fragment {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> map = new HashMap<>();
                 map.put("idrecuiter", String.valueOf(MainActivity.iduser));
+                map.put("status_post", String.valueOf(status_post));
                 return map;
             }
         };

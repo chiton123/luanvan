@@ -39,8 +39,8 @@ import java.util.Map;
 public class DisplayJobFragment extends Fragment {
     RecyclerView recyclerView;
     public static NewPostAdapter adapter;
-
-    // kind: 0 đang hiển thị, 1: chờ xác thực, 2: từ chối, 3: hến hạn
+    // fragment 1: Đang hiển thị, 2 : Chờ xác thực, 3: Hết hạn, 4: Từ chối , khi chuyển qua bên adjustJob thì cập nhật tương ứng với fragment
+    // kind: 0 là của joblistfragment chuyển qua, 1: là của tin tuyển dụng chuyển qua
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -48,16 +48,16 @@ public class DisplayJobFragment extends Fragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        adapter = new NewPostAdapter(getActivity(), RecruiterActivity.arrayListJobList, getActivity(), 0);
+        adapter = new NewPostAdapter(getActivity(), RecruiterActivity.arrayListJobList, getActivity(), 1, 1);
         recyclerView.setAdapter(adapter);
         if(RecruiterActivity.arrayListJobList.size() == 0){
-            getData();
+            getData(0);
         }
 
         return view;
     }
 
-    private void getData() {
+    private void getData(final int status_post) {
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlJobList,
                 new Response.Listener<String>() {
@@ -114,6 +114,7 @@ public class DisplayJobFragment extends Fragment {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> map = new HashMap<>();
                 map.put("idrecuiter", String.valueOf(MainActivity.iduser));
+                map.put("status_post", String.valueOf(status_post));
                 return map;
             }
         };
@@ -124,7 +125,7 @@ public class DisplayJobFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == 123 && resultCode == 123){
-            //Toast.makeText(getActivity(), "haha", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "display ", Toast.LENGTH_SHORT).show();
             adapter.notifyDataSetChanged();
         }
         super.onActivityResult(requestCode, resultCode, data);
