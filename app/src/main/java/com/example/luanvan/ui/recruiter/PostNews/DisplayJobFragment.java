@@ -89,6 +89,7 @@ public class DisplayJobFragment extends Fragment {
                                         object.getInt("status"),
                                         object.getString("company_name"),
                                         object.getString("type_job"),
+                                        object.getString("note_reject"),
                                         object.getInt("document"),
                                         object.getInt("new_document"),
                                         object.getInt("interview"),

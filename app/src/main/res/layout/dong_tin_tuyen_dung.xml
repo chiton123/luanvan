@@ -185,6 +185,29 @@
 
 
                </LinearLayout>
+               <LinearLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:id="@+id/layout_reject"
+                   android:orientation="horizontal"
+                   android:visibility="gone"
+                   >
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="Lý do từ chối: "
+                       android:textColor="#070707"
+                       android:textSize="14sp"
+                       ></TextView>
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="5sasasasassas"
+                       android:textColor="#DD0A0A"
+                       android:textSize="14sp"
+                       android:id="@+id/txtreason"
+                       ></TextView>
+               </LinearLayout>
 
                <LinearLayout
                    android:layout_width="match_parent"

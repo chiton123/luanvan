@@ -23,6 +23,7 @@ public class JobList implements Serializable {
     private String benefit;
     private int status;
     private String type_job;
+    private String note_reject;
     private int totalDocument;
     private int new_document;
     private int interview;
@@ -31,7 +32,7 @@ public class JobList implements Serializable {
 
     public JobList(int id, String name,int idcompany, String img,String address, int idtype, int idprofession, String start_date, String end_date,
                    int salary_min, int salary_max, int idarea, String experience, int number, String description,
-                   String requirement, String benefit, int status,String company_name, String type_job,
+                   String requirement, String benefit, int status,String company_name, String type_job, String note_reject,
                    int totalDocument, int new_document, int interview, int work, int skip) {
         this.id = id;
         this.name = name;
@@ -53,11 +54,20 @@ public class JobList implements Serializable {
         this.benefit = benefit;
         this.status = status;
         this.type_job = type_job;
+        this.note_reject = note_reject;
         this.totalDocument = totalDocument;
         this.new_document = new_document;
         this.interview = interview;
         this.work = work;
         this.skip = skip;
+    }
+
+    public String getNote_reject() {
+        return note_reject;
+    }
+
+    public void setNote_reject(String note_reject) {
+        this.note_reject = note_reject;
     }
 
     public int getSalary_max() {

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -83,7 +84,10 @@ public class NewPostAdapter extends RecyclerView.Adapter<NewPostAdapter.ItemHold
         holder.txtEndDate.setText(fmtOut.format(date2));
         holder.txtTotalCV.setText(job.getTotalDocument() + "");
         holder.txtNewCV.setText(job.getNew_document() + "");
-
+        if(fragment == 4){
+            holder.layout_reject.setVisibility(View.VISIBLE);
+            holder.txtReason.setText(job.getNote_reject());
+        }
         holder.btnAdjust.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -166,9 +170,10 @@ public class NewPostAdapter extends RecyclerView.Adapter<NewPostAdapter.ItemHold
     }
 
     public class ItemHolder extends RecyclerView.ViewHolder{
-        public TextView txtPosition, txtShowDate, txtEndDate, txtTotalCV, txtNewCV, txtIDJob;
+        public TextView txtPosition, txtShowDate, txtEndDate, txtTotalCV, txtNewCV, txtIDJob, txtReason;
         public Button btnAdjust;
         public ImageView imgDelete;
+        public LinearLayout layout_reject;
         public ItemHolder(@NonNull View itemView) {
             super(itemView);
             txtPosition = (TextView) itemView.findViewById(R.id.txtposition);
@@ -179,6 +184,8 @@ public class NewPostAdapter extends RecyclerView.Adapter<NewPostAdapter.ItemHold
             txtNewCV = (TextView) itemView.findViewById(R.id.txtnewcv);
             btnAdjust = (Button) itemView.findViewById(R.id.buttonadjust);
             imgDelete = (ImageView) itemView.findViewById(R.id.imgdelete);
+            layout_reject = (LinearLayout) itemView.findViewById(R.id.layout_reject);
+            txtReason = (TextView) itemView.findViewById(R.id.txtreason);
 
         }
     }
