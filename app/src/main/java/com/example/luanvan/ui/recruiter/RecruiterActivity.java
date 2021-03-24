@@ -92,7 +92,7 @@ public class RecruiterActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position){
                     case 0:
-                        MainActivity.login_recruiter = 0;
+                        logOut();
                         Intent intent = new Intent();
                         setResult(RESULT_OK);
                         finish();
@@ -104,7 +104,15 @@ public class RecruiterActivity extends AppCompatActivity {
 
     }
 
-
+    public void logOut(){
+        MainActivity.login_recruiter = 0;
+        arrayListAuthenticationJobs.clear();
+        arrayListRejectJobs.clear();
+        arrayListJobList.clear();
+        arrayListNotificationRecruiter.clear();
+        arrayListMenu.clear();
+        arrayList.clear();
+    }
     private void getDataNotification() {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlGetNotificationRecruiter,

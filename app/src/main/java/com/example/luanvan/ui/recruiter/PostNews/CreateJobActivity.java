@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,6 +31,10 @@ import com.example.luanvan.ui.Model.JobList;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CandidateDocumentFragment;
 import com.example.luanvan.ui.recruiter.RecruiterActivity;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -60,6 +65,7 @@ public class CreateJobActivity extends AppCompatActivity {
     String type_notification = "", content = "";
     // id job vừa đăng
     int idjobJust = 0;
+    ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +78,13 @@ public class CreateJobActivity extends AppCompatActivity {
 
 
 
+    }
+    void loading(){
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading");
+        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
     }
 
     public void showDate(final int kind) throws ParseException {
@@ -209,6 +222,7 @@ public class CreateJobActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Mức lương không hợp lệ", Toast.LENGTH_SHORT).show();
                 }
                 else {
+                    loading();
                     position = editPosition.getText().toString();
                     address = editAddress.getText().toString();
                     benefit = editBenefit.getText().toString();
@@ -230,69 +244,18 @@ public class CreateJobActivity extends AppCompatActivity {
                                         idjobJust = Integer.parseInt(response.substring(k+1, response.length()));
                                      //   Toast.makeText(getApplicationContext(), idjobJust + " id", Toast.LENGTH_SHORT).show();
                                         postNotificationForAdmin(0); // 0: cho admin
-                                        RecruiterActivity.arrayListAuthenticationJobs.add(new JobList(
-                                                idjobJust,
-                                                position,
-                                                MainActivity.idcompany,
-                                                job.getImg(),?
+                                        getJobRecentCreate();
 
-
-                                        ));
-                                        RecruiterActivity.arrayListAuthenticationJobs.get(position_job).setName(position);
-                                        RecruiterActivity.arrayListJobList.get(position_job).setAddress(address);
-                                        RecruiterActivity.arrayListJobList.get(position_job).setBenefit(benefit);
-                                        RecruiterActivity.arrayListJobList.get(position_job).setDescription(description);
-                                        RecruiterActivity.arrayListJobList.get(position_job).setRequirement(requirement);
-                                        RecruiterActivity.arrayListJobList.get(position_job).setNumber(Integer.parseInt(number));
-                                        RecruiterActivity.arrayListJobList.get(position_job).setSalary(Integer.parseInt(salary));
-                                        RecruiterActivity.arrayListJobList.get(position_job).setIdarea(idArea);
-                                        RecruiterActivity.arrayListJobList.get(position_job).setIdprofession(idProfession);
-                                        RecruiterActivity.arrayListJobList.get(position_job).setIdtype(idKindJob);
-                                        RecruiterActivity.arrayListJobList.get(position_job).setStart_date(date_post_start);
-                                        RecruiterActivity.arrayListJobList.get(position_job).setEnd_date(date_post_end);
-                                        // cập nhật cho hồ sơ ứng tuyển
-                                        for(int i=0; i < CVManageActivity.arrayListAll.size(); i++){
-                                            if(CVManageActivity.arrayListAll.get(i).getJob_id() == job_id){
-                                                CVManageActivity.arrayListAll.get(i).setJob_name(position);
-                                                CandidateDocumentFragment.adapter.notifyDataSetChanged();
-                                            }
-
-                                        }
-                                        switch (idExperience){
-                                            case 1:
-                                                RecruiterActivity.arrayListJobList.get(position_job).setExperience("Chưa có kinh nghiệm");
-                                                break;
-                                            case 2:
-                                                RecruiterActivity.arrayListJobList.get(position_job).setExperience("Dưới 1 năm");
-                                                break;
-                                            case 3:
-                                                RecruiterActivity.arrayListJobList.get(position_job).setExperience("1 năm");
-                                                break;
-                                            case 4:
-                                                RecruiterActivity.arrayListJobList.get(position_job).setExperience("2 năm");
-                                                break;
-                                            case 5:
-                                                RecruiterActivity.arrayListJobList.get(position_job).setExperience("3 năm");
-                                                break;
-                                            case 6:
-                                                RecruiterActivity.arrayListJobList.get(position_job).setExperience("4 năm");
-                                                break;
-                                            case 7:
-                                                RecruiterActivity.arrayListJobList.get(position_job).setExperience("5 năm");
-                                                break;
-                                            case 8:
-                                                RecruiterActivity.arrayListJobList.get(position_job).setExperience("Trên 5 năm");
-                                                break;
-                                        }
                                         handler = new Handler();
                                         handler.postDelayed(new Runnable() {
                                             @Override
                                             public void run() {
+                                                progressDialog.dismiss();
                                                 Intent intent = new Intent();
                                                 setResult(123);
                                                 finish();
                                             }
-                                        },1000);
+                                        },2000);
 
 
                                     }else {
@@ -333,6 +296,71 @@ public class CreateJobActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void getJobRecentCreate() {
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlGetJobRecentCreate,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            //Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_SHORT).show();
+                            JSONArray jsonArray = new JSONArray(response);
+                            for(int i=0; i < jsonArray.length(); i++){
+                                JSONObject object = jsonArray.getJSONObject(i);
+                                RecruiterActivity.arrayListAuthenticationJobs.add(new JobList(
+                                        object.getInt("id"),
+                                        object.getString("name"),
+                                        object.getInt("idcompany"),
+                                        object.getString("img"),
+                                        object.getString("area"),
+                                        object.getInt("idtype"),
+                                        object.getInt("idprofession"),
+                                        object.getString("start_date"),
+                                        object.getString("end_date"),
+                                        object.getInt("salary_min"),
+                                        object.getInt("salary_max"),
+                                        object.getInt("idarea"),
+                                        object.getString("experience"),
+                                        object.getInt("number"),
+                                        object.getString("description"),
+                                        object.getString("requirement"),
+                                        object.getString("benefit"),
+                                        object.getInt("status"),
+                                        object.getString("company_name"),
+                                        object.getString("type_job"),
+                                        object.getString("note_reject"),
+                                        object.getInt("document"),
+                                        object.getInt("new_document"),
+                                        object.getInt("interview"),
+                                        object.getInt("work"),
+                                        object.getInt("skip")
+                                ));
+                                AuthenticationFragment.adapter.notifyDataSetChanged();
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("idjob", String.valueOf(idjobJust));
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+
     }
 
     private void eventSpinner() {

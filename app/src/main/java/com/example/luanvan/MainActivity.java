@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
     public static int color = 0;
 
 
-    public static String host = "http://10.3.74.133:8888/luanvan/";
+    public static String host = "http://10.10.44.207:8888/luanvan/";
     public static String urljob1 = host + "job1.php?page=";
     public static String urlJobHome = host + "job_home.php";
     // job apply
@@ -186,7 +186,8 @@ public class MainActivity extends AppCompatActivity {
     public static String urlJobPost = host + "job_post.php?page=";
     // accept, reject job
     public static String urlAcceptJob = host + "accept_job.php";
-
+    // get recent created job
+    public static String urlGetJobRecentCreate = host + "get_job_recent_create.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
