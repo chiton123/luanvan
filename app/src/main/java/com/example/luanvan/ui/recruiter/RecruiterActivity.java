@@ -66,6 +66,7 @@ public class RecruiterActivity extends AppCompatActivity {
     public static ArrayList<JobList> arrayListJobList = new ArrayList<>();
     public static ArrayList<JobList> arrayListAuthenticationJobs = new ArrayList<>();
     public static ArrayList<JobList> arrayListRejectJobs = new ArrayList<>();
+    public static ArrayList<JobList> arrayListOutdatedJobs = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,6 +111,7 @@ public class RecruiterActivity extends AppCompatActivity {
         arrayListRejectJobs.clear();
         arrayListJobList.clear();
         arrayListNotificationRecruiter.clear();
+        arrayListOutdatedJobs.clear();
         arrayListMenu.clear();
         arrayList.clear();
     }

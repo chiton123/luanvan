@@ -154,7 +154,7 @@ public class CreateJobActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    if(check_start == 0 && editStart.getText().equals("")){
+                    if(check_start == 0 || editStart.getText().equals("")){
                         Toast.makeText(getApplicationContext(), "Bạn chọn ngày bắt đầu trước", Toast.LENGTH_SHORT).show();
                     }else {
                         showDate(2);
@@ -220,6 +220,8 @@ public class CreateJobActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Vui lòng chọn loại hình công việc", Toast.LENGTH_SHORT).show();
                 }else if(Integer.parseInt(editSalaryMin.getText().toString()) >= Integer.parseInt(editSalaryMax.getText().toString())){
                     Toast.makeText(getApplicationContext(), "Mức lương không hợp lệ", Toast.LENGTH_SHORT).show();
+                }else if(date_start.after(date_end)){
+                    Toast.makeText(getApplicationContext(), "Ngày bắt đầu phải trước ngày kết thúc", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     loading();

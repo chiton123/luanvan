@@ -179,7 +179,7 @@ public class ExperienceActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    if(check_start == 0 && editstart.getText().equals("")){
+                    if(check_start == 0 || editstart.getText().equals("")){
                         Toast.makeText(getApplicationContext(), "Bạn chọn ngày bắt đầu trước", Toast.LENGTH_SHORT).show();
                     }else {
                         showDate(2);
@@ -267,6 +267,8 @@ public class ExperienceActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Vui lòng nhập đủ thông tin" , Toast.LENGTH_SHORT).show();
                 }else if(x == 1){
                     Toast.makeText(getApplicationContext(), "Ngày kết thúc phải sau ngày bắt đầu" , Toast.LENGTH_SHORT).show();
+                }else if(date_start.after(date_end)){
+                    Toast.makeText(getApplicationContext(), "Ngày bắt đầu phải trước ngày kết thúc", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     final String company = editcompany.getText().toString();

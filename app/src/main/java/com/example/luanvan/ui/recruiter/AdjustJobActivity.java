@@ -61,6 +61,8 @@ public class AdjustJobActivity extends AppCompatActivity {
     int kind = 0; // kind: 0 JoblistFragment, 1: NewPostFragment chuyển qua
     int fragment; // 1: Đang hiển thị, 2 : Chờ xác thực, 3: Hết hạn, 4: Từ chối ,
     // khi NewPostAdapter chuyển qua bên adjustJob thì cập nhật tương ứng với fragment
+    int check_change_fragment = 0; // khi cập nhật end date sẽ thay đổi giữa fragment hết hạn và đang hiển thị
+    String abc = "same"; // để trả dữ liệu về
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -233,6 +235,8 @@ public class AdjustJobActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Vui lòng chọn loại hình công việc", Toast.LENGTH_SHORT).show();
                 }else if(Integer.parseInt(editSalaryMin.getText().toString()) >= Integer.parseInt(editSalaryMax.getText().toString())){
                     Toast.makeText(getApplicationContext(), "Mức lương không hợp lệ", Toast.LENGTH_SHORT).show();
+                }else if(date_start.after(date_end)){
+                    Toast.makeText(getApplicationContext(), "Ngày bắt đầu phải trước ngày kết thúc", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     position = editPosition.getText().toString();
@@ -254,12 +258,47 @@ public class AdjustJobActivity extends AppCompatActivity {
                                         if(kind == 0){
                                             updatePreviousJoblist();
                                         }else {
+
                                             switch (fragment){
                                                 case 1:
-                                                    updatePreviousJobDisplay();
+                                                    // Nếu end date mà update thành hết hạn -> chuyển bên kia
+                                                    SimpleDateFormat fmt1 = new SimpleDateFormat("yyyy-MM-dd");
+                                                    Date date1 = null;
+                                                    try {
+                                                        date1 = fmt1.parse(date_post_end);
+                                                    } catch (ParseException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                    if(date1.after(Calendar.getInstance().getTime())){
+                                                        updatePreviousJobDisplay();
+                                                    }else {
+                                                        updatePreviousJobDisplay();
+                                                        RecruiterActivity.arrayListOutdatedJobs.add(RecruiterActivity.arrayListJobList.get(position_job));
+                                                        RecruiterActivity.arrayListJobList.remove(position_job);
+                                                        abc = "new" ;
+                                                    }
                                                     break;
                                                 case 2:
                                                     updatePreviousAuthenticationJob();
+                                                    break;
+                                                case 3:
+                                                    // Nếu end date mà update thành còn thời hạn -> chuyển qua đang hiển thị và xóa bên hết hạn
+                                                    SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+                                                    Date date = null;
+                                                    try {
+                                                        date = fmt.parse(date_post_end);
+                                                    } catch (ParseException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                    if(date.after(Calendar.getInstance().getTime())){
+                                                        updatePreviousOutdatedJob();
+                                                        RecruiterActivity.arrayListJobList.add(RecruiterActivity.arrayListOutdatedJobs.get(position_job));
+                                                        RecruiterActivity.arrayListOutdatedJobs.remove(position_job);
+                                                        abc = "new";
+                                                    }else {
+                                                        updatePreviousOutdatedJob();
+                                                    }
+
                                                     break;
                                                 case 4:
                                                     updatePreviousRejectJob();
@@ -272,14 +311,16 @@ public class AdjustJobActivity extends AppCompatActivity {
                                             @Override
                                             public void run() {
                                                 Intent intent = new Intent();
+                                                intent.putExtra("abc", abc);
                                                 if(fragment == 1){
                                                     setResult(123);
                                                 }else if(fragment == 2){
                                                     setResult(234);
                                                 }else if(fragment == 4){
                                                     setResult(345);
+                                                }else if(fragment == 3){
+                                                    setResult(333);
                                                 }
-
                                                 finish();
                                             }
                                         },1000);
@@ -324,6 +365,7 @@ public class AdjustJobActivity extends AppCompatActivity {
             }
         });
     }
+
     public void updatePreviousJoblist(){
         RecruiterActivity.arrayListJobList.get(position_job).setName(position);
         RecruiterActivity.arrayListJobList.get(position_job).setAddress(address);
@@ -412,6 +454,48 @@ public class AdjustJobActivity extends AppCompatActivity {
                 break;
             case 8:
                 RecruiterActivity.arrayListJobList.get(position_job).setExperience("Trên 5 năm");
+                break;
+        }
+    }
+    public void updatePreviousOutdatedJob(){
+        RecruiterActivity.arrayListOutdatedJobs.get(position_job).setName(position);
+        RecruiterActivity.arrayListOutdatedJobs.get(position_job).setAddress(address);
+        RecruiterActivity.arrayListOutdatedJobs.get(position_job).setBenefit(benefit);
+        RecruiterActivity.arrayListOutdatedJobs.get(position_job).setDescription(description);
+        RecruiterActivity.arrayListOutdatedJobs.get(position_job).setRequirement(requirement);
+        RecruiterActivity.arrayListOutdatedJobs.get(position_job).setNumber(Integer.parseInt(number));
+        RecruiterActivity.arrayListOutdatedJobs.get(position_job).setSalary_min(salary_min);
+        RecruiterActivity.arrayListOutdatedJobs.get(position_job).setSalary_max(salary_max);
+        RecruiterActivity.arrayListOutdatedJobs.get(position_job).setIdarea(idArea);
+        RecruiterActivity.arrayListOutdatedJobs.get(position_job).setIdprofession(idProfession);
+        RecruiterActivity.arrayListOutdatedJobs.get(position_job).setIdtype(idKindJob);
+        RecruiterActivity.arrayListOutdatedJobs.get(position_job).setStart_date(date_post_start);
+        RecruiterActivity.arrayListOutdatedJobs.get(position_job).setEnd_date(date_post_end);
+        //    DisplayJobFragment.adapter.notifyDataSetChanged();
+        switch (idExperience){
+            case 1:
+                RecruiterActivity.arrayListOutdatedJobs.get(position_job).setExperience("Chưa có kinh nghiệm");
+                break;
+            case 2:
+                RecruiterActivity.arrayListOutdatedJobs.get(position_job).setExperience("Dưới 1 năm");
+                break;
+            case 3:
+                RecruiterActivity.arrayListOutdatedJobs.get(position_job).setExperience("1 năm");
+                break;
+            case 4:
+                RecruiterActivity.arrayListOutdatedJobs.get(position_job).setExperience("2 năm");
+                break;
+            case 5:
+                RecruiterActivity.arrayListOutdatedJobs.get(position_job).setExperience("3 năm");
+                break;
+            case 6:
+                RecruiterActivity.arrayListOutdatedJobs.get(position_job).setExperience("4 năm");
+                break;
+            case 7:
+                RecruiterActivity.arrayListOutdatedJobs.get(position_job).setExperience("5 năm");
+                break;
+            case 8:
+                RecruiterActivity.arrayListOutdatedJobs.get(position_job).setExperience("Trên 5 năm");
                 break;
         }
     }
