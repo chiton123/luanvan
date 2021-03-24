@@ -8,9 +8,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -45,11 +47,14 @@ public class DisplayJobFragment extends Fragment {
     public static NewPostAdapter adapter;
     // fragment 1: Đang hiển thị, 2 : Chờ xác thực, 3: Hết hạn, 4: Từ chối , khi chuyển qua bên adjustJob thì cập nhật tương ứng với fragment
     // kind: 0 là của joblistfragment chuyển qua, 1: là của tin tuyển dụng chuyển qua
-
+    public static LinearLayout layout, layout_nothing;
+    Handler handler;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_display_job, container, false);
+        layout = (LinearLayout) view.findViewById(R.id.layout);
+        layout_nothing = (LinearLayout) view.findViewById(R.id.layout_nothing);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
@@ -58,8 +63,24 @@ public class DisplayJobFragment extends Fragment {
         if(RecruiterActivity.arrayListJobList.size() == 0){
             getData(0);
         }
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                checkNothing();
+            }
+        },1500);
 
         return view;
+    }
+    public void checkNothing(){
+        if(RecruiterActivity.arrayListJobList.size() == 0){
+            layout.setVisibility(View.GONE);
+            layout_nothing.setVisibility(View.VISIBLE);
+        }else {
+            layout_nothing.setVisibility(View.GONE);
+            layout.setVisibility(View.VISIBLE);
+        }
     }
 
     private void getData(final int status_post) {
@@ -168,6 +189,7 @@ public class DisplayJobFragment extends Fragment {
         if(requestCode == 123 && resultCode == 123){
             Toast.makeText(getActivity(), "display ", Toast.LENGTH_SHORT).show();
             adapter.notifyDataSetChanged();
+            checkNothing();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

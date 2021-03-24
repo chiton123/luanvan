@@ -247,6 +247,7 @@ public class CreateScheduleActivity extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> map = new HashMap<>();
                 map.put("idrecuiter", String.valueOf(MainActivity.iduser));
+                map.put("status_post", String.valueOf(0));
                 return map;
             }
         };

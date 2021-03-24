@@ -30,6 +30,11 @@ import com.example.luanvan.ui.Model.JobList;
 import com.example.luanvan.ui.recruiter.AdjustJobActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CandidateDocumentFragment;
+import com.example.luanvan.ui.recruiter.PostNews.AuthenticationFragment;
+import com.example.luanvan.ui.recruiter.PostNews.DisplayJobFragment;
+import com.example.luanvan.ui.recruiter.PostNews.OutdatedJobFragment;
+import com.example.luanvan.ui.recruiter.PostNews.RejectJobFragment;
+import com.example.luanvan.ui.recruiter.RecruiterActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -128,16 +133,23 @@ public class NewPostAdapter extends RecyclerView.Adapter<NewPostAdapter.ItemHold
                             public void onResponse(String response) {
                                 if(response.equals("success")){
                                     Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
-//                                    for(int i = 0; i < CVManageActivity.arrayListAll.size(); i++){
-//                                        if(CVManageActivity.arrayListAll.get(i).getJob_id() == arrayList.get(position).getId()){
-//                                            Toast.makeText(context, "i "+ i, Toast.LENGTH_SHORT).show();
-//                                            CVManageActivity.arrayListAll.remove(i);
-//                                            CandidateDocumentFragment.adapter.notifyDataSetChanged();
-//                                            i--;
-//                                        }
-//                                    }
                                     arrayList.remove(position);
                                     notifyDataSetChanged();
+                                    switch (fragment){
+                                        case 1:
+                                            checkNothingDisplayJob();
+                                            break;
+                                        case 2:
+                                            checkNothingAuthencation();
+                                            break;
+                                        case 3:
+                                            checkNothingOutdatedJob();
+                                            break;
+                                        case 4:
+                                            checkNothingRejectJob();
+                                            break;
+
+                                    }
 
                                 }else {
                                     Toast.makeText(context, "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
@@ -163,7 +175,44 @@ public class NewPostAdapter extends RecyclerView.Adapter<NewPostAdapter.ItemHold
         alert.show();
 
     }
+    public void checkNothingAuthencation(){
+        if(RecruiterActivity.arrayListAuthenticationJobs.size() == 0){
+            AuthenticationFragment.layout.setVisibility(View.GONE);
+            AuthenticationFragment.layout_nothing.setVisibility(View.VISIBLE);
+        }else {
+            AuthenticationFragment.layout_nothing.setVisibility(View.GONE);
+            AuthenticationFragment.layout.setVisibility(View.VISIBLE);
+        }
+    }
+    public void checkNothingOutdatedJob(){
+        if(RecruiterActivity.arrayListOutdatedJobs.size() == 0){
+            OutdatedJobFragment.layout.setVisibility(View.GONE);
+            OutdatedJobFragment.layout_nothing.setVisibility(View.VISIBLE);
+        }else {
+            OutdatedJobFragment.layout_nothing.setVisibility(View.GONE);
+            OutdatedJobFragment.layout.setVisibility(View.VISIBLE);
+        }
+    }
 
+    public void checkNothingDisplayJob(){
+        if(RecruiterActivity.arrayListJobList.size() == 0){
+            DisplayJobFragment.layout.setVisibility(View.GONE);
+            DisplayJobFragment.layout_nothing.setVisibility(View.VISIBLE);
+        }else {
+            DisplayJobFragment.layout_nothing.setVisibility(View.GONE);
+            DisplayJobFragment.layout.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void checkNothingRejectJob(){
+        if(RecruiterActivity.arrayListRejectJobs.size() == 0){
+            RejectJobFragment.layout.setVisibility(View.GONE);
+            RejectJobFragment.layout_nothing.setVisibility(View.VISIBLE);
+        }else {
+            RejectJobFragment.layout_nothing.setVisibility(View.GONE);
+            RejectJobFragment.layout.setVisibility(View.VISIBLE);
+        }
+    }
     @Override
     public int getItemCount() {
         return arrayList.size();

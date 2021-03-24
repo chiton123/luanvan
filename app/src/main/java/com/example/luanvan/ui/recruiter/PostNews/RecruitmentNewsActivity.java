@@ -69,7 +69,6 @@ public class RecruitmentNewsActivity extends AppCompatActivity {
             rejectJobFragment.onActivityResult(requestCode, resultCode, data);
         }
         if(requestCode == 123 && resultCode == 333 && data != null){
-          //  Toast.makeText(getApplicationContext(), data.getStringExtra("abc"), Toast.LENGTH_SHORT).show();
        //     Toast.makeText(getApplicationContext(), "display ", Toast.LENGTH_SHORT).show();
             DisplayJobFragment displayJobFragment = (DisplayJobFragment) viewPageAdapter.getItem(0);
             displayJobFragment.onActivityResult(requestCode, resultCode, data);

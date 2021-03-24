@@ -239,6 +239,7 @@ public class AdjustJobActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Ngày bắt đầu phải trước ngày kết thúc", Toast.LENGTH_SHORT).show();
                 }
                 else {
+
                     position = editPosition.getText().toString();
                     address = editAddress.getText().toString();
                     benefit = editBenefit.getText().toString();
