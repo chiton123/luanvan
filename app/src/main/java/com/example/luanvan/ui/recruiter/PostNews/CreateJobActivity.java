@@ -257,7 +257,7 @@ public class CreateJobActivity extends AppCompatActivity {
                                                 setResult(123);
                                                 finish();
                                             }
-                                        },2500);
+                                        },3000);
 
 
                                     }else {

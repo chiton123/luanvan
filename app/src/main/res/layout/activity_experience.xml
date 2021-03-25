@@ -169,6 +169,7 @@
                         android:layout_margin="5dp"
                         ></TextView>
                     <EditText
+                        android:gravity="top|left"
                         android:layout_margin="5dp"
                         android:layout_width="300dp"
                         android:layout_height="100dp"

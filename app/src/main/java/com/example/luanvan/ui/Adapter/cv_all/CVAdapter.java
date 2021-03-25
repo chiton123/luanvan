@@ -17,6 +17,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.cv.CVActivity;
@@ -30,6 +37,8 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CVAdapter extends RecyclerView.Adapter<CVAdapter.ItemHolder> {
     Context context;
@@ -81,12 +90,41 @@ public class CVAdapter extends RecyclerView.Adapter<CVAdapter.ItemHolder> {
                 alert.setPositiveButton("Có", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        // Check coi có trong application k, rồi mới dc xóa
+                        RequestQueue requestQueue = Volley.newRequestQueue(activity);
+                        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlCheckCVInApplication,
+                                new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        if(response.equals("fail")){
+                                            MainActivity.mData.child("cv").child(MainActivity.uid).child(arrayList.get(position).getKey()).removeValue();
+                                            MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(arrayList.get(position).getKey()).removeValue();
+                                            MainActivity.arrayListCV.remove(position);
+                                            notifyDataSetChanged();
+                                            ((CVIntroductionActivity)activity).checkNothing();
+                                            Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                                        }else {
+                                            Toast.makeText(context, "CV đã ứng tuyển nên không được xóa", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                                    }
+                                }){
+                            @Override
+                            protected Map<String, String> getParams() throws AuthFailureError {
+                                Map<String,String> map = new HashMap<>();
+                                map.put("iduser", String.valueOf(MainActivity.iduser));
+                                map.put("idcv",arrayList.get(position).getKey());
+                                return map;
+                            }
+                        };
+                        requestQueue.add(stringRequest);
                        // Toast.makeText(context, arrayList.get(position).getKey(), Toast.LENGTH_SHORT).show();
-                        MainActivity.mData.child("cv").child(MainActivity.uid).child(arrayList.get(position).getKey()).removeValue();
-                        MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(arrayList.get(position).getKey()).removeValue();
-                        MainActivity.arrayListCV.remove(position);
-                        notifyDataSetChanged();
-                        ((CVIntroductionActivity)activity).checkNothing();
+
 
                     }
                 });

@@ -269,7 +269,7 @@ public class CVInfoActivity extends AppCompatActivity {
     public void getInfoAdd(){
         if(MainActivity.checkFirstInfo == 0){
             editname.setText(MainActivity.username);
-            editposition.setText(MainActivity.position);
+            editposition.setText(MainActivity.user.getPosition());
             editemail.setText(MainActivity.user.getEmail());
             editphone.setText(MainActivity.user.getPhone() + "");
             editaddress.setText(MainActivity.user.getAddress());

@@ -100,6 +100,7 @@ public class LoginRecruiterActivity extends AppCompatActivity {
                 if(editPass.getText().equals("") || editEmail.getText().equals("")){
                     Toast.makeText(getApplicationContext(), "Vui lòng nhập đủ thông tin", Toast.LENGTH_SHORT).show();
                 }else {
+                    loading();
                     final String email = editEmail.getText().toString();
                     final String pass = editPass.getText().toString();
                     RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
@@ -112,7 +113,7 @@ public class LoginRecruiterActivity extends AppCompatActivity {
                                             @Override
                                             public void onComplete(@NonNull Task<AuthResult> task) {
                                                 if(task.isSuccessful()){
-                                                    loading();
+
                                                     Toast.makeText(getApplicationContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                                                     MainActivity.mUser = MainActivity.mAuth.getCurrentUser();
 
@@ -134,11 +135,13 @@ public class LoginRecruiterActivity extends AppCompatActivity {
                                                         }
                                                     },2000);
                                                 }else {
+                                                    progressDialog.dismiss();
                                                     Toast.makeText(getApplicationContext(), "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
                                                 }
                                             }
                                         });
                                     }else {
+                                        progressDialog.dismiss();
                                         Toast.makeText(getApplicationContext(), "Sai tên hoặc mật khẩu", Toast.LENGTH_SHORT).show();
                                     }
                                 }

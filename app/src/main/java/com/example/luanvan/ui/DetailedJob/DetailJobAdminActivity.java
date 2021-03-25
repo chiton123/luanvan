@@ -44,6 +44,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public class DetailJobAdminActivity extends AppCompatActivity {
     Toolbar toolbar;
@@ -278,10 +279,10 @@ public class DetailJobAdminActivity extends AppCompatActivity {
     }
     public String xuongdong(String text){
         String ketqua = "";
-        if(text.contains("-")){
-            String[] split = text.split("-");
+        if(text.contains(".")){
+            String[] split = text.split(Pattern.quote("."));
             for(String item : split){
-                ketqua += "-" + item + "\n";
+                ketqua += "-" +  item + "\n";
             }
             return ketqua;
         }else {

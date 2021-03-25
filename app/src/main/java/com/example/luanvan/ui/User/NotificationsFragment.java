@@ -126,7 +126,6 @@ public class NotificationsFragment extends Fragment {
         MainActivity.checkCV = 0;
         MainActivity.uid = "";
         MainActivity.username = "";
-        MainActivity.position = "";
         MainActivity.urlCV = "";
         MainActivity.user = new User();
         MainActivity.studies.clear();
@@ -202,7 +201,7 @@ public class NotificationsFragment extends Fragment {
            // Toast.makeText(getActivity(), MainActivity.user.getName() + "username", Toast.LENGTH_SHORT).show();
             try {
                 name.setText(MainActivity.user.getName());
-                if(MainActivity.position.equals("")){
+                if(MainActivity.user.getPosition().equals("")){
 
                 }else {
                     positon.setText(MainActivity.user.getPosition());
@@ -259,7 +258,6 @@ public class NotificationsFragment extends Fragment {
         if(requestCode == REQUEST_CODE2 && resultCode == 234){
             getInfo();
         }
-
 
 
         super.onActivityResult(requestCode, resultCode, data);

@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
     // 1: có cv, 2: chưa
     public static String uid = ""; // của firebase
     public static String username = "";
-    public static String position = "";
     public static String urlCV = "";
     public static User user = new User();
     public static ArrayList<Study> studies = new ArrayList<>();
@@ -101,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
     public static int color = 0;
 
 
-    public static String host = "http://10.3.74.110:8888/luanvan/";
+    public static String host = "http://10.10.35.65:8888/luanvan/";
     public static String urljob1 = host + "job1.php?page=";
     public static String urlJobHome = host + "job_home.php";
     // job apply
@@ -188,6 +187,8 @@ public class MainActivity extends AppCompatActivity {
     public static String urlAcceptJob = host + "accept_job.php";
     // get recent created job
     public static String urlGetJobRecentCreate = host + "get_job_recent_create.php";
+    // check cv in application
+    public static String urlCheckCVInApplication = host + "check_cv_in_application.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

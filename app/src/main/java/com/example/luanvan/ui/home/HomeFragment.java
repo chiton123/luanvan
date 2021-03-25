@@ -1,5 +1,6 @@
 package com.example.luanvan.ui.home;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -63,9 +64,10 @@ public class HomeFragment extends Fragment {
     public static ArrayList<Job_Apply> arrayListDaUngTuyen;
     TextView txtthuctap, txtviectotnhat, txtLuongCao, txtViecLamTuXa, txtViecLamMoiNhat, txtDaUngTuyen;
     public static TextView txtNotification;
-    public static LinearLayout layout_daungtuyen;
+    public static LinearLayout layout_daungtuyen, layout_vieclamtotnhat, layout_viecthuctap, layout_viecluongcao, layout_vieclamtuxa, layout_vieclammoinhat;
     Handler handler;
 //    public static int check_notification = 0; // kiểm tra đã load số thông báo hay chưa
+    ProgressDialog progressDialog;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
@@ -91,6 +93,12 @@ public class HomeFragment extends Fragment {
         recyclerViewViecLamMoiNhat.setHasFixedSize(true);
         recyclerViewDaUngTuyen.setHasFixedSize(true);
         layout_daungtuyen = (LinearLayout) view.findViewById(R.id.layout_daungtuyen);
+        layout_vieclammoinhat = (LinearLayout) view.findViewById(R.id.layout_vieclammoinhat);
+        layout_vieclamtotnhat = (LinearLayout) view.findViewById(R.id.layout_vieclamtotnhat);
+        layout_vieclamtuxa = (LinearLayout) view.findViewById(R.id.layout_vieclamtuxa);
+        layout_viecluongcao = (LinearLayout) view.findViewById(R.id.layout_viecluongcao);
+        layout_viecthuctap = (LinearLayout) view.findViewById(R.id.layout_viecthuctap);
+
         // toolbar menu option
 
         toolbar = (Toolbar)view.findViewById(R.id.toolbar);
@@ -133,6 +141,14 @@ public class HomeFragment extends Fragment {
         recyclerViewViecLamMoiNhat.setAdapter(adapterViecLamMoiNhat);
         recyclerViewDaUngTuyen.setAdapter(adapterDaUngTuyen);
         eventXemtatca();
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                checkNothing();
+            }
+        },4000);
+
         if(MainActivity.login == 1){
             activateAfterLogin();
         }
@@ -140,7 +156,41 @@ public class HomeFragment extends Fragment {
 
         return view;
     }
+    public void checkNothing(){
+        if(arrayList.size() == 0){
+            layout_vieclamtotnhat.setVisibility(View.GONE);
+        }else {
+            layout_vieclamtotnhat.setVisibility(View.VISIBLE);
+        }
+        if(arrayListViecLamMoiNhat.size() == 0){
+            layout_vieclammoinhat.setVisibility(View.GONE);
+        }else {
+            layout_vieclammoinhat.setVisibility(View.VISIBLE);
+        }
+        if(arrayListViecLamTuXa.size() == 0){
+            layout_vieclamtuxa.setVisibility(View.GONE);
+        }else {
+            layout_vieclamtuxa.setVisibility(View.VISIBLE);
+        }
+        if(arrayListLuongCao.size() == 0){
+            layout_viecluongcao.setVisibility(View.GONE);
+        }else {
+            layout_viecluongcao.setVisibility(View.VISIBLE);
+        }
+        if(arrayListThuctap.size() == 0){
+            layout_viecthuctap.setVisibility(View.GONE);
+        }else {
+            layout_viecthuctap.setVisibility(View.VISIBLE);
+        }
 
+    }
+    void loading(){
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Loading");
+        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
+    }
     public void activateAfterLogin(){
         setNotification();
         getDataApplied();

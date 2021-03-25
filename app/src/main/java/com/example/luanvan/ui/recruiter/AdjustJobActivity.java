@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -63,6 +64,7 @@ public class AdjustJobActivity extends AppCompatActivity {
     // khi NewPostAdapter chuyển qua bên adjustJob thì cập nhật tương ứng với fragment
     int check_change_fragment = 0; // khi cập nhật end date sẽ thay đổi giữa fragment hết hạn và đang hiển thị
     String abc = "same"; // để trả dữ liệu về
+    ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +78,13 @@ public class AdjustJobActivity extends AppCompatActivity {
 
 
     }
-
+    void loading(){
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading");
+        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
+    }
     private void getInfo() {
         kind = getIntent().getIntExtra("kind", 0);
         job = (JobList) getIntent().getSerializableExtra("job");
@@ -239,7 +247,7 @@ public class AdjustJobActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Ngày bắt đầu phải trước ngày kết thúc", Toast.LENGTH_SHORT).show();
                 }
                 else {
-
+                    loading();
                     position = editPosition.getText().toString();
                     address = editAddress.getText().toString();
                     benefit = editBenefit.getText().toString();
@@ -311,6 +319,7 @@ public class AdjustJobActivity extends AppCompatActivity {
                                         handler.postDelayed(new Runnable() {
                                             @Override
                                             public void run() {
+                                                progressDialog.dismiss();
                                                 Intent intent = new Intent();
                                                 intent.putExtra("abc", abc);
                                                 if(fragment == 1){
@@ -324,7 +333,7 @@ public class AdjustJobActivity extends AppCompatActivity {
                                                 }
                                                 finish();
                                             }
-                                        },1000);
+                                        },2200);
 
 
                                     }else {

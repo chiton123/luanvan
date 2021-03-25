@@ -129,7 +129,6 @@ public class LoginFragment extends Fragment {
                                 MainActivity.user.setPosition(object.getString("position"));
                                 MainActivity.user.setPhone(object.getInt("phone"));
                                 MainActivity.username = object.getString("name");
-                                MainActivity.position = object.getString("position");
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

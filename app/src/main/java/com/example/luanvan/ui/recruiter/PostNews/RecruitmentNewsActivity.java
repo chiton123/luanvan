@@ -6,8 +6,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Toast;
 
@@ -25,30 +27,47 @@ public class RecruitmentNewsActivity extends AppCompatActivity {
     ViewPageAdapter viewPageAdapter;
     ViewPager viewPager;
     FloatingActionButton btnAdd;
+    Handler handler;
   //  public static ArrayList<JobList> arrayListDisplay = new ArrayList<>();
+    int REQUEST_CODE_ADD_JOB = 5;
+    ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recruitment_news);
+        loading();
         anhxa();
         actionBar();
         eventButton();
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.dismiss();
+            }
+        },1500);
 
     }
-
+    void loading(){
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading");
+        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
+    }
     private void eventButton() {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), CreateJobActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_CODE_ADD_JOB);
             }
         });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(requestCode == 123 && resultCode == 123 && data != null ){
+        if(requestCode == 123 && resultCode == 123){
           //  Toast.makeText(getApplicationContext(), data.getStringExtra("abc"), Toast.LENGTH_SHORT).show();
          //   Toast.makeText(getApplicationContext(), "outdated ", Toast.LENGTH_SHORT).show();
             OutdatedJobFragment outdatedJobFragment = (OutdatedJobFragment) viewPageAdapter.getItem(2);
@@ -58,17 +77,17 @@ public class RecruitmentNewsActivity extends AppCompatActivity {
             displayJobFragment.onActivityResult(requestCode, resultCode, data);
 
         }
-        if(requestCode == 123 && resultCode == 234 && data != null){
+        if(requestCode == 123 && resultCode == 234 ){
            // Toast.makeText(getApplicationContext(), "auth ", Toast.LENGTH_SHORT).show();
             AuthenticationFragment authenticationFragment = (AuthenticationFragment) viewPageAdapter.getItem(1);
             authenticationFragment.onActivityResult(requestCode, resultCode, data);
         }
-        if(requestCode == 123 && resultCode == 345 && data != null){
+        if(requestCode == 123 && resultCode == 345){
             Toast.makeText(getApplicationContext(), "reject ", Toast.LENGTH_SHORT).show();
             RejectJobFragment rejectJobFragment = (RejectJobFragment) viewPageAdapter.getItem(3);
             rejectJobFragment.onActivityResult(requestCode, resultCode, data);
         }
-        if(requestCode == 123 && resultCode == 333 && data != null){
+        if(requestCode == 123 && resultCode == 333){
        //     Toast.makeText(getApplicationContext(), "display ", Toast.LENGTH_SHORT).show();
             DisplayJobFragment displayJobFragment = (DisplayJobFragment) viewPageAdapter.getItem(0);
             displayJobFragment.onActivityResult(requestCode, resultCode, data);
@@ -76,6 +95,12 @@ public class RecruitmentNewsActivity extends AppCompatActivity {
             OutdatedJobFragment outdatedJobFragment = (OutdatedJobFragment) viewPageAdapter.getItem(2);
             outdatedJobFragment.onActivityResult(requestCode, resultCode, data);
         }
+        if(requestCode == REQUEST_CODE_ADD_JOB && resultCode == 123){
+            Toast.makeText(getApplicationContext(), "authe ", Toast.LENGTH_SHORT).show();
+            AuthenticationFragment authenticationFragment = (AuthenticationFragment) viewPageAdapter.getItem(1);
+            authenticationFragment.onActivityResult(requestCode, resultCode, data);
+        }
+
         super.onActivityResult(requestCode, resultCode, data);
     }
 
