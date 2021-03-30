@@ -1,10 +1,12 @@
 package com.example.luanvan.ui.fragment.login_f;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +29,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -39,6 +42,8 @@ public class RegisterFragment extends Fragment {
 
     EditText editEmail, editPass, editPass2, editName;
     Button btnDangky;
+    ProgressDialog progressDialog;
+    Handler handler;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -54,6 +59,13 @@ public class RegisterFragment extends Fragment {
 
         return view;
     }
+    void loading(){
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Loading");
+        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
+    }
     public void SignUp(String email, String password){
         // firebase
         MainActivity.mAuth.createUserWithEmailAndPassword(email, password)
@@ -62,11 +74,43 @@ public class RegisterFragment extends Fragment {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             Toast.makeText(getActivity(), "Đăng ký thành công", Toast.LENGTH_SHORT).show();
+                            String username = editName.getText().toString();
+                            FirebaseUser firebaseUser = MainActivity.mAuth.getCurrentUser();
+                            String userid = "";
+                            if(firebaseUser != null){
+                                userid = firebaseUser.getUid();
+                                MainActivity.mUserData.child(userid);
+                                HashMap<String,String> map = new HashMap<>();
+                                map.put("id", userid);
+                                map.put("username", username);
+                                map.put("imageURL", "default");
+                                MainActivity.mUserData.child(userid).setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if(task.isSuccessful()){
+                                            Toast.makeText(getActivity(), "Lưu thông tin firebase thành công", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+                            }else {
+                                Toast.makeText(getActivity(), "Không có thông tin user trên firebase", Toast.LENGTH_SHORT).show();
+                            }
+
+
                             editEmail.setText("");
                             editName.setText("");
                             editPass.setText("");
                             editPass2.setText("");
-                            ((LoginActivity) getActivity()).Switch1();
+
+                            handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    progressDialog.dismiss();
+                                    ((LoginActivity) getActivity()).Switch1();
+                                }
+                            },1500);
+
                         }else {
                             Toast.makeText(getActivity(), "Đăng ký thất bại", Toast.LENGTH_SHORT).show();
                         }
@@ -89,6 +133,7 @@ public class RegisterFragment extends Fragment {
                 }else if (!editPass2.getText().toString().equals(editPass.getText().toString())){
                     Toast.makeText(getActivity(), "Mật khẩu không khớp", Toast.LENGTH_SHORT).show();
                 }else {
+                    loading();
                     final String name = editName.getText().toString();
                     final String email = editEmail.getText().toString();
                     final String pass = editPass.getText().toString();

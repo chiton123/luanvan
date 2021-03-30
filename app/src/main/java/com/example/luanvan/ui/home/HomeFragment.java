@@ -29,6 +29,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.job.JobAdapter;
@@ -37,9 +38,14 @@ import com.example.luanvan.ui.KindofJob.KindOfJobActivity;
 import com.example.luanvan.ui.Model.Job;
 import com.example.luanvan.ui.Model.Job_Apply;
 import com.example.luanvan.ui.Model.Notification;
+import com.example.luanvan.ui.Model.User;
+import com.example.luanvan.ui.Model.UserF;
 import com.example.luanvan.ui.Search_Filter.SearchActivity;
 import com.example.luanvan.ui.login.LoginActivity;
 import com.example.luanvan.ui.notification.CandidateNotificationActivity;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,6 +59,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class HomeFragment extends Fragment {
     // getdata 0 : all, 1: luong cao,2: lam tu xa, 3: thuc tap, 4: moi nhat
     Toolbar toolbar;
@@ -62,9 +70,11 @@ public class HomeFragment extends Fragment {
     public static JobApplyAdapter adapterDaUngTuyen;
     public static ArrayList<Job> arrayList, arrayListThuctap, arrayListLuongCao, arrayListViecLamTuXa, arrayListViecLamMoiNhat;
     public static ArrayList<Job_Apply> arrayListDaUngTuyen;
-    TextView txtthuctap, txtviectotnhat, txtLuongCao, txtViecLamTuXa, txtViecLamMoiNhat, txtDaUngTuyen;
+    TextView txtthuctap, txtviectotnhat, txtLuongCao, txtViecLamTuXa, txtViecLamMoiNhat, txtDaUngTuyen, txtUserName;
     public static TextView txtNotification;
-    public static LinearLayout layout_daungtuyen, layout_vieclamtotnhat, layout_viecthuctap, layout_viecluongcao, layout_vieclamtuxa, layout_vieclammoinhat;
+    CircleImageView img;
+    public static LinearLayout layout_daungtuyen, layout_vieclamtotnhat, layout_viecthuctap, layout_viecluongcao, layout_vieclamtuxa, layout_vieclammoinhat,
+    layout_user;
     Handler handler;
 //    public static int check_notification = 0; // kiểm tra đã load số thông báo hay chưa
     ProgressDialog progressDialog;
@@ -98,6 +108,8 @@ public class HomeFragment extends Fragment {
         layout_vieclamtuxa = (LinearLayout) view.findViewById(R.id.layout_vieclamtuxa);
         layout_viecluongcao = (LinearLayout) view.findViewById(R.id.layout_viecluongcao);
         layout_viecthuctap = (LinearLayout) view.findViewById(R.id.layout_viecthuctap);
+        layout_user = (LinearLayout) view.findViewById(R.id.layout_user);
+        img = (CircleImageView) view.findViewById(R.id.img);
 
         // toolbar menu option
 
@@ -113,6 +125,7 @@ public class HomeFragment extends Fragment {
         txtViecLamTuXa = (TextView) view.findViewById(R.id.txtvieclamtuxa);
         txtViecLamMoiNhat = (TextView) view.findViewById(R.id.txtvieclammoinhat);
         txtDaUngTuyen = (TextView) view.findViewById(R.id.txtviecdaungtuyen);
+        txtUserName = (TextView) view.findViewById(R.id.txtusername);
         arrayList = new ArrayList<>();
         arrayListThuctap = new ArrayList<>();
         arrayListLuongCao = new ArrayList<>();
@@ -195,6 +208,28 @@ public class HomeFragment extends Fragment {
         setNotification();
         getDataApplied();
         layout_daungtuyen.setVisibility(View.VISIBLE);
+        toolbar.setTitle("");
+        layout_user.setVisibility(View.VISIBLE);
+        txtUserName.setText(MainActivity.user.getName());
+        MainActivity.mUserData.child(MainActivity.uid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+             //   Toast.makeText(getActivity(), snapshot.toString(), Toast.LENGTH_SHORT).show();
+//                UserF userF = snapshot.getValue(UserF.class);
+                String imgURL = snapshot.child("imageURL").getValue(String.class);
+                if(imgURL.equals("default")){
+                    img.setImageResource(R.drawable.user1);
+                }else {
+                    Glide.with(getActivity()).load(imgURL).into(img);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 
     private void getDataNotification() {
@@ -397,6 +432,7 @@ public class HomeFragment extends Fragment {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                      //  Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_SHORT).show();
                         try {
                             JSONArray jsonArray = new JSONArray(response);
                             for(int i=0; i < jsonArray.length(); i++){

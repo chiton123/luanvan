@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     // Để adapter.notify trong runable handle sẽ k bị lỗi null
     // adapter của Notification fragment
     public static DatabaseReference mData = FirebaseDatabase.getInstance().getReference("one");
+    public static DatabaseReference mUserData = FirebaseDatabase.getInstance().getReference("Users");
     public static FirebaseAuth mAuth = FirebaseAuth.getInstance() ;
     public static FirebaseUser mUser;
     public static FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -100,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
     public static int color = 0;
 
 
-    public static String host = "http://10.10.35.65:8888/luanvan/";
+    public static String host = "http://10.10.35.191:8888/luanvan/";
     public static String urljob1 = host + "job1.php?page=";
     public static String urlJobHome = host + "job_home.php";
     // job apply
