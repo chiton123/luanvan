@@ -38,9 +38,8 @@ import com.example.luanvan.ui.KindofJob.KindOfJobActivity;
 import com.example.luanvan.ui.Model.Job;
 import com.example.luanvan.ui.Model.Job_Apply;
 import com.example.luanvan.ui.Model.Notification;
-import com.example.luanvan.ui.Model.User;
-import com.example.luanvan.ui.Model.UserF;
 import com.example.luanvan.ui.Search_Filter.SearchActivity;
+import com.example.luanvan.ui.chat.UserListActivity;
 import com.example.luanvan.ui.login.LoginActivity;
 import com.example.luanvan.ui.notification.CandidateNotificationActivity;
 import com.google.firebase.database.DataSnapshot;
@@ -54,7 +53,6 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -160,7 +158,7 @@ public class HomeFragment extends Fragment {
             public void run() {
                 checkNothing();
             }
-        },4000);
+        },6000);
 
         if(MainActivity.login == 1){
             activateAfterLogin();
@@ -340,7 +338,14 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
                 break;
             case R.id.chat:
-                Toast.makeText(getActivity(), "chat", Toast.LENGTH_SHORT).show();
+                if(MainActivity.login == 0){
+                    Intent intent2 = new Intent(getActivity(), LoginActivity.class);
+                    startActivityForResult(intent2, 123);
+                }else {
+                    Intent intent1 = new Intent(getActivity(), UserListActivity.class);
+                    startActivity(intent1);
+                    break;
+                }
                 break;
             case R.id.notification:
                 if(MainActivity.login == 0){

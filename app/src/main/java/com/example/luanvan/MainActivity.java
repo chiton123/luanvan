@@ -191,6 +191,9 @@ public class MainActivity extends AppCompatActivity {
     // check cv in application
     public static String urlCheckCVInApplication = host + "check_cv_in_application.php";
 
+    // get iduser firebase
+    public static String urlGetIdUserFirebase = host + "get_iduser_f.php";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

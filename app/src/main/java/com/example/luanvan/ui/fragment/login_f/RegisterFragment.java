@@ -80,7 +80,7 @@ public class RegisterFragment extends Fragment {
                             if(firebaseUser != null){
                                 userid = firebaseUser.getUid();
                                 MainActivity.mUserData.child(userid);
-                                HashMap<String,String> map = new HashMap<>();
+                                HashMap<String,Object> map = new HashMap<>();
                                 map.put("id", userid);
                                 map.put("username", username);
                                 map.put("imageURL", "default");

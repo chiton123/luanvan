@@ -1,9 +1,14 @@
 package com.example.luanvan.ui.Model;
 
+import android.view.ActionMode;
+
 public class UserF {
     private String id;
     private String username;
     private String imageURL;
+
+    public UserF() {
+    }
 
     public UserF(String id, String username, String imageURL) {
         this.id = id;

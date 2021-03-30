@@ -13,7 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.notification.AdminNotificationActivity"></activity>
+        <activity android:name=".ui.chat.MessageActivity"></activity>
+        <activity android:name=".ui.chat.UserListActivity" />
+        <activity android:name=".ui.notification.AdminNotificationActivity" />
         <activity android:name=".ui.DetailedJob.DetailJobAdminActivity" />
         <activity android:name=".ui.admin.JobReviewActivity" />
         <activity android:name=".ui.admin.AdminActivity" />

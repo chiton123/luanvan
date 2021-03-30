@@ -38,6 +38,7 @@ import com.example.luanvan.ui.Apply.ChooseCVActivity;
 import com.example.luanvan.ui.Model.Job;
 import com.example.luanvan.ui.Model.Job_Apply;
 import com.example.luanvan.ui.Model.Schedule;
+import com.example.luanvan.ui.chat.MessageActivity;
 import com.example.luanvan.ui.fragment.job_f.CompanyFragment;
 import com.example.luanvan.ui.fragment.job_f.InfoFragment;
 import com.example.luanvan.ui.fragment.job_f.RelevantJobFragment;
@@ -61,7 +62,7 @@ import java.util.Map;
 
 public class DetailJobActivity extends AppCompatActivity {
     Toolbar toolbar;
-    Button btnApply, btnChange, btnUse;
+    Button btnApply, btnChange, btnUse, btnChat;
     ImageView anhcongty;
     TextView txttencongviec, txtcongty, txthannop;
     TabLayout tabLayout;
@@ -95,12 +96,12 @@ public class DetailJobActivity extends AppCompatActivity {
         anhxa();
         actionBar();
         getInfo();
-        eventApply();
+        eventButton();
         if(MainActivity.login == 1){
             checkApplyOrNot();
             getSchedule();
         }
-        eventSchedule();
+
 
 
 
@@ -108,7 +109,7 @@ public class DetailJobActivity extends AppCompatActivity {
 
     }
 
-    private void eventSchedule() {
+    private void eventButton() {
         btnSchedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,7 +120,32 @@ public class DetailJobActivity extends AppCompatActivity {
                 }
             }
         });
+        btnApply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(MainActivity.login == 0){
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivityForResult(intent, REQUEST_CODE_LOGIN);
+                }else {
+                    showDialog();
+                }
+            }
+        });
+        btnChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(MainActivity.login == 0){
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivityForResult(intent, REQUEST_CODE_LOGIN);
+                }else {
+                    Intent intent = new Intent(getApplicationContext(), MessageActivity.class);
+                    intent.putExtra("iduser", job.getId_recruiter());
+                    startActivity(intent);
+                }
+            }
+        });
     }
+
 
     private void getSchedule() {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
@@ -641,20 +667,7 @@ public class DetailJobActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void eventApply() {
-        btnApply.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(MainActivity.login == 0){
-                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                    startActivityForResult(intent, REQUEST_CODE_LOGIN);
-                }else {
-                    showDialog();
-                }
-            }
-        });
 
-    }
     // dành cho từ notification chuyển qua
     public void getJobInfo(final int job_id){
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
@@ -892,6 +905,8 @@ public class DetailJobActivity extends AppCompatActivity {
         setUpFragment();
         tabLayout.setupWithViewPager(viewPager);
         btnApply = (Button) findViewById(R.id.buttonungtuyen);
+        btnChat = (Button) findViewById(R.id.buttonnhantin);
+
 
 
     }
