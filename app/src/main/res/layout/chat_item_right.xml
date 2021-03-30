@@ -5,6 +5,13 @@
     android:layout_height="wrap_content"
     android:padding="8dp"
     >
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/profile_image"
+        android:src="@drawable/userchat"
+        android:visibility="gone"
+        ></de.hdodenhof.circleimageview.CircleImageView>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

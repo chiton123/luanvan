@@ -24,7 +24,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ItemHole
     public static final int MSG_TYPE_RIGHT = 1;
     private Context context;
     private ArrayList<Chat> mchat;
-    private String imageURL = "";
+    private String imageURL;
     public MessageAdapter(Context context, ArrayList<Chat> mchat, String imageURL) {
         this.context = context;
         this.mchat = mchat;
@@ -35,11 +35,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ItemHole
     @Override
     public ItemHoler onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if(viewType == MSG_TYPE_RIGHT){
-            View v = LayoutInflater.from(context).inflate(R.layout.chat_item_right, parent, false);
+            View v = LayoutInflater.from(context).inflate(R.layout.chat_item_right, null);
             ItemHoler itemHoler = new ItemHoler(v);
             return itemHoler;
         }else {
-            View v = LayoutInflater.from(context).inflate(R.layout.chat_item_left, parent, false);
+            View v = LayoutInflater.from(context).inflate(R.layout.chat_item_left, null);
             ItemHoler itemHoler = new ItemHoler(v);
             return itemHoler;
         }
@@ -49,6 +49,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ItemHole
     public void onBindViewHolder(@NonNull ItemHoler holder, int position) {
         Chat chat = mchat.get(position);
         holder.txt_send.setText(chat.getMessage());
+
         if(imageURL.equals("default")){
             holder.profile_image.setImageResource(R.drawable.userchat);
         }else {
@@ -75,7 +76,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ItemHole
 
     @Override
     public int getItemViewType(int position) {
-        if(mchat.get(position).getSender() == MainActivity.uid){
+        if(mchat.get(position).getSender().equals(MainActivity.uid)){
             return MSG_TYPE_RIGHT;
         }else {
             return MSG_TYPE_LEFT;

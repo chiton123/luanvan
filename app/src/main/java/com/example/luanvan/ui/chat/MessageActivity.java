@@ -50,7 +50,7 @@ public class MessageActivity extends AppCompatActivity {
     int id_recruiter = 0;
     String idrecruiterFirebase = "";
     DatabaseReference reference;
-    List<Chat> mChat;
+    ArrayList<Chat> mChat;
     MessageAdapter messageAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +58,23 @@ public class MessageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_message);
         anhxa();
         actionBar();
+        eventSend();
 
+    }
 
+    private void eventSend() {
+        btnSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(editMessage.getText().toString().equals("")){
+                    Toast.makeText(getApplicationContext(), "Chưa có nội dung", Toast.LENGTH_SHORT).show();
+                }else {
+                    String message = editMessage.getText().toString();
+                    sendMessage(MainActivity.uid, idrecruiterFirebase, message);
+                }
+                editMessage.setText("");
+            }
+        });
     }
 
     private void actionBar() {
@@ -87,7 +102,7 @@ public class MessageActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);
-
+        mChat = new ArrayList<>();
     }
 
     private void getIDFirebase() {
@@ -96,7 +111,7 @@ public class MessageActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT).show();
                         if(!response.equals("fail")){
                             idrecruiterFirebase = response.toString();
                             getInfo();
@@ -131,6 +146,7 @@ public class MessageActivity extends AppCompatActivity {
                 }else {
                     Glide.with(getApplicationContext()).load(userF.getImageURL()).into(img);
                 }
+                readMessage(MainActivity.uid, idrecruiterFirebase, userF.getImageURL());
             }
 
             @Override
@@ -140,19 +156,43 @@ public class MessageActivity extends AppCompatActivity {
         });
 
     }
-    public void readMessage(){
-        mChat = new ArrayList<>();
+    public void sendMessage(String sender, String receiver, String message){
+
+        reference = FirebaseDatabase.getInstance().getReference();
+        HashMap<String,Object> hashMap = new HashMap<>();
+        hashMap.put("sender", sender);
+        hashMap.put("receiver", receiver);
+        hashMap.put("message", message);
+        reference.child("Chats").push().setValue(hashMap);
+    }
+
+    public void readMessage(String myid, String userid, final String imageURL){
+
         reference = FirebaseDatabase.getInstance().getReference("Chats");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                mChat.clear();
+              //  Toast.makeText(getApplicationContext(), snapshot.toString(), Toast.LENGTH_SHORT).show();
+                for(DataSnapshot x : snapshot.getChildren()){
+                    Chat chat = x.getValue(Chat.class);
+                    if(chat.getReceiver().equals(MainActivity.uid) && chat.getSender().equals(idrecruiterFirebase) ||
+                    chat.getReceiver().equals(idrecruiterFirebase) && chat.getSender().equals(MainActivity.uid)){
+                        mChat.add(chat);
+                    }
 
+                }
+                messageAdapter = new MessageAdapter(getApplicationContext(), mChat, imageURL);
+                recyclerView.setAdapter(messageAdapter);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        })
+        });
+
+
+
     }
 }
