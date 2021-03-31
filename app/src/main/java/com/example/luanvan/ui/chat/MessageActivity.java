@@ -53,6 +53,7 @@ public class MessageActivity extends AppCompatActivity {
     ArrayList<Chat> mChat;
     MessageAdapter messageAdapter;
     int kind = 0;  // 1: từ detailjob qua, 2: từ chat qua
+    ValueEventListener seenListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +63,7 @@ public class MessageActivity extends AppCompatActivity {
         eventSend();
 
     }
+
 
     private void eventSend() {
         btnSend.setOnClickListener(new View.OnClickListener() {
@@ -120,7 +122,7 @@ public class MessageActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT).show();
                         if(!response.equals("fail")){
                             idrecruiterFirebase = response.toString();
                             getInfo();
@@ -163,8 +165,38 @@ public class MessageActivity extends AppCompatActivity {
 
             }
         });
+        seenMessage(idrecruiterFirebase);
 
     }
+
+    public void seenMessage(final String userid){
+        reference = FirebaseDatabase.getInstance().getReference("Chats");
+        seenListener = reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot x : snapshot.getChildren()){
+                    Chat chat = x.getValue(Chat.class);
+                    if(chat.getReceiver().equals(MainActivity.uid) && chat.getSender().equals(userid)){
+                        HashMap<String,Object> hashMap = new HashMap<>();
+                        hashMap.put("isseen", true);
+                        x.getRef().updateChildren(hashMap);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        reference.removeEventListener(seenListener);
+    }
+
     public void sendMessage(String sender, String receiver, String message){
 
         reference = FirebaseDatabase.getInstance().getReference();
@@ -172,6 +204,7 @@ public class MessageActivity extends AppCompatActivity {
         hashMap.put("sender", sender);
         hashMap.put("receiver", receiver);
         hashMap.put("message", message);
+        hashMap.put("isseen", false);
         reference.child("Chats").push().setValue(hashMap);
     }
 

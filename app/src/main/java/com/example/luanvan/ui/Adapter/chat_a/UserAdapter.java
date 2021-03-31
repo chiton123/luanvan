@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,21 +15,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.luanvan.R;
+import com.example.luanvan.ui.Model.Job;
 import com.example.luanvan.ui.Model.UserF;
 import com.example.luanvan.ui.chat.MessageActivity;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ItemHolder> {
+public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ItemHolder> implements Filterable {
     Context context;
-    ArrayList<UserF> arrayList;
+    ArrayList<UserF> filterArraylist;
+    ArrayList<UserF> nameList;
     Activity activity;
 
     public UserAdapter(Context context, ArrayList<UserF> arrayList, Activity activity) {
         this.context = context;
-        this.arrayList = arrayList;
+        this.filterArraylist = arrayList;
+        this.nameList = arrayList;
         this.activity = activity;
     }
 
@@ -41,7 +48,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ItemHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ItemHolder holder, int position) {
-        final UserF userF = arrayList.get(position);
+        final UserF userF = filterArraylist.get(position);
         holder.txtUsername.setText(userF.getUsername());
         if(userF.getImageURL().equals("default")){
             holder.img.setImageResource(R.drawable.userchat);
@@ -57,14 +64,50 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ItemHolder> {
                 activity.startActivity(intent);
             }
         });
-        if(position == arrayList.size() - 1){
+        if(position == filterArraylist.size() - 1){
             holder.view.setVisibility(View.GONE);
         }
     }
 
     @Override
     public int getItemCount() {
-        return arrayList.size();
+        return filterArraylist.size();
+    }
+    public static String stripAccents(String s)
+    {
+        s = Normalizer.normalize(s, Normalizer.Form.NFD);
+        s = s.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
+        return s;
+    }
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String charSequenceString = stripAccents(constraint.toString()).trim();
+                if(charSequenceString.isEmpty()){
+                    filterArraylist = nameList;
+                }else {
+                    ArrayList<UserF> filteredList = new ArrayList<>();
+                    for(UserF userF : nameList){
+                        String name1 = stripAccents(userF.getUsername()).trim();
+                        if(name1.toLowerCase().contains(charSequenceString.toLowerCase())){
+                            filteredList.add(userF);
+                        }
+                        filterArraylist = filteredList;
+                    }
+                }
+                FilterResults results = new FilterResults();
+                results.values = filterArraylist;
+                return results;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                filterArraylist = (ArrayList<UserF>) results.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 
 

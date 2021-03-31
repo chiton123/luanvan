@@ -55,6 +55,16 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ItemHole
         }else {
             Glide.with(context).load(imageURL).into(holder.profile_image);
         }
+        if(position == mchat.size() - 1){
+            if(chat.isIsseen()){
+                holder.txt_seen.setText("Đã xem");
+            }else {
+                holder.txt_seen.setText("Đã gửi");
+            }
+        }else {
+            holder.txt_seen.setVisibility(View.GONE);
+        }
+
     }
 
     @Override
@@ -64,12 +74,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ItemHole
 
 
     public class ItemHoler extends RecyclerView.ViewHolder{
-        public TextView txt_send;
+        public TextView txt_send, txt_seen;
         public CircleImageView profile_image;
         public ItemHoler(@NonNull View itemView) {
             super(itemView);
             txt_send = (TextView) itemView.findViewById(R.id.show_message);
             profile_image = (CircleImageView) itemView.findViewById(R.id.profile_image);
+            txt_seen = (TextView) itemView.findViewById(R.id.txt_seen);
 
         }
     }
