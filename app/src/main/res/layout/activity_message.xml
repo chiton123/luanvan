@@ -16,7 +16,7 @@
             android:layout_height="?attr/actionBarSize"
             android:id="@+id/toolbar"
             android:background="#fff"
-
+            android:gravity="left"
             >
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="30dp"
@@ -31,7 +31,7 @@
                 android:text="Mai"
                 android:textColor="#070707"
                 android:textSize="14sp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="30dp"
                 ></TextView>
         </androidx.appcompat.widget.Toolbar>
 
@@ -42,6 +42,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:weightSum="15"
+        android:background="#F2F9FF"
         >
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"

@@ -1,10 +1,14 @@
 package com.example.luanvan.ui.User;
 
+import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -19,6 +23,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.update_personal_info.ExperienceAdapter;
@@ -27,14 +32,31 @@ import com.example.luanvan.ui.Adapter.update_personal_info.SkillAdapter;
 import com.example.luanvan.ui.Adapter.update_personal_info.StudyAdapter;
 import com.example.luanvan.ui.Model.Profile;
 import com.example.luanvan.ui.Model.User;
+import com.example.luanvan.ui.Model.UserF;
 import com.example.luanvan.ui.home.HomeFragment;
 import com.example.luanvan.ui.login.LoginActivity;
 import com.example.luanvan.ui.modelCV.UserCV;
 import com.example.luanvan.ui.recruiter.LoginRecruiterActivity;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import static android.app.Activity.RESULT_OK;
 import static com.example.luanvan.MainActivity.experienceAdapter;
+import static com.example.luanvan.MainActivity.mAuth;
 import static com.example.luanvan.MainActivity.skillAdapter;
 import static com.example.luanvan.MainActivity.studyAdapter;
 
@@ -50,12 +72,15 @@ public class NotificationsFragment extends Fragment {
     TextView name, positon, company_name, txtLogOut;
     RecyclerView recyclerView, recyclerViewstudy, recyclerViewexperience, recyclerViewskill;
     ProfileAdapter profileAdapter;
-
-
+    DatabaseReference reference;
+    StorageReference storageReference;
+    int IMAGE_REQUEST = 1;
+    Uri imageUri;
+    StorageTask uploadTask;
 
     ArrayList<Profile> arrayList;
     ScrollView scrollView;
-    ImageView edithocvan, editkinhnghiem, editkynang;
+    ImageView edithocvan, editkinhnghiem, editkynang, imgProfile;
     MainActivity activity;
 
     private NotificationsViewModel notificationsViewModel;
@@ -100,7 +125,7 @@ public class NotificationsFragment extends Fragment {
         recyclerViewstudy.setAdapter(studyAdapter);
         recyclerViewexperience.setAdapter(experienceAdapter);
         recyclerViewskill.setAdapter(skillAdapter);
-
+        imgProfile = (ImageView) view.findViewById(R.id.imgprofile);
 
         if(MainActivity.login == 0){
             linearLayout1.setVisibility(View.VISIBLE);
@@ -117,9 +142,98 @@ public class NotificationsFragment extends Fragment {
         getInfo();
         eventEdit();
         eventLogout();
+        storageReference = FirebaseStorage.getInstance().getReference("photo");
+        imgProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openImage();
+            }
+        });
 
         return view;
     }
+
+    private void openImage() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, IMAGE_REQUEST);
+
+    }
+    private String getFileExtention(Uri uri){
+        ContentResolver contentResolver = getActivity().getContentResolver();
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
+    }
+    private void uploadImage(){
+        final ProgressDialog pd = new ProgressDialog(getActivity());
+        pd.setMessage("Uploading");
+        pd.show();
+
+        if(imageUri != null){
+            final StorageReference fileReference = storageReference.child(System.currentTimeMillis() + "." + getFileExtention(imageUri));
+            uploadTask = fileReference.putFile(imageUri);
+            uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if(!task.isSuccessful()){
+                        throw task.getException();
+                    }
+                    return fileReference.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if(task.isSuccessful()){
+                        Uri downloadUri = task.getResult();
+                        String mUri = downloadUri.toString();
+
+                        reference = FirebaseDatabase.getInstance().getReference("Users").child(MainActivity.uid);
+                        HashMap<String,Object> hashMap = new HashMap<>();
+                        hashMap.put("imageURL", mUri);
+                        reference.updateChildren(hashMap);
+                        pd.dismiss();
+
+                    }else {
+                        Toast.makeText(getActivity(), "Fail", Toast.LENGTH_SHORT).show();
+                        pd.dismiss();
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    pd.dismiss();
+                }
+            });
+        }else {
+            Toast.makeText(getActivity(), "No image seleted", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+
+
+    public void getInfoFromFirebase(){
+        reference = FirebaseDatabase.getInstance().getReference("Users").child(MainActivity.uid);
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                UserF userF = snapshot.getValue(UserF.class);
+                if(userF.getImageURL().equals("default")){
+                    imgProfile.setImageResource(R.drawable.imgprofile);
+                }else {
+                    Glide.with(getActivity()).load(userF.getImageURL()).into(imgProfile);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     public void setDefault(){
         MainActivity.login = 0;
         MainActivity.iduser = 0;
@@ -253,12 +367,22 @@ public class NotificationsFragment extends Fragment {
             linearLayout2.setVisibility(View.VISIBLE);
             scrollView.setVisibility(View.VISIBLE);
             getInfo();
+            getInfoFromFirebase();
 
         }
         if(requestCode == REQUEST_CODE2 && resultCode == 234){
             getInfo();
+            getInfoFromFirebase();
         }
 
+        if(requestCode == IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null){
+            imageUri = data.getData();
+            if(uploadTask != null && uploadTask.isInProgress()){
+                Toast.makeText(getActivity(), "Upload is in progress", Toast.LENGTH_LONG).show();
+            }else {
+                uploadImage();
+            }
+        }
 
         super.onActivityResult(requestCode, resultCode, data);
 

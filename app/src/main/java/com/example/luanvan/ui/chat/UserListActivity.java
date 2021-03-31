@@ -57,9 +57,9 @@ public class UserListActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         recyclerView = (RecyclerView) findViewById(R.id.recycleview);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(UserListActivity.this, LinearLayoutManager.VERTICAL, false));
         arrayList = new ArrayList<>();
-        adapter = new UserAdapter(UserListActivity.this, arrayList);
+        adapter = new UserAdapter(UserListActivity.this, arrayList, UserListActivity.this);
         recyclerView.setAdapter(adapter);
         reference = FirebaseDatabase.getInstance().getReference("Chats");
         reference.addValueEventListener(new ValueEventListener() {
@@ -146,7 +146,7 @@ public class UserListActivity extends AppCompatActivity {
                         }
                     }
                 }
-                adapter = new UserAdapter(getApplicationContext(), arrayList);
+                adapter = new UserAdapter(getApplicationContext(), arrayList, UserListActivity.this);
                 recyclerView.setAdapter(adapter);
 
             }

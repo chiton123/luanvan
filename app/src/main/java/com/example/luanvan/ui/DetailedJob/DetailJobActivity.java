@@ -139,7 +139,8 @@ public class DetailJobActivity extends AppCompatActivity {
                     startActivityForResult(intent, REQUEST_CODE_LOGIN);
                 }else {
                     Intent intent = new Intent(getApplicationContext(), MessageActivity.class);
-                    intent.putExtra("iduser", job.getId_recruiter());
+                    intent.putExtra("kind", 1); // 1: từ detailjob qua, 2: từ chat qua
+                    intent.putExtra("idrecruiter", job.getId_recruiter());
                     startActivity(intent);
                 }
             }

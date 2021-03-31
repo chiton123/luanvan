@@ -32,6 +32,7 @@ import com.example.luanvan.ui.Adapter.admin_a.AdminAdapter_a;
 import com.example.luanvan.ui.Model.Admin;
 import com.example.luanvan.ui.Model.JobList;
 import com.example.luanvan.ui.Model.NotificationRecruiter;
+import com.example.luanvan.ui.chat.UserListActivity;
 import com.example.luanvan.ui.notification.RecruiterNotificationActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
 import com.example.luanvan.ui.recruiter.PostNews.RecruitmentNewsActivity;
@@ -199,7 +200,8 @@ public class RecruiterActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.chat:
-                Toast.makeText(getApplicationContext(), "com/example/luanvan/ui/chat", Toast.LENGTH_SHORT).show();
+                Intent intent1 = new Intent(getApplicationContext(), UserListActivity.class);
+                startActivity(intent1);
                 break;
             case R.id.notification:
                 Intent intent = new Intent(getApplicationContext(), RecruiterNotificationActivity.class);

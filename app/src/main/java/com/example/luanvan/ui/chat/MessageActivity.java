@@ -52,6 +52,7 @@ public class MessageActivity extends AppCompatActivity {
     DatabaseReference reference;
     ArrayList<Chat> mChat;
     MessageAdapter messageAdapter;
+    int kind = 0;  // 1: từ detailjob qua, 2: từ chat qua
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,7 +91,15 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     private void anhxa() {
-        id_recruiter = getIntent().getIntExtra("iduser", 0);
+        kind = getIntent().getIntExtra("kind",0); // 1: từ detailjob qua, 2: từ chat qua
+        if(kind == 1){
+            id_recruiter = getIntent().getIntExtra("idrecruiter", 0);
+            getIDFirebase();
+        }else {
+            idrecruiterFirebase = getIntent().getStringExtra("idrecruiter");
+            getInfo();
+        }
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         txtUsername = (TextView) findViewById(R.id.txtusername);
         img = (CircleImageView) findViewById(R.id.img);
@@ -98,7 +107,7 @@ public class MessageActivity extends AppCompatActivity {
         btnSend = (ImageButton) findViewById(R.id.buttonsend);
         recyclerView = (RecyclerView) findViewById(R.id.recycleview);
         recyclerView.setHasFixedSize(true);
-        getIDFirebase();
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -111,7 +120,7 @@ public class MessageActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                      //  Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT).show();
                         if(!response.equals("fail")){
                             idrecruiterFirebase = response.toString();
                             getInfo();
