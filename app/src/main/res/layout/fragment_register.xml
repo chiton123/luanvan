@@ -10,10 +10,11 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center_horizontal"
+        android:padding="15dp"
         >
         <EditText
             android:layout_marginTop="50dp"
-            android:layout_width="320dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:id="@+id/editemail"
             android:hint="Email"
@@ -22,7 +23,7 @@
             ></EditText>
         <EditText
             android:layout_marginTop="20dp"
-            android:layout_width="320dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:id="@+id/editname"
             android:hint="Họ tên"
@@ -31,7 +32,7 @@
             ></EditText>
         <EditText
             android:layout_marginTop="20dp"
-            android:layout_width="320dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:id="@+id/editpass"
             android:hint="Mật khẩu"
@@ -41,7 +42,7 @@
             ></EditText>
         <EditText
             android:layout_marginTop="20dp"
-            android:layout_width="320dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:id="@+id/editpass2"
             android:hint="Nhập lại mật khẩu"
@@ -51,7 +52,7 @@
             ></EditText>
         <Button
             android:layout_marginTop="30dp"
-            android:layout_width="170dp"
+            android:layout_width="match_parent"
             android:text="Đăng ký"
             android:textColor="#fff"
             android:id="@+id/buttondangky"

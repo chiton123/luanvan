@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -29,6 +30,7 @@ import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Experience;
 import com.example.luanvan.ui.Model.Skill;
 import com.example.luanvan.ui.Model.Study;
+import com.example.luanvan.ui.User.ResetPasswordActivity;
 import com.example.luanvan.ui.login.LoginActivity;
 import com.example.luanvan.ui.modelCV.PdfCV;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -50,6 +52,7 @@ public class LoginFragment extends Fragment {
     EditText editEmail, editPass;
     Button btnDangnhap;
     ProgressDialog progressDialog;
+    TextView txt_forgotPassword;
     Handler handler = new Handler();
 
     @Override
@@ -59,12 +62,24 @@ public class LoginFragment extends Fragment {
         editEmail = (EditText) view.findViewById(R.id.editemail);
         editPass = (EditText) view.findViewById(R.id.editpass);
         btnDangnhap = (Button) view.findViewById(R.id.buttondangnhap);
-
+        txt_forgotPassword = (TextView) view.findViewById(R.id.txt_forgotpassword);
         eventLogin();
-
+        eventForgotPassword();
 
         return view;
     }
+
+    private void eventForgotPassword() {
+        txt_forgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ResetPasswordActivity.class);
+                startActivity(intent);
+            }
+        });
+
+    }
+
     void loading(){
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("Loading");
