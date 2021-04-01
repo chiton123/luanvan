@@ -252,21 +252,14 @@ public class NotificationsFragment extends Fragment {
                 if(img.equals("default")){
                     imgProfile.setImageResource(R.drawable.imgprofile);
                 }else {
-                    handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            if(img != null ){
-                                Glide.with(getActivity()).load(img).into(imgProfile);
-                                try {
+                    if(img != null ){
+                        Glide.with(getActivity()).load(img).into(imgProfile);
+                        try {
 
-                                }catch (NullPointerException e){
-                                    Toast.makeText(getActivity(), "Lỗi", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-
+                        }catch (NullPointerException e){
+                            Toast.makeText(getActivity(), "Lỗi", Toast.LENGTH_SHORT).show();
                         }
-                    },500);
+                    }
 
                 }
             }

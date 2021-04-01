@@ -28,8 +28,18 @@
             android:textSize="16sp"
             android:id="@+id/name"
             ></TextView>
-    </LinearLayout>
 
+    </LinearLayout>
+    <TextView
+        android:layout_marginLeft="55dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Name"
+        android:textColor="#047368"
+        android:textSize="12sp"
+        android:maxLines="1"
+        android:id="@+id/txt_lastmessage"
+        ></TextView>
     <View
         android:id="@+id/view"
         android:layout_marginTop="10dp"

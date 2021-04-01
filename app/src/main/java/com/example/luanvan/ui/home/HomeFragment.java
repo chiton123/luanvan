@@ -221,13 +221,7 @@ public class HomeFragment extends Fragment {
                     if(imgURL != null){
                         try {
 
-                            handler = new Handler();
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Glide.with(getActivity()).load(imgURL).into(img);
-                                }
-                            },1500);
+                            Glide.with(getActivity()).load(imgURL).into(img);
 
                         }catch (NullPointerException e){
                             Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();

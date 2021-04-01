@@ -215,11 +215,11 @@ public class MessageActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 mChat.clear();
-              //  Toast.makeText(getApplicationContext(), snapshot.toString(), Toast.LENGTH_SHORT).show();
+                //  Toast.makeText(getApplicationContext(), snapshot.toString(), Toast.LENGTH_SHORT).show();
                 for(DataSnapshot x : snapshot.getChildren()){
                     Chat chat = x.getValue(Chat.class);
                     if(chat.getReceiver().equals(MainActivity.uid) && chat.getSender().equals(idrecruiterFirebase) ||
-                    chat.getReceiver().equals(idrecruiterFirebase) && chat.getSender().equals(MainActivity.uid)){
+                            chat.getReceiver().equals(idrecruiterFirebase) && chat.getSender().equals(MainActivity.uid)){
                         mChat.add(chat);
                     }
 
