@@ -161,7 +161,6 @@ public class RegisterFragment extends Fragment {
                         protected Map<String, String> getParams() throws AuthFailureError {
                             Map<String,String> map = new HashMap<>();
                             map.put("name", name);
-                            map.put("pass", pass);
                             map.put("email", email);
                             return map;
                         }

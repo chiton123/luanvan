@@ -36,18 +36,12 @@
                     android:orientation="vertical"
                     android:id="@+id/linear2"
                     >
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:layout_marginTop="10dp"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:src="@drawable/user2"
-                        android:layout_gravity="center_horizontal"
-                        ></de.hdodenhof.circleimageview.CircleImageView>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:padding="5dp"
+                        android:layout_marginTop="15dp"
                         >
                         <TextView
                             android:layout_width="wrap_content"

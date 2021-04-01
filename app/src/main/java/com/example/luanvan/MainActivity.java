@@ -61,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
     // 1: có cv, 2: chưa
     public static String uid = ""; // của firebase
     public static String username = "";
+    public static String password = "";
+    public static String email_recruiter = "";
     public static String urlCV = "";
     public static User user = new User();
     public static ArrayList<Study> studies = new ArrayList<>();

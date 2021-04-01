@@ -5,6 +5,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,7 +70,7 @@ public class NotificationsFragment extends Fragment {
     // edit hoc van, kinh nghiem, skill
     int REQUEST_HOCVAN = 111, REQUEST_KINHNGHIEM = 2, REQUEST_KYNANG = 3;
     ImageView edit;
-    TextView name, positon, company_name, txtLogOut;
+    TextView name, positon, company_name, txtLogOut, txtChangePassword;
     RecyclerView recyclerView, recyclerViewstudy, recyclerViewexperience, recyclerViewskill;
     ProfileAdapter profileAdapter;
     DatabaseReference reference;
@@ -82,6 +83,7 @@ public class NotificationsFragment extends Fragment {
     ScrollView scrollView;
     ImageView edithocvan, editkinhnghiem, editkynang, imgProfile;
     MainActivity activity;
+    Handler handler;
 
     private NotificationsViewModel notificationsViewModel;
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -101,6 +103,7 @@ public class NotificationsFragment extends Fragment {
         company_name = (TextView) view.findViewById(R.id.company);
         btnLoginRecruiter = (Button) view.findViewById(R.id.buttondangnhaptuyendung);
         scrollView = (ScrollView)  view.findViewById(R.id.scrollview);
+        txtChangePassword = (TextView) view.findViewById(R.id.txtchangepassword);
         arrayList = new ArrayList<>();
         getProfile();
         txtLogOut = (TextView) view.findViewById(R.id.logout);
@@ -135,6 +138,14 @@ public class NotificationsFragment extends Fragment {
             linearLayout1.setVisibility(View.GONE);
             linearLayout2.setVisibility(View.VISIBLE);
             scrollView.setVisibility(View.VISIBLE);
+            handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    getInfoFromFirebase();
+                }
+            },1000);
+
         }
 
         eventLogin();
@@ -149,8 +160,19 @@ public class NotificationsFragment extends Fragment {
                 openImage();
             }
         });
+        eventChangePassword();
 
         return view;
+    }
+
+    private void eventChangePassword() {
+        txtChangePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ChangePasswordActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void openImage() {
@@ -192,7 +214,14 @@ public class NotificationsFragment extends Fragment {
                         HashMap<String,Object> hashMap = new HashMap<>();
                         hashMap.put("imageURL", mUri);
                         reference.updateChildren(hashMap);
-                        pd.dismiss();
+                        handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                pd.dismiss();
+                            }
+                        },1500);
+
 
                     }else {
                         Toast.makeText(getActivity(), "Fail", Toast.LENGTH_SHORT).show();
@@ -219,11 +248,26 @@ public class NotificationsFragment extends Fragment {
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                UserF userF = snapshot.getValue(UserF.class);
-                if(userF.getImageURL().equals("default")){
+                final String img = snapshot.child("imageURL").getValue(String.class);
+                if(img.equals("default")){
                     imgProfile.setImageResource(R.drawable.imgprofile);
                 }else {
-                    Glide.with(getActivity()).load(userF.getImageURL()).into(imgProfile);
+                    handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(img != null ){
+                                Glide.with(getActivity()).load(img).into(imgProfile);
+                                try {
+
+                                }catch (NullPointerException e){
+                                    Toast.makeText(getActivity(), "Lỗi", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                        }
+                    },500);
+
                 }
             }
 
@@ -240,6 +284,7 @@ public class NotificationsFragment extends Fragment {
         MainActivity.checkCV = 0;
         MainActivity.uid = "";
         MainActivity.username = "";
+        MainActivity.password = "";
         MainActivity.urlCV = "";
         MainActivity.user = new User();
         MainActivity.studies.clear();

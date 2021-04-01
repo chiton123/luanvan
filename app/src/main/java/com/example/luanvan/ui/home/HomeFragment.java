@@ -214,11 +214,26 @@ public class HomeFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
              //   Toast.makeText(getActivity(), snapshot.toString(), Toast.LENGTH_SHORT).show();
 //                UserF userF = snapshot.getValue(UserF.class);
-                String imgURL = snapshot.child("imageURL").getValue(String.class);
+                final String imgURL = snapshot.child("imageURL").getValue(String.class);
                 if(imgURL.equals("default")){
                     img.setImageResource(R.drawable.user1);
                 }else {
-                    Glide.with(getActivity()).load(imgURL).into(img);
+                    if(imgURL != null){
+                        try {
+
+                            handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Glide.with(getActivity()).load(imgURL).into(img);
+                                }
+                            },1500);
+
+                        }catch (NullPointerException e){
+                            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
                 }
             }
 

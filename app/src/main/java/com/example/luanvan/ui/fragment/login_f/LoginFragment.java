@@ -40,6 +40,7 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.rengwuxian.materialedittext.MaterialEditText;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -290,6 +291,7 @@ public class LoginFragment extends Fragment {
                                                     public void onComplete(@NonNull Task<AuthResult> task) {
                                                         if(task.isSuccessful()){
                                                             Toast.makeText(getActivity(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                                                            MainActivity.password = pass;
                                                             MainActivity.mUser = MainActivity.mAuth.getCurrentUser();
 
                                                             MainActivity.uid = MainActivity.mUser.getUid();
@@ -316,7 +318,7 @@ public class LoginFragment extends Fragment {
                                                                 }
                                                             },4000);
                                                         }else {
-                                                            Toast.makeText(getActivity(), "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
+                                                            Toast.makeText(getActivity(), "Sai tên hoặc mật khẩu", Toast.LENGTH_SHORT).show();
                                                             progressDialog.dismiss();
                                                         }
                                                     }
@@ -339,7 +341,6 @@ public class LoginFragment extends Fragment {
                         @Override
                         protected Map<String, String> getParams() throws AuthFailureError {
                             Map<String,String> map = new HashMap<>();
-                            map.put("pass", pass);
                             map.put("email", email);
                             return map;
                         }

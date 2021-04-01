@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.User.ResetPasswordActivity"></activity>
+        <activity android:name=".ui.User.ChangePasswordActivity"></activity>
+        <activity android:name=".ui.User.ResetPasswordActivity" />
         <activity android:name=".ui.chat.MessageActivity" />
         <activity android:name=".ui.chat.UserListActivity" />
         <activity android:name=".ui.notification.AdminNotificationActivity" />

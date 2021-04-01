@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -26,6 +27,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
+import com.example.luanvan.ui.User.ResetPasswordActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManagementActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -47,6 +49,7 @@ public class LoginRecruiterActivity extends AppCompatActivity {
     Handler handler = new Handler();
     LinearLayout layoutLogin;
     int REQUEST_CODE = 123;
+    TextView txt_forgotPassword;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +57,17 @@ public class LoginRecruiterActivity extends AppCompatActivity {
         anhxa();
         actionBar();
         eventButton();
+        eventForgotPassword();
+
+    }
+    private void eventForgotPassword() {
+        txt_forgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ResetPasswordActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 
@@ -73,6 +87,8 @@ public class LoginRecruiterActivity extends AppCompatActivity {
         CVManageActivity.arrayListCVFilter.clear();
         CVManageActivity.arrayListAll.clear();
         CVManagementActivity.position_job_list = 0;
+        MainActivity.email_recruiter = "";
+        MainActivity.password = "";
     }
 
 
@@ -115,6 +131,8 @@ public class LoginRecruiterActivity extends AppCompatActivity {
                                                 if(task.isSuccessful()){
 
                                                     Toast.makeText(getApplicationContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                                                    MainActivity.email_recruiter = email;
+                                                    MainActivity.password = pass;
                                                     MainActivity.mUser = MainActivity.mAuth.getCurrentUser();
 
                                                     MainActivity.uid = MainActivity.mUser.getUid();
@@ -155,7 +173,6 @@ public class LoginRecruiterActivity extends AppCompatActivity {
                         @Override
                         protected Map<String, String> getParams() throws AuthFailureError {
                             Map<String,String> map = new HashMap<>();
-                            map.put("pass", pass);
                             map.put("email", email);
                             return map;
                         }
@@ -246,6 +263,7 @@ public class LoginRecruiterActivity extends AppCompatActivity {
         editPass = (EditText) findViewById(R.id.editpass);
         btnDangnhap = (Button) findViewById(R.id.buttondangnhap);
         layoutLogin = (LinearLayout) findViewById(R.id.lineardangnhap);
+        txt_forgotPassword = (TextView) findViewById(R.id.txt_forgotpassword);
 
 
     }

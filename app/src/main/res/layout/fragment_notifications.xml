@@ -87,7 +87,7 @@
                         android:layout_marginTop="10dp"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:src="@drawable/user2"
+                        android:src="@drawable/imgprofile"
                         android:id="@+id/imgprofile"
                         android:layout_gravity="center_horizontal"
                         ></de.hdodenhof.circleimageview.CircleImageView>
@@ -129,6 +129,17 @@
                         android:layout_gravity="right"
                         android:layout_marginTop="10dp"
                         android:id="@+id/logout"
+                        android:layout_marginRight="20dp"
+                        ></TextView>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Đổi mật khẩu"
+                        android:textSize="18sp"
+                        android:textColor="#07DD10"
+                        android:layout_gravity="right"
+                        android:layout_marginTop="10dp"
+                        android:id="@+id/txtchangepassword"
                         android:layout_marginRight="20dp"
                         ></TextView>
                     <LinearLayout

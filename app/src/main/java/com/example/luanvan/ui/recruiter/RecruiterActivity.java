@@ -32,6 +32,7 @@ import com.example.luanvan.ui.Adapter.admin_a.AdminAdapter_a;
 import com.example.luanvan.ui.Model.Admin;
 import com.example.luanvan.ui.Model.JobList;
 import com.example.luanvan.ui.Model.NotificationRecruiter;
+import com.example.luanvan.ui.User.ChangePasswordActivity;
 import com.example.luanvan.ui.chat.UserListActivity;
 import com.example.luanvan.ui.notification.RecruiterNotificationActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
@@ -109,6 +110,7 @@ public class RecruiterActivity extends AppCompatActivity {
         arrayListJobList.clear();
         arrayListNotificationRecruiter.clear();
         arrayListOutdatedJobs.clear();
+        MainActivity.email_recruiter = "";
         arrayListMenu.clear();
         arrayList.clear();
     }
@@ -206,6 +208,10 @@ public class RecruiterActivity extends AppCompatActivity {
             case R.id.notification:
                 Intent intent = new Intent(getApplicationContext(), RecruiterNotificationActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.changepassword:
+                Intent intent2 = new Intent(getApplicationContext(), ChangePasswordActivity.class);
+                startActivity(intent2);
                 break;
 
         }
