@@ -30,6 +30,7 @@ import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.admin_a.AdminAdapter;
 import com.example.luanvan.ui.Adapter.admin_a.AdminAdapter_a;
 import com.example.luanvan.ui.Model.Admin;
+import com.example.luanvan.ui.Model.Chat;
 import com.example.luanvan.ui.Model.JobList;
 import com.example.luanvan.ui.Model.NotificationRecruiter;
 import com.example.luanvan.ui.User.ChangePasswordActivity;
@@ -39,6 +40,11 @@ import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
 import com.example.luanvan.ui.recruiter.PostNews.RecruitmentNewsActivity;
 import com.example.luanvan.ui.schedule.ScheduleManagementActivity;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -65,6 +71,8 @@ public class RecruiterActivity extends AppCompatActivity {
     public static ArrayList<JobList> arrayListAuthenticationJobs = new ArrayList<>();
     public static ArrayList<JobList> arrayListRejectJobs = new ArrayList<>();
     public static ArrayList<JobList> arrayListOutdatedJobs = new ArrayList<>();
+    public static TextView txtUnreadMessageNumber;
+    DatabaseReference reference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -172,10 +180,23 @@ public class RecruiterActivity extends AppCompatActivity {
         txtNotification = actionView.findViewById(R.id.cart_badge);
         txtNotification.setVisibility(View.GONE);
 
+        final MenuItem menuItem1 = menu.findItem(R.id.chat);
+        View actionViewChat = menuItem1.getActionView();
+
+        txtUnreadMessageNumber =  actionViewChat.findViewById(R.id.cart_badge_chat);
+        txtUnreadMessageNumber.setVisibility(View.GONE);
+
         actionView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onOptionsItemSelected(menuItem);
+            }
+        });
+
+        actionViewChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onOptionsItemSelected(menuItem1);
             }
         });
 
@@ -195,6 +216,45 @@ public class RecruiterActivity extends AppCompatActivity {
             txtNotification.setText("" + MainActivity.k);
             txtNotification.setVisibility(View.VISIBLE);
         }
+
+        getDataChat();
+
+    }
+
+    private void getDataChat() {
+        reference = FirebaseDatabase.getInstance().getReference("Chats");
+        final ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                MainActivity.k_chat = 0;
+                for(DataSnapshot x : snapshot.getChildren()){
+                    Chat chat = x.getValue(Chat.class);
+                    if(chat.getReceiver().equals(MainActivity.uid) &&  !chat.isIsseen()){
+                        MainActivity.k_chat++;
+                    }
+                }
+                if(MainActivity.k_chat > 0){
+                    txtUnreadMessageNumber.setVisibility(View.VISIBLE);
+                    txtUnreadMessageNumber.setText(MainActivity.k_chat + "");
+                }else {
+                    txtUnreadMessageNumber.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+        reference.addValueEventListener(valueEventListener);
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                reference.removeEventListener(valueEventListener);
+            }
+        },1300);
+
 
     }
 

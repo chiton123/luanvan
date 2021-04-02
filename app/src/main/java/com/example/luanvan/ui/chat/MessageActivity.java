@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,6 +28,8 @@ import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.chat_a.MessageAdapter;
 import com.example.luanvan.ui.Model.Chat;
 import com.example.luanvan.ui.Model.UserF;
+import com.example.luanvan.ui.home.HomeFragment;
+import com.example.luanvan.ui.recruiter.RecruiterActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -54,6 +57,7 @@ public class MessageActivity extends AppCompatActivity {
     MessageAdapter messageAdapter;
     int kind = 0;  // 1: từ detailjob qua, 2: từ chat qua
     ValueEventListener seenListener;
+    Handler handler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -170,17 +174,26 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     public void seenMessage(final String userid){
+
         reference = FirebaseDatabase.getInstance().getReference("Chats");
         seenListener = reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot x : snapshot.getChildren()){
                     Chat chat = x.getValue(Chat.class);
-                    if(chat.getReceiver().equals(MainActivity.uid) && chat.getSender().equals(userid)){
+                    if(chat.getReceiver().equals(MainActivity.uid) && chat.getSender().equals(userid) && !chat.isIsseen()){
+                        if(MainActivity.k_chat > 0){
+                            MainActivity.k_chat--;
+                         //   Toast.makeText(getApplicationContext(), MainActivity.k_chat + "", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    if(chat.getReceiver().equals(MainActivity.uid) && chat.getSender().equals(userid) && !chat.isIsseen()){
                         HashMap<String,Object> hashMap = new HashMap<>();
                         hashMap.put("isseen", true);
                         x.getRef().updateChildren(hashMap);
+
                     }
+
                 }
             }
 
@@ -189,6 +202,28 @@ public class MessageActivity extends AppCompatActivity {
 
             }
         });
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(MainActivity.k_chat > 0){
+                    if(MainActivity.login == 1){
+                        HomeFragment.txtUnreadMessageNumber.setText(MainActivity.k_chat + "");
+                    }else {
+                        RecruiterActivity.txtUnreadMessageNumber.setText(MainActivity.k_chat + "");
+                    }
+
+                }else {
+                    if(MainActivity.login == 1){
+                        HomeFragment.txtUnreadMessageNumber.setVisibility(View.GONE);
+                    }else {
+                        RecruiterActivity.txtUnreadMessageNumber.setVisibility(View.GONE);
+                    }
+
+                }
+            }
+        },1000);
+
     }
 
     @Override

@@ -35,6 +35,7 @@ import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.job.JobAdapter;
 import com.example.luanvan.ui.Adapter.job_apply.JobApplyAdapter;
 import com.example.luanvan.ui.KindofJob.KindOfJobActivity;
+import com.example.luanvan.ui.Model.Chat;
 import com.example.luanvan.ui.Model.Job;
 import com.example.luanvan.ui.Model.Job_Apply;
 import com.example.luanvan.ui.Model.Notification;
@@ -44,6 +45,8 @@ import com.example.luanvan.ui.login.LoginActivity;
 import com.example.luanvan.ui.notification.CandidateNotificationActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
@@ -69,13 +72,14 @@ public class HomeFragment extends Fragment {
     public static ArrayList<Job> arrayList, arrayListThuctap, arrayListLuongCao, arrayListViecLamTuXa, arrayListViecLamMoiNhat;
     public static ArrayList<Job_Apply> arrayListDaUngTuyen;
     TextView txtthuctap, txtviectotnhat, txtLuongCao, txtViecLamTuXa, txtViecLamMoiNhat, txtDaUngTuyen, txtUserName;
-    public static TextView txtNotification;
+    public static TextView txtNotification, txtUnreadMessageNumber;
     CircleImageView img;
     public static LinearLayout layout_daungtuyen, layout_vieclamtotnhat, layout_viecthuctap, layout_viecluongcao, layout_vieclamtuxa, layout_vieclammoinhat,
     layout_user;
     Handler handler;
 //    public static int check_notification = 0; // kiểm tra đã load số thông báo hay chưa
     ProgressDialog progressDialog;
+    DatabaseReference reference;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
@@ -203,7 +207,7 @@ public class HomeFragment extends Fragment {
         progressDialog.setCancelable(false);
     }
     public void activateAfterLogin(){
-        setNotification();
+        setNotificationAndChat();
         getDataApplied();
         layout_daungtuyen.setVisibility(View.VISIBLE);
         toolbar.setTitle("");
@@ -292,11 +296,19 @@ public class HomeFragment extends Fragment {
     }
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+
         inflater.inflate(R.menu.menu_main, menu);
+
         final MenuItem menuItem = menu.findItem(R.id.notification);
         View actionView = menuItem.getActionView();
         txtNotification = actionView.findViewById(R.id.cart_badge);
         txtNotification.setVisibility(View.GONE);
+
+        final MenuItem menuItem1 = menu.findItem(R.id.chat);
+        View actionViewChat = menuItem1.getActionView();
+
+        txtUnreadMessageNumber =  actionViewChat.findViewById(R.id.cart_badge_chat);
+        txtUnreadMessageNumber.setVisibility(View.GONE);
 
         actionView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -304,11 +316,17 @@ public class HomeFragment extends Fragment {
                 onOptionsItemSelected(menuItem);
             }
         });
+        actionViewChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onOptionsItemSelected(menuItem1);
+            }
+        });
 
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    public void setNotification(){
+    public void setNotificationAndChat(){
         MainActivity.k = 0;
         getDataNotification();
         handler = new Handler();
@@ -336,6 +354,36 @@ public class HomeFragment extends Fragment {
             }
         },3000);
 
+        getDataChat();
+
+
+    }
+
+    private void getDataChat() {
+        reference = FirebaseDatabase.getInstance().getReference("Chats");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                MainActivity.k_chat = 0;
+                for(DataSnapshot x : snapshot.getChildren()){
+                    Chat chat = x.getValue(Chat.class);
+                    if(chat.getReceiver().equals(MainActivity.uid) &&  !chat.isIsseen()){
+                        MainActivity.k_chat++;
+                    }
+                }
+                if(MainActivity.k_chat > 0){
+                    txtUnreadMessageNumber.setVisibility(View.VISIBLE);
+                    txtUnreadMessageNumber.setText(MainActivity.k_chat + "");
+                }else {
+                    txtUnreadMessageNumber.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
     }
 

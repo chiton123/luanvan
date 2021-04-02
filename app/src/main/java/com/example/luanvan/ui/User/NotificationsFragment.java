@@ -298,6 +298,7 @@ public class NotificationsFragment extends Fragment {
         MainActivity.mAuth.signOut();
         MainActivity.arrayListNotification.clear();
         MainActivity.k = 0;
+        MainActivity.k_chat = 0;
 
 
     }

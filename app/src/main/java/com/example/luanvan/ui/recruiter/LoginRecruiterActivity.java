@@ -89,6 +89,7 @@ public class LoginRecruiterActivity extends AppCompatActivity {
         CVManagementActivity.position_job_list = 0;
         MainActivity.email_recruiter = "";
         MainActivity.password = "";
+        MainActivity.k_chat = 0;
     }
 
 

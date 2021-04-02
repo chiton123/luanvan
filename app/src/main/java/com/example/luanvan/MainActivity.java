@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     public static ArrayList<Notification> arrayListNotification = new ArrayList<>(); // Danh sách thông báo
     public static ArrayList<NotificationAdmin> arrayListAdminNotification = new ArrayList<>(); // Danh sách thông báo của admin
     public static int k = 0; // số lương thông báo mới
+    public static int k_chat = 0; // Số lương tin nhắn mới
     public static int k_admin = 0; // số lương thông báo mới của admin
     // 1: có cv, 2: chưa
     public static String uid = ""; // của firebase
@@ -103,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
     public static int color = 0;
 
 
-    public static String host = "http://10.3.74.104:8888/luanvan/";
+    public static String host = "http://10.10.35.127:8888/luanvan/";
     public static String urljob1 = host + "job1.php?page=";
     public static String urlJobHome = host + "job_home.php";
     // job apply
