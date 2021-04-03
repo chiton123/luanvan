@@ -20,6 +20,7 @@ import com.example.luanvan.R;
 import com.example.luanvan.ui.DetailedJob.DetailJobActivity;
 import com.example.luanvan.ui.Model.Job;
 import com.example.luanvan.ui.Model.Job_Apply;
+import com.example.luanvan.ui.chat.MessageActivity;
 import com.example.luanvan.ui.cv.CVShowActivity;
 import com.example.luanvan.ui.home.HomeFragment;
 
@@ -106,6 +107,16 @@ public class JobApplyAdapter extends RecyclerView.Adapter<JobApplyAdapter.ItemHo
                     activity.startActivity(intent);
                 }
             });
+            holder.btnChat.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(activity, MessageActivity.class);
+                    intent.putExtra("kind", 1);
+                    intent.putExtra("idrecruiter", arrayList.get(position).getId_recruiter());
+                    activity.startActivity(intent);
+                }
+            });
+
 
         }else {
             holder.layout_chat.setVisibility(View.GONE);

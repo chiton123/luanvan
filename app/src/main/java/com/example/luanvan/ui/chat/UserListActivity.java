@@ -174,7 +174,7 @@ public class UserListActivity extends AppCompatActivity {
                                         }
                                     }
                                 }catch (ConcurrentModificationException e){
-                                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                                 //   Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
                                 }
 
                             }else {

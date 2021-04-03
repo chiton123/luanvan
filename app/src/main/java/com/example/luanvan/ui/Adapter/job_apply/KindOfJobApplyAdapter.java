@@ -24,6 +24,7 @@ import com.example.luanvan.ui.DetailedJob.DetailJobActivity;
 import com.example.luanvan.ui.Interface.ILoadMore;
 import com.example.luanvan.ui.Model.Job;
 import com.example.luanvan.ui.Model.Job_Apply;
+import com.example.luanvan.ui.chat.MessageActivity;
 import com.example.luanvan.ui.cv.CVShowActivity;
 import com.example.luanvan.ui.home.HomeFragment;
 
@@ -143,6 +144,15 @@ public class KindOfJobApplyAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                         Intent intent = new Intent(context, CVShowActivity.class);
                         intent.putExtra("kind", 2); // 1: show cv , 2: job apply
                         intent.putExtra("cv_id", job.getId_cv());
+                        activity.startActivity(intent);
+                    }
+                });
+                itemHolder.btnChat.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(activity, MessageActivity.class);
+                        intent.putExtra("kind", 1);
+                        intent.putExtra("idrecruiter", filterArraylist.get(position).getId_recruiter());
                         activity.startActivity(intent);
                     }
                 });
