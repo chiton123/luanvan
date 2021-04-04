@@ -160,6 +160,7 @@ public class CompanyFragment extends Fragment {
                                         object.getInt("idowner"),
                                         object.getString("image"),
                                         object.getString("website"),
+                                        object.getInt("number_job"),
                                         object.getInt("status"),
                                         object.getDouble("vido"),
                                         object.getDouble("kinhdo")

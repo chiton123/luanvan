@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="#fff"
+    android:layout_height="wrap_content"
+    >
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="10dp"
+        >
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#fff"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#fff"
+                android:padding="5dp"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:id="@id/linear"
+                    >
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#fff"
+                        >
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:id="@+id/img"
+                            android:layout_margin="5dp"
+                            ></ImageView>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tên công ty"
+                            android:textSize="15sp"
+                            android:id="@+id/txtcompany"
+                            android:textColor="#050505"
+                            android:layout_toRightOf="@id/img"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            ></TextView>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Gioi thieu"
+                            android:textSize="13sp"
+                            android:id="@+id/txtintroduce"
+                            android:ellipsize="end"
+                            android:maxLines="3"
+                            android:layout_below="@+id/txtcompany"
+                            android:textColor="#050505"
+                            android:layout_toRightOf="@id/img"
+                            ></TextView>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_chat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp"
+                    android:gravity="right"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#FFFFFF"
+                        android:textSize="13sp"
+                        android:background="#10B517"
+                        android:text="Xem 13 tin tuyển dụng"
+                        android:paddingBottom="3dp"
+                        android:id="@+id/txtnumberjob"
+                        android:paddingTop="3dp"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
+                        ></TextView>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

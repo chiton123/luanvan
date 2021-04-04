@@ -162,6 +162,7 @@ public class MessageActivity extends AppCompatActivity {
                     Glide.with(getApplicationContext()).load(userF.getImageURL()).into(img);
                 }
                 readMessage(MainActivity.uid, idrecruiterFirebase, userF.getImageURL());
+                seenMessage(idrecruiterFirebase);
             }
 
             @Override
@@ -173,7 +174,7 @@ public class MessageActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                seenMessage(idrecruiterFirebase);
+
             }
         },1000);
 
@@ -191,14 +192,13 @@ public class MessageActivity extends AppCompatActivity {
                     if(chat.getReceiver().equals(MainActivity.uid) && chat.getSender().equals(userid) && !chat.isIsseen()){
                         if(MainActivity.k_chat > 0){
                             MainActivity.k_chat--;
-                        //    Toast.makeText(getApplicationContext(), MainActivity.k_chat + "", Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(getApplicationContext(), MainActivity.k_chat + "", Toast.LENGTH_SHORT).show();
                         }
                     }
                     if(chat.getReceiver().equals(MainActivity.uid) && chat.getSender().equals(userid) && !chat.isIsseen()){
                         HashMap<String,Object> hashMap = new HashMap<>();
                         hashMap.put("isseen", true);
                         x.getRef().updateChildren(hashMap);
-
                     }
 
                 }
@@ -229,7 +229,7 @@ public class MessageActivity extends AppCompatActivity {
 
                 }
             }
-        },200);
+        },1000);
 
     }
 

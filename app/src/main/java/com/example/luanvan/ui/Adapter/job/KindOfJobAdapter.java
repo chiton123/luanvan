@@ -96,43 +96,46 @@ public class KindOfJobAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
         if(holder instanceof ItemHolder){
             ItemHolder itemHolder = (ItemHolder) holder;
-            Job job = filterArraylist.get(position);
-            itemHolder.txttencongviec.setText(job.getName());
-            itemHolder.txttencongty.setText(job.getCompany_name());
-            String ngaybatdau = job.getStart_date();
-            String ngayketthuc = job.getEnd_date();
-            SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-            Date date1 = null;
-            Date date2 = null;
-            try {
-                date1 = fmt.parse(ngaybatdau);
-                date2 = fmt.parse(ngayketthuc);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            SimpleDateFormat fmtOut = new SimpleDateFormat("dd/MM/yyyy");
-            itemHolder.txttime.setText(fmtOut.format(date2));
-            DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-            itemHolder.txtsalary.setText("Từ " + decimalFormat.format( + job.getSalary_min()) + "đ đến " + decimalFormat.format(job.getSalary_max()) + "đ" );
-            itemHolder.txtarea.setText(job.getAddress());
-            Glide.with(context).load(job.getImg()).into(itemHolder.imganh);
-            itemHolder.imganh.setFocusable(false);
-            itemHolder.layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(context, DetailJobActivity.class);
-                    // 0: từ màn hình chính, tìm kiếm, lọc chuyển qua, 1: từ notification chuyển qua
-                    intent.putExtra("kind", 0);
-                    intent.putExtra("job", filterArraylist.get(position));
-                    activity.startActivity(intent);
-
+            if(filterArraylist.size() > 0){
+                Job job = filterArraylist.get(position);
+                itemHolder.txttencongviec.setText(job.getName());
+                itemHolder.txttencongty.setText(job.getCompany_name());
+                String ngaybatdau = job.getStart_date();
+                String ngayketthuc = job.getEnd_date();
+                SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+                Date date1 = null;
+                Date date2 = null;
+                try {
+                    date1 = fmt.parse(ngaybatdau);
+                    date2 = fmt.parse(ngayketthuc);
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
-            });
-            if(kind == 1){
-                itemHolder.layout_chat.setVisibility(View.VISIBLE);
-            }else {
-                itemHolder.layout_chat.setVisibility(View.GONE);
+                SimpleDateFormat fmtOut = new SimpleDateFormat("dd/MM/yyyy");
+                itemHolder.txttime.setText(fmtOut.format(date2));
+                DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
+                itemHolder.txtsalary.setText("Từ " + decimalFormat.format( + job.getSalary_min()) + "đ đến " + decimalFormat.format(job.getSalary_max()) + "đ" );
+                itemHolder.txtarea.setText(job.getAddress());
+                Glide.with(context).load(job.getImg()).into(itemHolder.imganh);
+                itemHolder.imganh.setFocusable(false);
+                itemHolder.layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(context, DetailJobActivity.class);
+                        // 0: từ màn hình chính, tìm kiếm, lọc chuyển qua, 1: từ notification chuyển qua
+                        intent.putExtra("kind", 0);
+                        intent.putExtra("job", filterArraylist.get(position));
+                        activity.startActivity(intent);
+
+                    }
+                });
+                if(kind == 1){
+                    itemHolder.layout_chat.setVisibility(View.VISIBLE);
+                }else {
+                    itemHolder.layout_chat.setVisibility(View.GONE);
+                }
             }
+
 
         }else if(holder instanceof LoadingViewHolder){
             LoadingViewHolder loadingViewHoler = (LoadingViewHolder) holder;

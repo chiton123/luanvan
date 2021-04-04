@@ -8,26 +8,36 @@ public class Company implements Serializable {
     private String introduction;
     private String address;
     private int idarea;
-    private int idowner;
+    private int idrecruiter;
     private String image;
     private String website;
+    private int number_job;
     private int status;
     private double vido;
     private double kinhdo;
 
-    public Company(int id, String name, String introduction, String address, int idarea, int idowner,
-                   String image, String website, int status, double vido, double kinhdo) {
+    public Company(int id, String name, String introduction, String address, int idarea, int idrecruiter,
+                   String image, String website, int number_job, int status, double vido, double kinhdo) {
         this.id = id;
         this.name = name;
         this.introduction = introduction;
         this.address = address;
         this.idarea = idarea;
-        this.idowner = idowner;
+        this.idrecruiter = idrecruiter;
         this.image = image;
         this.website = website;
+        this.number_job = number_job;
         this.status = status;
         this.vido = vido;
         this.kinhdo = kinhdo;
+    }
+
+    public int getNumber_job() {
+        return number_job;
+    }
+
+    public void setNumber_job(int number_job) {
+        this.number_job = number_job;
     }
 
     public int getId() {
@@ -70,12 +80,12 @@ public class Company implements Serializable {
         this.idarea = idarea;
     }
 
-    public int getIdowner() {
-        return idowner;
+    public int getIdrecruiter() {
+        return idrecruiter;
     }
 
-    public void setIdowner(int idowner) {
-        this.idowner = idowner;
+    public void setIdrecruiter(int idrecruiter) {
+        this.idrecruiter = idrecruiter;
     }
 
     public String getImage() {
