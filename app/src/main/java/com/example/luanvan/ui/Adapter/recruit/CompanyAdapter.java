@@ -2,6 +2,7 @@ package com.example.luanvan.ui.Adapter.recruit;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.bumptech.glide.Glide;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Company;
 import com.example.luanvan.ui.Model.Job;
+import com.example.luanvan.ui.company.CompanyActivity;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
@@ -44,13 +46,21 @@ public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.ItemHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ItemHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ItemHolder holder, int position) {
         if(filterArraylist.size() > 0){
-            Company company = filterArraylist.get(position);
+            final Company company = filterArraylist.get(position);
             holder.txtCompany.setText(company.getName());
             holder.txtIntroduction.setText(company.getIntroduction());
             Glide.with(context).load(company.getImage()).into(holder.img);
             holder.txtNumberJob.setText("Xem " + company.getNumber_job() + " tin tuyển dụng");
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, CompanyActivity.class);
+                    intent.putExtra("company", company);
+                    activity.startActivity(intent);
+                }
+            });
         }
 
 

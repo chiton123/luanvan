@@ -12,7 +12,6 @@
         android:background="#FFFFFF"
         android:id="@+id/appbar"
         >
-
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="170dp"
