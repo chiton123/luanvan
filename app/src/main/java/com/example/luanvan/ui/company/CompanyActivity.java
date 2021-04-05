@@ -27,7 +27,7 @@ public class CompanyActivity extends AppCompatActivity {
     ViewPageAdapter adapter;
     ImageView img;
     TextView txtCompanyName;
-    Company company;
+    public static Company company;
     CollapsingToolbarLayout collapsingToolbarLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +41,7 @@ public class CompanyActivity extends AppCompatActivity {
     }
 
     private void getData() {
+        company = null;
         company = (Company) getIntent().getSerializableExtra("company");
         if(company != null){
             txtCompanyName.setText(company.getName());
