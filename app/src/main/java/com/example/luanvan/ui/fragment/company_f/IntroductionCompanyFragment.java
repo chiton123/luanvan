@@ -54,29 +54,34 @@ public class IntroductionCompanyFragment extends Fragment implements OnMapReadyC
               //  Toast.makeText(getActivity(), CompanyActivity.company.getVido() + "", Toast.LENGTH_SHORT).show();
                 mMap.addMarker(new MarkerOptions().position(store).title("Công ty")).setIcon(BitmapDescriptorFactory.defaultMarker());
                 mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-                CameraPosition cameraPosition = new CameraPosition.Builder().target(store).zoom(200).build();
+                CameraPosition cameraPosition = new CameraPosition.Builder().target(store).zoom(16).build();
                 mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(store));
-                mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                    @Override
-                    public void onMapClick(LatLng latLng) {
-                        MarkerOptions markerOptions = new MarkerOptions();
-                        markerOptions.position(latLng);
-                        markerOptions.title(latLng.latitude + " : "+ latLng.longitude);
-                        // Clear previously click position.
-                        mMap.clear();
-                        // Zoom the Marker
-                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
-                        // Add Marker on Map
-                        mMap.addMarker(markerOptions);
-                    }
-                });
+                mMap.setMaxZoomPreference(15.0f);
+                mMap.setMinZoomPreference(6.0f);
+
+           //     mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
+            //    -- Để sau
+//                mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+//                    @Override
+//                    public void onMapClick(LatLng latLng) {
+//                        MarkerOptions markerOptions = new MarkerOptions();
+//                        markerOptions.position(latLng);
+//                        markerOptions.title(latLng.latitude + " : "+ latLng.longitude);
+//                        // Clear previously click position.
+//                        mMap.clear();
+//                        // Zoom the Marker
+//                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
+//                        // Add Marker on Map
+//                        mMap.addMarker(markerOptions);
+//                    }
+//                });
             }
         });
         getData();
 
         return view;
     }
+
 
     private void getData() {
         txtIntroduction.setText(CompanyActivity.company.getIntroduction());
@@ -93,7 +98,7 @@ public class IntroductionCompanyFragment extends Fragment implements OnMapReadyC
         //   Toast.makeText(getApplicationContext(), getIntent().getIntExtra("vido", 0) +"" + getIntent().getIntExtra("kinhdo",0), Toast.LENGTH_SHORT).show();
         mMap.addMarker(new MarkerOptions().position(store).title("Store")).setIcon(BitmapDescriptorFactory.defaultMarker());
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(store).zoom(200).build();
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(store).zoom(15).build();
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 

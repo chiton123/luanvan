@@ -24,6 +24,7 @@ import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Company;
 import com.example.luanvan.ui.Model.Job;
+import com.example.luanvan.ui.company.CompanyActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,6 +42,7 @@ public class CompanyFragment extends Fragment {
     Job job;
     int kind = 0, job_id = 0;
     Handler handler;
+    Company company;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -56,6 +58,19 @@ public class CompanyFragment extends Fragment {
 
         return view;
     }
+
+    private void switchToCompany(final Company company) {
+        txtchitiet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), CompanyActivity.class);
+                intent.putExtra("company", company);
+                startActivity(intent);
+            }
+        });
+
+    }
+
     // dành cho từ notification chuyển qua
     public void getJobInfo(final int job_id){
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
@@ -146,6 +161,7 @@ public class CompanyFragment extends Fragment {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                           Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_SHORT).show();
                         if(response != null){
                         //    Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_SHORT).show();
                             try {
@@ -172,7 +188,7 @@ public class CompanyFragment extends Fragment {
                                 txtwebsite.setText(company.getWebsite());
                                 String gioithieu = xuongdong(company.getIntroduction());
                                 txtgioithieu.setText(gioithieu);
-
+                                switchToCompany(company);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
