@@ -1,5 +1,6 @@
 package com.example.luanvan.ui.fragment.company_f;
 
+import android.location.Location;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;

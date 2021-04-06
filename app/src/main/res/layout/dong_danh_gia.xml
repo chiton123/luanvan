@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#fff"
+    android:padding="5dp">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ten ung vien"
+        android:textSize="15sp"
+        android:textColor="#6200EA"
+        android:id="@+id/txtcandidate"
+        />
+
+    <RatingBar
+        android:layout_below="@id/txtcandidate"
+        android:layout_marginTop="10dp"
+        android:id="@+id/rating"
+        android:rating="5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:isIndicator="true"
+        android:scaleX="0.7"
+        android:scaleY="0.7"
+        style="@style/RatingBar"
+        android:stepSize="0.5"
+        android:numStars="5"
+        android:transformPivotX="0dp"
+        android:transformPivotY="0dp"></RatingBar>
+    <TextView
+        android:layout_marginTop="70dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="DANH GIA"
+        android:id="@+id/txtremark"
+        android:textColor="#838383"
+        android:textSize="16sp"
+        ></TextView>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#8E8E8B"
+        android:layout_below="@id/txtremark"
+        android:layout_marginTop="15dp"
+        android:id="@+id/view"
+        ></View>
+</RelativeLayout>
