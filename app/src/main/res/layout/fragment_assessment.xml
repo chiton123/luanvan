@@ -21,6 +21,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:background="#fff"
+                android:id="@+id/layout"
                 >
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -60,6 +61,7 @@
                         android:numStars="5"
                         style="@style/RatingBar"
                         android:id="@+id/rating"
+                        android:isIndicator="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                     <TextView
@@ -84,7 +86,23 @@
         </FrameLayout>
 
     </ScrollView>
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/layout_nothing"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Không có đánh giá"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            ></TextView>
+    </LinearLayout>
 
     
     

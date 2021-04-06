@@ -1,19 +1,14 @@
-package com.example.luanvan.ui.fragment.company_f;
+package com.example.luanvan.ui.recruiter;
 
-import android.app.ProgressDialog;
-import android.content.Intent;
-import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
+import android.os.Bundle;
 import android.os.Handler;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -28,11 +23,9 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
-import com.example.luanvan.ui.Adapter.assess.AccessmentAdapter;
+import com.example.luanvan.ui.Adapter.assess.AccessmentManagementAdapter;
 import com.example.luanvan.ui.Model.Assessment;
-import com.example.luanvan.ui.User.CreateAssessmentActivity;
 import com.example.luanvan.ui.company.CompanyActivity;
-import com.example.luanvan.ui.login.LoginActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,35 +36,25 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AssessmentFragment extends Fragment {
-    RatingBar overallRating;
-    TextView txtRating;
-    public static ArrayList<Assessment> arrayList;
-    AccessmentAdapter adapter;
+public class AssessmentManagementActivity extends AppCompatActivity {
+    Toolbar toolbar;
+    public static RatingBar overallRating;
+    public static TextView txtRating;
+    AccessmentManagementAdapter adapter;
+    ArrayList<Assessment> arrayList;
     RecyclerView recyclerView;
-    float average = 0, total = 0;
-    Button btnCreate;
-    int REQUEST_REMARK = 111;
     DecimalFormat decimalFormat = new DecimalFormat("#.#");
+    public static float average = 0, total = 0;
     LinearLayout layout, layout_nothing;
-    Handler handler;
     ProgressDialog progressDialog;
+    Handler handler;
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_assessment, container, false);
-        overallRating = (RatingBar) view.findViewById(R.id.rating);
-        txtRating = (TextView) view.findViewById(R.id.txtrating);
-        arrayList = new ArrayList<>();
-        btnCreate = (Button) view.findViewById(R.id.buttoncreate);
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        adapter = new AccessmentAdapter(getActivity(), arrayList, getActivity());
-        recyclerView.setAdapter(adapter);
-        layout = (LinearLayout) view.findViewById(R.id.layout);
-        layout_nothing = (LinearLayout) view.findViewById(R.id.layout_nothing);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_assessment_management);
         loading();
+        anhxa();
+        actionBar();
         getData();
         handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -80,18 +63,9 @@ public class AssessmentFragment extends Fragment {
                 checkNothing();
                 progressDialog.dismiss();
             }
-        },1500);
-        eventButton();
+        },2000);
 
-        return view;
-    }
 
-    void loading(){
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setMessage("Loading");
-        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
-        progressDialog.show();
-        progressDialog.setCancelable(false);
     }
     public void checkNothing(){
         if(arrayList.size() == 0){
@@ -102,35 +76,26 @@ public class AssessmentFragment extends Fragment {
             layout.setVisibility(View.VISIBLE);
         }
     }
-    private void eventButton() {
-        btnCreate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(MainActivity.login == 0){
-                    Intent intent = new Intent(getActivity(), LoginActivity.class);
-                    startActivity(intent);
-                }else {
-                    Intent intent = new Intent(getActivity(), CreateAssessmentActivity.class);
-                    startActivityForResult(intent, REQUEST_REMARK);
-                }
-
-            }
-        });
-
+    void loading(){
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading");
+        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
     }
-
     private void getData() {
-        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        Toast.makeText(getApplicationContext(), "" + MainActivity.idcompany, Toast.LENGTH_SHORT).show();
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlGetRemark,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                      //  Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_SHORT).show();
+                  //      Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
                         if(response != null){
                             arrayList.clear();
                             try {
                                 JSONArray jsonArray = new JSONArray(response);
-                              //  Toast.makeText(getActivity(), jsonArray.length() + "", Toast.LENGTH_SHORT).show();
+                                //  Toast.makeText(getActivity(), jsonArray.length() + "", Toast.LENGTH_SHORT).show();
                                 for(int i=0; i < jsonArray.length(); i++){
                                     JSONObject object = jsonArray.getJSONObject(i);
                                     arrayList.add(new Assessment(
@@ -163,13 +128,13 @@ public class AssessmentFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
                     }
                 }){
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> map = new HashMap<>();
-                map.put("idcompany", String.valueOf(CompanyActivity.company.getId()));
+                map.put("idcompany", String.valueOf(MainActivity.idcompany));
                 return map;
             }
         };
@@ -177,17 +142,30 @@ public class AssessmentFragment extends Fragment {
 
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(requestCode == REQUEST_REMARK && resultCode == 111){
-            adapter.notifyDataSetChanged();
-            total += arrayList.get(arrayList.size() - 1).getStar();
-            average = Float.valueOf(decimalFormat.format(total/arrayList.size()));
-            txtRating.setText(average +"");
-            overallRating.setRating(average);
-        }
+    private void actionBar() {
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                average = 0;
+                total = 0;
+                finish();
+            }
+        });
+    }
 
-
-        super.onActivityResult(requestCode, resultCode, data);
+    private void anhxa() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        arrayList = new ArrayList<>();
+        recyclerView = (RecyclerView) findViewById(R.id.recycleview);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+        adapter = new AccessmentManagementAdapter(getApplicationContext(), arrayList, AssessmentManagementActivity.this);
+        recyclerView.setAdapter(adapter);
+        layout = (LinearLayout) findViewById(R.id.layout);
+        layout_nothing = (LinearLayout) findViewById(R.id.layout_nothing);
+        overallRating = (RatingBar) findViewById(R.id.rating);
+        txtRating = (TextView) findViewById(R.id.txtrating);
     }
 }

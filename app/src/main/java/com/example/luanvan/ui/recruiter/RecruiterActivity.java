@@ -297,7 +297,8 @@ public class RecruiterActivity extends AppCompatActivity {
                         startActivity(intent2);
                         break;
                     case 3:
-
+                        Intent intent3 = new Intent(getApplicationContext(), AssessmentManagementActivity.class);
+                        startActivity(intent3);
                         break;
                 }
             }
@@ -318,10 +319,12 @@ public class RecruiterActivity extends AppCompatActivity {
         });
     }
     public void addItem(){
-        arrayList.add(new Admin(0, "Quản lý CV", R.drawable.cv_recruiter));
+        arrayList.add(new Admin(0, "Duyệt hồ sơ", R.drawable.cv_recruiter));
         arrayList.add(new Admin(1, "Tin tuyển dụng", R.drawable.news));
         arrayList.add(new Admin(2, "Lịch hẹn ứng viên", R.drawable.schedule));
-        arrayList.add(new Admin(3, "Thống kê", R.drawable.stastitics));
+        arrayList.add(new Admin(3, "Quản lý đánh giá", R.drawable.comment));
+        arrayList.add(new Admin(4, "Cập nhật công ty", R.drawable.company));
+        arrayList.add(new Admin(5, "Tìm ứng viên", R.drawable.searchclient));
 
     }
     private void anhxa() {

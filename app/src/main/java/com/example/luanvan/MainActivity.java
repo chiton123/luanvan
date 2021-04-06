@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
     public static int color = 0;
 
 
-    public static String host = "http://10.10.43.124:8888/luanvan/";
+    public static String host = "http://10.3.74.103:8888/luanvan/";
     public static String urljob1 = host + "job1.php?page=";
     public static String urlJobHome = host + "job_home.php";
     // job apply
@@ -201,6 +201,7 @@ public class MainActivity extends AppCompatActivity {
     // evaluation
     public static String urlGetRemark = host + "get_remark.php";
     public static String urlRemark = host + "remark.php";
+    public static String urlDeleteAssessment = host + "delete_assessment.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
