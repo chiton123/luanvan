@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
     public static int color = 0;
 
 
-    public static String host = "http://10.10.45.125:8888/luanvan/";
+    public static String host = "http://10.3.74.112:8888/luanvan/";
     public static String urljob1 = host + "job1.php?page=";
     public static String urlJobHome = host + "job_home.php";
     // job apply
@@ -114,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
     public static String urlcompany = host + "company.php";
     public static String urlCompanyInfo = host + "get_company_info.php";
     public static String urlCompanySearch = host + "get_company.php";
+    public static String urlCompanyTop = host + "company_top.php";
     // dang nhap
     public static String urlRegister = host + "register.php";
     public static String urllogin = host + "login.php";

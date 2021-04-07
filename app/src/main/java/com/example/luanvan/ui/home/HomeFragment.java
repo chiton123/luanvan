@@ -10,8 +10,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +30,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
@@ -36,6 +39,8 @@ import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.admin_a.AdminAdapter;
 import com.example.luanvan.ui.Adapter.job.JobAdapter;
 import com.example.luanvan.ui.Adapter.job.KindOfJobAdapter;
+import com.example.luanvan.ui.Adapter.recruit.CompanyAdapter;
+import com.example.luanvan.ui.Adapter.recruit.CompanyTopAdapter;
 import com.example.luanvan.ui.Interface.ILoadMore;
 import com.example.luanvan.ui.KindofJob.KindOfJobActivity;
 import com.example.luanvan.ui.Model.Admin;
@@ -77,10 +82,11 @@ public class HomeFragment extends Fragment {
     public static TextView txtNotification, txtUnreadMessageNumber;
     CircleImageView img;
     public static LinearLayout layout_vieclammoinhat;
-    GridView gridViewJob, gridViewRecruiter;
+    GridView gridViewJob, gridViewCompany;
     ArrayList<Admin> arrayListJob;
-    ArrayList<Company> arrayListRecruiter;
-    AdminAdapter adapterJob, adapterRecruiter;
+    ArrayList<Company> arrayListCompany;
+    AdminAdapter adapterJob;
+    CompanyTopAdapter adapterCompany;
     int page = 1;
     Handler handler;
 //    public static int check_notification = 0; // kiểm tra đã load số thông báo hay chưa
@@ -98,12 +104,14 @@ public class HomeFragment extends Fragment {
         layout_vieclammoinhat = (LinearLayout) view.findViewById(R.id.layout_vieclammoinhat);
         img = (CircleImageView) view.findViewById(R.id.img);
         gridViewJob = (GridView) view.findViewById(R.id.gridviewvieclam);
-        gridViewRecruiter = (GridView) view.findViewById(R.id.gridviewnhatuyendunghangdau);
+        gridViewCompany = (GridView) view.findViewById(R.id.gridviewnhatuyendunghangdau);
         arrayListJob = new ArrayList<>();
-        arrayListRecruiter = new ArrayList<>();
+        arrayListCompany = new ArrayList<>();
         adapterJob = new AdminAdapter(getActivity(), arrayListJob);
+        adapterCompany = new CompanyTopAdapter(getActivity(), arrayListCompany, getActivity());  // 1:company search , 2: home
       //  adapterRecruiter = new AdminAdapter(getActivity(), arrayListRecruiter);
         gridViewJob.setAdapter(adapterJob);
+        gridViewCompany.setAdapter(adapterCompany);
       //  gridViewRecruiter.setAdapter(adapterRecruiter);
         getBasicInfo();
         // toolbar menu option
@@ -119,6 +127,7 @@ public class HomeFragment extends Fragment {
         recyclerViewViecLamMoiNhat.setAdapter(adapterViecLamMoiNhat);
         // getdata 0 : all, 1: luong cao,2: lam tu xa, 3: thuc tap, 4: moi nhat
         getData(4, page);
+        getDataTopCompany();
         loadMore();
 
         handler = new Handler();
@@ -127,14 +136,131 @@ public class HomeFragment extends Fragment {
             public void run() {
                 checkNothing();
             }
-        },3000);
+        },4000);
 
         if(MainActivity.login == 1){
             activateAfterLogin();
         }
 
+        eventJob();
+
 
         return view;
+    }
+
+    private void eventJob() {
+        gridViewJob.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (position){
+                    case 0:
+                        Intent intent = new Intent(getActivity(), KindOfJobActivity.class);
+                        intent.putExtra("kind", 0);
+                        startActivity(intent);
+                        break;
+                    case 1:
+                        Intent intent1 = new Intent(getActivity(), KindOfJobActivity.class);
+                        intent1.putExtra("kind", 1);
+                        startActivity(intent1);
+                        break;
+                    case 2:
+                        Intent intent2 = new Intent(getActivity(), KindOfJobActivity.class);
+                        intent2.putExtra("kind", 2);
+                        startActivity(intent2);
+                        break;
+                    case 3:
+                        Intent intent3 = new Intent(getActivity(), KindOfJobActivity.class);
+                        intent3.putExtra("kind", 3);
+                        startActivity(intent3);
+                        break;
+                    case 4:
+                        if(MainActivity.login == 1){
+                            Intent intent4 = new Intent(getActivity(), KindOfJobActivity.class);
+                            intent4.putExtra("kind", 4);
+                            startActivity(intent4);
+                        }else {
+                            Intent intent4 = new Intent(getActivity(), LoginActivity.class);
+                            startActivity(intent4);
+                        }
+
+                        break;
+                    case 5:
+                        if(MainActivity.login == 1){
+                            Intent intent5 = new Intent(getActivity(), KindOfJobActivity.class);
+                            intent5.putExtra("kind", 5);
+                            startActivity(intent5);
+                        }else {
+                            Intent intent4 = new Intent(getActivity(), LoginActivity.class);
+                            startActivity(intent4);
+                        }
+
+                        break;
+                    case 6:
+                        Intent intent6 = new Intent(getActivity(), KindOfJobActivity.class);
+                        intent6.putExtra("kind", 6);
+                        startActivity(intent6);
+                        break;
+                    case 7:
+                        if(MainActivity.login == 1){
+                            Intent intent7 = new Intent(getActivity(), KindOfJobActivity.class);
+                            intent7.putExtra("kind", 7);
+                            startActivity(intent7);
+                        }else {
+                            Intent intent4 = new Intent(getActivity(), LoginActivity.class);
+                            startActivity(intent4);
+                        }
+
+                        break;
+
+                }
+            }
+        });
+    }
+
+    private void getDataTopCompany() {
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, MainActivity.urlCompanyTop, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        if(response != null){
+                            for(int i=0; i < response.length(); i++){
+                                try {
+                                    JSONObject object = response.getJSONObject(i);
+                                    arrayListCompany.add(new Company(
+                                            object.getInt("id"),
+                                            object.getString("name"),
+                                            object.getString("introduction"),
+                                            object.getString("address"),
+                                            object.getInt("idarea"),
+                                            object.getInt("idowner"),
+                                            object.getString("image"),
+                                            object.getString("image_background"),
+                                            object.getString("website"),
+                                            object.getInt("number_job"),
+                                            object.getInt("status"),
+                                            object.getDouble("vido"),
+                                            object.getDouble("kinhdo")
+                                    ));
+
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            adapterCompany.notifyDataSetChanged();
+                        }else {
+                            Toast.makeText(getActivity(), "Không có công ty nào", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+        requestQueue.add(jsonArrayRequest);
     }
 
     private void getBasicInfo() {

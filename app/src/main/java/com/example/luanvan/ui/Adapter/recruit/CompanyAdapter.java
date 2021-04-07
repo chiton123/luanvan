@@ -3,6 +3,7 @@ package com.example.luanvan.ui.Adapter.recruit;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +51,7 @@ public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.ItemHold
         if(filterArraylist.size() > 0){
             final Company company = filterArraylist.get(position);
             holder.txtCompany.setText(company.getName());
-            holder.txtIntroduction.setText(company.getIntroduction());
+
             Glide.with(context).load(company.getImage()).into(holder.img);
             holder.txtNumberJob.setText("Xem " + company.getNumber_job() + " tin tuyển dụng");
             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -61,6 +62,7 @@ public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.ItemHold
                     activity.startActivity(intent);
                 }
             });
+            holder.txtIntroduction.setText(company.getIntroduction());
         }
 
 

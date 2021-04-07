@@ -97,7 +97,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/gridviewnhatuyendunghangdau"
-                    android:numColumns="5"
+                    android:numColumns="2"
+                    android:scrollbars="horizontal"
                     ></GridView>
                 <LinearLayout
                     android:layout_width="match_parent"

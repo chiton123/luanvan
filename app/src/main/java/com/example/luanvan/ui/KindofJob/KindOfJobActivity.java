@@ -51,7 +51,7 @@ public class KindOfJobActivity extends AppCompatActivity {
     KindOfJobApplyAdapter jobApplyAdapter;
     Handler handler;
     int page = 1;
-    int kind = 0;
+    int kind = 0; // // kind : 0 : thuc tap, 1: tu xa, 2: ban thoi gian, 3 toan thoi gian, 4 da ung tuyen, 5 quan tam, 6 moi nhat, 7 phu hop
     SearchView searchView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +59,7 @@ public class KindOfJobActivity extends AppCompatActivity {
         setContentView(R.layout.activity_kind_of_job);
         anhxa();
         actionBar();
-        if(kind == 5){
+        if(kind == 4){
             getDataApply(page);
         }else {
             getData(page);
@@ -76,7 +76,7 @@ public class KindOfJobActivity extends AppCompatActivity {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if(kind == 5){
+                        if(kind == 4){
                             getDataApply(++page);
                         }else {
                             getData(++page);
@@ -262,23 +262,30 @@ public class KindOfJobActivity extends AppCompatActivity {
         // 0 : all - việc làm tốt nhất, 1: luong cao,2: lam tu xa, 3: thuc tap, 4: moi nhat, 5: job_apply
         switch (kind){
             case 0:
-                getSupportActionBar().setTitle("Việc làm tốt nhất");
-                break;
-            case 1:
-                getSupportActionBar().setTitle("Việc lương cao");
-                break;
-            case 2:
-                getSupportActionBar().setTitle("Việc làm từ xa");
-                break;
-            case 3:
                 getSupportActionBar().setTitle("Việc thực tập");
                 break;
-            case 4:
-                getSupportActionBar().setTitle("Việc làm mới nhất");
+            case 1:
+                getSupportActionBar().setTitle("Việc làm từ xa");
                 break;
-            case 5:
+            case 2:
+                getSupportActionBar().setTitle("Việc làm thêm");
+                break;
+            case 3:
+                getSupportActionBar().setTitle("Việc làm toàn thời gian");
+                break;
+            case 4:
                 getSupportActionBar().setTitle("Việc đã ứng tuyển");
                 break;
+            case 5:
+                getSupportActionBar().setTitle("Việc quan tâm");
+                break;
+            case 6:
+                getSupportActionBar().setTitle("Việc mới nhất");
+                break;
+            case 7:
+                getSupportActionBar().setTitle("Việc phù hợp");
+                break;
+
         }
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -290,7 +297,7 @@ public class KindOfJobActivity extends AppCompatActivity {
     }
 
     private void anhxa() {
-        kind = getIntent().getIntExtra("thuctap",0);
+        kind = getIntent().getIntExtra("kind",0);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         arrayList = new ArrayList<>();
         job_applyArrayList = new ArrayList<>();
@@ -300,7 +307,7 @@ public class KindOfJobActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         adapter = new KindOfJobAdapter(recyclerView, this, arrayList, this,0);
         jobApplyAdapter = new KindOfJobApplyAdapter(recyclerView, this, job_applyArrayList, this, 1);
-        if(kind != 5){
+        if(kind != 4){
             recyclerView.setAdapter(adapter);
         }else {
             recyclerView.setAdapter(jobApplyAdapter); // 5: da ung tuyen
