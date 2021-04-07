@@ -11,8 +11,8 @@
         android:background="#fff"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:paddingBottom="30dp"
-        android:paddingTop="30dp"
+        android:paddingBottom="15dp"
+        android:paddingTop="15dp"
         android:layout_margin="3dp"
         >
         <FrameLayout
@@ -25,12 +25,12 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
                 >
                 <ImageView
-                    android:layout_width="80dp"
-                    android:layout_height="110dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:id="@+id/image"
                     android:src="@drawable/userprofile"
                     ></ImageView>

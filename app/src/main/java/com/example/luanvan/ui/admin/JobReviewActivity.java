@@ -63,11 +63,12 @@ public class JobReviewActivity extends AppCompatActivity {
         adapter.setLoadmore(new ILoadMore() {
             @Override
             public void onLoadMore() {
-                getData(++page);
+
                 handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        getData(++page);
                         adapter.notifyDataSetChanged();
                         adapter.setIsloaded(false);
 

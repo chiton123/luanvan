@@ -444,40 +444,40 @@ public class DetailJobActivity extends AppCompatActivity {
                             content = "Ứng viên " + MainActivity.username + " - " + job.getName();
                             // Toast.makeText(getApplicationContext(), id_application + content , Toast.LENGTH_SHORT).show();
                             postNotification(1);
-                            if(checkApplyAgain == 1){
-                                // remove job trong list đã ứng tuyển
-                                for(int i=0; i < HomeFragment.arrayListDaUngTuyen.size(); i++){
-                                    if(HomeFragment.arrayListDaUngTuyen.get(i).getId() == job_id){
-                                        HomeFragment.arrayListDaUngTuyen.remove(i);
-                                    }
-                                }
-                            }
-
-                            HomeFragment.arrayListDaUngTuyen.add(new Job_Apply(
-                                    job.getId(),
-                                    job.getName(),
-                                    job.getIdcompany(),
-                                    job.getId_recruiter(),
-                                    MainActivity.arrayListCV.get(0).getKey(),
-                                    job.getImg(),
-                                    job.getAddress(),
-                                    job.getIdtype(),
-                                    job.getIdprofession(),
-                                    job.getStart_date(),
-                                    job.getEnd_date(),
-                                    job.getSalary_min(),
-                                    job.getSalary_max(),
-                                    job.getIdarea(),
-                                    job.getExperience(),
-                                    job.getNumber(),
-                                    job.getDescription(),
-                                    job.getRequirement(),
-                                    job.getBenefit(),
-                                    job.getStatus(),
-                                    job.getCompany_name(),
-                                    job.getType_job()
-                            ));
-                            HomeFragment.adapterDaUngTuyen.notifyDataSetChanged();
+//                            if(checkApplyAgain == 1){
+//                                // remove job trong list đã ứng tuyển
+//                                for(int i=0; i < HomeFragment.arrayListDaUngTuyen.size(); i++){
+//                                    if(HomeFragment.arrayListDaUngTuyen.get(i).getId() == job_id){
+//                                        HomeFragment.arrayListDaUngTuyen.remove(i);
+//                                    }
+//                                }
+//                            }
+//
+//                            HomeFragment.arrayListDaUngTuyen.add(new Job_Apply(
+//                                    job.getId(),
+//                                    job.getName(),
+//                                    job.getIdcompany(),
+//                                    job.getId_recruiter(),
+//                                    MainActivity.arrayListCV.get(0).getKey(),
+//                                    job.getImg(),
+//                                    job.getAddress(),
+//                                    job.getIdtype(),
+//                                    job.getIdprofession(),
+//                                    job.getStart_date(),
+//                                    job.getEnd_date(),
+//                                    job.getSalary_min(),
+//                                    job.getSalary_max(),
+//                                    job.getIdarea(),
+//                                    job.getExperience(),
+//                                    job.getNumber(),
+//                                    job.getDescription(),
+//                                    job.getRequirement(),
+//                                    job.getBenefit(),
+//                                    job.getStatus(),
+//                                    job.getCompany_name(),
+//                                    job.getType_job()
+//                            ));
+//                            HomeFragment.adapterDaUngTuyen.notifyDataSetChanged();
                         }else {
                             Toast.makeText(getApplicationContext(), "Ứng tuyển thất bại", Toast.LENGTH_SHORT).show();
                         }
@@ -517,31 +517,31 @@ public class DetailJobActivity extends AppCompatActivity {
                             // Toast.makeText(getApplicationContext(), id_application + content , Toast.LENGTH_SHORT).show();
                             postNotification(1);
 
-                            HomeFragment.arrayListDaUngTuyen.add(new Job_Apply(
-                                    job.getId(),
-                                    job.getName(),
-                                    job.getIdcompany(),
-                                    job.getId_recruiter(),
-                                    MainActivity.arrayListCV.get(0).getKey(),
-                                    job.getImg(),
-                                    job.getAddress(),
-                                    job.getIdtype(),
-                                    job.getIdprofession(),
-                                    job.getStart_date(),
-                                    job.getEnd_date(),
-                                    job.getSalary_min(),
-                                    job.getSalary_max(),
-                                    job.getIdarea(),
-                                    job.getExperience(),
-                                    job.getNumber(),
-                                    job.getDescription(),
-                                    job.getRequirement(),
-                                    job.getBenefit(),
-                                    job.getStatus(),
-                                    job.getCompany_name(),
-                                    job.getType_job()
-                            ));
-                            HomeFragment.adapterDaUngTuyen.notifyDataSetChanged();
+//                            HomeFragment.arrayListDaUngTuyen.add(new Job_Apply(
+//                                    job.getId(),
+//                                    job.getName(),
+//                                    job.getIdcompany(),
+//                                    job.getId_recruiter(),
+//                                    MainActivity.arrayListCV.get(0).getKey(),
+//                                    job.getImg(),
+//                                    job.getAddress(),
+//                                    job.getIdtype(),
+//                                    job.getIdprofession(),
+//                                    job.getStart_date(),
+//                                    job.getEnd_date(),
+//                                    job.getSalary_min(),
+//                                    job.getSalary_max(),
+//                                    job.getIdarea(),
+//                                    job.getExperience(),
+//                                    job.getNumber(),
+//                                    job.getDescription(),
+//                                    job.getRequirement(),
+//                                    job.getBenefit(),
+//                                    job.getStatus(),
+//                                    job.getCompany_name(),
+//                                    job.getType_job()
+//                            ));
+//                            HomeFragment.adapterDaUngTuyen.notifyDataSetChanged();
                         }else {
                             Toast.makeText(getApplicationContext(), "Ứng tuyển thất bại", Toast.LENGTH_SHORT).show();
                         }
@@ -840,37 +840,38 @@ public class DetailJobActivity extends AppCompatActivity {
                       //  Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
                         try {
                             JSONArray jsonArray = new JSONArray(response);
-                            for(int i=0; i < jsonArray.length(); i++){
+                            for(int i=0; i < jsonArray.length(); i++) {
                                 JSONObject object = jsonArray.getJSONObject(i);
-                                HomeFragment.arrayListDaUngTuyen.add(new Job_Apply(
-                                        object.getInt("id"),
-                                        object.getString("name"),
-                                        object.getInt("idcompany"),
-                                        object.getInt("id_recruiter"),
-                                        object.getString("id_cv"),
-                                        object.getString("img"),
-                                        object.getString("area"),
-                                        object.getInt("idtype"),
-                                        object.getInt("idprofession"),
-                                        object.getString("start_date"),
-                                        object.getString("end_date"),
-                                        object.getInt("salary_min"),
-                                        object.getInt("salary_max"),
-                                        object.getInt("idarea"),
-                                        object.getString("experience"),
-                                        object.getInt("number"),
-                                        object.getString("description"),
-                                        object.getString("requirement"),
-                                        object.getString("benefit"),
-                                        object.getInt("status"),
-                                        object.getString("company_name"),
-                                        object.getString("type_job")
-                                ));
+//                                HomeFragment.arrayListDaUngTuyen.add(new Job_Apply(
+//                                        object.getInt("id"),
+//                                        object.getString("name"),
+//                                        object.getInt("idcompany"),
+//                                        object.getInt("id_recruiter"),
+//                                        object.getString("id_cv"),
+//                                        object.getString("img"),
+//                                        object.getString("area"),
+//                                        object.getInt("idtype"),
+//                                        object.getInt("idprofession"),
+//                                        object.getString("start_date"),
+//                                        object.getString("end_date"),
+//                                        object.getInt("salary_min"),
+//                                        object.getInt("salary_max"),
+//                                        object.getInt("idarea"),
+//                                        object.getString("experience"),
+//                                        object.getInt("number"),
+//                                        object.getString("description"),
+//                                        object.getString("requirement"),
+//                                        object.getString("benefit"),
+//                                        object.getInt("status"),
+//                                        object.getString("company_name"),
+//                                        object.getString("type_job")
+//                                ));
+//
+//                            }
+//                            HomeFragment.adapterDaUngTuyen.notifyDataSetChanged();
+//                            HomeFragment.layout_daungtuyen.setVisibility(View.VISIBLE);
 
                             }
-                            HomeFragment.adapterDaUngTuyen.notifyDataSetChanged();
-                            HomeFragment.layout_daungtuyen.setVisibility(View.VISIBLE);
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

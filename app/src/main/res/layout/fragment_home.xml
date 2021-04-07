@@ -81,15 +81,23 @@
                 >
                 <GridView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="500dp"
                     android:id="@+id/gridviewvieclam"
                     android:numColumns="2"
                     ></GridView>
+                <TextView
+                    android:layout_marginTop="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nhà tuyển dụng hàng đầu"
+                    android:textColor="#0B0B0B"
+                    android:textSize="16sp"
+                    ></TextView>
                 <GridView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/gridviewnhatuyendunghangdau"
-                    android:numColumns="2"
+                    android:numColumns="5"
                     ></GridView>
                 <LinearLayout
                     android:layout_width="match_parent"

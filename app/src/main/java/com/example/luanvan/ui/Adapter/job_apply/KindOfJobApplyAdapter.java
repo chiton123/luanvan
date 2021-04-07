@@ -128,11 +128,30 @@ public class KindOfJobApplyAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                         Intent intent = new Intent(context, DetailJobActivity.class);
                         // 0: từ màn hình chính, tìm kiếm, lọc chuyển qua, 1: từ notification chuyển qua
                         intent.putExtra("kind", 0);
-                        for(int i = 0; i < HomeFragment.arrayList.size(); i++){
-                            if(filterArraylist.get(position).getId() == HomeFragment.arrayList.get(i).getId()){
-                                intent.putExtra("job",HomeFragment.arrayList.get(i));
-                            }
-                        }
+                        Job job1 = new Job(
+                                job.getId(),
+                                job.getName(),
+                                job.getIdcompany(),
+                                job.getId_recruiter(),
+                                job.getImg(),
+                                job.getAddress(),
+                                job.getIdtype(),
+                                job.getIdprofession(),
+                                job.getStart_date(),
+                                job.getEnd_date(),
+                                job.getSalary_min(),
+                                job.getSalary_max(),
+                                job.getIdarea(),
+                                job.getExperience(),
+                                job.getNumber(),
+                                job.getDescription(),
+                                job.getRequirement(),
+                                job.getBenefit(),
+                                job.getStatus(),
+                                job.getCompany_name(),
+                                job.getType_job()
+                        );
+                        intent.putExtra("job", job1);
                         activity.startActivity(intent);
 
                     }

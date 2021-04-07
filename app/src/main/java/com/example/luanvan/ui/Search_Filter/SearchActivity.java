@@ -80,11 +80,12 @@ public class SearchActivity extends AppCompatActivity {
         adapter.setLoadmore(new ILoadMore() {
             @Override
             public void onLoadMore() {
-                getData(0,++page);
+
                 handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        getData(0,++page);
                         adapter.notifyDataSetChanged();
                         adapter.setIsloaded(false);
 

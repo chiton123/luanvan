@@ -27,7 +27,6 @@ import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.job.KindOfJobAdapter;
-import com.example.luanvan.ui.Adapter.job_apply.JobApplyAdapter;
 import com.example.luanvan.ui.Interface.ILoadMore;
 import com.example.luanvan.ui.Model.Job;
 import com.example.luanvan.ui.Model.Job_Apply;
@@ -39,7 +38,6 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -73,15 +71,16 @@ public class KindOfJobActivity extends AppCompatActivity {
         adapter.setLoadmore(new ILoadMore() {
             @Override
             public void onLoadMore() {
-                if(kind == 5){
-                    getDataApply(++page);
-                }else {
-                    getData(++page);
-                }
+
                 handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        if(kind == 5){
+                            getDataApply(++page);
+                        }else {
+                            getData(++page);
+                        }
                         adapter.notifyDataSetChanged();
                         adapter.setIsloaded(false);
 

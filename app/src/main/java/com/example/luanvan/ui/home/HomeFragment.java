@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,10 +33,14 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
+import com.example.luanvan.ui.Adapter.admin_a.AdminAdapter;
 import com.example.luanvan.ui.Adapter.job.JobAdapter;
-import com.example.luanvan.ui.Adapter.job_apply.JobApplyAdapter;
+import com.example.luanvan.ui.Adapter.job.KindOfJobAdapter;
+import com.example.luanvan.ui.Interface.ILoadMore;
 import com.example.luanvan.ui.KindofJob.KindOfJobActivity;
+import com.example.luanvan.ui.Model.Admin;
 import com.example.luanvan.ui.Model.Chat;
+import com.example.luanvan.ui.Model.Company;
 import com.example.luanvan.ui.Model.Job;
 import com.example.luanvan.ui.Model.Job_Apply;
 import com.example.luanvan.ui.Model.Notification;
@@ -67,12 +72,16 @@ public class HomeFragment extends Fragment {
     Toolbar toolbar;
     private HomeViewModel homeViewModel;
     RecyclerView recyclerViewViecLamMoiNhat;
-    public static JobAdapter adapterViecLamMoiNhat;
+    public static KindOfJobAdapter adapterViecLamMoiNhat;
     public static ArrayList<Job> arrayListViecLamMoiNhat;
-    public static ArrayList<Job_Apply> arrayListDaUngTuyen;
     public static TextView txtNotification, txtUnreadMessageNumber;
     CircleImageView img;
     public static LinearLayout layout_vieclammoinhat;
+    GridView gridViewJob, gridViewRecruiter;
+    ArrayList<Admin> arrayListJob;
+    ArrayList<Company> arrayListRecruiter;
+    AdminAdapter adapterJob, adapterRecruiter;
+    int page = 1;
     Handler handler;
 //    public static int check_notification = 0; // kiểm tra đã load số thông báo hay chưa
     ProgressDialog progressDialog;
@@ -84,11 +93,19 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         setHasOptionsMenu(true);
         recyclerViewViecLamMoiNhat = (RecyclerView) view.findViewById(R.id.recycleviewlammoinhat);
-        recyclerViewViecLamMoiNhat.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerViewViecLamMoiNhat.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerViewViecLamMoiNhat.setHasFixedSize(true);
         layout_vieclammoinhat = (LinearLayout) view.findViewById(R.id.layout_vieclammoinhat);
         img = (CircleImageView) view.findViewById(R.id.img);
-
+        gridViewJob = (GridView) view.findViewById(R.id.gridviewvieclam);
+        gridViewRecruiter = (GridView) view.findViewById(R.id.gridviewnhatuyendunghangdau);
+        arrayListJob = new ArrayList<>();
+        arrayListRecruiter = new ArrayList<>();
+        adapterJob = new AdminAdapter(getActivity(), arrayListJob);
+      //  adapterRecruiter = new AdminAdapter(getActivity(), arrayListRecruiter);
+        gridViewJob.setAdapter(adapterJob);
+      //  gridViewRecruiter.setAdapter(adapterRecruiter);
+        getBasicInfo();
         // toolbar menu option
 
         toolbar = (Toolbar)view.findViewById(R.id.toolbar);
@@ -98,20 +115,19 @@ public class HomeFragment extends Fragment {
         setHasOptionsMenu(true);
 
         arrayListViecLamMoiNhat = new ArrayList<>();
-        arrayListDaUngTuyen = new ArrayList<>();
-        adapterViecLamMoiNhat = new JobAdapter(getActivity(), arrayListViecLamMoiNhat, getActivity(),0);
-        // getdata 0 : all, 1: luong cao,2: lam tu xa, 3: thuc tap, 4: moi nhat
-        getData(4);
-
+        adapterViecLamMoiNhat = new KindOfJobAdapter(recyclerViewViecLamMoiNhat, getActivity(), arrayListViecLamMoiNhat, getActivity(),0);
         recyclerViewViecLamMoiNhat.setAdapter(adapterViecLamMoiNhat);
-        eventXemtatca();
+        // getdata 0 : all, 1: luong cao,2: lam tu xa, 3: thuc tap, 4: moi nhat
+        getData(4, page);
+        loadMore();
+
         handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 checkNothing();
             }
-        },6000);
+        },3000);
 
         if(MainActivity.login == 1){
             activateAfterLogin();
@@ -120,6 +136,41 @@ public class HomeFragment extends Fragment {
 
         return view;
     }
+
+    private void getBasicInfo() {
+        arrayListJob.add(new Admin(0, "Việc thực tập", R.drawable.m_intern));
+        arrayListJob.add(new Admin(1,"Việc làm từ xa", R.drawable.m_remotejob));
+        arrayListJob.add(new Admin(2, "Việc làm thêm", R.drawable.m_parttimejob));
+        arrayListJob.add(new Admin(3, "Việc toàn thời gian", R.drawable.m_fulltimejob));
+        arrayListJob.add(new Admin(4, "Việc đã ứng tuyển", R.drawable.m_appliedjob));
+        arrayListJob.add(new Admin(5, "Việc quan tâm", R.drawable.m_lovejob));
+        arrayListJob.add(new Admin(6, "Việc mới nhất", R.drawable.m_newjob));
+        arrayListJob.add(new Admin(7, "Việc phù hợp", R.drawable.m_suitablejob));
+
+        adapterJob.notifyDataSetChanged();
+
+
+
+
+    }
+
+    private void loadMore() {
+        adapterViecLamMoiNhat.setLoadmore(new ILoadMore() {
+            @Override
+            public void onLoadMore() {
+                handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        getData(4,++page);
+                        adapterViecLamMoiNhat.setIsloaded(false);
+                    }
+                },2000);
+
+            }
+        });
+    }
+
     public void checkNothing(){
         if(arrayListViecLamMoiNhat.size() == 0){
             layout_vieclammoinhat.setVisibility(View.GONE);
@@ -349,75 +400,61 @@ public class HomeFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    // 3: thuc tap
-    private void eventXemtatca() {
-        // 0 : all, 1: luong cao,2: lam tu xa, 3: thuc tap, 4: moi nhat, 5: job_apply
-        txtViecLamMoiNhat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), KindOfJobActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("thuctap", 4);
-                startActivity(intent);
-            }
-        });
 
-    }
-
-    private void getData(final int kind) {
+    private void getData(final int kind, int page) {
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlJobHome,
+        String url = MainActivity.urljob1 + String.valueOf(page);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                       //  Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_SHORT).show();
-                        try {
-                            JSONArray jsonArray = new JSONArray(response);
-                            for(int i=0; i < jsonArray.length(); i++){
-                                JSONObject object = jsonArray.getJSONObject(i);
-                                // kiểm tra xem có hết hạn nộp hay không
-                                int status = object.getInt("status");
-                                SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-                                Date date = null;
+                        if(response != null){
+                            try {
+                                JSONArray jsonArray = new JSONArray(response);
+                                for(int i=0; i < jsonArray.length(); i++){
+                                    JSONObject object = jsonArray.getJSONObject(i);
+                                    // kiểm tra xem có hết hạn nộp hay không
+                                    int status = object.getInt("status");
+                                    SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+                                    Date date = null;
 
-                                try {
-                                    date = fmt.parse(object.getString("end_date"));
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
+                                    try {
+                                        date = fmt.parse(object.getString("end_date"));
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
+                                    arrayListViecLamMoiNhat.add(new Job(
+                                            object.getInt("id"),
+                                            object.getString("name"),
+                                            object.getInt("idcompany"),
+                                            object.getInt("id_recruiter"),
+                                            object.getString("img"),
+                                            object.getString("area"),
+                                            object.getInt("idtype"),
+                                            object.getInt("idprofession"),
+                                            object.getString("start_date"),
+                                            object.getString("end_date"),
+                                            object.getInt("salary_min"),
+                                            object.getInt("salary_max"),
+                                            object.getInt("idarea"),
+                                            object.getString("experience"),
+                                            object.getInt("number"),
+                                            object.getString("description"),
+                                            object.getString("requirement"),
+                                            object.getString("benefit"),
+                                            object.getInt("status"),
+                                            object.getString("company_name"),
+                                            object.getString("type_job")
+                                    ));
+                                    adapterViecLamMoiNhat.notifyDataSetChanged();
                                 }
-                                arrayListViecLamMoiNhat.add(new Job(
-                                        object.getInt("id"),
-                                        object.getString("name"),
-                                        object.getInt("idcompany"),
-                                        object.getInt("id_recruiter"),
-                                        object.getString("img"),
-                                        object.getString("area"),
-                                        object.getInt("idtype"),
-                                        object.getInt("idprofession"),
-                                        object.getString("start_date"),
-                                        object.getString("end_date"),
-                                        object.getInt("salary_min"),
-                                        object.getInt("salary_max"),
-                                        object.getInt("idarea"),
-                                        object.getString("experience"),
-                                        object.getInt("number"),
-                                        object.getString("description"),
-                                        object.getString("requirement"),
-                                        object.getString("benefit"),
-                                        object.getInt("status"),
-                                        object.getString("company_name"),
-                                        object.getString("type_job")
-                                ));
-                                adapterViecLamMoiNhat.notifyDataSetChanged();
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-
-
-
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
+
                     }
                 },
                 new Response.ErrorListener() {

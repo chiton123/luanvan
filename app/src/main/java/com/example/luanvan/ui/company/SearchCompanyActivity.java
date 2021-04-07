@@ -80,6 +80,7 @@ public class SearchCompanyActivity extends AppCompatActivity {
                                             object.getInt("idarea"),
                                             object.getInt("idowner"),
                                             object.getString("image"),
+                                            object.getString("image_background"),
                                             object.getString("website"),
                                             object.getInt("number_job"),
                                             object.getInt("status"),

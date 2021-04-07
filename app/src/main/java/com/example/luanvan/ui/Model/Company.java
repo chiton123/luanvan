@@ -10,6 +10,7 @@ public class Company implements Serializable {
     private int idarea;
     private int idrecruiter;
     private String image;
+    private String image_backgroud;
     private String website;
     private int number_job;
     private int status;
@@ -17,7 +18,7 @@ public class Company implements Serializable {
     private double kinhdo;
 
     public Company(int id, String name, String introduction, String address, int idarea, int idrecruiter,
-                   String image, String website, int number_job, int status, double vido, double kinhdo) {
+                   String image, String image_backgroud, String website, int number_job, int status, double vido, double kinhdo) {
         this.id = id;
         this.name = name;
         this.introduction = introduction;
@@ -25,11 +26,20 @@ public class Company implements Serializable {
         this.idarea = idarea;
         this.idrecruiter = idrecruiter;
         this.image = image;
+        this.image_backgroud = image_backgroud;
         this.website = website;
         this.number_job = number_job;
         this.status = status;
         this.vido = vido;
         this.kinhdo = kinhdo;
+    }
+
+    public String getImage_backgroud() {
+        return image_backgroud;
+    }
+
+    public void setImage_backgroud(String image_backgroud) {
+        this.image_backgroud = image_backgroud;
     }
 
     public int getNumber_job() {

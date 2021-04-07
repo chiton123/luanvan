@@ -7,6 +7,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -25,7 +26,7 @@ public class CompanyActivity extends AppCompatActivity {
     ViewPager viewPager;
     TabLayout tabLayout;
     ViewPageAdapter adapter;
-    ImageView img;
+    ImageView img, img_background;
     TextView txtCompanyName;
     public static Company company;
     CollapsingToolbarLayout collapsingToolbarLayout;
@@ -46,6 +47,8 @@ public class CompanyActivity extends AppCompatActivity {
         if(company != null){
             txtCompanyName.setText(company.getName());
             Glide.with(getApplicationContext()).load(company.getImage()).into(img);
+            Glide.with(getApplicationContext()).load(company.getImage_backgroud()).into(img_background);
+
         }
 
     }
@@ -95,6 +98,6 @@ public class CompanyActivity extends AppCompatActivity {
         txtCompanyName = (TextView) findViewById(R.id.tencongty);
         img = (ImageView) findViewById(R.id.img);
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbarcollapse);
-
+        img_background = (ImageView) findViewById(R.id.img_background);
     }
 }
