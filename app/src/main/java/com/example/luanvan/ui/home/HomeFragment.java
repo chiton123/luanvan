@@ -66,16 +66,13 @@ public class HomeFragment extends Fragment {
     // getdata 0 : all, 1: luong cao,2: lam tu xa, 3: thuc tap, 4: moi nhat
     Toolbar toolbar;
     private HomeViewModel homeViewModel;
-    RecyclerView recyclerView, recyclerViewthuctap, recyclerViewLuongCao, recyclerViewViecLamTuXa,recyclerViewViecLamMoiNhat, recyclerViewDaUngTuyen;
-    public static JobAdapter jobAdapter, adapterThuctap, adapterLuongCao, adapterViecLamTuXa, adapterViecLamMoiNhat;
-    public static JobApplyAdapter adapterDaUngTuyen;
-    public static ArrayList<Job> arrayList, arrayListThuctap, arrayListLuongCao, arrayListViecLamTuXa, arrayListViecLamMoiNhat;
+    RecyclerView recyclerViewViecLamMoiNhat;
+    public static JobAdapter adapterViecLamMoiNhat;
+    public static ArrayList<Job> arrayListViecLamMoiNhat;
     public static ArrayList<Job_Apply> arrayListDaUngTuyen;
-    TextView txtthuctap, txtviectotnhat, txtLuongCao, txtViecLamTuXa, txtViecLamMoiNhat, txtDaUngTuyen, txtUserName;
     public static TextView txtNotification, txtUnreadMessageNumber;
     CircleImageView img;
-    public static LinearLayout layout_daungtuyen, layout_vieclamtotnhat, layout_viecthuctap, layout_viecluongcao, layout_vieclamtuxa, layout_vieclammoinhat,
-    layout_user;
+    public static LinearLayout layout_vieclammoinhat;
     Handler handler;
 //    public static int check_notification = 0; // kiểm tra đã load số thông báo hay chưa
     ProgressDialog progressDialog;
@@ -86,31 +83,10 @@ public class HomeFragment extends Fragment {
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         setHasOptionsMenu(true);
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
-        recyclerViewthuctap = (RecyclerView) view.findViewById(R.id.recycleviewthuctap);
-        recyclerViewLuongCao = (RecyclerView) view.findViewById(R.id.recycleviewluongcao);
-        recyclerViewViecLamTuXa = (RecyclerView) view.findViewById(R.id.recycleviewlamtuxa);
         recyclerViewViecLamMoiNhat = (RecyclerView) view.findViewById(R.id.recycleviewlammoinhat);
-        recyclerViewDaUngTuyen = (RecyclerView) view.findViewById(R.id.recycleviewdaungtuyen);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        recyclerViewthuctap.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        recyclerViewLuongCao.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        recyclerViewViecLamTuXa.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewViecLamMoiNhat.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        recyclerViewDaUngTuyen.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        recyclerView.setHasFixedSize(true);
-        recyclerViewthuctap.setHasFixedSize(true);
-        recyclerViewLuongCao.setHasFixedSize(true);
-        recyclerViewViecLamTuXa.setHasFixedSize(true);
         recyclerViewViecLamMoiNhat.setHasFixedSize(true);
-        recyclerViewDaUngTuyen.setHasFixedSize(true);
-        layout_daungtuyen = (LinearLayout) view.findViewById(R.id.layout_daungtuyen);
         layout_vieclammoinhat = (LinearLayout) view.findViewById(R.id.layout_vieclammoinhat);
-        layout_vieclamtotnhat = (LinearLayout) view.findViewById(R.id.layout_vieclamtotnhat);
-        layout_vieclamtuxa = (LinearLayout) view.findViewById(R.id.layout_vieclamtuxa);
-        layout_viecluongcao = (LinearLayout) view.findViewById(R.id.layout_viecluongcao);
-        layout_viecthuctap = (LinearLayout) view.findViewById(R.id.layout_viecthuctap);
-        layout_user = (LinearLayout) view.findViewById(R.id.layout_user);
         img = (CircleImageView) view.findViewById(R.id.img);
 
         // toolbar menu option
@@ -121,40 +97,13 @@ public class HomeFragment extends Fragment {
         toolbar.inflateMenu(R.menu.menu_main);
         setHasOptionsMenu(true);
 
-        txtthuctap = (TextView) view.findViewById(R.id.txtviecthuctap);
-        txtviectotnhat = (TextView) view.findViewById(R.id.txtvieclamtotnhat);
-        txtLuongCao = (TextView) view.findViewById(R.id.txtviecluongcao);
-        txtViecLamTuXa = (TextView) view.findViewById(R.id.txtvieclamtuxa);
-        txtViecLamMoiNhat = (TextView) view.findViewById(R.id.txtvieclammoinhat);
-        txtDaUngTuyen = (TextView) view.findViewById(R.id.txtviecdaungtuyen);
-        txtUserName = (TextView) view.findViewById(R.id.txtusername);
-        arrayList = new ArrayList<>();
-        arrayListThuctap = new ArrayList<>();
-        arrayListLuongCao = new ArrayList<>();
-        arrayListViecLamTuXa = new ArrayList<>();
         arrayListViecLamMoiNhat = new ArrayList<>();
         arrayListDaUngTuyen = new ArrayList<>();
-        jobAdapter = new JobAdapter(getActivity(), arrayList, getActivity(),0);
-        adapterThuctap = new JobAdapter(getActivity(), arrayListThuctap, getActivity(),0);
-        adapterLuongCao = new JobAdapter(getActivity(), arrayListLuongCao, getActivity(),0);
-        adapterViecLamTuXa = new JobAdapter(getActivity(), arrayListViecLamTuXa, getActivity(),0);
         adapterViecLamMoiNhat = new JobAdapter(getActivity(), arrayListViecLamMoiNhat, getActivity(),0);
-        adapterDaUngTuyen = new JobApplyAdapter(getActivity(), arrayListDaUngTuyen, getActivity(), 1);
-        // tất cả job
-        getData(0);
         // getdata 0 : all, 1: luong cao,2: lam tu xa, 3: thuc tap, 4: moi nhat
-        // job thực tập
-        getData(3);
-        getData(1);
-        getData(2);
         getData(4);
 
-        recyclerView.setAdapter(jobAdapter);
-        recyclerViewthuctap.setAdapter(adapterThuctap);
-        recyclerViewLuongCao.setAdapter(adapterLuongCao);
-        recyclerViewViecLamTuXa.setAdapter(adapterViecLamTuXa);
         recyclerViewViecLamMoiNhat.setAdapter(adapterViecLamMoiNhat);
-        recyclerViewDaUngTuyen.setAdapter(adapterDaUngTuyen);
         eventXemtatca();
         handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -172,30 +121,10 @@ public class HomeFragment extends Fragment {
         return view;
     }
     public void checkNothing(){
-        if(arrayList.size() == 0){
-            layout_vieclamtotnhat.setVisibility(View.GONE);
-        }else {
-            layout_vieclamtotnhat.setVisibility(View.VISIBLE);
-        }
         if(arrayListViecLamMoiNhat.size() == 0){
             layout_vieclammoinhat.setVisibility(View.GONE);
         }else {
             layout_vieclammoinhat.setVisibility(View.VISIBLE);
-        }
-        if(arrayListViecLamTuXa.size() == 0){
-            layout_vieclamtuxa.setVisibility(View.GONE);
-        }else {
-            layout_vieclamtuxa.setVisibility(View.VISIBLE);
-        }
-        if(arrayListLuongCao.size() == 0){
-            layout_viecluongcao.setVisibility(View.GONE);
-        }else {
-            layout_viecluongcao.setVisibility(View.VISIBLE);
-        }
-        if(arrayListThuctap.size() == 0){
-            layout_viecthuctap.setVisibility(View.GONE);
-        }else {
-            layout_viecthuctap.setVisibility(View.VISIBLE);
         }
 
     }
@@ -208,16 +137,10 @@ public class HomeFragment extends Fragment {
     }
     public void activateAfterLogin(){
         setNotificationAndChat();
-        getDataApplied();
-        layout_daungtuyen.setVisibility(View.VISIBLE);
         toolbar.setTitle("");
-        layout_user.setVisibility(View.VISIBLE);
-        txtUserName.setText(MainActivity.user.getName());
         MainActivity.mUserData.child(MainActivity.uid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-             //   Toast.makeText(getActivity(), snapshot.toString(), Toast.LENGTH_SHORT).show();
-//                UserF userF = snapshot.getValue(UserF.class);
                 final String imgURL = snapshot.child("imageURL").getValue(String.class);
                 if(imgURL.equals("default")){
                     img.setImageResource(R.drawable.user1);
@@ -429,33 +352,6 @@ public class HomeFragment extends Fragment {
     // 3: thuc tap
     private void eventXemtatca() {
         // 0 : all, 1: luong cao,2: lam tu xa, 3: thuc tap, 4: moi nhat, 5: job_apply
-        txtthuctap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), KindOfJobActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("thuctap", 3);
-                startActivity(intent);
-            }
-        });
-        txtviectotnhat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), KindOfJobActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("thuctap", 0);
-                startActivity(intent);
-            }
-        });
-        txtLuongCao.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), KindOfJobActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("thuctap", 1);
-                startActivity(intent);
-            }
-        });
         txtViecLamMoiNhat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -465,28 +361,8 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        txtViecLamTuXa.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), KindOfJobActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("thuctap", 2);
-                startActivity(intent);
-            }
-        });
-        txtDaUngTuyen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), KindOfJobActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("thuctap", 5);
-                startActivity(intent);
-            }
-        });
 
     }
-
-
 
     private void getData(final int kind) {
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
@@ -509,135 +385,34 @@ public class HomeFragment extends Fragment {
                                 } catch (ParseException e) {
                                     e.printStackTrace();
                                 }
-                                if(kind == 0){
-                                    arrayList.add(new Job(
-                                            object.getInt("id"),
-                                            object.getString("name"),
-                                            object.getInt("idcompany"),
-                                            object.getInt("id_recruiter"),
-                                            object.getString("img"),
-                                            object.getString("area"),
-                                            object.getInt("idtype"),
-                                            object.getInt("idprofession"),
-                                            object.getString("start_date"),
-                                            object.getString("end_date"),
-                                            object.getInt("salary_min"),
-                                            object.getInt("salary_max"),
-                                            object.getInt("idarea"),
-                                            object.getString("experience"),
-                                            object.getInt("number"),
-                                            object.getString("description"),
-                                            object.getString("requirement"),
-                                            object.getString("benefit"),
-                                            object.getInt("status"),
-                                            object.getString("company_name"),
-                                            object.getString("type_job")
-                                    ));
-                                    jobAdapter.notifyDataSetChanged();
-                                }else if(kind == 3){
-                                    arrayListThuctap.add(new Job(
-                                            object.getInt("id"),
-                                            object.getString("name"),
-                                            object.getInt("idcompany"),
-                                            object.getInt("id_recruiter"),
-                                            object.getString("img"),
-                                            object.getString("area"),
-                                            object.getInt("idtype"),
-                                            object.getInt("idprofession"),
-                                            object.getString("start_date"),
-                                            object.getString("end_date"),
-                                            object.getInt("salary_min"),
-                                            object.getInt("salary_max"),
-                                            object.getInt("idarea"),
-                                            object.getString("experience"),
-                                            object.getInt("number"),
-                                            object.getString("description"),
-                                            object.getString("requirement"),
-                                            object.getString("benefit"),
-                                            object.getInt("status"),
-                                            object.getString("company_name"),
-                                            object.getString("type_job")
-                                    ));
-                                    adapterThuctap.notifyDataSetChanged();
-                                }else if(kind == 1){
-                                    arrayListLuongCao.add(new Job(
-                                            object.getInt("id"),
-                                            object.getString("name"),
-                                            object.getInt("idcompany"),
-                                            object.getInt("id_recruiter"),
-                                            object.getString("img"),
-                                            object.getString("area"),
-                                            object.getInt("idtype"),
-                                            object.getInt("idprofession"),
-                                            object.getString("start_date"),
-                                            object.getString("end_date"),
-                                            object.getInt("salary_min"),
-                                            object.getInt("salary_max"),
-                                            object.getInt("idarea"),
-                                            object.getString("experience"),
-                                            object.getInt("number"),
-                                            object.getString("description"),
-                                            object.getString("requirement"),
-                                            object.getString("benefit"),
-                                            object.getInt("status"),
-                                            object.getString("company_name"),
-                                            object.getString("type_job")
-                                    ));
-                                    adapterLuongCao.notifyDataSetChanged();
-                                } else if(kind == 2){
-                                    arrayListViecLamTuXa.add(new Job(
-                                            object.getInt("id"),
-                                            object.getString("name"),
-                                            object.getInt("idcompany"),
-                                            object.getInt("id_recruiter"),
-                                            object.getString("img"),
-                                            object.getString("area"),
-                                            object.getInt("idtype"),
-                                            object.getInt("idprofession"),
-                                            object.getString("start_date"),
-                                            object.getString("end_date"),
-                                            object.getInt("salary_min"),
-                                            object.getInt("salary_max"),
-                                            object.getInt("idarea"),
-                                            object.getString("experience"),
-                                            object.getInt("number"),
-                                            object.getString("description"),
-                                            object.getString("requirement"),
-                                            object.getString("benefit"),
-                                            object.getInt("status"),
-                                            object.getString("company_name"),
-                                            object.getString("type_job")
-                                    ));
-                                    adapterViecLamTuXa.notifyDataSetChanged();
-                                }else if(kind == 4){
-                                    arrayListViecLamMoiNhat.add(new Job(
-                                            object.getInt("id"),
-                                            object.getString("name"),
-                                            object.getInt("idcompany"),
-                                            object.getInt("id_recruiter"),
-                                            object.getString("img"),
-                                            object.getString("area"),
-                                            object.getInt("idtype"),
-                                            object.getInt("idprofession"),
-                                            object.getString("start_date"),
-                                            object.getString("end_date"),
-                                            object.getInt("salary_min"),
-                                            object.getInt("salary_max"),
-                                            object.getInt("idarea"),
-                                            object.getString("experience"),
-                                            object.getInt("number"),
-                                            object.getString("description"),
-                                            object.getString("requirement"),
-                                            object.getString("benefit"),
-                                            object.getInt("status"),
-                                            object.getString("company_name"),
-                                            object.getString("type_job")
-                                    ));
-                                    adapterViecLamMoiNhat.notifyDataSetChanged();
-                                }
-
-
+                                arrayListViecLamMoiNhat.add(new Job(
+                                        object.getInt("id"),
+                                        object.getString("name"),
+                                        object.getInt("idcompany"),
+                                        object.getInt("id_recruiter"),
+                                        object.getString("img"),
+                                        object.getString("area"),
+                                        object.getInt("idtype"),
+                                        object.getInt("idprofession"),
+                                        object.getString("start_date"),
+                                        object.getString("end_date"),
+                                        object.getInt("salary_min"),
+                                        object.getInt("salary_max"),
+                                        object.getInt("idarea"),
+                                        object.getString("experience"),
+                                        object.getInt("number"),
+                                        object.getString("description"),
+                                        object.getString("requirement"),
+                                        object.getString("benefit"),
+                                        object.getInt("status"),
+                                        object.getString("company_name"),
+                                        object.getString("type_job")
+                                ));
+                                adapterViecLamMoiNhat.notifyDataSetChanged();
                             }
+
+
+
 
 
                         } catch (JSONException e) {
@@ -661,64 +436,5 @@ public class HomeFragment extends Fragment {
         requestQueue.add(stringRequest);
 
     }
-    private void getDataApplied() {
-        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlJobApply,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONArray jsonArray = new JSONArray(response);
-                            for(int i=0; i < jsonArray.length(); i++){
-                                JSONObject object = jsonArray.getJSONObject(i);
-                                arrayListDaUngTuyen.add(new Job_Apply(
-                                        object.getInt("id"),
-                                        object.getString("name"),
-                                        object.getInt("idcompany"),
-                                        object.getInt("id_recruiter"),
-                                        object.getString("id_cv"),
-                                        object.getString("img"),
-                                        object.getString("area"),
-                                        object.getInt("idtype"),
-                                        object.getInt("idprofession"),
-                                        object.getString("start_date"),
-                                        object.getString("end_date"),
-                                        object.getInt("salary_min"),
-                                        object.getInt("salary_max"),
-                                        object.getInt("idarea"),
-                                        object.getString("experience"),
-                                        object.getInt("number"),
-                                        object.getString("description"),
-                                        object.getString("requirement"),
-                                        object.getString("benefit"),
-                                        object.getInt("status"),
-                                        object.getString("company_name"),
-                                        object.getString("type_job")
-                                ));
 
-                            }
-                            adapterDaUngTuyen.notifyDataSetChanged();
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
-                    }
-                }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> map = new HashMap<>();
-                map.put("iduser", String.valueOf(MainActivity.iduser));
-                return map;
-            }
-        };
-        requestQueue.add(stringRequest);
-
-    }
 }

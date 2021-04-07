@@ -79,226 +79,40 @@
                 android:padding="5dp"
                 android:orientation="vertical"
                 >
+                <GridView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/gridviewvieclam"
+                    android:numColumns="2"
+                    ></GridView>
+                <GridView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/gridviewnhatuyendunghangdau"
+                    android:numColumns="2"
+                    ></GridView>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
+                    android:id="@+id/layout_vieclammoinhat"
                     >
-                    <LinearLayout
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Việc làm mới nhất"
+                        android:textColor="#0B0B0B"
+                        android:textSize="16sp"
+                        ></TextView>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_marginTop="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:id="@+id/layout_vieclamtotnhat"
-                        >
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            >
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Việc làm tốt nhất"
-                                android:textColor="#0B0B0B"
-                                android:textSize="16sp"
-                                ></TextView>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Xem tất cả"
-                                android:layout_marginLeft="70dp"
-                                android:id="@+id/txtvieclamtotnhat"
-                                android:textColor="#066C0B"
-                                android:textSize="16sp"
-                                ></TextView>
-                        </LinearLayout>
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/recycleview"
-                            ></androidx.recyclerview.widget.RecyclerView>
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:id="@+id/layout_viecthuctap"
-                        >
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            >
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Việc thực tập"
-                                android:textColor="#0B0B0B"
-                                android:textSize="16sp"
-                                ></TextView>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Xem tất cả"
-                                android:layout_marginLeft="70dp"
-                                android:id="@+id/txtviecthuctap"
-                                android:textColor="#066C0B"
-                                android:textSize="16sp"
-                                ></TextView>
-                        </LinearLayout>
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/recycleviewthuctap"
-                            ></androidx.recyclerview.widget.RecyclerView>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:id="@+id/layout_viecluongcao"
-                        >
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            >
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Việc lương cao"
-                                android:textColor="#0B0B0B"
-                                android:textSize="16sp"
-                                ></TextView>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Xem tất cả"
-                                android:layout_marginLeft="70dp"
-                                android:id="@+id/txtviecluongcao"
-                                android:textColor="#066C0B"
-                                android:textSize="16sp"
-                                ></TextView>
-                        </LinearLayout>
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/recycleviewluongcao"
-                            ></androidx.recyclerview.widget.RecyclerView>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:id="@+id/layout_vieclamtuxa"
-                        >
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            >
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Việc làm từ xa"
-                                android:textColor="#0B0B0B"
-                                android:textSize="16sp"
-                                ></TextView>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Xem tất cả"
-                                android:layout_marginLeft="70dp"
-                                android:id="@+id/txtvieclamtuxa"
-                                android:textColor="#066C0B"
-                                android:textSize="16sp"
-                                ></TextView>
-                        </LinearLayout>
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/recycleviewlamtuxa"
-                            ></androidx.recyclerview.widget.RecyclerView>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:id="@+id/layout_vieclammoinhat"
-                        >
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            >
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Việc làm mới nhất"
-                                android:textColor="#0B0B0B"
-                                android:textSize="16sp"
-                                ></TextView>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Xem tất cả"
-                                android:layout_marginLeft="70dp"
-                                android:id="@+id/txtvieclammoinhat"
-                                android:textColor="#066C0B"
-                                android:textSize="16sp"
-                                ></TextView>
-                        </LinearLayout>
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/recycleviewlammoinhat"
-                            ></androidx.recyclerview.widget.RecyclerView>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:id="@+id/layout_daungtuyen"
-                        android:visibility="gone"
-                        >
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            >
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Việc đã ứng tuyển"
-                                android:textColor="#0B0B0B"
-                                android:textSize="16sp"
-                                ></TextView>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Xem tất cả"
-                                android:layout_marginLeft="70dp"
-                                android:id="@+id/txtviecdaungtuyen"
-                                android:textColor="#066C0B"
-                                android:textSize="16sp"
-                                ></TextView>
-                        </LinearLayout>
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/recycleviewdaungtuyen"
-                            ></androidx.recyclerview.widget.RecyclerView>
-                    </LinearLayout>
-
-
-
+                        android:id="@+id/recycleviewlammoinhat"
+                        ></androidx.recyclerview.widget.RecyclerView>
                 </LinearLayout>
+
+
 
             </LinearLayout>
 
