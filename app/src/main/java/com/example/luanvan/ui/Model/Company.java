@@ -12,13 +12,14 @@ public class Company implements Serializable {
     private String image;
     private String image_backgroud;
     private String website;
+    private String size;
     private int number_job;
     private int status;
     private double vido;
     private double kinhdo;
 
     public Company(int id, String name, String introduction, String address, int idarea, int idrecruiter,
-                   String image, String image_backgroud, String website, int number_job, int status, double vido, double kinhdo) {
+                   String image, String image_backgroud, String website, String size, int number_job, int status, double vido, double kinhdo) {
         this.id = id;
         this.name = name;
         this.introduction = introduction;
@@ -28,10 +29,19 @@ public class Company implements Serializable {
         this.image = image;
         this.image_backgroud = image_backgroud;
         this.website = website;
+        this.size = size;
         this.number_job = number_job;
         this.status = status;
         this.vido = vido;
         this.kinhdo = kinhdo;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
     }
 
     public String getImage_backgroud() {

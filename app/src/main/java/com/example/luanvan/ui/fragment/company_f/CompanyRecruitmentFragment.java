@@ -50,6 +50,7 @@ public class CompanyRecruitmentFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_company_recruitment, container, false);
+        loading();
         recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         arrayList = new ArrayList<>();
@@ -69,7 +70,13 @@ public class CompanyRecruitmentFragment extends Fragment {
 
         return view;
     }
-
+    void loading(){
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Loading");
+        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
+    }
     public void checkNothing(){
         if(arrayList.size() == 0){
             layout_nothing.setVisibility(View.VISIBLE);

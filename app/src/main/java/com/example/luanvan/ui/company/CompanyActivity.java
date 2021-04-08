@@ -27,7 +27,7 @@ public class CompanyActivity extends AppCompatActivity {
     TabLayout tabLayout;
     ViewPageAdapter adapter;
     ImageView img, img_background;
-    TextView txtCompanyName;
+    TextView txtCompanyName, txtSize;
     public static Company company;
     CollapsingToolbarLayout collapsingToolbarLayout;
     @Override
@@ -48,6 +48,7 @@ public class CompanyActivity extends AppCompatActivity {
             txtCompanyName.setText(company.getName());
             Glide.with(getApplicationContext()).load(company.getImage()).into(img);
             Glide.with(getApplicationContext()).load(company.getImage_backgroud()).into(img_background);
+            txtSize.setText(company.getSize());
 
         }
 
@@ -99,5 +100,6 @@ public class CompanyActivity extends AppCompatActivity {
         img = (ImageView) findViewById(R.id.img);
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbarcollapse);
         img_background = (ImageView) findViewById(R.id.img_background);
+        txtSize = (TextView) findViewById(R.id.txtsize);
     }
 }
