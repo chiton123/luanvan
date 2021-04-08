@@ -2,6 +2,7 @@ package com.example.luanvan.ui.Adapter.job;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.luanvan.R;
+import com.example.luanvan.ui.DetailedJob.DetailJobActivity;
 import com.example.luanvan.ui.Model.Job;
 
 import java.text.DecimalFormat;
@@ -34,7 +36,7 @@ public class CompanyJobAdapter extends RecyclerView.Adapter<CompanyJobAdapter.It
     @NonNull
     @Override
     public ItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.dong_viec_lam_cung_cong_ty, null);
+        View view = LayoutInflater.from(activity).inflate(R.layout.dong_viec_lam_cung_cong_ty, parent, false);
         ItemHolder itemHolder = new ItemHolder(view);
         return itemHolder;
     }
@@ -42,7 +44,7 @@ public class CompanyJobAdapter extends RecyclerView.Adapter<CompanyJobAdapter.It
     @Override
     public void onBindViewHolder(@NonNull ItemHolder holder, int position) {
         if(arrayList.size() > 0){
-            Job job = arrayList.get(position);
+            final Job job = arrayList.get(position);
             holder.txtJob.setText(job.getName());
             holder.txtArea.setText(job.getArea());
             String ngayketthuc = job.getEnd_date();
@@ -73,9 +75,20 @@ public class CompanyJobAdapter extends RecyclerView.Adapter<CompanyJobAdapter.It
                     break;
 
             }
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, DetailJobActivity.class);
+                    // 0: từ màn hình chính, tìm kiếm, lọc chuyển qua, công ty, 1: từ notification chuyển qua
+                    intent.putExtra("kind", 0);
+                    intent.putExtra("job", job);
+                    activity.startActivity(intent);
+                }
+            });
 
 
         }
+
     }
 
     @Override

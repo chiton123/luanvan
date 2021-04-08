@@ -1,14 +1,17 @@
 package com.example.luanvan.ui.fragment.company_f;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -40,19 +43,42 @@ public class CompanyRecruitmentFragment extends Fragment {
     RecyclerView recyclerView;
     ArrayList<Job> arrayList;
     CompanyJobAdapter adapter;
+    LinearLayout layout, layout_nothing;
+    ProgressDialog progressDialog;
+    Handler handler;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_company_recruitment, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
-        recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         arrayList = new ArrayList<>();
         adapter = new CompanyJobAdapter(getActivity(), arrayList, getActivity());
         recyclerView.setAdapter(adapter);
+        layout = (LinearLayout) view.findViewById(R.id.layout);
+        layout_nothing = (LinearLayout) view.findViewById(R.id.layout_nothing);
         getData();
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.dismiss();
+                checkNothing();
+            }
+        },2000);
 
         return view;
+    }
+
+    public void checkNothing(){
+        if(arrayList.size() == 0){
+            layout_nothing.setVisibility(View.VISIBLE);
+            layout.setVisibility(View.GONE);
+        }else {
+            layout_nothing.setVisibility(View.GONE);
+            layout.setVisibility(View.VISIBLE);
+        }
+
     }
 
     private void getData() {
@@ -91,11 +117,11 @@ public class CompanyRecruitmentFragment extends Fragment {
                                             object.getString("company_name"),
                                             object.getString("type_job")
                                     ));
-                                    adapter.notifyDataSetChanged();
+
 
 
                                 }
-
+                                adapter.notifyDataSetChanged();
 
                             } catch (JSONException  e) {
                                 e.printStackTrace();

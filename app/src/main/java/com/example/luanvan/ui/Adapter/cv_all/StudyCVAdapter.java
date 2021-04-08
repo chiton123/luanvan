@@ -40,7 +40,7 @@ public class StudyCVAdapter extends RecyclerView.Adapter<StudyCVAdapter.ItemHold
     @NonNull
     @Override
     public ItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.dong_study, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.dong_study, parent, false);
         ItemHolder itemHolder = new ItemHolder(view);
         return itemHolder;
     }

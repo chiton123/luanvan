@@ -57,7 +57,7 @@ public class ExperienceAdapter extends RecyclerView.Adapter<ExperienceAdapter.It
     @NonNull
     @Override
     public ItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.dong_experience, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.dong_experience, parent, false);
         ItemHolder itemHolder = new ItemHolder(view);
         return itemHolder;
     }

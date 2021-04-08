@@ -36,7 +36,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ItemtHol
     @NonNull
     @Override
     public ItemtHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.dong_profile, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.dong_profile, parent, false);
         ItemtHolder itemtHolder = new ItemtHolder(view);
         return itemtHolder;
     }

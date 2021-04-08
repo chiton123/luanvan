@@ -41,7 +41,7 @@ public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.ItemHold
     @NonNull
     @Override
     public ItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.dong_cong_ty, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.dong_cong_ty, parent, false);
         ItemHolder itemHolder = new ItemHolder(view);
         return itemHolder;
     }

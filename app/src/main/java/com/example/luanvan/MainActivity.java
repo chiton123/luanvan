@@ -107,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
     public static String host = "http://10.10.41.166:8888/luanvan/";
     public static String urljob1 = host + "job1.php?page=";
     public static String urlJobCompany = host + "job_company.php";
+    public static String urlJobRelate = host + "job_relate.php";
     // job apply
     public static String urlJobApply = host + "job_apply.php";
     public static String urlJobApplyLoad = host + "job_apply_load.php?page=";

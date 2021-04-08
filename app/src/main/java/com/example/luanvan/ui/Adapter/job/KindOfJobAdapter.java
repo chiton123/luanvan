@@ -118,7 +118,7 @@ public class KindOfJobAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 itemHolder.txtarea.setText(job.getAddress());
                 Glide.with(context).load(job.getImg()).into(itemHolder.imganh);
                 itemHolder.imganh.setFocusable(false);
-                itemHolder.layout.setOnClickListener(new View.OnClickListener() {
+                itemHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(context, DetailJobActivity.class);

@@ -35,11 +35,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ItemHole
     @Override
     public ItemHoler onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if(viewType == MSG_TYPE_RIGHT){
-            View v = LayoutInflater.from(context).inflate(R.layout.chat_item_right, null);
+            View v = LayoutInflater.from(context).inflate(R.layout.chat_item_right, parent, false);
             ItemHoler itemHoler = new ItemHoler(v);
             return itemHoler;
         }else {
-            View v = LayoutInflater.from(context).inflate(R.layout.chat_item_left, null);
+            View v = LayoutInflater.from(context).inflate(R.layout.chat_item_left, parent, false);
             ItemHoler itemHoler = new ItemHoler(v);
             return itemHoler;
         }

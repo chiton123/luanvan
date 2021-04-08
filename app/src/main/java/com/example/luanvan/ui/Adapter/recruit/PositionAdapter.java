@@ -58,7 +58,7 @@ public class PositionAdapter extends RecyclerView.Adapter<PositionAdapter.ItemHo
     @NonNull
     @Override
     public ItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.dong_vi_tri, null);
+        View v = LayoutInflater.from(context).inflate(R.layout.dong_vi_tri, parent, false);
         ItemHolder itemHolder = new ItemHolder(v);
         return itemHolder;
     }

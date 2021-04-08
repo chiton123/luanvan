@@ -44,7 +44,7 @@ public class AdminAdapter_a extends BaseAdapter {
         if(convertView == null){
             viewHolder = new ViewHolder();
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.admin_item_a, null);
+            convertView = inflater.inflate(R.layout.admin_item_a, parent, false);
             viewHolder.txtname = (TextView) convertView.findViewById(R.id.name);
             convertView.setTag(viewHolder);
 

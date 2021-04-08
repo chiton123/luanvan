@@ -63,7 +63,7 @@ public class NewPostAdapter extends RecyclerView.Adapter<NewPostAdapter.ItemHold
     @NonNull
     @Override
     public ItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.dong_tin_tuyen_dung, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.dong_tin_tuyen_dung, parent, false);
         ItemHolder itemHolder = new ItemHolder(view);
         return itemHolder;
     }

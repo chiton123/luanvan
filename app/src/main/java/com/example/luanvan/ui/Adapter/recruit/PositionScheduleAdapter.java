@@ -34,7 +34,7 @@ public class PositionScheduleAdapter extends RecyclerView.Adapter<PositionSchedu
     @NonNull
     @Override
     public ItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(activity).inflate(R.layout.dong_vi_tri_schedule, null);
+        View view = LayoutInflater.from(activity).inflate(R.layout.dong_vi_tri_schedule, parent, false);
         ItemHolder itemHolder = new ItemHolder(view);
         return itemHolder;
     }

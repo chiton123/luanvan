@@ -55,7 +55,7 @@ public class CVAdapter extends RecyclerView.Adapter<CVAdapter.ItemHolder> {
     @NonNull
     @Override
     public ItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.dong_cv, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.dong_cv, parent, false);
         ItemHolder itemHolder = new ItemHolder(view);
         return itemHolder;
     }

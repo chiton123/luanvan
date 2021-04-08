@@ -59,7 +59,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ItemHo
     @NonNull
     @Override
     public ItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.dong_schedule, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.dong_schedule, parent, false);
         ItemHolder itemHolder = new ItemHolder(view);
         return itemHolder;
     }

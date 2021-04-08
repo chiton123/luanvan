@@ -30,7 +30,7 @@ public class AccessmentAdapter extends RecyclerView.Adapter<AccessmentAdapter.It
     @NonNull
     @Override
     public ItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.dong_danh_gia, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.dong_danh_gia, parent, false);
         ItemHolder itemHolder = new ItemHolder(view);
         return itemHolder;
     }

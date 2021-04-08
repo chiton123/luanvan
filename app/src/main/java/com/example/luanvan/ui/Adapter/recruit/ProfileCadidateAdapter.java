@@ -83,7 +83,7 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
     @NonNull
     @Override
     public ItemtHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.dong_profile_candidate, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.dong_profile_candidate, parent, false);
         ItemtHolder itemtHolder = new ItemtHolder(view);
         return itemtHolder;
     }

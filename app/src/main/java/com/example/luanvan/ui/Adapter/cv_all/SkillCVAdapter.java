@@ -53,7 +53,7 @@ public class SkillCVAdapter extends RecyclerView.Adapter<SkillCVAdapter.ItemHold
     @NonNull
     @Override
     public ItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.dong_skill, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.dong_skill, parent, false);
         ItemHolder itemHolder = new ItemHolder(view);
         return itemHolder;
     }

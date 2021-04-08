@@ -68,7 +68,7 @@ public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHo
     @NonNull
     @Override
     public ItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.dong_loc_cv, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.dong_loc_cv, parent, false);
         ItemHolder itemHolder = new ItemHolder(view);
         return itemHolder;
     }
