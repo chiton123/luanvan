@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,9 +36,7 @@ import com.bumptech.glide.Glide;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.admin_a.AdminAdapter;
-import com.example.luanvan.ui.Adapter.job.JobAdapter;
 import com.example.luanvan.ui.Adapter.job.KindOfJobAdapter;
-import com.example.luanvan.ui.Adapter.recruit.CompanyAdapter;
 import com.example.luanvan.ui.Adapter.recruit.CompanyTopAdapter;
 import com.example.luanvan.ui.Interface.ILoadMore;
 import com.example.luanvan.ui.KindofJob.KindOfJobActivity;
@@ -47,7 +44,6 @@ import com.example.luanvan.ui.Model.Admin;
 import com.example.luanvan.ui.Model.Chat;
 import com.example.luanvan.ui.Model.Company;
 import com.example.luanvan.ui.Model.Job;
-import com.example.luanvan.ui.Model.Job_Apply;
 import com.example.luanvan.ui.Model.Notification;
 import com.example.luanvan.ui.Search_Filter.SearchActivity;
 import com.example.luanvan.ui.chat.UserListActivity;
@@ -556,7 +552,7 @@ public class HomeFragment extends Fragment {
                                             object.getInt("idcompany"),
                                             object.getInt("id_recruiter"),
                                             object.getString("img"),
-                                            object.getString("area"),
+                                            object.getString("address"),
                                             object.getInt("idtype"),
                                             object.getInt("idprofession"),
                                             object.getString("start_date"),
@@ -564,6 +560,7 @@ public class HomeFragment extends Fragment {
                                             object.getInt("salary_min"),
                                             object.getInt("salary_max"),
                                             object.getInt("idarea"),
+                                            object.getString("area"),
                                             object.getString("experience"),
                                             object.getInt("number"),
                                             object.getString("description"),

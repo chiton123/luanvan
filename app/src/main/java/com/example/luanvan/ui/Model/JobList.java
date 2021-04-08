@@ -15,6 +15,7 @@ public class JobList implements Serializable {
     private int salary_min;
     private int salary_max;
     private int idarea;
+    private String area;
     private String address;
     private String experience;
     private int number;
@@ -31,7 +32,7 @@ public class JobList implements Serializable {
     private int skip;
 
     public JobList(int id, String name,int idcompany, String img,String address, int idtype, int idprofession, String start_date, String end_date,
-                   int salary_min, int salary_max, int idarea, String experience, int number, String description,
+                   int salary_min, int salary_max, int idarea, String area,String experience, int number, String description,
                    String requirement, String benefit, int status,String company_name, String type_job, String note_reject,
                    int totalDocument, int new_document, int interview, int work, int skip) {
         this.id = id;
@@ -46,6 +47,7 @@ public class JobList implements Serializable {
         this.salary_min = salary_min;
         this.salary_max = salary_max;
         this.idarea = idarea;
+        this.area = area;
         this.address = address;
         this.experience = experience;
         this.number = number;
@@ -60,6 +62,14 @@ public class JobList implements Serializable {
         this.interview = interview;
         this.work = work;
         this.skip = skip;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
     }
 
     public String getNote_reject() {

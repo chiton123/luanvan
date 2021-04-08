@@ -17,6 +17,7 @@ public class Job_Apply implements Serializable {
     private int salary_min;
     private int salary_max;
     private int idarea;
+    private String area;
     private String address;
     private String experience;
     private int number;
@@ -30,7 +31,7 @@ public class Job_Apply implements Serializable {
     }
 
     public Job_Apply(int id, String name, int idcompany, int id_recruiter, String id_cv, String img, String address, int idtype, int idprofession, String start_date, String end_date,
-                     int salary_min, int salary_max, int idarea, String experience, int number, String description,
+                     int salary_min, int salary_max, int idarea, String area, String experience, int number, String description,
                      String requirement, String benefit, int status, String company_name, String type_job) {
         this.id = id;
         this.name = name;
@@ -46,6 +47,7 @@ public class Job_Apply implements Serializable {
         this.salary_min = salary_min;
         this.salary_max = salary_max;
         this.idarea = idarea;
+        this.area = area;
         this.experience = experience;
         this.number = number;
         this.description = description;
@@ -66,6 +68,14 @@ public class Job_Apply implements Serializable {
 
     public int getSalary_max() {
         return salary_max;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
     }
 
     public void setSalary_max(int salary_max) {

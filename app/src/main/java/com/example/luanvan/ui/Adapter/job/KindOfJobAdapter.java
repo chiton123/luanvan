@@ -114,7 +114,7 @@ public class KindOfJobAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 SimpleDateFormat fmtOut = new SimpleDateFormat("dd/MM/yyyy");
                 itemHolder.txttime.setText(fmtOut.format(date2));
                 DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-                itemHolder.txtsalary.setText("Từ " + decimalFormat.format( + job.getSalary_min()) + "đ đến " + decimalFormat.format(job.getSalary_max()) + "đ" );
+                itemHolder.txtsalary.setText("Từ " + decimalFormat.format(job.getSalary_min()) + "đ đến " + decimalFormat.format(job.getSalary_max()) + "đ" );
                 itemHolder.txtarea.setText(job.getAddress());
                 Glide.with(context).load(job.getImg()).into(itemHolder.imganh);
                 itemHolder.imganh.setFocusable(false);

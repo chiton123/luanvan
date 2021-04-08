@@ -142,6 +142,7 @@ public class KindOfJobApplyAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                                 job.getSalary_min(),
                                 job.getSalary_max(),
                                 job.getIdarea(),
+                                job.getArea(),
                                 job.getExperience(),
                                 job.getNumber(),
                                 job.getDescription(),

@@ -89,7 +89,7 @@ public class CompanyFragment extends Fragment {
                                         object.getInt("idcompany"),
                                         object.getInt("id_recruiter"),
                                         object.getString("img"),
-                                        object.getString("area"),
+                                        object.getString("address"),
                                         object.getInt("idtype"),
                                         object.getInt("idprofession"),
                                         object.getString("start_date"),
@@ -97,6 +97,7 @@ public class CompanyFragment extends Fragment {
                                         object.getInt("salary_min"),
                                         object.getInt("salary_max"),
                                         object.getInt("idarea"),
+                                        object.getString("area"),
                                         object.getString("experience"),
                                         object.getInt("number"),
                                         object.getString("description"),
@@ -161,7 +162,7 @@ public class CompanyFragment extends Fragment {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                           Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_SHORT).show();
+                       //    Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_SHORT).show();
                         if(response != null){
                         //    Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_SHORT).show();
                             try {

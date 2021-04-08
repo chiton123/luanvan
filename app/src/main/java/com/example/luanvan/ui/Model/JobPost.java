@@ -16,6 +16,7 @@ public class JobPost implements Serializable {
     private int salary_min;
     private int salary_max;
     private int idarea;
+    private String area;
     private String address;
     private String experience;
     private int number;
@@ -31,7 +32,7 @@ public class JobPost implements Serializable {
     }
 
     public JobPost(int id, String name, int idcompany, int id_recruiter, String img, String address, int idtype, int idprofession, String start_date, String end_date,
-                   int salary_min, int salary_max, int idarea, String experience, int number, String description,
+                   int salary_min, int salary_max, int idarea, String area, String experience, int number, String description,
                    String requirement, String benefit, int status, int status_post, String note_reject, String company_name,  String type_job) {
         this.id = id;
         this.name = name;
@@ -46,6 +47,7 @@ public class JobPost implements Serializable {
         this.salary_min = salary_min;
         this.salary_max = salary_max;
         this.idarea = idarea;
+        this.area = area;
         this.experience = experience;
         this.number = number;
         this.description = description;
@@ -56,6 +58,14 @@ public class JobPost implements Serializable {
         this.note_reject = note_reject;
         this.company_name = company_name;
         this.type_job = type_job;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
     }
 
     public String getNote_reject() {
