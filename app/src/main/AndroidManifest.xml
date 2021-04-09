@@ -50,7 +50,6 @@
         <activity android:name=".ui.Search_Filter.SearchActivity" />
         <activity android:name=".ui.cv.CVShowActivity" />
         <activity android:name=".ui.cv.CVIntroductionActivity" />
-        <activity android:name=".ui.cv_content.CVVolunteerActivity" />
         <activity android:name=".ui.cv_content.CVGoalActivity" />
         <activity android:name=".ui.cv_content.CVExperienceActivity" />
         <activity android:name=".ui.cv_content.CVSkillActivity" />

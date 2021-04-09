@@ -49,6 +49,10 @@ import java.util.Date;
 
 import static com.example.luanvan.MainActivity.experienceCV;
 import static com.example.luanvan.MainActivity.experienceCVS;
+import static com.example.luanvan.ui.cv.CVActivity.checkExperience;
+import static com.example.luanvan.ui.cv.CVActivity.checkGoal;
+import static com.example.luanvan.ui.cv.CVActivity.checkSkill;
+import static com.example.luanvan.ui.cv.CVActivity.checkStudy;
 
 public class CVInfoActivity extends AppCompatActivity {
     Toolbar toolbar;
@@ -58,7 +62,10 @@ public class CVInfoActivity extends AppCompatActivity {
     public static int pageWidth = 1200;
     Handler handler;
     ProgressDialog progressDialog;
-
+    public static int a0 = 400, a1 = 650, a2 = 950, a3 = 1600; // 1200
+    public static int x0 = 0, x1 = 0, x2 = 0, x3 = 0;
+    // kiem tra xem x1, x2, x3 có nhảy lên bậc nào hay k khi tạo CV
+    public static int checkX1 = 0, checkX2 = 0, checkX3 = 0; // chưa sử dụng
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +110,7 @@ public class CVInfoActivity extends AppCompatActivity {
         kynangphu.setStrokeWidth(10);
         kynangphu.setColor(Color.YELLOW);
 
-        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(1200,2000,1).create();
+        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(1200,2000,2).create();
         PdfDocument.Page page = pdfDocument.startPage(pageInfo);
         Canvas canvas = page.getCanvas();
         myPaint.setStyle(Paint.Style.FILL);
@@ -114,6 +121,7 @@ public class CVInfoActivity extends AppCompatActivity {
         }else {
             myPaint.setColor(Color.rgb(190,55,10));
         }
+
         canvas.drawRect(0, 0, pageWidth, 300, myPaint);
 
         paint1.setColor(Color.WHITE);
@@ -148,21 +156,27 @@ public class CVInfoActivity extends AppCompatActivity {
 
         contentPaint.setColor(Color.BLACK);
         contentPaint.setTextSize(25);
-        if(CVActivity.checkGoal == 0){
-            canvas.drawText("MỤC TIÊU NGHỀ NGHIỆP", 30, 380, titlePaint);
+        if(checkGoal == 0){
+            x0 = a0;
+            canvas.drawText("MỤC TIÊU NGHỀ NGHIỆP", 30, x0, titlePaint);
             if(b == 1){
-                canvas.drawText(MainActivity.goal, 30, 450, contentPaint);
+                canvas.drawText(MainActivity.goal, 30, x0 + 70, contentPaint);
             }else {
-                canvas.drawText(MainActivity.goalDefault, 30, 450, contentPaint);
+                canvas.drawText(MainActivity.goalDefault, 30, x0 + 70, contentPaint);
             }
         }
 
         // hoc van
-        int x1 = 610, x2 = 920, x3 = 1300;
 
+        if(checkStudy == 0){
+            if(x0 == 0){
+                x1 = a0;
+                checkX1 = 1; // nhảy 1 bậc
+            }else {
+                x1 = a1;
+            }
 
-        if(CVActivity.checkStudy == 0){
-            canvas.drawText("HỌC VẤN", 30,  530, titlePaint);
+            canvas.drawText("HỌC VẤN", 30,  x1 - 50, titlePaint);
             titlePaint2.setTextSize(30);
             titlePaint2.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
             if(c == 1){
@@ -186,9 +200,26 @@ public class CVInfoActivity extends AppCompatActivity {
         }
 
 
-
         // kinh nghiem
-        if(CVActivity.checkExperience == 0){
+        if(checkExperience == 0){
+            if(x0 != 0){
+                if(x1 != 0){
+                    x2 = a2;
+                }else {
+                    x2 = a1;
+                    checkX2 = 1;
+                }
+
+            }else {
+                if(x1 == 0){
+                    x2 = a0;
+                    checkX2 = 2;
+                }else {
+                    x2 = a1;
+                    checkX2 = 1;
+                }
+            }
+
             canvas.drawText("KINH NGHIỆM", 30, x2, titlePaint);
             if(d == 1){
                 for(int i=0; i < experienceCVS.size(); i++){
@@ -209,7 +240,48 @@ public class CVInfoActivity extends AppCompatActivity {
 
 
         // ky nang
-        if(CVActivity.checkSkill == 0){
+        if(checkSkill == 0){
+            if(x0 != 0){
+                if(x1 != 0){
+                    if(x2 != 0){
+                        x3 = a3;
+                    }else {
+                        x3 = a2;
+                        checkX3 = 1;
+                    }
+                }else {
+                    if(x2 == 0){
+                        x3 = a1;
+                        checkX3 = 2;
+                    }else {
+                        x3 = a2;
+                        checkX3 = 1;
+                    }
+                }
+
+            }else {
+                if(x1 != 0){
+                    if(x2 != 0){
+                        x3 = a2;
+                        checkX3 = 1;
+                    }else {
+                        x3 = a1;
+                        checkX3 = 2;
+                    }
+
+                }else {
+                    if(x2 != 0){
+                        x3 = a1;
+                        checkX3 = 2;
+                    }else {
+                        x3 = a0;
+                        checkX3 = 3;
+                    }
+                }
+
+            }
+
+
             canvas.drawText("KỸ NĂNG", 30, x3, titlePaint);
             int width = 300, height = 50;
             if(e == 1){
@@ -238,6 +310,7 @@ public class CVInfoActivity extends AppCompatActivity {
 
             }
         }
+
 
         pdfDocument.finishPage(page);
         File file = new File(Environment.getExternalStorageDirectory(), "/a10.pdf");

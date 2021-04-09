@@ -6,13 +6,10 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Title;
 import com.example.luanvan.ui.cv.CVActivity;
@@ -21,7 +18,6 @@ import com.example.luanvan.ui.cv_content.CVGoalActivity;
 import com.example.luanvan.ui.cv_content.CVInfoActivity;
 import com.example.luanvan.ui.cv_content.CVSkillActivity;
 import com.example.luanvan.ui.cv_content.CVStudyActivity;
-import com.example.luanvan.ui.cv_content.CVVolunteerActivity;
 
 import java.util.ArrayList;
 
@@ -138,10 +134,7 @@ public class TitleAdapter extends BaseAdapter {
                         Intent intent4 = new Intent(context, CVSkillActivity.class);
                         activity.startActivityForResult(intent4, REQUEST_CODE4);
                         break;
-                    case 5:
-                        Intent intent5 = new Intent(context, CVVolunteerActivity.class);
-                        activity.startActivityForResult(intent5, REQUEST_CODE5);
-                        break;
+
                 }
             }
         });

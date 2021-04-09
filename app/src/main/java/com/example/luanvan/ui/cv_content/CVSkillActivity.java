@@ -55,6 +55,7 @@ import static com.example.luanvan.MainActivity.mAuth;
 import static com.example.luanvan.ui.cv.CVActivity.checkExperience;
 import static com.example.luanvan.ui.cv.CVActivity.checkSkill;
 import static com.example.luanvan.ui.cv.CVActivity.checkStudy;
+import static com.example.luanvan.ui.cv.CVActivity.checkGoal;
 
 
 public class CVSkillActivity extends AppCompatActivity {
@@ -66,7 +67,10 @@ public class CVSkillActivity extends AppCompatActivity {
     StorageReference storageReference;
     Handler handler;
     ProgressDialog progressDialog;
-
+    public static int a0 = 400, a1 = 650, a2 = 950, a3 = 1600; // 1200
+    public static int x0 = 0, x1 = 0, x2 = 0, x3 = 0;
+    // kiem tra xem x1, x2, x3 có nhảy lên bậc nào hay k khi tạo CV
+    public static int checkX1 = 0, checkX2 = 0, checkX3 = 0; // chưa sử dụng
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,7 +131,9 @@ public class CVSkillActivity extends AppCompatActivity {
                     String name = editName.getText().toString();
                     float sosao = ratingBar.getRating();
                     SkillCV skill = new SkillCV(name, sosao, "temp");
+
                     MainActivity.skillCVS.add(skill);
+                 //   Toast.makeText(getApplicationContext(), "name: " + name +  MainActivity.skillCVS.size(), Toast.LENGTH_SHORT).show();
                     adapter.notifyDataSetChanged();
                     dialog.dismiss();
 
@@ -166,22 +172,23 @@ public class CVSkillActivity extends AppCompatActivity {
         kynangphu.setStrokeWidth(10);
         kynangphu.setColor(Color.YELLOW);
 
-        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(1200, 2000, 1).create();
+        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(1200,2000,2).create();
         PdfDocument.Page page = pdfDocument.startPage(pageInfo);
         Canvas canvas = page.getCanvas();
         myPaint.setStyle(Paint.Style.FILL);
-        if (MainActivity.color == 1) {
-            myPaint.setColor(Color.rgb(100, 100, 100));
-        } else if (MainActivity.color == 2) {
-            myPaint.setColor(Color.rgb(20, 115, 160));
-        } else {
-            myPaint.setColor(Color.rgb(190, 55, 10));
+        if(MainActivity.color == 1){
+            myPaint.setColor(Color.rgb(100,100,100));
+        }else if(MainActivity.color == 2) {
+            myPaint.setColor(Color.rgb(20,115,160));
+        }else {
+            myPaint.setColor(Color.rgb(190,55,10));
         }
+
         canvas.drawRect(0, 0, pageWidth, 300, myPaint);
 
         paint1.setColor(Color.WHITE);
         paint1.setTextAlign(Paint.Align.LEFT);
-        if (a == 1) {
+        if(a == 1){
             paint1.setTextSize(50);
             canvas.drawText(MainActivity.userCV.getUsername(), 30, 80, paint1);
             paint1.setTextSize(35);
@@ -190,8 +197,8 @@ public class CVSkillActivity extends AppCompatActivity {
             paint1.setTextSize(30);
             canvas.drawText(MainActivity.userCV.getAddress(), 30, 230, paint1);
             canvas.drawText(MainActivity.userCV.getEmail(), 500, 230, paint1);
-            canvas.drawText(MainActivity.userCV.getPhone(), pageWidth - 230, 230, paint1);
-        } else {
+            canvas.drawText(MainActivity.userCV.getPhone(), pageWidth-230, 230, paint1);
+        }else {
             paint1.setTextSize(50);
             canvas.drawText(MainActivity.userCVDefault.getUsername(), 30, 80, paint1);
             paint1.setTextSize(35);
@@ -200,7 +207,7 @@ public class CVSkillActivity extends AppCompatActivity {
             paint1.setTextSize(30);
             canvas.drawText(MainActivity.userCVDefault.getAddress(), 30, 230, paint1);
             canvas.drawText(MainActivity.userCVDefault.getEmail(), 500, 230, paint1);
-            canvas.drawText(MainActivity.userCVDefault.getPhone() + "", pageWidth - 230, 230, paint1);
+            canvas.drawText(MainActivity.userCVDefault.getPhone()+"", pageWidth-230, 230, paint1);
         }
 
         // muc tieu nghe nghiep
@@ -211,95 +218,162 @@ public class CVSkillActivity extends AppCompatActivity {
 
         contentPaint.setColor(Color.BLACK);
         contentPaint.setTextSize(25);
-        if (CVActivity.checkGoal == 0) {
-            canvas.drawText("MỤC TIÊU NGHỀ NGHIỆP", 30, 380, titlePaint);
-            if (b == 1) {
-                canvas.drawText(MainActivity.goal, 30, 450, contentPaint);
-            } else {
-                canvas.drawText(MainActivity.goalDefault, 30, 450, contentPaint);
+        if(checkGoal == 0){
+            x0 = a0;
+            canvas.drawText("MỤC TIÊU NGHỀ NGHIỆP", 30, x0, titlePaint);
+            if(b == 1){
+                canvas.drawText(MainActivity.goal, 30, x0 + 70, contentPaint);
+            }else {
+                canvas.drawText(MainActivity.goalDefault, 30, x0 + 70, contentPaint);
             }
         }
 
         // hoc van
-        int x1 = 610, x2 = 920, x3 = 1300;
 
+        if(checkStudy == 0){
+            if(x0 == 0){
+                x1 = a0;
+                checkX1 = 1; // nhảy 1 bậc
+            }else {
+                x1 = a1;
+            }
 
-        if (CVActivity.checkStudy == 0) {
-            canvas.drawText("HỌC VẤN", 30, 530, titlePaint);
+            canvas.drawText("HỌC VẤN", 30,  x1 - 50, titlePaint);
             titlePaint2.setTextSize(30);
             titlePaint2.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-            if (c == 1) {
-                for (int i = 0; i < MainActivity.studyCVS.size(); i++) {
-                    if (i < 2) {
-                        canvas.drawText(MainActivity.studyCVS.get(i).getSchool(), 30, x1 + i * 90, titlePaint2);
-                        canvas.drawText(MainActivity.studyCVS.get(i).getStart() + " - " + MainActivity.studyCVS.get(i).getEnd(), 30, x1 + 50 + i * 90, contentPaint);
-                        canvas.drawText("CHUYÊN NGÀNH: " + MainActivity.studyCVS.get(i).getMajor(), 500, x1 + i * 90, titlePaint2);
-                        canvas.drawText(MainActivity.studyCVS.get(i).getDescription(), 500, x1 + 50 + i * 90, contentPaint);
-                    } else {
+            if(c == 1){
+                for(int i=0; i < MainActivity.studyCVS.size(); i++){
+                    if(i < 5){
+                        canvas.drawText(MainActivity.studyCVS.get(i).getSchool(), 30, x1 + i*90, titlePaint2);
+                        canvas.drawText(MainActivity.studyCVS.get(i).getStart() + " - " + MainActivity.studyCVS.get(i).getEnd(), 30, x1 + 50 + i*90, contentPaint);
+                        canvas.drawText("CHUYÊN NGÀNH: " + MainActivity.studyCVS.get(i).getMajor(), 500, x1 + i*90, titlePaint2 );
+                        canvas.drawText(MainActivity.studyCVS.get(i).getDescription(), 500, x1 + 50 + i*90, contentPaint);
+                    }else {
                         break;
                     }
 
                 }
-            } else {
+            }else {
                 canvas.drawText(MainActivity.studyCV.getSchool(), 30, x1, titlePaint2);
                 canvas.drawText(MainActivity.studyCV.getStart() + " - " + MainActivity.studyCV.getEnd(), 30, x1 + 50, contentPaint);
-                canvas.drawText("CHUYÊN NGÀNH: " + MainActivity.studyCV.getMajor(), 500, x1, titlePaint2);
+                canvas.drawText("CHUYÊN NGÀNH: " + MainActivity.studyCV.getMajor(), 500, x1 , titlePaint2 );
                 canvas.drawText(MainActivity.studyCV.getDescription(), 500, x1 + 50, contentPaint);
             }
         }
 
 
         // kinh nghiem
-        if (CVActivity.checkExperience == 0) {
+        if(checkExperience == 0){
+            if(x0 != 0){
+                if(x1 != 0){
+                    x2 = a2;
+                }else {
+                    x2 = a1;
+                    checkX2 = 1;
+                }
+
+            }else {
+                if(x1 == 0){
+                    x2 = a0;
+                    checkX2 = 2;
+                }else {
+                    x2 = a1;
+                    checkX2 = 1;
+                }
+            }
+
             canvas.drawText("KINH NGHIỆM", 30, x2, titlePaint);
-            if (d == 1) {
-                for (int i = 0; i < experienceCVS.size(); i++) {
-                    if (i < 2) {
-                        canvas.drawText(experienceCVS.get(i).getStart() + "-" + experienceCVS.get(i).getEnd(), 30, x2 + 50 + i * 90, contentPaint);
-                        canvas.drawText(experienceCVS.get(i).getCompany(), 500, x2 + 50 + i * 90, contentPaint);
-                        canvas.drawText(experienceCVS.get(i).getPosition(), 500, x2 + 90 + i * 90, contentPaint);
-                    } else {
+            if(d == 1){
+                for(int i=0; i < experienceCVS.size(); i++){
+                    if(i < 5){
+                        canvas.drawText(experienceCVS.get(i).getStart()+"-"+experienceCVS.get(i).getEnd(), 30, x2 + 50 + i*90, contentPaint);
+                        canvas.drawText(experienceCVS.get(i).getCompany(), 500, x2 + 50 + i*90, contentPaint);
+                        canvas.drawText(experienceCVS.get(i).getPosition(), 500, x2 + 90 + i*90, contentPaint);
+                    }else {
                         break;
                     }
                 }
-            } else {
-                canvas.drawText(experienceCV.getStart() + "-" + experienceCV.getEnd(), 30, x2 + 50, contentPaint);
-                canvas.drawText(experienceCV.getCompany(), 500, x2 + 50, contentPaint);
-                canvas.drawText(experienceCV.getPosition(), 500, x2 + 90, contentPaint);
+            }else {
+                canvas.drawText(experienceCV.getStart()+"-"+experienceCV.getEnd(), 30, x2 + 50, contentPaint);
+                canvas.drawText(experienceCV.getCompany(), 500, x2 + 50 , contentPaint);
+                canvas.drawText(experienceCV.getPosition(), 500, x2 + 90 , contentPaint);
             }
         }
 
 
         // ky nang
-        if (CVActivity.checkSkill == 0) {
+        if(checkSkill == 0){
+            if(x0 != 0){
+                if(x1 != 0){
+                    if(x2 != 0){
+                        x3 = a3;
+                    }else {
+                        x3 = a2;
+                        checkX3 = 1;
+                    }
+                }else {
+                    if(x2 == 0){
+                        x3 = a1;
+                        checkX3 = 2;
+                    }else {
+                        x3 = a2;
+                        checkX3 = 1;
+                    }
+                }
+
+            }else {
+                if(x1 != 0){
+                    if(x2 != 0){
+                        x3 = a2;
+                        checkX3 = 1;
+                    }else {
+                        x3 = a1;
+                        checkX3 = 2;
+                    }
+
+                }else {
+                    if(x2 != 0){
+                        x3 = a1;
+                        checkX3 = 2;
+                    }else {
+                        x3 = a0;
+                        checkX3 = 3;
+                    }
+                }
+
+            }
+
+
             canvas.drawText("KỸ NĂNG", 30, x3, titlePaint);
             int width = 300, height = 50;
-            if (e == 1) {
-                for (int i = 0; i < MainActivity.skillCVS.size(); i++) {
-                    if (i < 2) {
-                        canvas.drawText(MainActivity.skillCVS.get(i).getName(), 30, x3 + 50 + i * 90, contentPaint);
-                        float star1 = MainActivity.skillCVS.get(i).getStar() * 60;
-                        canvas.drawLine(30, x3 + 100 + i * 90, star1 + 30, x3 + 100 + i * 90, kynang_paint);
-                        canvas.drawLine(star1 + 30, x3 + 100 + i * 90, width + 30, x3 + 100 + i * 90, kynangphu);
-                    } else {
+            if(e == 1){
+                for(int i=0; i < MainActivity.skillCVS.size(); i++){
+                    if(i < 5){
+                        canvas.drawText(MainActivity.skillCVS.get(i).getName(), 30, x3 + 50 + i*90, contentPaint);
+                        float star1 = MainActivity.skillCVS.get(i).getStar()*60;
+                        canvas.drawLine(30, x3+100 + i*90, star1+30, x3 + 100 + i*90, kynang_paint);
+                        canvas.drawLine(star1 + 30, x3+100 + i*90, width + 30,x3 + 100 + i*90,  kynangphu );
+                    }else {
                         break;
                     }
                 }
 
-            } else {
+            }else {
                 canvas.drawText(MainActivity.skillCVArray.get(0).getName(), 30, x3 + 50, contentPaint);
                 // 300 : 5 = 60
-                float star1 = MainActivity.skillCVArray.get(0).getStar() * 60;
-                float star2 = MainActivity.skillCVArray.get(1).getStar() * 60;
-                canvas.drawLine(30, x3 + 100, star1 + 30, x3 + 100, kynang_paint);
-                canvas.drawLine(star1 + 30, x3 + 100, width + 30, x3 + 100, kynangphu);
+                float star1 = MainActivity.skillCVArray.get(0).getStar()*60;
+                float star2 = MainActivity.skillCVArray.get(1).getStar()*60;
+                canvas.drawLine(30, x3+100, star1+30, x3 + 100, kynang_paint);
+                canvas.drawLine(star1 + 30, x3+100, width + 30,x3 + 100,  kynangphu );
 
                 canvas.drawText(MainActivity.skillCVArray.get(1).getName(), 30, x3 + 150, contentPaint);
-                canvas.drawLine(30, x3 + 200, star2 + 30, x3 + 200, kynang_paint);
-                canvas.drawLine(star2 + 30, x3 + 200, width + 30, x3 + 200, kynangphu);
+                canvas.drawLine(30, x3+200, star2+30, x3+200, kynang_paint);
+                canvas.drawLine(star2+30, x3+200, width + 30, x3+200, kynangphu);
 
             }
         }
+
+
 
         pdfDocument.finishPage(page);
         File file = new File(Environment.getExternalStorageDirectory(), "/a10.pdf");

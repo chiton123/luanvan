@@ -96,10 +96,11 @@ public class CVActivity extends AppCompatActivity {
     // kiểm tra thông tin nào có trong CV, k cần phải ghi hết nhé : bắc buộc: info
     public static int checkGoal = 0, checkSkill = 0, checkStudy = 0, checkExperience = 0;
     // layout cho CV
-    public static int a0 = 400, a1 = 650, a2 = 950, a3 = 1200;
+    public static int a0 = 400, a1 = 650, a2 = 950, a3 = 1600; // 1200
     public static int x0 = 0, x1 = 0, x2 = 0, x3 = 0;
     // kiem tra xem x1, x2, x3 có nhảy lên bậc nào hay k khi tạo CV
     public static int checkX1 = 0, checkX2 = 0, checkX3 = 0; // chưa sử dụng
+    int check_exceed_page = 0; // check nếu vượt quá trang 1
     String CVNameToPost = "";
     ProgressDialog progressDialog;
     @Override
@@ -159,6 +160,7 @@ public class CVActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
+                progressDialog.dismiss();
                 webView.loadUrl(url1);
             }
         }, 3000);
@@ -272,9 +274,11 @@ public class CVActivity extends AppCompatActivity {
         kynangphu.setStrokeWidth(10);
         kynangphu.setColor(Color.YELLOW);
 
-        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(1200,2000,1).create();
+        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(1200,2000,2).create();
         PdfDocument.Page page = pdfDocument.startPage(pageInfo);
+        PdfDocument.Page page2 = pdfDocument.startPage(pageInfo);
         Canvas canvas = page.getCanvas();
+        Canvas canvas2 = page2.getCanvas();
         myPaint.setStyle(Paint.Style.FILL);
         if(MainActivity.color == 1){
             myPaint.setColor(Color.rgb(100,100,100));
@@ -345,21 +349,41 @@ public class CVActivity extends AppCompatActivity {
             titlePaint2.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
             if(c == 1){
                 for(int i=0; i < MainActivity.studyCVS.size(); i++){
-                    if(i < 2){
-                        canvas.drawText(MainActivity.studyCVS.get(i).getSchool(), 30, x1 + i*90, titlePaint2);
-                        canvas.drawText(MainActivity.studyCVS.get(i).getStart() + " - " + MainActivity.studyCVS.get(i).getEnd(), 30, x1 + 50 + i*90, contentPaint);
-                        canvas.drawText("CHUYÊN NGÀNH: " + MainActivity.studyCVS.get(i).getMajor(), 500, x1 + i*90, titlePaint2 );
-                        canvas.drawText(MainActivity.studyCVS.get(i).getDescription(), 500, x1 + 50 + i*90, contentPaint);
+                    if(x1 + 50 + i*90 > 2000){
+                        check_exceed_page = 1;
+                        x0 = 0; x1 = 0; x2 = 0; x3 = 0;
+                        canvas2.drawText(MainActivity.studyCVS.get(i).getSchool(), 30, x1 + i*90, titlePaint2);
+                        canvas2.drawText(MainActivity.studyCVS.get(i).getStart() + " - " + MainActivity.studyCVS.get(i).getEnd(), 30, x1 + 50 + i*90, contentPaint);
+                        canvas2.drawText("CHUYÊN NGÀNH: " + MainActivity.studyCVS.get(i).getMajor(), 500, x1 + i*90, titlePaint2 );
+                        canvas2.drawText(MainActivity.studyCVS.get(i).getDescription(), 500, x1 + 50 + i*90, contentPaint);
                     }else {
-                        break;
+                        if(i < 5){
+                            canvas.drawText(MainActivity.studyCVS.get(i).getSchool(), 30, x1 + i*90, titlePaint2);
+                            canvas.drawText(MainActivity.studyCVS.get(i).getStart() + " - " + MainActivity.studyCVS.get(i).getEnd(), 30, x1 + 50 + i*90, contentPaint);
+                            canvas.drawText("CHUYÊN NGÀNH: " + MainActivity.studyCVS.get(i).getMajor(), 500, x1 + i*90, titlePaint2 );
+                            canvas.drawText(MainActivity.studyCVS.get(i).getDescription(), 500, x1 + 50 + i*90, contentPaint);
+                        }else {
+                            break;
+                        }
                     }
+
 
                 }
             }else {
-                canvas.drawText(MainActivity.studyCV.getSchool(), 30, x1, titlePaint2);
-                canvas.drawText(MainActivity.studyCV.getStart() + " - " + MainActivity.studyCV.getEnd(), 30, x1 + 50, contentPaint);
-                canvas.drawText("CHUYÊN NGÀNH: " + MainActivity.studyCV.getMajor(), 500, x1 , titlePaint2 );
-                canvas.drawText(MainActivity.studyCV.getDescription(), 500, x1 + 50, contentPaint);
+                if(x1 + 50 > 2000){
+                    check_exceed_page = 1;
+                    x0 = 0; x1 = 0; x2 = 0; x3 = 0;
+                    canvas2.drawText(MainActivity.studyCV.getSchool(), 30, x1, titlePaint2);
+                    canvas2.drawText(MainActivity.studyCV.getStart() + " - " + MainActivity.studyCV.getEnd(), 30, x1 + 50, contentPaint);
+                    canvas2.drawText("CHUYÊN NGÀNH: " + MainActivity.studyCV.getMajor(), 500, x1 , titlePaint2 );
+                    canvas2.drawText(MainActivity.studyCV.getDescription(), 500, x1 + 50, contentPaint);
+                }else {
+                    canvas.drawText(MainActivity.studyCV.getSchool(), 30, x1, titlePaint2);
+                    canvas.drawText(MainActivity.studyCV.getStart() + " - " + MainActivity.studyCV.getEnd(), 30, x1 + 50, contentPaint);
+                    canvas.drawText("CHUYÊN NGÀNH: " + MainActivity.studyCV.getMajor(), 500, x1 , titlePaint2 );
+                    canvas.drawText(MainActivity.studyCV.getDescription(), 500, x1 + 50, contentPaint);
+                }
+
             }
         }
 
@@ -387,18 +411,34 @@ public class CVActivity extends AppCompatActivity {
             canvas.drawText("KINH NGHIỆM", 30, x2, titlePaint);
             if(d == 1){
                 for(int i=0; i < experienceCVS.size(); i++){
-                    if(i < 2){
-                        canvas.drawText(experienceCVS.get(i).getStart()+"-"+experienceCVS.get(i).getEnd(), 30, x2 + 50 + i*90, contentPaint);
-                        canvas.drawText(experienceCVS.get(i).getCompany(), 500, x2 + 50 + i*90, contentPaint);
-                        canvas.drawText(experienceCVS.get(i).getPosition(), 500, x2 + 90 + i*90, contentPaint);
+                    if(x2 + 90 + i*90 > 2000 || check_exceed_page == 1){
+                        x2 = 0; x3 = 0;
+                        canvas2.drawText(experienceCVS.get(i).getStart()+"-"+experienceCVS.get(i).getEnd(), 30, x2 + 50 + i*90, contentPaint);
+                        canvas2.drawText(experienceCVS.get(i).getCompany(), 500, x2 + 50 + i*90, contentPaint);
+                        canvas2.drawText(experienceCVS.get(i).getPosition(), 500, x2 + 90 + i*90, contentPaint);
                     }else {
-                        break;
+                        if(i < 5){
+                            canvas.drawText(experienceCVS.get(i).getStart()+"-"+experienceCVS.get(i).getEnd(), 30, x2 + 50 + i*90, contentPaint);
+                            canvas.drawText(experienceCVS.get(i).getCompany(), 500, x2 + 50 + i*90, contentPaint);
+                            canvas.drawText(experienceCVS.get(i).getPosition(), 500, x2 + 90 + i*90, contentPaint);
+                        }else {
+                            break;
+                        }
                     }
+
                 }
             }else {
-                canvas.drawText(experienceCV.getStart()+"-"+experienceCV.getEnd(), 30, x2 + 50, contentPaint);
-                canvas.drawText(experienceCV.getCompany(), 500, x2 + 50 , contentPaint);
-                canvas.drawText(experienceCV.getPosition(), 500, x2 + 90 , contentPaint);
+                if(x2 + 90 > 2000 || check_exceed_page == 1){
+                    x2 = 0; x3 = 0;
+                    canvas2.drawText(experienceCV.getStart()+"-"+experienceCV.getEnd(), 30, x2 + 50, contentPaint);
+                    canvas2.drawText(experienceCV.getCompany(), 500, x2 + 50 , contentPaint);
+                    canvas2.drawText(experienceCV.getPosition(), 500, x2 + 90 , contentPaint);
+                }else {
+                    canvas.drawText(experienceCV.getStart()+"-"+experienceCV.getEnd(), 30, x2 + 50, contentPaint);
+                    canvas.drawText(experienceCV.getCompany(), 500, x2 + 50 , contentPaint);
+                    canvas.drawText(experienceCV.getPosition(), 500, x2 + 90 , contentPaint);
+                }
+
             }
         }
 
@@ -450,27 +490,52 @@ public class CVActivity extends AppCompatActivity {
             int width = 300, height = 50;
             if(e == 1){
                 for(int i=0; i < MainActivity.skillCVS.size(); i++){
-                    if(i < 2){
+                    if(check_exceed_page == 1 || x3 + 100 + i*90 > 2000){
+                        x2 = 0; x3 = 0;
                         canvas.drawText(MainActivity.skillCVS.get(i).getName(), 30, x3 + 50 + i*90, contentPaint);
                         float star1 = MainActivity.skillCVS.get(i).getStar()*60;
-                        canvas.drawLine(30, x3+100 + i*90, star1+30, x3 + 100 + i*90, kynang_paint);
-                        canvas.drawLine(star1 + 30, x3+100 + i*90, width + 30,x3 + 100 + i*90,  kynangphu );
+                        canvas2.drawLine(30, x3+100 + i*90, star1+30, x3 + 100 + i*90, kynang_paint);
+                        canvas2.drawLine(star1 + 30, x3+100 + i*90, width + 30,x3 + 100 + i*90,  kynangphu );
                     }else {
-                        break;
+                        if(i < 5){
+                            canvas.drawText(MainActivity.skillCVS.get(i).getName(), 30, x3 + 50 + i*90, contentPaint);
+                            float star1 = MainActivity.skillCVS.get(i).getStar()*60;
+                            canvas.drawLine(30, x3+100 + i*90, star1+30, x3 + 100 + i*90, kynang_paint);
+                            canvas.drawLine(star1 + 30, x3+100 + i*90, width + 30,x3 + 100 + i*90,  kynangphu );
+                        }else {
+                            break;
+                        }
                     }
+
                 }
 
             }else {
-                canvas.drawText(MainActivity.skillCVArray.get(0).getName(), 30, x3 + 50, contentPaint);
-                // 300 : 5 = 60
-                float star1 = MainActivity.skillCVArray.get(0).getStar()*60;
-                float star2 = MainActivity.skillCVArray.get(1).getStar()*60;
-                canvas.drawLine(30, x3+100, star1+30, x3 + 100, kynang_paint);
-                canvas.drawLine(star1 + 30, x3+100, width + 30,x3 + 100,  kynangphu );
+                if(check_exceed_page == 1 ||  x3+200 > 2000){
+                    x2 = 0; x3 = 0;
+                    canvas2.drawText(MainActivity.skillCVArray.get(0).getName(), 30, x3 + 50, contentPaint);
+                    // 300 : 5 = 60
+                    float star1 = MainActivity.skillCVArray.get(0).getStar()*60;
+                    float star2 = MainActivity.skillCVArray.get(1).getStar()*60;
+                    canvas2.drawLine(30, x3+100, star1+30, x3 + 100, kynang_paint);
+                    canvas2.drawLine(star1 + 30, x3+100, width + 30,x3 + 100,  kynangphu );
 
-                canvas.drawText(MainActivity.skillCVArray.get(1).getName(), 30, x3 + 150, contentPaint);
-                canvas.drawLine(30, x3+200, star2+30, x3+200, kynang_paint);
-                canvas.drawLine(star2+30, x3+200, width + 30, x3+200, kynangphu);
+                    canvas2.drawText(MainActivity.skillCVArray.get(1).getName(), 30, x3 + 150, contentPaint);
+                    canvas2.drawLine(30, x3+200, star2+30, x3+200, kynang_paint);
+                    canvas2.drawLine(star2+30, x3+200, width + 30, x3+200, kynangphu);
+                }else {
+                    canvas.drawText(MainActivity.skillCVArray.get(0).getName(), 30, x3 + 50, contentPaint);
+                    // 300 : 5 = 60
+                    float star1 = MainActivity.skillCVArray.get(0).getStar()*60;
+                    float star2 = MainActivity.skillCVArray.get(1).getStar()*60;
+                    canvas.drawLine(30, x3+100, star1+30, x3 + 100, kynang_paint);
+                    canvas.drawLine(star1 + 30, x3+100, width + 30,x3 + 100,  kynangphu );
+
+                    canvas.drawText(MainActivity.skillCVArray.get(1).getName(), 30, x3 + 150, contentPaint);
+                    canvas.drawLine(30, x3+200, star2+30, x3+200, kynang_paint);
+                    canvas.drawLine(star2+30, x3+200, width + 30, x3+200, kynangphu);
+                }
+
+
 
             }
         }
