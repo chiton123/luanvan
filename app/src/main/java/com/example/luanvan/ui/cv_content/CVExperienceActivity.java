@@ -20,6 +20,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.text.Layout;
+import android.text.StaticLayout;
+import android.text.TextPaint;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -48,13 +51,14 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import static com.example.luanvan.MainActivity.experienceCV;
 import static com.example.luanvan.MainActivity.experienceCVS;
 import static com.example.luanvan.MainActivity.experiences;
 import static com.example.luanvan.MainActivity.skillCVS;
 import static com.example.luanvan.ui.cv.CVActivity.*;
-
+import static com.example.luanvan.ui.cv.CVActivity.*;
 
 public class CVExperienceActivity extends AppCompatActivity {
     Toolbar toolbar;
@@ -66,7 +70,7 @@ public class CVExperienceActivity extends AppCompatActivity {
     StorageReference storageReference;
     Handler handler;
     ProgressDialog progressDialog;
-    public static int a0 = 400, a1 = 650, a2 = 950, a3 = 1600; // 1200
+    public static int a0 = 400, a1 = 600, a2 = 1400, a3 = 2200;
     public static int x0 = 0, x1 = 0, x2 = 0, x3 = 0;
     // kiem tra xem x1, x2, x3 có nhảy lên bậc nào hay k khi tạo CV
     public static int checkX1 = 0, checkX2 = 0, checkX3 = 0; // chưa sử dụng
@@ -130,18 +134,24 @@ public class CVExperienceActivity extends AppCompatActivity {
         final EditText editdescription = (EditText) dialog.findViewById(R.id.description);
         Button btnLuu = (Button) dialog.findViewById(R.id.luu);
         Button btnHuy = (Button) dialog.findViewById(R.id.huy);
+        btnHuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
         btnLuu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(editname.getText().equals("") || editposition.getText().equals("") || editstart.getText().equals("")
-                || editend.getText().equals("") || editdescription.getText().equals("")){
+                String name = editname.getText().toString();
+                String position = editposition.getText().toString();
+                String start = editstart.getText().toString();
+                String end = editend.getText().toString();
+                String description = editdescription.getText().toString();
+                if(name.equals("") || position.equals("") || start.equals("")
+                        || end.equals("") || description.equals("")){
                     Toast.makeText(getApplicationContext(), "Vui lòng nhập đủ thông tin", Toast.LENGTH_SHORT).show();
                 }else {
-                    String name = editname.getText().toString();
-                    String position = editposition.getText().toString();
-                    String start = editstart.getText().toString();
-                    String end = editend.getText().toString();
-                    String description = editdescription.getText().toString();
                     ExperienceCV experienceCV = new ExperienceCV("temp", name, position, start, end, description);
                     experienceCVS.add(experienceCV);
                     adapter.notifyDataSetChanged();
@@ -177,7 +187,7 @@ public class CVExperienceActivity extends AppCompatActivity {
         kynangphu.setStrokeWidth(10);
         kynangphu.setColor(Color.YELLOW);
 
-        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(1200,2000,2).create();
+        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(1200,3000,1).create();
         PdfDocument.Page page = pdfDocument.startPage(pageInfo);
         Canvas canvas = page.getCanvas();
         myPaint.setStyle(Paint.Style.FILL);
@@ -194,9 +204,9 @@ public class CVExperienceActivity extends AppCompatActivity {
         paint1.setColor(Color.WHITE);
         paint1.setTextAlign(Paint.Align.LEFT);
         if(a == 1){
-            paint1.setTextSize(50);
+            paint1.setTextSize(45);
             canvas.drawText(MainActivity.userCV.getUsername(), 30, 80, paint1);
-            paint1.setTextSize(35);
+            paint1.setTextSize(30);
             canvas.drawText(MainActivity.userCV.getPosition(), 30, 140, paint1);
 
             paint1.setTextSize(30);
@@ -204,9 +214,9 @@ public class CVExperienceActivity extends AppCompatActivity {
             canvas.drawText(MainActivity.userCV.getEmail(), 500, 230, paint1);
             canvas.drawText(MainActivity.userCV.getPhone(), pageWidth-230, 230, paint1);
         }else {
-            paint1.setTextSize(50);
+            paint1.setTextSize(45);
             canvas.drawText(MainActivity.userCVDefault.getUsername(), 30, 80, paint1);
-            paint1.setTextSize(35);
+            paint1.setTextSize(30);
             canvas.drawText(MainActivity.userCVDefault.getPosition(), 30, 140, paint1);
 
             paint1.setTextSize(30);
@@ -217,12 +227,12 @@ public class CVExperienceActivity extends AppCompatActivity {
 
         // muc tieu nghe nghiep
         titlePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-        titlePaint.setTextSize(35);
+        titlePaint.setTextSize(30);
         titlePaint.setColor(Color.BLACK);
 
 
         contentPaint.setColor(Color.BLACK);
-        contentPaint.setTextSize(25);
+        contentPaint.setTextSize(30);
         if(checkGoal == 0){
             x0 = a0;
             canvas.drawText("MỤC TIÊU NGHỀ NGHIỆP", 30, x0, titlePaint);
@@ -234,6 +244,8 @@ public class CVExperienceActivity extends AppCompatActivity {
         }
 
         // hoc van
+
+
 
         if(checkStudy == 0){
             if(x0 == 0){
@@ -248,11 +260,26 @@ public class CVExperienceActivity extends AppCompatActivity {
             titlePaint2.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
             if(c == 1){
                 for(int i=0; i < MainActivity.studyCVS.size(); i++){
-                    if(i < 5){
-                        canvas.drawText(MainActivity.studyCVS.get(i).getSchool(), 30, x1 + i*90, titlePaint2);
-                        canvas.drawText(MainActivity.studyCVS.get(i).getStart() + " - " + MainActivity.studyCVS.get(i).getEnd(), 30, x1 + 50 + i*90, contentPaint);
-                        canvas.drawText("CHUYÊN NGÀNH: " + MainActivity.studyCVS.get(i).getMajor(), 500, x1 + i*90, titlePaint2 );
-                        canvas.drawText(MainActivity.studyCVS.get(i).getDescription(), 500, x1 + 50 + i*90, contentPaint);
+                    if(i < 4){
+                        canvas.drawText(MainActivity.studyCVS.get(i).getSchool(), 30, x1 + i*180, titlePaint2);
+                        canvas.drawText(MainActivity.studyCVS.get(i).getStart() + " - " + MainActivity.studyCVS.get(i).getEnd(), 30, x1 + 50 + i*180, contentPaint);
+                        canvas.drawText("CHUYÊN NGÀNH: " + MainActivity.studyCVS.get(i).getMajor(), 500, x1 + i*180, titlePaint2 );
+                        //     canvas.drawText(MainActivity.studyCVS.get(i).getDescription(), 500, x1 + 50 + i*180, contentPaint);
+                        TextPaint mTextPaint=new TextPaint();
+                        mTextPaint.setTextSize(30);
+                        mTextPaint.setColor(Color.BLACK);
+                        StaticLayout mTextLayout = new StaticLayout(xuongdong(MainActivity.studyCVS.get(i).getDescription()), mTextPaint, canvas.getWidth(), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
+
+                        canvas.save();
+                        // calculate x and y position where your text will be placed
+
+                        int textX = 500;
+                        int textY = x1 + 20+ i*180;
+
+                        canvas.translate(textX, textY);
+                        mTextLayout.draw(canvas);
+                        canvas.restore();
+
                     }else {
                         break;
                     }
@@ -290,10 +317,24 @@ public class CVExperienceActivity extends AppCompatActivity {
             canvas.drawText("KINH NGHIỆM", 30, x2, titlePaint);
             if(d == 1){
                 for(int i=0; i < experienceCVS.size(); i++){
-                    if(i < 5){
-                        canvas.drawText(experienceCVS.get(i).getStart()+"-"+experienceCVS.get(i).getEnd(), 30, x2 + 50 + i*90, contentPaint);
-                        canvas.drawText(experienceCVS.get(i).getCompany(), 500, x2 + 50 + i*90, contentPaint);
-                        canvas.drawText(experienceCVS.get(i).getPosition(), 500, x2 + 90 + i*90, contentPaint);
+                    if(i < 4){
+                        canvas.drawText(experienceCVS.get(i).getStart()+"-"+experienceCVS.get(i).getEnd(), 30, x2 + 50 + i*180, contentPaint);
+                        canvas.drawText(experienceCVS.get(i).getCompany(), 500, x2 + 50 + i*180, contentPaint);
+                        canvas.drawText(experienceCVS.get(i).getPosition(), 500, x2 + 90 + i*180, contentPaint);
+                        TextPaint mTextPaint=new TextPaint();
+                        mTextPaint.setTextSize(30);
+                        mTextPaint.setColor(Color.BLACK);
+                        StaticLayout mTextLayout = new StaticLayout(xuongdong(experienceCVS.get(i).getDescription()), mTextPaint, canvas.getWidth(), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
+
+                        canvas.save();
+                        // calculate x and y position where your text will be placed
+
+                        int textX = 500;
+                        int textY = x2 + 100 + i*180;
+
+                        canvas.translate(textX, textY);
+                        mTextLayout.draw(canvas);
+                        canvas.restore();
                     }else {
                         break;
                     }
@@ -353,11 +394,11 @@ public class CVExperienceActivity extends AppCompatActivity {
             int width = 300, height = 50;
             if(e == 1){
                 for(int i=0; i < MainActivity.skillCVS.size(); i++){
-                    if(i < 5){
-                        canvas.drawText(MainActivity.skillCVS.get(i).getName(), 30, x3 + 50 + i*90, contentPaint);
+                    if(i < 4){
+                        canvas.drawText(MainActivity.skillCVS.get(i).getName(), 30, x3 + 50 + i*180, contentPaint);
                         float star1 = MainActivity.skillCVS.get(i).getStar()*60;
-                        canvas.drawLine(30, x3+100 + i*90, star1+30, x3 + 100 + i*90, kynang_paint);
-                        canvas.drawLine(star1 + 30, x3+100 + i*90, width + 30,x3 + 100 + i*90,  kynangphu );
+                        canvas.drawLine(30, x3+100 + i*90, star1+30, x3 + 100 + i*180, kynang_paint);
+                        canvas.drawLine(star1 + 30, x3+100 + i*90, width + 30,x3 + 100 + i*180,  kynangphu );
                     }else {
                         break;
                     }
@@ -377,8 +418,6 @@ public class CVExperienceActivity extends AppCompatActivity {
 
             }
         }
-
-
         pdfDocument.finishPage(page);
         File file = new File(Environment.getExternalStorageDirectory(), "/a10.pdf");
         pdfDocument.writeTo(new FileOutputStream(file));
@@ -403,6 +442,19 @@ public class CVExperienceActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public String xuongdong(String text){
+        String ketqua = "";
+        if(text.contains(".")){
+            String[] split = text.split(Pattern.quote("."));
+            for(String item : split){
+                ketqua += "-  " +  item + "\n";
+            }
+            return ketqua;
+        }else {
+            return text;
+        }
     }
     private void eventButton() {
         btnAdd.setOnClickListener(new View.OnClickListener() {

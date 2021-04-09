@@ -90,7 +90,7 @@ public class CVIntroductionActivity extends AppCompatActivity {
         // update nhe
         if(resultCode == 123 && requestCode == 123){
          //   Toast.makeText(getApplicationContext(), "haha", Toast.LENGTH_SHORT).show();
-            MainActivity.arrayListCV.remove(position);
+          //  MainActivity.arrayListCV.remove(position);
             adapter.notifyDataSetChanged();
             handler = new Handler();
             handler.postDelayed(new Runnable() {
