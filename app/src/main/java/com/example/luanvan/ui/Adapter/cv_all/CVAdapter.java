@@ -63,7 +63,7 @@ public class CVAdapter extends RecyclerView.Adapter<CVAdapter.ItemHolder> {
 
 
     @Override
-    public void onBindViewHolder(@NonNull ItemHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final ItemHolder holder, final int position) {
         PdfCV pdfCV = arrayList.get(position);
         holder.name.setText(pdfCV.getName());
         holder.btnShow.setOnClickListener(new View.OnClickListener() {
@@ -170,6 +170,40 @@ public class CVAdapter extends RecyclerView.Adapter<CVAdapter.ItemHolder> {
 
             }
         });
+        holder.btnPutMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RequestQueue requestQueue = Volley.newRequestQueue(context);
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlPutMain,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                if(response.equals("success")){
+                                    Toast.makeText(context,"Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                                    holder.btnPutMain.setText("CV chính");
+
+                                }else {
+                                    Toast.makeText(context,"Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(context,error.toString(), Toast.LENGTH_SHORT).show();
+                            }
+                        }){
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String,String> map = new HashMap<>();
+                        map.put("iduser", String.valueOf(MainActivity.iduser));
+                        map.put("idcv", String.valueOf(arrayList.get(position).getKey()));
+                        return map;
+                    }
+                };
+                requestQueue.add(stringRequest);
+            }
+        });
 
     }
 
@@ -181,7 +215,7 @@ public class CVAdapter extends RecyclerView.Adapter<CVAdapter.ItemHolder> {
     public class ItemHolder extends RecyclerView.ViewHolder {
         public TextView name;
         public ImageView img;
-        public Button btnShow, btnAdjust, btnDelete, btnDownload;
+        public Button btnShow, btnAdjust, btnDelete, btnDownload, btnPutMain;
 
         public ItemHolder(@NonNull View itemView) {
             super(itemView);
@@ -191,6 +225,7 @@ public class CVAdapter extends RecyclerView.Adapter<CVAdapter.ItemHolder> {
             btnDownload = (Button) itemView.findViewById(R.id.download);
             btnShow = (Button) itemView.findViewById(R.id.show);
             img = (ImageView) itemView.findViewById(R.id.img);
+            btnPutMain = (Button) itemView.findViewById(R.id.buttonmain);
 
 
         }

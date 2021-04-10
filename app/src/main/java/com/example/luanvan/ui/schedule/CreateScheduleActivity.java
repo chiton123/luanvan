@@ -471,7 +471,9 @@ public class CreateScheduleActivity extends AppCompatActivity {
                                         object.getString("introduction"),
                                         object.getString("position"),
                                         object.getInt("phone"),
-                                        object.getInt("status")
+                                        object.getInt("status"),
+                                        object.getInt("idcv"),
+                                        object.getInt("mode")
                                 ));
                             }
 

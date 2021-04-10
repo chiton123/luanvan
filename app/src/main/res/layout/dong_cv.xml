@@ -37,7 +37,7 @@
         android:layout_marginTop="10dp"
         >
         <Button
-            android:layout_marginLeft="60dp"
+            android:layout_marginLeft="20dp"
             android:layout_width="80dp"
             android:layout_height="35dp"
             android:text="Xem CV"
@@ -46,11 +46,20 @@
             android:textColor="#06AF0D"
             ></Button>
         <Button
-            android:layout_marginLeft="60dp"
+            android:layout_marginLeft="30dp"
             android:layout_width="80dp"
             android:layout_height="35dp"
             android:text="Sửa CV"
             android:id="@+id/adjust"
+            android:background="@drawable/button_adjust"
+            android:textColor="#06AF0D"
+            ></Button>
+        <Button
+            android:layout_marginLeft="30dp"
+            android:layout_width="120dp"
+            android:layout_height="35dp"
+            android:text="Đặt CV chính"
+            android:id="@+id/buttonmain"
             android:background="@drawable/button_adjust"
             android:textColor="#06AF0D"
             ></Button>
