@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
@@ -44,6 +45,7 @@ public class CVIntroductionActivity extends AppCompatActivity {
         // get cv sau khi đăng nhập rồi
         checkNothing();
         eventCreateCV();
+        handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -103,8 +105,7 @@ public class CVIntroductionActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         // update nhe
         if(resultCode == 123 && requestCode == 123){
-         //   Toast.makeText(getApplicationContext(), "haha", Toast.LENGTH_SHORT).show();
-          //  MainActivity.arrayListCV.remove(position);
+           // Toast.makeText(getApplicationContext(), "size " + MainActivity.arrayListCV.size(), Toast.LENGTH_SHORT).show();
             adapter.notifyDataSetChanged();
             handler = new Handler();
             handler.postDelayed(new Runnable() {
@@ -116,7 +117,17 @@ public class CVIntroductionActivity extends AppCompatActivity {
         }
         // them
         if(resultCode == 123 && requestCode == REQUEST_CODE){
-            adapter.notifyDataSetChanged();
+            // Để nó load lên firebase và trả về kịp mới notifychange
+            handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    adapter.notifyDataSetChanged();
+                  //  Toast.makeText(getApplicationContext(), "size " + MainActivity.arrayListCV.size(), Toast.LENGTH_SHORT).show();
+                    checkNothing();
+                }
+            },1000);
+
             handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override

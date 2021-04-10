@@ -806,7 +806,7 @@ public class CVActivity extends AppCompatActivity {
                             setResult(123);
                             finish();
                         }
-                    },4300);
+                    },5000);
 
                 }
                 break;
