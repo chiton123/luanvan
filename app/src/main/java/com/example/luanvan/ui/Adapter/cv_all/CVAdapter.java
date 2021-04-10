@@ -66,6 +66,7 @@ public class CVAdapter extends RecyclerView.Adapter<CVAdapter.ItemHolder> {
     public void onBindViewHolder(@NonNull final ItemHolder holder, final int position) {
         PdfCV pdfCV = arrayList.get(position);
         holder.name.setText(pdfCV.getName());
+
         holder.btnShow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,12 +98,8 @@ public class CVAdapter extends RecyclerView.Adapter<CVAdapter.ItemHolder> {
                                     @Override
                                     public void onResponse(String response) {
                                         if(response.equals("fail")){
-                                            MainActivity.mData.child("cv").child(MainActivity.uid).child(arrayList.get(position).getKey()).removeValue();
-                                            MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(arrayList.get(position).getKey()).removeValue();
-                                            MainActivity.arrayListCV.remove(position);
-                                            notifyDataSetChanged();
-                                            ((CVIntroductionActivity)activity).checkNothing();
-                                            Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                                            deleteMysql(position);
+
                                         }else {
                                             Toast.makeText(context, "CV đã ứng tuyển nên không được xóa", Toast.LENGTH_SHORT).show();
                                         }
@@ -180,7 +177,8 @@ public class CVAdapter extends RecyclerView.Adapter<CVAdapter.ItemHolder> {
                             public void onResponse(String response) {
                                 if(response.equals("success")){
                                     Toast.makeText(context,"Cập nhật thành công", Toast.LENGTH_SHORT).show();
-                                    holder.btnPutMain.setText("CV chính");
+//                                    holder.btnPutMain.setText("CV chính");
+                                    notifyDataSetChanged();
 
                                 }else {
                                     Toast.makeText(context,"Cập nhật thất bại", Toast.LENGTH_SHORT).show();
@@ -204,7 +202,73 @@ public class CVAdapter extends RecyclerView.Adapter<CVAdapter.ItemHolder> {
                 requestQueue.add(stringRequest);
             }
         });
+        RequestQueue requestQueue = Volley.newRequestQueue(activity);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlCheckMainCV,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                       // Toast.makeText(context, response.toString(), Toast.LENGTH_SHORT).show();
+                        if(response.equals("success")){
+                            holder.btnPutMain.setText("CV chính");
+                        }else {
+                            //Toast.makeText(context, "Kiểm tra CV chính thất bại", Toast.LENGTH_SHORT).show();
+                            holder.btnPutMain.setText("Đặt CV chính");
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("iduser", String.valueOf(MainActivity.iduser));
+                map.put("idcv", String.valueOf(arrayList.get(position).getKey()));
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
 
+    }
+
+    private void deleteMysql(final int position) {
+       // Toast.makeText(context, "iduser " + MainActivity.iduser + " idcv " + arrayList.get(position).getKey(), Toast.LENGTH_SHORT).show();
+        final RequestQueue requestQueue = Volley.newRequestQueue(activity);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlDeleteCV,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(response.equals("success")){
+                            Toast.makeText(context, "Xóa lên Mysql thành công", Toast.LENGTH_SHORT).show();
+                            MainActivity.mData.child("cv").child(MainActivity.uid).child(arrayList.get(position).getKey()).removeValue();
+                            MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(arrayList.get(position).getKey()).removeValue();
+                            arrayList.remove(position);
+                            notifyDataSetChanged();
+                            ((CVIntroductionActivity)activity).checkNothing();
+                            Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                        }else {
+                            Toast.makeText(context, "Xóa lên Mysql thất bại", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("iduser", String.valueOf(MainActivity.iduser));
+                map.put("idcv", String.valueOf(arrayList.get(position).getKey()));
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
     }
 
     @Override

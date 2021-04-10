@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -31,20 +32,33 @@ public class CVIntroductionActivity extends AppCompatActivity {
     public static int position = 0;
     Handler handler;
     LinearLayout layout, layout_nothing;
-
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_c_v_introduction);
+        loading();
         anhxa();
         actionBar();
         // get cv sau khi đăng nhập rồi
         checkNothing();
         eventCreateCV();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.dismiss();
+            }
+        },1500);
 
     }
-
+    void loading(){
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading");
+        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
+    }
     public void checkNothing(){
         if(MainActivity.arrayListCV.size() == 0){
             layout_nothing.setVisibility(View.VISIBLE);

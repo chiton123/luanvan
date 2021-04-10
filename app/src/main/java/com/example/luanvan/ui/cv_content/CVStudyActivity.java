@@ -508,7 +508,6 @@ public class CVStudyActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity.checkFirstStudy = 1;
                 finish();
             }
         });

@@ -382,20 +382,36 @@ public class CVInfoActivity extends AppCompatActivity {
     public void getInfoAdd(){
         if(MainActivity.checkFirstInfo == 0){
             editname.setText(MainActivity.username);
-            editposition.setText(MainActivity.user.getPosition());
-            editemail.setText(MainActivity.user.getEmail());
-            editphone.setText(MainActivity.user.getPhone() + "");
-            editaddress.setText(MainActivity.user.getAddress());
-            String ngay = MainActivity.user.getBirthday();
-            SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-            Date date = null;
-            try {
-                date = fmt.parse(ngay);
-            } catch (ParseException e) {
-                e.printStackTrace();
+            if(!MainActivity.user.getPosition().equals("")){
+                editposition.setText(MainActivity.user.getPosition());
             }
-            SimpleDateFormat fmtOut = new SimpleDateFormat("dd/MM/yyyy");
-            editbirthday.setText(fmtOut.format(date));
+
+
+            if(!MainActivity.user.getEmail().equals("")){
+                editemail.setText(MainActivity.user.getEmail());
+            }
+
+            if(MainActivity.user.getPhone() != 0){
+                editphone.setText(MainActivity.user.getPhone() + "");
+            }
+
+            if(!MainActivity.user.getAddress().equals("")){
+                editaddress.setText(MainActivity.user.getAddress());
+            }
+
+            String ngay = MainActivity.user.getBirthday();
+            if(!ngay.equals("")){
+                SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+                Date date = null;
+                try {
+                    date = fmt.parse(ngay);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                SimpleDateFormat fmtOut = new SimpleDateFormat("dd/MM/yyyy");
+                editbirthday.setText(fmtOut.format(date));
+            }
+
             if(MainActivity.user.getGender() == 0){
                 editgender.setText("Nam");
             }else {
@@ -527,7 +543,6 @@ public class CVInfoActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity.checkFirstInfo = 1;
                 finish();
             }
         });

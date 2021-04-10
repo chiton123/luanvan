@@ -205,6 +205,10 @@ public class MainActivity extends AppCompatActivity {
     public static String urlGetRemark = host + "get_remark.php";
     public static String urlRemark = host + "remark.php";
     public static String urlDeleteAssessment = host + "delete_assessment.php";
+    // put CV
+    public static String urlPutCV = host + "putcv.php";
+    public static String urlDeleteCV = host + "deletecv.php";
+    public static String urlCheckMainCV = host + "check_maincv.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

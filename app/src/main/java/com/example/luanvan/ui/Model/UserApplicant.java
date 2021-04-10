@@ -12,14 +12,13 @@ public class UserApplicant {
     private String position;
     private int phone;
     private int status;
-    private int idcv;
     private int mode;
     public UserApplicant(){
 
     }
 
     public UserApplicant(int id, int ap_id, String name, String birthday, int gender, String address, String email, String introduction, String position, int phone, int status
-            ,int idcv, int mode ) {
+            , int mode ) {
         this.id = id;
         this.ap_id = ap_id;
         this.name = name;
@@ -31,17 +30,9 @@ public class UserApplicant {
         this.position = position;
         this.phone = phone;
         this.status = status;
-        this.idcv = idcv;
         this.mode = mode;
     }
 
-    public int getIdcv() {
-        return idcv;
-    }
-
-    public void setIdcv(int idcv) {
-        this.idcv = idcv;
-    }
 
     public int getMode() {
         return mode;

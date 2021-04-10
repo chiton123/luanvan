@@ -30,6 +30,7 @@ import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Experience;
 import com.example.luanvan.ui.Model.Skill;
 import com.example.luanvan.ui.Model.Study;
+import com.example.luanvan.ui.Model.User;
 import com.example.luanvan.ui.User.ResetPasswordActivity;
 import com.example.luanvan.ui.login.LoginActivity;
 import com.example.luanvan.ui.modelCV.PdfCV;
@@ -54,7 +55,7 @@ public class LoginFragment extends Fragment {
     Button btnDangnhap;
     ProgressDialog progressDialog;
     TextView txt_forgotPassword;
-    Handler handler = new Handler();
+    Handler handler;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -89,7 +90,7 @@ public class LoginFragment extends Fragment {
         progressDialog.setCancelable(false);
     }
     private void getDataCV() {
-        MainActivity.mData.child("cv").child(MainActivity.uid).addChildEventListener(new ChildEventListener() {
+        final ChildEventListener childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 //  Toast.makeText(getApplicationContext(), snapshot.getValue().toString(), Toast.LENGTH_SHORT).show();
@@ -121,7 +122,17 @@ public class LoginFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
+        };
+        MainActivity.mData.child("cv").child(MainActivity.uid).addChildEventListener(childEventListener);
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+               // MainActivity.mData.removeEventListener(childEventListener);
+            }
+        },3000);
+
+
 
     }
     public void getInfo(){
@@ -145,6 +156,7 @@ public class LoginFragment extends Fragment {
                                 MainActivity.user.setPosition(object.getString("position"));
                                 MainActivity.user.setPhone(object.getInt("phone"));
                                 MainActivity.username = object.getString("name");
+                                MainActivity.user.setMode(object.getInt("mode"));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

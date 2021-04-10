@@ -35,6 +35,13 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.add_remove.AddAdapter;
@@ -62,6 +69,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 import java.util.regex.Pattern;
 
 import static com.example.luanvan.MainActivity.experienceCV;
@@ -135,7 +145,10 @@ public class CVActivity extends AppCompatActivity {
         MainActivity.mData.child("cv").child(MainActivity.uid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                idCV = (snapshot.getChildrenCount() + 1)*10 + 1;
+                Random random = new Random();
+                Random random1 = new Random();
+                Random random2 = new Random();
+                idCV = random.nextInt(30)*20 + random1.nextInt(200)*4 + random2.nextInt(400);
                 cvName.setText("Ứng tuyển "+ String.valueOf(idCV + 1));
             }
 
@@ -767,12 +780,14 @@ public class CVActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.luu:
-                if(cvName.getText().equals("")){
+                String cv_name = cvName.getText().toString();
+                if(cv_name.equals("")){
                     Toast.makeText(getApplicationContext(), "Vui lòng điền tên CV", Toast.LENGTH_SHORT).show();
                 }else {
                     loading();
                     if(kind == 1){
-                        pushAddAll();
+                        putMysql();
+
                     }else {
                         try {
                             updateCVAll();
@@ -791,7 +806,7 @@ public class CVActivity extends AppCompatActivity {
                             setResult(123);
                             finish();
                         }
-                    },3000);
+                    },4300);
 
                 }
                 break;
@@ -806,6 +821,39 @@ public class CVActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void putMysql() {
+        final RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlPutCV,
+                new Response.Listener<String>() {
+                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                    @Override
+                    public void onResponse(String response) {
+                        if(response.equals("success")){
+                          //  MainActivity.arrayListCV.add(new PdfCV(MainActivity.uid, cvName.getText().toString(), MainActivity.urlCV, String.valueOf(idCV+1)));
+                            Toast.makeText(getApplicationContext(), "Cập nhật lên Mysql thành công", Toast.LENGTH_SHORT).show();
+                            pushAddAll(); // làm ngược lại là ID sẽ tăng lên, k đồng bộ
+                        }else {
+                            Toast.makeText(getApplicationContext(), "Cập nhật lên Mysql thất bại", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("iduser", String.valueOf(MainActivity.iduser));
+                map.put("idcv", String.valueOf(idCV + 1));
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
     }
 
     private void actionBar() {

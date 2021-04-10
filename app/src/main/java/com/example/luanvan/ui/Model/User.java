@@ -11,7 +11,6 @@ public class User {
     private String position;
     private int phone;
     private int status;
-    private int idcv;
     private int mode;
 
     public User(){
@@ -19,7 +18,7 @@ public class User {
     }
 
     public User(int id, String name, String birthday, int gender, String address, String email, String introduction, String position, int phone,int status
-    ,int idcv, int mode ) {
+    , int mode ) {
         this.id = id;
         this.name = name;
         this.birthday = birthday;
@@ -30,17 +29,10 @@ public class User {
         this.position = position;
         this.phone = phone;
         this.status = status;
-        this.idcv = idcv;
         this.mode = mode;
     }
 
-    public int getIdcv() {
-        return idcv;
-    }
 
-    public void setIdcv(int idcv) {
-        this.idcv = idcv;
-    }
 
     public int getMode() {
         return mode;
