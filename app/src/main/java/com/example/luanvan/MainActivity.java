@@ -210,6 +210,15 @@ public class MainActivity extends AppCompatActivity {
     public static String urlDeleteCV = host + "deletecv.php";
     public static String urlCheckMainCV = host + "check_maincv.php";
 
+    // Candidate basic info
+    // Experience
+    public static String urlCandidateExperience = host + "candidate_experience.php";
+    // study
+    public static String urlCandidateStudy = host + "candidate_study.php";
+    // skill
+    public static String urlCandidateSkill = host + "candidate_skill.php";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

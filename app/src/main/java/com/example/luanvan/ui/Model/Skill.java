@@ -4,7 +4,8 @@ import java.io.Serializable;
 
 public class Skill implements Serializable {
     private String id;
-    private String uid;
+    private int iduser;
+    private int idskill;
     private String name;
     private float star;
     private String description;
@@ -12,9 +13,10 @@ public class Skill implements Serializable {
     public Skill() {
     }
 
-    public Skill(String id, String uid, String name, float star, String description) {
+    public Skill(String id, int iduser, int idskill, String name, float star, String description) {
         this.id = id;
-        this.uid = uid;
+        this.iduser = iduser;
+        this.idskill = idskill;
         this.name = name;
         this.star = star;
         this.description = description;
@@ -28,12 +30,20 @@ public class Skill implements Serializable {
         this.id = id;
     }
 
-    public String getUid() {
-        return uid;
+    public int getIduser() {
+        return iduser;
     }
 
-    public void setUid(String uid) {
-        this.uid = uid;
+    public void setIduser(int iduser) {
+        this.iduser = iduser;
+    }
+
+    public int getIdskill() {
+        return idskill;
+    }
+
+    public void setIdskill(int idskill) {
+        this.idskill = idskill;
     }
 
     public String getName() {

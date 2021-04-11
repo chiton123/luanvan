@@ -215,36 +215,8 @@ public class LoginFragment extends Fragment {
 
     }
     private void getInfoExperience() {
-        MainActivity.mData.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.hasChild("experience") && snapshot.exists()){
-                    MainActivity.mData.child("experience").addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            for(DataSnapshot x : snapshot.getChildren()){
-                                Experience experience = x.getValue(Experience.class);
-                                if(experience.getUid().equals(MainActivity.uid)){
-                                    MainActivity.experiences.add(experience);
-                                }
-
-
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, )
 
     }
     private void getInfoSkill() {

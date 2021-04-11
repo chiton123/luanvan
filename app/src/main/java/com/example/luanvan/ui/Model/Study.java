@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class Study implements Serializable {
     private String id;
-    private String uid;
+    private int iduser;
     private String school;
     private String major;
     private String date_start;
@@ -14,9 +14,10 @@ public class Study implements Serializable {
     public Study(){
 
     }
-    public Study(String id, String uid, String school, String major, String date_start, String date_end, String description) {
+
+    public Study(String id, int iduser, String school, String major, String date_start, String date_end, String description) {
         this.id = id;
-        this.uid = uid;
+        this.iduser = iduser;
         this.school = school;
         this.major = major;
         this.date_start = date_start;
@@ -32,12 +33,12 @@ public class Study implements Serializable {
         this.id = id;
     }
 
-    public String getUid() {
-        return uid;
+    public int getIduser() {
+        return iduser;
     }
 
-    public void setUid(String uid) {
-        this.uid = uid;
+    public void setIduser(int iduser) {
+        this.iduser = iduser;
     }
 
     public String getSchool() {

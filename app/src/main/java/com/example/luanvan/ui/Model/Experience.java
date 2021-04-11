@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class Experience implements Serializable {
     private String id;
-    private String uid;
+    private int iduser;
     private String company;
     private String position;
     private String date_start;
@@ -14,9 +14,9 @@ public class Experience implements Serializable {
     public Experience() {
     }
 
-    public Experience(String id, String uid, String company, String position, String date_start, String date_end, String description) {
+    public Experience(String id, int iduser, String company, String position, String date_start, String date_end, String description) {
         this.id = id;
-        this.uid = uid;
+        this.iduser = iduser;
         this.company = company;
         this.position = position;
         this.date_start = date_start;
@@ -32,12 +32,12 @@ public class Experience implements Serializable {
         this.id = id;
     }
 
-    public String getUid() {
-        return uid;
+    public int getIduser() {
+        return iduser;
     }
 
-    public void setUid(String uid) {
-        this.uid = uid;
+    public void setIduser(int iduser) {
+        this.iduser = iduser;
     }
 
     public String getCompany() {
