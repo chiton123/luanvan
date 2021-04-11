@@ -26,6 +26,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Study;
+import com.example.luanvan.ui.User.NotificationsFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
@@ -51,8 +52,7 @@ public class StudyActivity extends AppCompatActivity {
     String date_post_start = "", date_post_end = "";
     Date date_start = null, date_end = null;
     int check_start = 0;
-    String id = ""; // id study trên csdl
-    String key = "";
+    int id = 0; // mysql
     int position = 0; // trên mảng arraylist, thứ tự
     int update = 0;
     String url = "";
@@ -80,41 +80,7 @@ public class StudyActivity extends AppCompatActivity {
         progressDialog.show();
         progressDialog.setCancelable(false);
     }
-    private void getInfoStudy() {
-        MainActivity.mData.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.hasChild("study")){
-                    MainActivity.mData.child("study").addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            for(DataSnapshot x : snapshot.getChildren()){
-                                Study study = x.getValue(Study.class);
-                                if(study.getUid().equals(MainActivity.uid)){
-                                    MainActivity.studies.add(study);
-                                }
 
-                            }
-
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-
-    }
     private void getInfo() {
         // 10: add, 3: update
         int check = getIntent().getIntExtra("confirm", 0);
@@ -234,128 +200,129 @@ public class StudyActivity extends AppCompatActivity {
         });
     }
 
-    public void getKey(){
-        MainActivity.mData.child("study").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                for(DataSnapshot x : snapshot.getChildren()){
-                    if(snapshot.child("id").getValue().toString().equals(id)){
-                        key = snapshot.getKey();
-                    }
-                }
 
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-    }
 
     private void eventUpdate() {
 
-        btncapnhat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if(editshool.getText().equals("") || editmota.getText().equals("") || editmajor.getText().equals("") || editstart.getText().equals("")
-                || editend.getText().equals("")){
-                    Toast.makeText(getApplicationContext(), "Vui lòng nhập đủ thông tin" , Toast.LENGTH_SHORT).show();
-                }else if(x == 1){
-                    Toast.makeText(getApplicationContext(), "Ngày kết thúc phải sau ngày bắt đầu" , Toast.LENGTH_SHORT).show();
-                }else if(date_start.after(date_end)){
-                    Toast.makeText(getApplicationContext(), "Ngày bắt đầu phải trước ngày kết thúc", Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-
+            btncapnhat.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
                     final String school = editshool.getText().toString();
                     final String major = editmajor.getText().toString();
                     final String mota = editmota.getText().toString();
-                    if(update == 1){
+                    String start = editstart.getText().toString();
+                    String end = editend.getText().toString();
+                    if (school.equals("") || major.equals("") || mota.equals("") || start.equals("") || end.equals("")) {
+                        Toast.makeText(getApplicationContext(), "Vui lòng nhập đủ thông tin", Toast.LENGTH_SHORT).show();
+                    } else if (x == 1) {
+                        Toast.makeText(getApplicationContext(), "Ngày kết thúc phải sau ngày bắt đầu", Toast.LENGTH_SHORT).show();
+                    } else if (date_start.after(date_end)) {
+                        Toast.makeText(getApplicationContext(), "Ngày bắt đầu phải trước ngày kết thúc", Toast.LENGTH_SHORT).show();
+                    } else {
                         loading();
-                        getKey();
-                        final Study study = new Study(id, MainActivity.uid, school, major, date_post_start, date_post_end, mota);
-                        handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                MainActivity.mData.child("study").child(key).setValue(study);
-                                Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
-                            }
-                        },2000);
-
-                        handler1 = new Handler();
-                        handler1.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                progressDialog.dismiss();
-                                Intent intent = new Intent();
-                                setResult(1, intent);
-                                finish();
-                            }
-                        }, 2000);
-
-
-                    }else {
-                        String key1 = MainActivity.mData.child("study").push().getKey();
-                        final Study study1 = new Study(key1, MainActivity.uid, school, major, date_post_start, date_post_end, mota);
-                        MainActivity.mData.child("study").push().setValue(study1)
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if(task.isSuccessful()){
-                                            Toast.makeText(getApplicationContext(), "Đã thêm", Toast.LENGTH_SHORT).show();
-                                            loading();
-                                            MainActivity.studies.clear();
-                                            getInfoStudy();
-                                            MainActivity.studyAdapter.notifyDataSetChanged();
-                                            handler = new Handler();
-                                            handler.postDelayed(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    progressDialog.dismiss();
-                                                    Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
-                                                    Intent intent = new Intent();
-                                                    setResult(1, intent);
-                                                    finish();
-                                                }
-                                            },1000);
-
-
-                                        }else {
-                                            Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
+                        final Study study = new Study(id, MainActivity.iduser, school, major, date_post_start, date_post_end, mota);
+                        if (update == 1) {
+                            MainActivity.studies.set(position, study);
+                            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                            StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlUpdateStudy,
+                                    new Response.Listener<String>() {
+                                        @Override
+                                        public void onResponse(String response) {
+                                            if(response.equals("success")){
+                                                Toast.makeText(getApplicationContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                                            }else {
+                                                Toast.makeText(getApplicationContext(), "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+                                            }
                                         }
-                                    }
-                                });
+                                    },
+                                    new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+                                            Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    }){
+                                @Override
+                                protected Map<String, String> getParams() throws AuthFailureError {
+                                    Map<String,String> map = new HashMap<>();
+                                    map.put("id", String.valueOf(id));
+                                    map.put("school", school);
+                                    map.put("major", major);
+                                    map.put("start", date_post_start);
+                                    map.put("end", date_post_end);
+                                    map.put("description", mota);
+                                    return map;
+                                }
+                            };
+                            requestQueue.add(stringRequest);
+
+                            handler1 = new Handler();
+                            handler1.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    progressDialog.dismiss();
+                                    Intent intent = new Intent();
+                                    setResult(1, intent);
+                                    finish();
+                                }
+                            }, 2000);
+
+
+                        } else {
+                            MainActivity.studies.add(study);
+                            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                            StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlAddStudy,
+                                    new Response.Listener<String>() {
+                                        @Override
+                                        public void onResponse(String response) {
+                                            if(response.equals("success")){
+                                                Toast.makeText(getApplicationContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                                            }else {
+                                                Toast.makeText(getApplicationContext(), "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    },
+                                    new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+                                            Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    }){
+                                @Override
+                                protected Map<String, String> getParams() throws AuthFailureError {
+                                    Map<String,String> map = new HashMap<>();
+                                    map.put("school", school);
+                                    map.put("major", major);
+                                    map.put("start", date_post_start);
+                                    map.put("end", date_post_end);
+                                    map.put("description", mota);
+                                    map.put("iduser", String.valueOf(MainActivity.iduser));
+                                    return map;
+                                }
+                            };
+                            requestQueue.add(stringRequest);
+
+                            handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    NotificationsFragment.studyAdapter.notifyDataSetChanged();
+                                    progressDialog.dismiss();
+                                    Intent intent = new Intent();
+                                    setResult(1, intent);
+                                    finish();
+                                }
+                            }, 1000);
+                        }
                     }
                 }
-            }
-        });
+            });
 
-        btnhuy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+            btnhuy.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
 
     }
     private void actionBar() {

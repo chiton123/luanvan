@@ -26,9 +26,9 @@ import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Experience;
-import com.example.luanvan.ui.Model.Study;
 import com.example.luanvan.ui.UpdateInfo.ExperienceActivity;
-import com.example.luanvan.ui.User.EditCombineActivity;
+import com.example.luanvan.ui.UpdateInfo.EditCombineActivity;
+import com.example.luanvan.ui.User.NotificationsFragment;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
@@ -57,14 +57,14 @@ public class ExperienceAdapter extends RecyclerView.Adapter<ExperienceAdapter.It
     @NonNull
     @Override
     public ItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.dong_experience, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.dong_experience, null);
         ItemHolder itemHolder = new ItemHolder(view);
         return itemHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ItemHolder holder, final int position) {
-        Experience experience = arrayList.get(position);
+        final Experience experience = arrayList.get(position);
         holder.company.setText(experience.getCompany());
         holder.position.setText(experience.getPosition());
         holder.img.setImageResource(R.drawable.company1);
@@ -115,35 +115,48 @@ public class ExperienceAdapter extends RecyclerView.Adapter<ExperienceAdapter.It
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Query query = MainActivity.mData.child("experience").orderByChild("id").equalTo(arrayList.get(position).getId());
-                                    query.addValueEventListener(new ValueEventListener() {
+                                    RequestQueue requestQueue = Volley.newRequestQueue(activity);
+                                    StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlDeleteExperience,
+                                            new Response.Listener<String>() {
+                                                @Override
+                                                public void onResponse(String response) {
+                                                    if(response.equals("success")){
+                                                        Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                                                        int pos = holder.getAdapterPosition();
+
+                                                        if(last == 1 || arrayList.size() == 1){
+                                                            ((EditCombineActivity) activity).refreshExperience();
+                                                            NotificationsFragment.experienceAdapter.notifyDataSetChanged();
+
+                                                        }else {
+                                                            if(arrayList.size() == 2){
+                                                                last = 1;
+                                                            }
+                                                            arrayList.remove(position);
+                                                            notifyDataSetChanged();
+
+                                                        }
+                                                        NotificationsFragment.experienceAdapter.notifyDataSetChanged();
+                                                    }else {
+                                                        Toast.makeText(context, "Xóa thất bại", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }
+                                            },
+                                            new Response.ErrorListener() {
+                                                @Override
+                                                public void onErrorResponse(VolleyError error) {
+                                                    Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                                                }
+                                            }){
                                         @Override
-                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            for(DataSnapshot x : snapshot.getChildren()){
-                                                x.getRef().removeValue();
-                                            }
+                                        protected Map<String, String> getParams() throws AuthFailureError {
+                                            Map<String,String> map = new HashMap<>();
+                                            map.put("id", String.valueOf(experience.getId()));
+                                            return map;
                                         }
+                                    };
+                                    requestQueue.add(stringRequest);
 
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-
-                                        }
-                                    });
-                                    Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
-                                    int pos = holder.getAdapterPosition();
-
-                                    if(last == 1 || arrayList.size() == 0){
-                                        ((EditCombineActivity) activity).refreshExperience();
-                                        MainActivity.experienceAdapter.notifyDataSetChanged();
-
-                                    }else {
-                                        if(arrayList.size() == 2){
-                                            last = 1;
-                                        }
-                                        arrayList.remove(position);
-                                        notifyDataSetChanged();
-
-                                    }
                                 }
                             });
 

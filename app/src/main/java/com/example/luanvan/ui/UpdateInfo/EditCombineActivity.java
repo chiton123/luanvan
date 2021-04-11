@@ -1,4 +1,4 @@
-package com.example.luanvan.ui.User;
+package com.example.luanvan.ui.UpdateInfo;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,12 +18,14 @@ import android.widget.Toast;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 
+import com.example.luanvan.ui.Adapter.notification_u.NotificationAdapter;
 import com.example.luanvan.ui.Adapter.update_personal_info.ExperienceAdapter;
 import com.example.luanvan.ui.Adapter.update_personal_info.SkillAdapter;
 import com.example.luanvan.ui.Adapter.update_personal_info.StudyAdapter;
 import com.example.luanvan.ui.Model.Experience;
 import com.example.luanvan.ui.Model.Skill;
 import com.example.luanvan.ui.Model.Study;
+import com.example.luanvan.ui.User.NotificationsFragment;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -51,103 +53,7 @@ public class EditCombineActivity extends AppCompatActivity {
 
 
     }
-    private void getInfoStudy() {
-        MainActivity.mData.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.hasChild("study")){
-                    MainActivity.mData.child("study").addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            for(DataSnapshot x : snapshot.getChildren()){
-                                Study study = x.getValue(Study.class);
-                                if(study.getUid().equals(MainActivity.uid)){
-                                    MainActivity.studies.add(study);
-                                }
 
-                            }
-
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-
-    }
-    private void getInfoExperience() {
-        MainActivity.mData.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.hasChild("experience") && snapshot.exists()){
-                    MainActivity.mData.child("experience").addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            for(DataSnapshot x : snapshot.getChildren()){
-                                Experience experience = x.getValue(Experience.class);
-                                if(experience.getUid().equals(MainActivity.uid)){
-                                    MainActivity.experiences.add(experience);
-                                }
-
-
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-
-    }
-    private void getInfoSkill() {
-        MainActivity.mData.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.hasChild("skill")){
-                    MainActivity.mData.child("skill").addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            for(DataSnapshot x : snapshot.getChildren()){
-                                Skill skill = x.getValue(Skill.class);
-                                if(skill.getUid().equals(MainActivity.uid)){
-                                    MainActivity.skills.add(skill);
-                                }
-                            }
-                        }
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-    }
     void loading(){
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading");
@@ -157,18 +63,15 @@ public class EditCombineActivity extends AppCompatActivity {
     }
     public void reloadStudy(){
         x = 1;
-        MainActivity.studies.clear();
-        getInfoStudy();
+        NotificationsFragment.studyAdapter.notifyDataSetChanged();
     }
     public void reloadExperience(){
         x = 2;
-        MainActivity.experiences.clear();
-        getInfoExperience();
+        NotificationsFragment.experienceAdapter.notifyDataSetChanged();
     }
     public void reloadSkill(){
         x = 3;
-        MainActivity.skills.clear();
-        getInfoSkill();
+        NotificationsFragment.skillAdapter.notifyDataSetChanged();
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -179,7 +82,6 @@ public class EditCombineActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     studyAdapter.notifyDataSetChanged();
-                    MainActivity.studyAdapter.notifyDataSetChanged();
                     checkStudy();
                 }
             },1000);
@@ -193,7 +95,6 @@ public class EditCombineActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     experienceAdapter.notifyDataSetChanged();
-                    MainActivity.experienceAdapter.notifyDataSetChanged();
                     checkExperience();
                 }
             },1000);
@@ -206,7 +107,6 @@ public class EditCombineActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     skillAdapter.notifyDataSetChanged();
-                    MainActivity.skillAdapter.notifyDataSetChanged();
                     checkSkill();
                 }
             },1000);
@@ -231,21 +131,21 @@ public class EditCombineActivity extends AppCompatActivity {
         layout.setVisibility(View.GONE);
         MainActivity.studies.clear();
         studyAdapter.notifyDataSetChanged();
-        MainActivity.studyAdapter.notifyDataSetChanged();
+        NotificationsFragment.studyAdapter.notifyDataSetChanged();
     }
     public void refreshExperience(){
         layout_nothing.setVisibility(View.VISIBLE);
         layout.setVisibility(View.GONE);
         MainActivity.experiences.clear();
         experienceAdapter.notifyDataSetChanged();
-        MainActivity.experienceAdapter.notifyDataSetChanged();
+        NotificationsFragment.experienceAdapter.notifyDataSetChanged();
     }
     public void refreshSkill(){
         layout_nothing.setVisibility(View.VISIBLE);
         layout.setVisibility(View.GONE);
         MainActivity.skills.clear();
         skillAdapter.notifyDataSetChanged();
-        MainActivity.skillAdapter.notifyDataSetChanged();
+        NotificationsFragment.skillAdapter.notifyDataSetChanged();
     }
     public void checkExperience(){
         if(MainActivity.experiences.size() == 0){

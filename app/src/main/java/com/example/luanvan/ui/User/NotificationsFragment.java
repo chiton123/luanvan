@@ -33,8 +33,7 @@ import com.example.luanvan.ui.Adapter.update_personal_info.SkillAdapter;
 import com.example.luanvan.ui.Adapter.update_personal_info.StudyAdapter;
 import com.example.luanvan.ui.Model.Profile;
 import com.example.luanvan.ui.Model.User;
-import com.example.luanvan.ui.Model.UserF;
-import com.example.luanvan.ui.home.HomeFragment;
+import com.example.luanvan.ui.UpdateInfo.EditCombineActivity;
 import com.example.luanvan.ui.login.LoginActivity;
 import com.example.luanvan.ui.modelCV.UserCV;
 import com.example.luanvan.ui.recruiter.LoginRecruiterActivity;
@@ -56,12 +55,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import static android.app.Activity.RESULT_OK;
-import static com.example.luanvan.MainActivity.experienceAdapter;
-import static com.example.luanvan.MainActivity.mAuth;
-import static com.example.luanvan.MainActivity.skillAdapter;
-import static com.example.luanvan.MainActivity.studyAdapter;
+
 
 public class NotificationsFragment extends Fragment {
+    public static StudyAdapter studyAdapter;
+    public static ExperienceAdapter experienceAdapter;
+    public static SkillAdapter skillAdapter;
     LinearLayout linearLayout1, linearLayout2;
     Button btndangnhap, btnLoginRecruiter;
     int REQUEST_CODE = 123;
@@ -120,10 +119,10 @@ public class NotificationsFragment extends Fragment {
         recyclerViewexperience.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerViewskill.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         profileAdapter = new ProfileAdapter(getActivity(), arrayList, getActivity());
-        MainActivity.studyAdapter = new StudyAdapter(getActivity(), MainActivity.studies, getActivity(), 1);
+        studyAdapter = new StudyAdapter(getActivity(), MainActivity.studies, getActivity(), 1);
    //     Toast.makeText(getActivity(), "hehe", Toast.LENGTH_SHORT).show();
-        MainActivity.skillAdapter = new SkillAdapter(getActivity(), MainActivity.skills, getActivity(), 1);
-        MainActivity.experienceAdapter = new ExperienceAdapter(getActivity(), MainActivity.experiences, getActivity(),1);
+        skillAdapter = new SkillAdapter(getActivity(), MainActivity.skills, getActivity(), 1);
+        experienceAdapter = new ExperienceAdapter(getActivity(), MainActivity.experiences, getActivity(),1);
         recyclerView.setAdapter(profileAdapter);
         recyclerViewstudy.setAdapter(studyAdapter);
         recyclerViewexperience.setAdapter(experienceAdapter);
@@ -343,9 +342,9 @@ public class NotificationsFragment extends Fragment {
 
 
     private void getProfile() {
-        arrayList.add(new Profile(0, "Cập nhật thông tin học vấn", R.drawable.study ));
-        arrayList.add(new Profile(1, "Cập nhật thông tin kinh nghiệm", R.drawable.experience));
-        arrayList.add(new Profile(2, "Cập nhật thông tin kỹ năng", R.drawable.skill));
+        arrayList.add(new Profile(0, "Thêm thông tin học vấn", R.drawable.study ));
+        arrayList.add(new Profile(1, "Thêm thông tin kinh nghiệm", R.drawable.experience));
+        arrayList.add(new Profile(2, "Thêm kỹ năng", R.drawable.skill));
 
     }
 

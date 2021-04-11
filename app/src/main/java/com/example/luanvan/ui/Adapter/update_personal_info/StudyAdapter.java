@@ -16,11 +16,19 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Study;
 import com.example.luanvan.ui.UpdateInfo.StudyActivity;
-import com.example.luanvan.ui.User.EditCombineActivity;
+import com.example.luanvan.ui.UpdateInfo.EditCombineActivity;
+import com.example.luanvan.ui.User.NotificationsFragment;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
@@ -30,7 +38,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Handler;
 
 public class StudyAdapter extends RecyclerView.Adapter<StudyAdapter.ItemHolder> {
@@ -51,14 +60,14 @@ public class StudyAdapter extends RecyclerView.Adapter<StudyAdapter.ItemHolder> 
     @NonNull
     @Override
     public ItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.dong_study, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.dong_study, null);
         ItemHolder itemHolder = new ItemHolder(view);
         return itemHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ItemHolder holder,  int position) {
-        Study study = arrayList.get(position);
+        final Study study = arrayList.get(position);
         holder.school.setText(study.getSchool());
         holder.major.setText(study.getMajor());
         holder.img.setImageResource(R.drawable.school1);
@@ -110,33 +119,47 @@ public class StudyAdapter extends RecyclerView.Adapter<StudyAdapter.ItemHolder> 
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Query query = MainActivity.mData.child("study").orderByChild("id").equalTo(arrayList.get(positionX).getId());
-                                    query.addValueEventListener(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            for(DataSnapshot x : snapshot.getChildren()){
-                                                x.getRef().removeValue();
-                                            }
-                                        }
+                                    RequestQueue requestQueue = Volley.newRequestQueue(activity);
+                                    StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlDeleteStudy,
+                                            new Response.Listener<String>() {
+                                                @Override
+                                                public void onResponse(String response) {
+                                                    if(response.equals("success")){
+                                                        Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                                                        int pos = holder.getAdapterPosition();
+                                                    //    Toast.makeText(context, arrayList.size() + "", Toast.LENGTH_SHORT).show();
+                                                        if(last == 1 || arrayList.size() == 1){
+                                                            ((EditCombineActivity) activity).refreshStudy();
+                                                            NotificationsFragment.studyAdapter.notifyDataSetChanged();
+                                                        }else {
+                                                            if(arrayList.size() == 2){
+                                                                last = 1;
+                                                            }
+                                                            arrayList.remove(positionX);
+                                                            notifyDataSetChanged();
 
+                                                        }
+                                                        NotificationsFragment.studyAdapter.notifyDataSetChanged();
+                                                    }else {
+                                                        Toast.makeText(context, "Xóa thất bại", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }
+                                            },
+                                            new Response.ErrorListener() {
+                                                @Override
+                                                public void onErrorResponse(VolleyError error) {
+                                                    Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                                                }
+                                            }){
                                         @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
+                                        protected Map<String, String> getParams() throws AuthFailureError {
+                                            Map<String,String> map = new HashMap<>();
+                                            map.put("id", String.valueOf(study.getId()));
+                                            return map;
+                                        }
+                                    };
+                                    requestQueue.add(stringRequest);
 
-                                        }
-                                    });
-                                    Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
-                                    int pos = holder.getAdapterPosition();
-                                    Toast.makeText(context, arrayList.size() + "", Toast.LENGTH_SHORT).show();
-                                    if(last == 1 || arrayList.size() == 1){
-                                        ((EditCombineActivity) activity).refreshStudy();
-                                        MainActivity.studyAdapter.notifyDataSetChanged();
-                                    }else {
-                                        if(arrayList.size() == 2){
-                                            last = 1;
-                                        }
-                                        arrayList.remove(positionX);
-                                        notifyDataSetChanged();
-                                    }
 
 
 

@@ -43,9 +43,7 @@ public class MainActivity extends AppCompatActivity {
     public static FirebaseUser mUser;
     public static FirebaseStorage storage = FirebaseStorage.getInstance();
     // fragment notification
-    public static StudyAdapter studyAdapter;
-    public static ExperienceAdapter experienceAdapter;
-    public static SkillAdapter skillAdapter;
+
     public static int login = 0;
     public static int login_recruiter = 0;
     public static int login_admin = 0;
@@ -211,12 +209,29 @@ public class MainActivity extends AppCompatActivity {
     public static String urlCheckMainCV = host + "check_maincv.php";
 
     // Candidate basic info
-    // Experience
+    ///------------------------------ SELECT
+
     public static String urlCandidateExperience = host + "candidate_experience.php";
-    // study
     public static String urlCandidateStudy = host + "candidate_study.php";
-    // skill
     public static String urlCandidateSkill = host + "candidate_skill.php";
+
+    ///------------------------------ INSERT
+
+    public static String urlAddStudy = host + "add_study.php";
+    public static String urlAddExperience = host + "add_experience.php";
+    public static String urlAddSkill = host + "add_skill.php";
+
+    ///------------------------------ UPDATE
+
+    public static String urlUpdateStudy = host + "update_study.php";
+    public static String urlUpdateExperience = host + "update_experience.php";
+    public static String urlUpdateSkill = host + "update_skill.php";
+
+    ///------------------------------ DELETE
+
+    public static String urlDeleteStudy = host + "delete_study.php";
+    public static String urlDeleteExperience = host + "delete_experience.php";
+    public static String urlDeleteSkill = host + "delete_skill.php";
 
 
     @Override

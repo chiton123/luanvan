@@ -27,9 +27,9 @@ import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Skill;
-import com.example.luanvan.ui.Model.Study;
 import com.example.luanvan.ui.UpdateInfo.SkillActivity;
-import com.example.luanvan.ui.User.EditCombineActivity;
+import com.example.luanvan.ui.UpdateInfo.EditCombineActivity;
+import com.example.luanvan.ui.User.NotificationsFragment;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
@@ -55,14 +55,14 @@ public class SkillAdapter extends RecyclerView.Adapter<SkillAdapter.ItemHolder> 
     @NonNull
     @Override
     public ItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.dong_skill, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.dong_skill, null);
         ItemHolder itemHolder = new ItemHolder(view);
         return itemHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ItemHolder holder, final int position) {
-        Skill skill = arrayList.get(position);
+        final Skill skill = arrayList.get(position);
         holder.skill.setText(skill.getName());
         holder.ratingBar.setRating( skill.getStar());
         holder.img.setImageResource(R.drawable.skill1);
@@ -96,35 +96,48 @@ public class SkillAdapter extends RecyclerView.Adapter<SkillAdapter.ItemHolder> 
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Query query = MainActivity.mData.child("skill").orderByChild("id").equalTo(arrayList.get(position).getId());
-                                    query.addValueEventListener(new ValueEventListener() {
+                                    RequestQueue requestQueue = Volley.newRequestQueue(activity);
+                                    StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlDeleteSkill,
+                                            new Response.Listener<String>() {
+                                                @Override
+                                                public void onResponse(String response) {
+                                                    if(response.equals("success")){
+                                                        Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                                                        int pos = holder.getAdapterPosition();
+
+                                                        if(last == 1 || arrayList.size() == 1) {
+                                                            ((EditCombineActivity) activity).refreshSkill();
+                                                            NotificationsFragment.skillAdapter.notifyDataSetChanged();
+
+                                                        }else {
+                                                            if(arrayList.size() == 2){
+                                                                last = 1;
+                                                            }
+                                                            arrayList.remove(position);
+                                                            notifyDataSetChanged();
+
+                                                        }
+                                                        NotificationsFragment.skillAdapter.notifyDataSetChanged();
+                                                    }else {
+                                                        Toast.makeText(context, "Xóa thất bại", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }
+                                            },
+                                            new Response.ErrorListener() {
+                                                @Override
+                                                public void onErrorResponse(VolleyError error) {
+                                                    Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                                                }
+                                            }){
                                         @Override
-                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            for(DataSnapshot x : snapshot.getChildren()){
-                                                x.getRef().removeValue();
-                                            }
+                                        protected Map<String, String> getParams() throws AuthFailureError {
+                                            Map<String,String> map = new HashMap<>();
+                                            map.put("id", String.valueOf(skill.getId()));
+                                            return map;
                                         }
+                                    };
+                                    requestQueue.add(stringRequest);
 
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-
-                                        }
-                                    });
-                                    Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
-                                    int pos = holder.getAdapterPosition();
-
-                                    if(last == 1 || arrayList.size() == 0) {
-                                        ((EditCombineActivity) activity).refreshSkill();
-                                        MainActivity.skillAdapter.notifyDataSetChanged();
-
-                                    }else {
-                                        if(arrayList.size() == 2){
-                                            last = 1;
-                                        }
-                                        arrayList.remove(position);
-                                        notifyDataSetChanged();
-
-                                    }
                                 }
                             });
 

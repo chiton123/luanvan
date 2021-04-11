@@ -26,6 +26,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Experience;
+import com.example.luanvan.ui.User.NotificationsFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
@@ -51,14 +52,14 @@ public class ExperienceActivity extends AppCompatActivity {
     String date_post_start = "", date_post_end = "";
     Date date_start = null, date_end = null;
     int check_start = 0;
-    String id = ""; // id study trên csdl
+    int id = 0; // id study trên csdl
     int position = 0; // trên mảng arraylist, thứ tự
     int update = 0;
     String url = "";
     ProgressDialog progressDialog;
     Handler handler, handler1;
     int x = 0;
-    String key = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -190,80 +191,18 @@ public class ExperienceActivity extends AppCompatActivity {
             }
         });
     }
-    public void getKey(){
-        MainActivity.mData.child("experience").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                for(DataSnapshot x : snapshot.getChildren()){
-                    if(snapshot.child("id").getValue().toString().equals(id)){
-                        key = snapshot.getKey();
-                    }
-                }
 
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-    }
-    private void getInfoExperience() {
-        MainActivity.mData.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.hasChild("experience") && snapshot.exists()){
-                    MainActivity.mData.child("experience").addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            for(DataSnapshot x : snapshot.getChildren()){
-                                Experience experience = x.getValue(Experience.class);
-                                if(experience.getUid().equals(MainActivity.uid)){
-                                    MainActivity.experiences.add(experience);
-                                }
-
-
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-
-    }
 
     private void eventUpdate() {
         btncapnhat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(editcompany.getText().equals("") || editmota.getText().equals("") || editposition.getText().equals("") || editstart.getText().equals("")
-                        || editend.getText().equals("")){
+                final String company = editcompany.getText().toString();
+                final String position1 = editposition.getText().toString();
+                final String mota = editmota.getText().toString();
+                String start = editstart.getText().toString();
+                String end = editend.getText().toString();
+                if(company.equals("") || position1.equals("") || mota.equals("") || start.equals("") || end.equals("")){
                     Toast.makeText(getApplicationContext(), "Vui lòng nhập đủ thông tin" , Toast.LENGTH_SHORT).show();
                 }else if(x == 1){
                     Toast.makeText(getApplicationContext(), "Ngày kết thúc phải sau ngày bắt đầu" , Toast.LENGTH_SHORT).show();
@@ -271,22 +210,43 @@ public class ExperienceActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Ngày bắt đầu phải trước ngày kết thúc", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    final String company = editcompany.getText().toString();
-                    final String position1 = editposition.getText().toString();
-                    final String mota = editmota.getText().toString();
+                    loading();
+                    final Experience experience = new Experience(id, MainActivity.iduser, company, position1, date_post_start, date_post_end, mota);
                     if(update == 1){
-                        loading();
-                        getKey();
-                        final Experience experience = new Experience(id, MainActivity.uid, company, position1, date_post_start, date_post_end, mota);
-                        handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                MainActivity.mData.child("experience").child(key).setValue(experience);
-                                Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
 
+                        MainActivity.experiences.set(position, experience);
+                        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlUpdateExperience,
+                                new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        if(response.equals("success")){
+                                            Toast.makeText(getApplicationContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                                        }else {
+                                            Toast.makeText(getApplicationContext(), "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                                    }
+                                }){
+                            @Override
+                            protected Map<String, String> getParams() throws AuthFailureError {
+                                Map<String,String> map = new HashMap<>();
+                                map.put("id", String.valueOf(id));
+                                map.put("company", company);
+                                map.put("position", position1);
+                                map.put("start", date_post_start);
+                                map.put("end", date_post_end);
+                                map.put("description", mota);
+                                return map;
                             }
-                        },2000);
+                        };
+                        requestQueue.add(stringRequest);
+
                         handler1 = new Handler();
                         handler1.postDelayed(new Runnable() {
                             @Override
@@ -298,36 +258,49 @@ public class ExperienceActivity extends AppCompatActivity {
                             }
                         }, 2000);
                     }else {
-                        String key1 = MainActivity.mData.push().getKey();
-                        final Experience experience = new Experience(key1, MainActivity.uid, company, position1, date_post_start, date_post_end, mota);
-                        MainActivity.mData.child("experience").push().setValue(experience)
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        MainActivity.experiences.add(experience);
+                        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlAddExperience,
+                                new Response.Listener<String>() {
                                     @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if(task.isSuccessful()){
-                                            Toast.makeText(getApplicationContext(), "Đã thêm", Toast.LENGTH_SHORT).show();
-                                            loading();
-                                            MainActivity.experiences.clear();
-                                            getInfoExperience();
-                                            MainActivity.experienceAdapter.notifyDataSetChanged();
-                                            handler = new Handler();
-                                            handler.postDelayed(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    progressDialog.dismiss();
-                                                    Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
-                                                    Intent intent = new Intent();
-                                                    setResult(2, intent);
-                                                    finish();
-                                                }
-                                            },1000);
-
-
+                                    public void onResponse(String response) {
+                                        if(response.equals("success")){
+                                            Toast.makeText(getApplicationContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
                                         }else {
-                                            Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getApplicationContext(), "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
                                         }
                                     }
-                                });
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                                    }
+                                }){
+                            @Override
+                            protected Map<String, String> getParams() throws AuthFailureError {
+                                Map<String,String> map = new HashMap<>();
+                                map.put("iduser", String.valueOf(MainActivity.iduser));
+                                map.put("company", company);
+                                map.put("position", position1);
+                                map.put("start", date_post_start);
+                                map.put("end", date_post_end);
+                                map.put("description", mota);
+                                return map;
+                            }
+                        };
+                        requestQueue.add(stringRequest);
+                        handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                progressDialog.dismiss();
+                                NotificationsFragment.experienceAdapter.notifyDataSetChanged();
+                                Intent intent = new Intent();
+                                setResult(2, intent);
+                                finish();
+                            }
+                        },1000);
                     }
 
 

@@ -27,6 +27,7 @@ import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Experience;
 import com.example.luanvan.ui.Model.Skill;
 import com.example.luanvan.ui.Model.Study;
+import com.example.luanvan.ui.User.NotificationsFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
@@ -49,13 +50,13 @@ public class SkillActivity extends AppCompatActivity {
     EditText editname, editmota;
     RatingBar ratingBar;
     Button btnhuy, btncapnhat;
-    String id = ""; // id study trên csdl
+    int id = 0; // id study trên csdl
     int position = 0; // trên mảng arraylist, thứ tự
     int update = 0;
     String url = "";
     ProgressDialog progressDialog;
     Handler handler, handler1;
-    String key = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,95 +90,55 @@ public class SkillActivity extends AppCompatActivity {
         }
     }
 
-    private void getInfoSkill() {
-        MainActivity.mData.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.hasChild("skill")){
-                    MainActivity.mData.child("skill").addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            for(DataSnapshot x : snapshot.getChildren()){
-                                Skill skill = x.getValue(Skill.class);
-                                if(skill.getUid().equals(MainActivity.uid)){
-                                    MainActivity.skills.add(skill);
-                                }
-                            }
-                        }
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
 
-                        }
-                    });
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
-
-    }
-    public void getKey(){
-        MainActivity.mData.child("skill").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                for(DataSnapshot x : snapshot.getChildren()){
-                    if(snapshot.child("id").getValue().toString().equals(id)){
-                        key = snapshot.getKey();
-                    }
-                }
-
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-    }
     private void eventUpdate() {
         btncapnhat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final String name = editname.getText().toString();
+                final String mota = editmota.getText().toString();
                 final float star = ratingBar.getRating();
               //  Toast.makeText(getApplicationContext(), "Cập nhật :" + star, Toast.LENGTH_SHORT).show();
-                if(editname.getText().equals("") || editmota.getText().equals("")){
+                if(name.equals("") || mota.equals("")){
                     Toast.makeText(getApplicationContext(), "Vui lòng nhập đủ thông tin" , Toast.LENGTH_SHORT).show();
                 }else if(star == 0){
                     Toast.makeText(getApplicationContext(), "Đánh giá kỹ năng" , Toast.LENGTH_SHORT).show();
                 }else {
-                    final String name = editname.getText().toString();
-                    final String mota = editmota.getText().toString();
-                    final float star1 = ratingBar.getRating();
+                    loading();
+                    final Skill skill = new Skill(id, MainActivity.iduser,0, name, star, mota);
                     if(update == 1){
-                        loading();
-                        getKey();
-                        final Skill skill = new Skill(id, MainActivity.uid, name, star1, mota);
-                        handler = new Handler();
-                        handler.postDelayed(new Runnable() {
+                        MainActivity.skills.set(position, skill);
+                        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlUpdateSkill,
+                                new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        if(response.equals("success")){
+                                            Toast.makeText(getApplicationContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                                        }else {
+                                            Toast.makeText(getApplicationContext(), "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                                    }
+                                }){
                             @Override
-                            public void run() {
-                                MainActivity.mData.child("skill").child(key).setValue(skill);
-                                Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+                            protected Map<String, String> getParams() throws AuthFailureError {
+                                Map<String,String> map = new HashMap<>();
+                                map.put("id", String.valueOf(id));
+                                map.put("idskill", String.valueOf(0));
+                                map.put("star", String.valueOf(star));
+                                map.put("description", mota);
+                                return map;
                             }
-                        },2000);
+                        };
+                        requestQueue.add(stringRequest);
+
                         handler1 = new Handler();
                         handler1.postDelayed(new Runnable() {
                             @Override
@@ -189,36 +150,48 @@ public class SkillActivity extends AppCompatActivity {
                             }
                         }, 2000);
                     }else {
-                        String key = MainActivity.mData.push().getKey();
-                        final Skill skill = new Skill(key, MainActivity.uid, name, star, mota);
-                        MainActivity.mData.child("skill").push().setValue(skill)
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        MainActivity.skills.add(skill);
+                        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlAddSkill,
+                                new Response.Listener<String>() {
                                     @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if(task.isSuccessful()){
-                                            Toast.makeText(getApplicationContext(), "Đã thêm", Toast.LENGTH_SHORT).show();
-                                            loading();
-                                            MainActivity.skills.clear();
-                                            getInfoSkill();
-                                            MainActivity.skillAdapter.notifyDataSetChanged();
-                                            handler = new Handler();
-                                            handler.postDelayed(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    progressDialog.dismiss();
-                                                    Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
-                                                    Intent intent = new Intent();
-                                                    setResult(3, intent);
-                                                    finish();
-                                                }
-                                            },1000);
-
-
+                                    public void onResponse(String response) {
+                                        if(response.equals("success")){
+                                            Toast.makeText(getApplicationContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
                                         }else {
-                                            Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getApplicationContext(), "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
                                         }
                                     }
-                                });
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                                    }
+                                }){
+                            @Override
+                            protected Map<String, String> getParams() throws AuthFailureError {
+                                Map<String,String> map = new HashMap<>();
+                                map.put("iduser", String.valueOf(MainActivity.iduser));
+                                map.put("idskill", String.valueOf(0));
+                                map.put("star", String.valueOf(star));
+                                map.put("description", mota);
+                                return map;
+                            }
+                        };
+                        requestQueue.add(stringRequest);
+                        handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                NotificationsFragment.skillAdapter.notifyDataSetChanged();
+                                progressDialog.dismiss();
+                             //   Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent();
+                                setResult(3, intent);
+                                finish();
+                            }
+                        },1000);
                     }
 
 

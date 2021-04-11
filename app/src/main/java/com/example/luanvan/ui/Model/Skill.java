@@ -3,7 +3,7 @@ package com.example.luanvan.ui.Model;
 import java.io.Serializable;
 
 public class Skill implements Serializable {
-    private String id;
+    private int id;
     private int iduser;
     private int idskill;
     private String name;
@@ -13,7 +13,7 @@ public class Skill implements Serializable {
     public Skill() {
     }
 
-    public Skill(String id, int iduser, int idskill, String name, float star, String description) {
+    public Skill(int id, int iduser, int idskill, String name, float star, String description) {
         this.id = id;
         this.iduser = iduser;
         this.idskill = idskill;
@@ -22,11 +22,11 @@ public class Skill implements Serializable {
         this.description = description;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

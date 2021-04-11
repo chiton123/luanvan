@@ -180,77 +180,141 @@ public class LoginFragment extends Fragment {
 
     }
     private void getInfoStudy() {
-        MainActivity.mData.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.hasChild("study")){
-                    MainActivity.mData.child("study").addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            for(DataSnapshot x : snapshot.getChildren()){
-                                Study study = x.getValue(Study.class);
-                                if(study.getUid().equals(MainActivity.uid)){
-                                    MainActivity.studies.add(study);
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlCandidateStudy,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                   //     Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_SHORT).show();
+                        if(response != null){
+                            try {
+                                JSONArray jsonArray = new JSONArray(response);
+                                for(int i=0; i < jsonArray.length(); i++){
+                                    JSONObject object = jsonArray.getJSONObject(i);
+                                    MainActivity.studies.add(new Study(
+                                            object.getInt("id"),
+                                            object.getInt("iduser"),
+                                            object.getString("school"),
+                                            object.getString("major"),
+                                            object.getString("start"),
+                                            object.getString("end"),
+                                            object.getString("description")
+                                    ));
                                 }
 
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
 
                         }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-
-                }
-            }
-
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("iduser", String.valueOf(MainActivity.iduser));
+                return map;
             }
-        });
+        };
+        requestQueue.add(stringRequest);
 
 
     }
     private void getInfoExperience() {
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, )
-
-    }
-    private void getInfoSkill() {
-        MainActivity.mData.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.hasChild("skill")){
-                    MainActivity.mData.child("skill").addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            for(DataSnapshot x : snapshot.getChildren()){
-                                Skill skill = x.getValue(Skill.class);
-//                                Toast.makeText(getActivity(), skill.getUid(), Toast.LENGTH_SHORT).show();
-                                if(skill.getUid().equals(MainActivity.uid)){
-                                    MainActivity.skills.add(skill);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlCandidateExperience,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                 //       Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_SHORT).show();
+                        if(response != null){
+                            try {
+                                JSONArray jsonArray = new JSONArray(response);
+                                for(int i=0; i < jsonArray.length(); i++){
+                                    JSONObject object = jsonArray.getJSONObject(i);
+                                    MainActivity.experiences.add(new Experience(
+                                       object.getInt("id"),
+                                       object.getInt("iduser"),
+                                       object.getString("company"),
+                                       object.getString("position"),
+                                       object.getString("start"),
+                                       object.getString("end"),
+                                       object.getString("description")
+                                    ));
                                 }
-                                //  MainActivity.skills.add(skill);
 
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
 
                         }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("iduser", String.valueOf(MainActivity.iduser));
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
+    }
+    private void getInfoSkill() {
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlCandidateSkill,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                      //  Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_SHORT).show();
+                        if(response != null){
+                            try {
+                                JSONArray jsonArray = new JSONArray(response);
+                                for(int i=0; i < jsonArray.length(); i++){
+                                    JSONObject object = jsonArray.getJSONObject(i);
+                                    MainActivity.skills.add(new Skill(
+                                            object.getInt("id"),
+                                            object.getInt("iduser"),
+                                            object.getInt("idskill"),
+                                            object.getString("name"),
+                                            (float)object.getDouble("star"),
+                                            object.getString("description")
+                                    ));
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
 
                         }
-                    });
-                }
-            }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("iduser", String.valueOf(MainActivity.iduser));
+                return map;
             }
-        });
+        };
+        requestQueue.add(stringRequest);
 
     }
     private void eventLogin() {

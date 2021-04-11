@@ -3,7 +3,7 @@ package com.example.luanvan.ui.Model;
 import java.io.Serializable;
 
 public class Study implements Serializable {
-    private String id;
+    private int id;
     private int iduser;
     private String school;
     private String major;
@@ -15,7 +15,7 @@ public class Study implements Serializable {
 
     }
 
-    public Study(String id, int iduser, String school, String major, String date_start, String date_end, String description) {
+    public Study(int id, int iduser, String school, String major, String date_start, String date_end, String description) {
         this.id = id;
         this.iduser = iduser;
         this.school = school;
@@ -25,11 +25,11 @@ public class Study implements Serializable {
         this.description = description;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
