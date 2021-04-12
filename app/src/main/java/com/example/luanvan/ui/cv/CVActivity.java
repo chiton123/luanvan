@@ -13,7 +13,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Build;
@@ -48,14 +47,9 @@ import com.example.luanvan.ui.Adapter.add_remove.AddAdapter;
 import com.example.luanvan.ui.Adapter.add_remove.TitleAdapter;
 import com.example.luanvan.ui.Model.Pdf;
 import com.example.luanvan.ui.Model.Title;
-import com.example.luanvan.ui.modelCV.ExperienceCV;
-import com.example.luanvan.ui.modelCV.Info;
 import com.example.luanvan.ui.modelCV.PdfCV;
-import com.example.luanvan.ui.modelCV.UserCV;
-import com.github.barteksc.pdfviewer.PDFView;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -65,7 +59,6 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -637,22 +630,22 @@ public class CVActivity extends AppCompatActivity {
         // skill
         if( checkSkill == 0){
             if(MainActivity.checkFirstSkill == 1){
-                MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("skill").removeValue();
+                MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("com/example/luanvan/ui/Adapter/skill").removeValue();
                 for(int i=0; i < MainActivity.skillCVS.size(); i++){
                     String keyx = MainActivity.mData.push().getKey();
                     MainActivity.skillCVS.get(i).setId(keyx);
-                    MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("skill").push().setValue(MainActivity.skillCVS.get(i));
+                    MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("com/example/luanvan/ui/Adapter/skill").push().setValue(MainActivity.skillCVS.get(i));
                 }
             }else {
                 for(int i=0; i < MainActivity.skillCVArray.size(); i++){
                     String keyx = MainActivity.mData.push().getKey();
                     MainActivity.skillCVArray.get(i).setId(keyx);
-                    MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(String.valueOf(CVActivity.idCV+1)).child("skill").push().setValue(MainActivity.skillCVArray.get(i));
+                    MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(String.valueOf(CVActivity.idCV+1)).child("com/example/luanvan/ui/Adapter/skill").push().setValue(MainActivity.skillCVArray.get(i));
                 }
             }
 
         }else if(checkSkill == 1){
-            MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("skill").removeValue();
+            MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("com/example/luanvan/ui/Adapter/skill").removeValue();
         }
 
     }
@@ -713,13 +706,13 @@ public class CVActivity extends AppCompatActivity {
             for(int i=0; i < MainActivity.skillCVS.size(); i++){
                 String keyx = MainActivity.mData.push().getKey();
                 MainActivity.skillCVS.get(i).setId(keyx);
-                MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(String.valueOf(CVActivity.idCV+1)).child("skill").push().setValue(MainActivity.skillCVS.get(i));
+                MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(String.valueOf(CVActivity.idCV+1)).child("com/example/luanvan/ui/Adapter/skill").push().setValue(MainActivity.skillCVS.get(i));
             }
         }else {
             for(int i=0; i < MainActivity.skillCVArray.size(); i++){
                 String keyx = MainActivity.mData.push().getKey();
                 MainActivity.skillCVArray.get(i).setId(keyx);
-                MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(String.valueOf(CVActivity.idCV+1)).child("skill").push().setValue(MainActivity.skillCVArray.get(i));
+                MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(String.valueOf(CVActivity.idCV+1)).child("com/example/luanvan/ui/Adapter/skill").push().setValue(MainActivity.skillCVArray.get(i));
             }
         }
     }
@@ -885,7 +878,7 @@ public class CVActivity extends AppCompatActivity {
                 }else {
                     checkExperience = 1;
                 }
-                if(snapshot.hasChild("skill")){
+                if(snapshot.hasChild("com/example/luanvan/ui/Adapter/skill")){
                     checkSkill = 0;
                 }else {
                     checkSkill = 1;

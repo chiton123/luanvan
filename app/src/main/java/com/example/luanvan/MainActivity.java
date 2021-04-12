@@ -2,6 +2,7 @@ package com.example.luanvan;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.luanvan.ui.Adapter.update_personal_info.ExperienceAdapter;
@@ -13,6 +14,10 @@ import com.example.luanvan.ui.Model.NotificationAdmin;
 import com.example.luanvan.ui.Model.Skill;
 import com.example.luanvan.ui.Model.Study;
 import com.example.luanvan.ui.Model.User;
+import com.example.luanvan.ui.User.NotificationsFragment;
+import com.example.luanvan.ui.admin.AdminFragment;
+import com.example.luanvan.ui.dashboard.DashboardFragment;
+import com.example.luanvan.ui.home.HomeFragment;
 import com.example.luanvan.ui.modelCV.PdfCV;
 import com.example.luanvan.ui.modelCV.UserCV;
 import com.example.luanvan.ui.modelCV.ExperienceCV;
@@ -25,8 +30,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -102,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
     public static int color = 0;
 
 
-    public static String host = "http://10.3.74.112:8888/luanvan/";
+    public static String host = "http://10.10.35.245:8888/luanvan/";
     public static String urljob1 = host + "job1.php?page=";
     public static String urlJobCompany = host + "job_company.php";
     public static String urlJobRelate = host + "job_relate.php";
@@ -234,6 +242,14 @@ public class MainActivity extends AppCompatActivity {
     public static String urlDeleteSkill = host + "delete_skill.php";
 
 
+//    Fragment homeFragment = new HomeFragment();
+//    Fragment dashbashFragment = new DashboardFragment();
+//    Fragment notificationFragment = new NotificationsFragment();
+//    Fragment adminFragment = new AdminFragment();
+//    Fragment active = homeFragment;
+//    FragmentManager fm = getSupportFragmentManager();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -241,26 +257,37 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
+        // Bị sửa
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications, R.id.navigation_admin)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(navView, navController);
+
+//        // Mới
+//        fm.beginTransaction().add(R.id.navigation_home, homeFragment, "1").commit();
+//        fm.beginTransaction().add(R.id.navigation_dashboard, homeFragment, "2").hide(dashbashFragment).commit();
+//        fm.beginTransaction().add(R.id.navigation_notifications, homeFragment, "3").hide(notificationFragment).commit();
+//        fm.beginTransaction().add(R.id.navigation_admin, homeFragment, "4").hide(adminFragment).commit();
+//
+//        navView.setOnNavigationItemSelectedListener(th);
+
+
+
+
+
 //        try{
 //            NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 //
 //        }catch (NullPointerException e){
-//            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+//         //   Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
 //        }
         skillCVArray.add(new SkillCV("Kỹ năng tiếng anh", 5, "temp"));
         skillCVArray.add(new SkillCV("Kỹ năng tin học", 3, "temp"));
 
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
 
-        super.onActivityResult(requestCode, resultCode, data);
-    }
+
 }

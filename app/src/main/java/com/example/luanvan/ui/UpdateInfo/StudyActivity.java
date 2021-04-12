@@ -220,8 +220,8 @@ public class StudyActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Ngày bắt đầu phải trước ngày kết thúc", Toast.LENGTH_SHORT).show();
                     } else {
                         loading();
-                        final Study study = new Study(id, MainActivity.iduser, school, major, date_post_start, date_post_end, mota);
                         if (update == 1) {
+                            final Study study = new Study(id, MainActivity.iduser, school, major, date_post_start, date_post_end, mota);
                             MainActivity.studies.set(position, study);
                             RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
                             StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlUpdateStudy,
@@ -268,7 +268,6 @@ public class StudyActivity extends AppCompatActivity {
 
 
                         } else {
-                            MainActivity.studies.add(study);
                             RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
                             StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlAddStudy,
                                     new Response.Listener<String>() {
@@ -276,6 +275,9 @@ public class StudyActivity extends AppCompatActivity {
                                         public void onResponse(String response) {
                                             if(response.equals("success")){
                                                 Toast.makeText(getApplicationContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                                                id = Integer.parseInt(response.toString());
+                                                final Study study = new Study(id, MainActivity.iduser, school, major, date_post_start, date_post_end, mota);
+                                                MainActivity.studies.add(study);
                                             }else {
                                                 Toast.makeText(getApplicationContext(), "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
                                             }

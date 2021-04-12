@@ -34,7 +34,6 @@ import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.cv_all.SkillCVAdapter;
 import com.example.luanvan.ui.Model.Pdf;
-import com.example.luanvan.ui.Model.Skill;
 import com.example.luanvan.ui.cv.CVActivity;
 import com.example.luanvan.ui.modelCV.SkillCV;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -50,12 +49,10 @@ import com.google.firebase.storage.UploadTask;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 import static com.example.luanvan.MainActivity.experienceCV;
 import static com.example.luanvan.MainActivity.experienceCVS;
-import static com.example.luanvan.MainActivity.mAuth;
 import static com.example.luanvan.ui.cv.CVActivity.checkExperience;
 import static com.example.luanvan.ui.cv.CVActivity.checkSkill;
 import static com.example.luanvan.ui.cv.CVActivity.checkStudy;
@@ -93,7 +90,7 @@ public class CVSkillActivity extends AppCompatActivity {
         progressDialog.setCancelable(false);
     }
     private void getData() {
-        MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(CVActivity.key).child("skill").addValueEventListener(new ValueEventListener() {
+        MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(CVActivity.key).child("com/example/luanvan/ui/Adapter/skill").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot x : snapshot.getChildren()){

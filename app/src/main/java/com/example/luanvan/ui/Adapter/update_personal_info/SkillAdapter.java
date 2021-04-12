@@ -30,10 +30,6 @@ import com.example.luanvan.ui.Model.Skill;
 import com.example.luanvan.ui.UpdateInfo.SkillActivity;
 import com.example.luanvan.ui.UpdateInfo.EditCombineActivity;
 import com.example.luanvan.ui.User.NotificationsFragment;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -74,7 +70,7 @@ public class SkillAdapter extends RecyclerView.Adapter<SkillAdapter.ItemHolder> 
                     Intent intent = new Intent(context, SkillActivity.class);
                     // problem: khi muốn gửi có intent phải gửi 2 lần, xác nhận để không bị lỗi, 10: empty, 3: có đối tượng gửi
                     intent.putExtra("confirm", 3);
-                    intent.putExtra("skill", arrayList.get(position));
+                    intent.putExtra("com/example/luanvan/ui/Adapter/skill", arrayList.get(position));
                     intent.putExtra("position", position);
                     activity.startActivityForResult(intent,3);
                 }

@@ -211,10 +211,8 @@ public class ExperienceActivity extends AppCompatActivity {
                 }
                 else {
                     loading();
-                    final Experience experience = new Experience(id, MainActivity.iduser, company, position1, date_post_start, date_post_end, mota);
-                    if(update == 1){
 
-                        MainActivity.experiences.set(position, experience);
+                    if(update == 1){
                         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
                         StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlUpdateExperience,
                                 new Response.Listener<String>() {
@@ -222,6 +220,8 @@ public class ExperienceActivity extends AppCompatActivity {
                                     public void onResponse(String response) {
                                         if(response.equals("success")){
                                             Toast.makeText(getApplicationContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                                            final Experience experience = new Experience(id, MainActivity.iduser, company, position1, date_post_start, date_post_end, mota);
+                                            MainActivity.experiences.set(position, experience);
                                         }else {
                                             Toast.makeText(getApplicationContext(), "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
                                         }
@@ -258,7 +258,7 @@ public class ExperienceActivity extends AppCompatActivity {
                             }
                         }, 2000);
                     }else {
-                        MainActivity.experiences.add(experience);
+
                         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
                         StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlAddExperience,
                                 new Response.Listener<String>() {
@@ -266,6 +266,9 @@ public class ExperienceActivity extends AppCompatActivity {
                                     public void onResponse(String response) {
                                         if(response.equals("success")){
                                             Toast.makeText(getApplicationContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                                            id = Integer.parseInt(response.toString());
+                                            final Experience experience = new Experience(id, MainActivity.iduser, company, position1, date_post_start, date_post_end, mota);
+                                            MainActivity.experiences.add(experience);
                                         }else {
                                             Toast.makeText(getApplicationContext(), "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
                                         }

@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,15 +22,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
-import com.example.luanvan.ui.Adapter.update_personal_info.SkillAdapter;
-import com.example.luanvan.ui.Model.Skill;
-import com.example.luanvan.ui.UpdateInfo.SkillActivity;
 import com.example.luanvan.ui.modelCV.SkillCV;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -58,7 +51,7 @@ public class SkillCVAdapter extends RecyclerView.Adapter<SkillCVAdapter.ItemHold
         return itemHolder;
     }
     public void getKey(final int position){
-        MainActivity.mData.child("cvinfo").child("skill").addChildEventListener(new ChildEventListener() {
+        MainActivity.mData.child("cvinfo").child("com/example/luanvan/ui/Adapter/skill").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 for(DataSnapshot x : snapshot.getChildren()){
