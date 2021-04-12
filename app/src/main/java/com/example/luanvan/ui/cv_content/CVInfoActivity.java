@@ -367,11 +367,12 @@ public class CVInfoActivity extends AppCompatActivity {
         });
     }
     public String xuongdong(String text){
+        String text1 = text.replaceAll("\\s\\s+", " ").trim();
         String ketqua = "";
         if(text.contains(".")){
-            String[] split = text.split(Pattern.quote("."));
+            String[] split = text1.split(Pattern.quote("."));
             for(String item : split){
-                ketqua += "-  " +  item + "\n";
+                ketqua +=  item ;
             }
             return ketqua;
         }else {

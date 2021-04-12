@@ -147,7 +147,7 @@ public class CVExperienceActivity extends AppCompatActivity {
                 String position = editposition.getText().toString();
                 String start = editstart.getText().toString();
                 String end = editend.getText().toString();
-                String description = editdescription.getText().toString();
+                String description = editdescription.getText().toString().replaceAll("\\s\\s+", " ").trim();;
                 if(name.equals("") || position.equals("") || start.equals("")
                         || end.equals("") || description.equals("")){
                     Toast.makeText(getApplicationContext(), "Vui lòng nhập đủ thông tin", Toast.LENGTH_SHORT).show();
@@ -445,11 +445,12 @@ public class CVExperienceActivity extends AppCompatActivity {
     }
 
     public String xuongdong(String text){
+        String text1 = text.replaceAll("\\s\\s+", " ").trim();
         String ketqua = "";
         if(text.contains(".")){
-            String[] split = text.split(Pattern.quote("."));
+            String[] split = text1.split(Pattern.quote("."));
             for(String item : split){
-                ketqua += "-  " +  item + "\n";
+                ketqua +=  item ;
             }
             return ketqua;
         }else {
