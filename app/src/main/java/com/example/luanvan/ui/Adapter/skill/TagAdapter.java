@@ -1,4 +1,4 @@
-package com.example.luanvan.ui.Adapter.job;
+package com.example.luanvan.ui.Adapter.skill;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.luanvan.R;
+import com.example.luanvan.ui.Model.SkillCandidate;
 import com.example.luanvan.ui.Model.SkillKey;
 
 import java.util.ArrayList;
@@ -18,12 +19,14 @@ import java.util.ArrayList;
 public class TagAdapter extends RecyclerView.Adapter<TagAdapter.ItemHolder> {
     Context context;
     ArrayList<SkillKey> arrayList;
+    ArrayList<SkillCandidate> candidateArrayList;
     Activity activity;
 
-    public TagAdapter(Context context, ArrayList<SkillKey> arrayList, Activity activity) {
+    public TagAdapter(Context context, ArrayList<SkillKey> arrayList, Activity activity, ArrayList<SkillCandidate> candidateArrayList) {
         this.context = context;
         this.arrayList = arrayList;
         this.activity = activity;
+        this.candidateArrayList = candidateArrayList;
     }
 
     @NonNull
@@ -35,10 +38,23 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.ItemHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ItemHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ItemHolder holder, final int position) {
         if(arrayList.size() > 0){
             SkillKey skill = arrayList.get(position);
             holder.txtSkill.setText(skill.getName());
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    for(int i=0; i < candidateArrayList.size(); i++){
+                        if(candidateArrayList.get(i).getId() == arrayList.get(position).getId()){
+                            candidateArrayList.remove(i);
+                        }
+                    }
+
+                    arrayList.remove(position);
+                    notifyDataSetChanged();
+                }
+            });
 
         }
     }

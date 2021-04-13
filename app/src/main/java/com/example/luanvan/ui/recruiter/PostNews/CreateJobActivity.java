@@ -2,6 +2,7 @@ package com.example.luanvan.ui.recruiter.PostNews;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
@@ -9,11 +10,16 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -26,18 +32,21 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
-import com.example.luanvan.ui.Adapter.job.TagAdapter;
+import com.example.luanvan.ui.Adapter.skill.SkillPickAdapter;
+import com.example.luanvan.ui.Adapter.skill.SkillTagAdapter;
+import com.example.luanvan.ui.Adapter.skill.TagAdapter;
 import com.example.luanvan.ui.Adapter.update_personal_info.SpinnerNewAdapter;
 import com.example.luanvan.ui.Model.GeneralObject;
 import com.example.luanvan.ui.Model.JobList;
+import com.example.luanvan.ui.Model.SkillCandidate;
 import com.example.luanvan.ui.Model.SkillKey;
-import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
-import com.example.luanvan.ui.recruiter.CVManagement.CandidateDocumentFragment;
+
 import com.example.luanvan.ui.recruiter.RecruiterActivity;
 import com.google.android.flexbox.AlignItems;
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexWrap;
 import com.google.android.flexbox.FlexboxLayoutManager;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -75,8 +84,12 @@ public class CreateJobActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
     RecyclerView recyclerView;
     TagAdapter tagAdapter;
-    ArrayList<SkillKey> arrayListSKill;
-
+    public static ArrayList<SkillKey>  arraylistChosenSkill;
+    ArrayList<SkillCandidate> arraylistSkill;
+    LinearLayout layout_skill;
+    BottomSheetDialog bottomSheetSKill;
+    SearchView searchView;
+    SkillTagAdapter skillAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,10 +99,64 @@ public class CreateJobActivity extends AppCompatActivity {
         eventSpinner();
         eventButton();
         eventDate();
+        eventSkill();
 
 
 
     }
+
+    private void eventSkill() {
+        layout_skill.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              //  Toast.makeText(getApplicationContext(), "Â", Toast.LENGTH_SHORT).show();
+                bottomSheetSKill = new BottomSheetDialog(CreateJobActivity.this, R.style.BottomSheetTheme);
+                View view = LayoutInflater.from(CreateJobActivity.this).inflate(R.layout.bottom_sheet_skill, (ViewGroup) findViewById(R.id.bottom_sheet));
+                Button btnChoose = (Button) view.findViewById(R.id.buttonchon);
+                Button btnCancel = (Button) view.findViewById(R.id.buttonhuy);
+                bottomSheetSKill.setCancelable(false);
+                searchView = (SearchView) view.findViewById(R.id.searchView);
+
+                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+                        skillAdapter.getFilter().filter(query);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onQueryTextChange(String newText) {
+                        skillAdapter.getFilter().filter(newText);
+                        return false;
+                    }
+                });
+                btnCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        bottomSheetSKill.dismiss();
+                        tagAdapter.notifyDataSetChanged();
+                    }
+                });
+                btnChoose.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        tagAdapter.notifyDataSetChanged();
+                        bottomSheetSKill.dismiss();
+                    }
+                });
+                recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
+                recyclerView.setHasFixedSize(true);
+                recyclerView.setLayoutManager(new LinearLayoutManager(CreateJobActivity.this, LinearLayoutManager.VERTICAL, false));
+                skillAdapter = new SkillTagAdapter(CreateJobActivity.this, arraylistSkill, CreateJobActivity.this, arraylistChosenSkill);
+                recyclerView.setAdapter(skillAdapter);
+                bottomSheetSKill.setContentView(view);
+                bottomSheetSKill.show();
+            }
+
+        });
+
+    }
+
     void loading(){
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading");
@@ -258,7 +325,7 @@ public class CreateJobActivity extends AppCompatActivity {
                                      //   Toast.makeText(getApplicationContext(), idjobJust + " id", Toast.LENGTH_SHORT).show();
                                         postNotificationForAdmin(0); // 0: cho admin
                                         getJobRecentCreate();
-
+                                        postJobSkill();
                                         handler = new Handler();
                                         handler.postDelayed(new Runnable() {
                                             @Override
@@ -268,7 +335,7 @@ public class CreateJobActivity extends AppCompatActivity {
                                                 setResult(123);
                                                 finish();
                                             }
-                                        },3000);
+                                        },4000);
 
 
                                     }else {
@@ -309,6 +376,49 @@ public class CreateJobActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void postJobSkill() {
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlAddJobSkill,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+//                        if(response.equals("success")){
+//                            Toast.makeText(getApplicationContext(), "Cập nhật kỹ năng cho tin tuyển dụng thành công", Toast.LENGTH_SHORT).show();
+//                        }else {
+//                            Toast.makeText(getApplicationContext(), "Cập nhật kỹ năng cho tin tuyển dụng thất bại", Toast.LENGTH_SHORT).show();
+//                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                JSONArray jsonArray = new JSONArray();
+                for(int i=0; i < arraylistChosenSkill.size(); i++){
+                    JSONObject object = new JSONObject();
+                    try {
+                        object.put("idjob", String.valueOf(idjobJust));
+                        object.put("idskill", String.valueOf(arraylistChosenSkill.get(i).getId()));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    jsonArray.put(object);
+                }
+                map.put("jsonarray", jsonArray.toString());
+
+
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+
     }
 
     private void getJobRecentCreate() {
@@ -460,6 +570,7 @@ public class CreateJobActivity extends AppCompatActivity {
     }
 
     private void anhxa() {
+        layout_skill = (LinearLayout) findViewById(R.id.layout_skill);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         editPosition = (EditText) findViewById(R.id.editposition);
         editStart = (EditText) findViewById(R.id.editstart);
@@ -477,26 +588,18 @@ public class CreateJobActivity extends AppCompatActivity {
         spinnerNganhnghe = (Spinner) findViewById(R.id.spinnernganhnghe);
         btnPost = (Button) findViewById(R.id.buttondangtin);
         recyclerView = (RecyclerView) findViewById(R.id.recycleview);
+        recyclerView.setFocusable(false);
+        recyclerView.setClickable(false);
         recyclerView.setHasFixedSize(true);
-        arrayListSKill = new ArrayList<>();
+        arraylistSkill = new ArrayList<>();
+        arraylistChosenSkill = new ArrayList<>();
         FlexboxLayoutManager layoutManager = new FlexboxLayoutManager();
         layoutManager.setFlexWrap(FlexWrap.WRAP);
         layoutManager.setFlexDirection(FlexDirection.ROW);
         layoutManager.setAlignItems(AlignItems.STRETCH);
         recyclerView.setLayoutManager(layoutManager);
-        arrayListSKill.add(new SkillKey(1,"a"));
-        arrayListSKill.add(new SkillKey(2,"asasasa"));
-        arrayListSKill.add(new SkillKey(3,"asasasa"));
-        arrayListSKill.add(new SkillKey(1,"a"));
-        arrayListSKill.add(new SkillKey(2,"asasasa"));
-        arrayListSKill.add(new SkillKey(3,"asasasa"));
-        arrayListSKill.add(new SkillKey(1,"a"));
-        arrayListSKill.add(new SkillKey(2,"asasasa"));
-        arrayListSKill.add(new SkillKey(3,"asasasa"));
-        arrayListSKill.add(new SkillKey(1,"a"));
-        arrayListSKill.add(new SkillKey(2,"asasasa"));
-        arrayListSKill.add(new SkillKey(3,"asasasa"));
-        tagAdapter = new TagAdapter(CreateJobActivity.this, arrayListSKill, CreateJobActivity.this );
+
+        tagAdapter = new TagAdapter(CreateJobActivity.this, arraylistChosenSkill, CreateJobActivity.this, arraylistSkill );
         recyclerView.setAdapter(tagAdapter);
 
         dataArea = new ArrayList();
@@ -509,8 +612,78 @@ public class CreateJobActivity extends AppCompatActivity {
         getDataSalary();
         getDataExperience();
         getDataKindJob();
+        getDataSkill();
 
     }
+
+    private void getDataSkill() {
+        arraylistSkill.add(new SkillCandidate(1,"Kỹ năng tuyển dụng",0));;
+        arraylistSkill.add(new SkillCandidate(2,"kỹ năng đào tạo",0));;
+        arraylistSkill.add(new SkillCandidate(3,"Kỹ năng bán hàng",0));;
+        arraylistSkill.add(new SkillCandidate(4,"Kỹ năng phân tích kinh doanh",0));;
+        arraylistSkill.add(new SkillCandidate(5,"Kỹ năng quản lý công việc",0));;
+        arraylistSkill.add(new SkillCandidate(6,"Kỹ năng thuyết trình",0));;
+        arraylistSkill.add(new SkillCandidate(7,"Kỹ năng thuyết phục",0));;
+        arraylistSkill.add(new SkillCandidate(8,"Kỹ năng đàm phán",0));;
+        arraylistSkill.add(new SkillCandidate(9,"Kỹ năng giao tiếp",0));;
+        arraylistSkill.add(new SkillCandidate(10,"Kỹ năng lãnh đạo",0));;
+        arraylistSkill.add(new SkillCandidate(11,"Kỹ năng sư phạm",0));;
+        arraylistSkill.add(new SkillCandidate(12,"Tin học văn phòng",0));;
+        arraylistSkill.add(new SkillCandidate(13,"Tiếng anh giao tiếp",0));;
+        arraylistSkill.add(new SkillCandidate(14,"Tiếng Hàn",0));;
+        arraylistSkill.add(new SkillCandidate(15,"Tiếng Trung",0));;
+        arraylistSkill.add(new SkillCandidate(16,"Tiếng Nhật",0));;
+        arraylistSkill.add(new SkillCandidate(17,"SQL server",0));;
+        arraylistSkill.add(new SkillCandidate(18,"Kotlin",0));;
+        arraylistSkill.add(new SkillCandidate(19,"Objective C",0));;
+        arraylistSkill.add(new SkillCandidate(20,"TCP/IP",0));;
+        arraylistSkill.add(new SkillCandidate(21,"Full stack",0));;
+        arraylistSkill.add(new SkillCandidate(22,"Unix",0));;
+        arraylistSkill.add(new SkillCandidate(23,"UX/UI",0));;
+        arraylistSkill.add(new SkillCandidate(24,"ReactJS",0));;
+        arraylistSkill.add(new SkillCandidate(25,"DNS",0));;
+        arraylistSkill.add(new SkillCandidate(26,"Photoshop",0));;
+        arraylistSkill.add(new SkillCandidate(27,"Android",0));;
+        arraylistSkill.add(new SkillCandidate(28,"Angular ",0));;
+        arraylistSkill.add(new SkillCandidate(29,"Docker",0));;
+        arraylistSkill.add(new SkillCandidate(30,"Redux",0));;
+        arraylistSkill.add(new SkillCandidate(31,"TOEIC ",0));;
+        arraylistSkill.add(new SkillCandidate(32,"Teamwork",0));;
+        arraylistSkill.add(new SkillCandidate(33,"Flutter",0));;
+        arraylistSkill.add(new SkillCandidate(34,"React native",0));;
+        arraylistSkill.add(new SkillCandidate(35,"Excel, Word, PowerPoint",0));;
+        arraylistSkill.add(new SkillCandidate(36,"Unity",0));;
+        arraylistSkill.add(new SkillCandidate(37,"Tester",0));;
+        arraylistSkill.add(new SkillCandidate(38,"PHP",0));;
+        arraylistSkill.add(new SkillCandidate(39,"MySQL",0));;
+        arraylistSkill.add(new SkillCandidate(40,"Database",0));;
+        arraylistSkill.add(new SkillCandidate(41,"IELTS",0));;
+        arraylistSkill.add(new SkillCandidate(42,"Windows Phone",0));;
+        arraylistSkill.add(new SkillCandidate(43,"WordPress",0));;
+        arraylistSkill.add(new SkillCandidate(44,"C#",0));;
+        arraylistSkill.add(new SkillCandidate(45,"C++",0));;
+        arraylistSkill.add(new SkillCandidate(46,"Laravel",0));;
+        arraylistSkill.add(new SkillCandidate(47,"Linux",0));;
+        arraylistSkill.add(new SkillCandidate(48,"ООР",0));;
+        arraylistSkill.add(new SkillCandidate(49,"Oracle",0));;
+        arraylistSkill.add(new SkillCandidate(50,"IELTS ",0));;
+        arraylistSkill.add(new SkillCandidate(51,"JAVA",0));;
+        arraylistSkill.add(new SkillCandidate(52,"ASP.NET",0));;
+        arraylistSkill.add(new SkillCandidate(53,"Javascript",0));;
+        arraylistSkill.add(new SkillCandidate(54,"CSS",0));;
+        arraylistSkill.add(new SkillCandidate(55,"Designer",0));;
+        arraylistSkill.add(new SkillCandidate(56,"Django",0));;
+        arraylistSkill.add(new SkillCandidate(57,"REST API",0));;
+        arraylistSkill.add(new SkillCandidate(58,"Python",0));;
+        arraylistSkill.add(new SkillCandidate(59,"Ruby on Rails",0));;
+
+
+
+
+
+
+    }
+
     private void getDataKindJob() {
         dataKindJob.add(new GeneralObject(0,"Vui lòng chọn"));
         dataKindJob.add(new GeneralObject(1, "Toàn thời gian"));

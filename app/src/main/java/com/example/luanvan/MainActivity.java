@@ -216,6 +216,9 @@ public class MainActivity extends AppCompatActivity {
     public static String urlDeleteCV = host + "deletecv.php";
     public static String urlCheckMainCV = host + "check_maincv.php";
 
+    ///------------------------------ JOB SKILL
+    public static String urlAddJobSkill = host + "add_skill_job.php";
+
     // Candidate basic info
     ///------------------------------ SELECT
 

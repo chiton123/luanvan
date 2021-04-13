@@ -482,25 +482,28 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:padding="7dp"
-                    android:background="@drawable/textview_frame"
+
                     >
                     <TextView
+                        android:layout_marginTop="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Quyền lợi"
+                        android:text="Kỹ năng"
                         android:textColor="#040404"
                         android:textStyle="bold"
                         android:textSize="14sp"
                         android:id="@+id/txta"
                         ></TextView>
-                    <RelativeLayout
+                    <LinearLayout
+                        android:layout_marginTop="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_below="@id/txta"
+                        android:id="@+id/layout_skill"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
-                        android:padding="5dp"
-
+                        android:padding="10dp"
+                        android:background="@drawable/textview_frame"
                         >
                         <androidx.recyclerview.widget.RecyclerView
                             android:layout_width="match_parent"
@@ -508,7 +511,7 @@
                             android:id="@+id/recycleview"
                             ></androidx.recyclerview.widget.RecyclerView>
 
-                    </RelativeLayout>
+                    </LinearLayout>
 
 
 
