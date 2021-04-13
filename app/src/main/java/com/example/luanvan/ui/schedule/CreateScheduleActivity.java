@@ -529,7 +529,7 @@ public class CreateScheduleActivity extends AppCompatActivity {
 
     public void eventSheetCandidate(){
         bottomSheetDialogCandidate = new BottomSheetDialog(CreateScheduleActivity.this, R.style.BottomSheetTheme);
-        final View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_position, (ViewGroup) findViewById(R.id.bottom_sheet));
+        final View view = LayoutInflater.from(CreateScheduleActivity.this).inflate(R.layout.bottom_sheet_position, (ViewGroup) findViewById(R.id.bottom_sheet));
         Button btnChoose = (Button) view.findViewById(R.id.buttonchon);
         Button btnCancel = (Button) view.findViewById(R.id.buttonhuy);
         LinearLayout layout_nothing = (LinearLayout) view.findViewById(R.id.layout_nothing);
@@ -570,7 +570,7 @@ public class CreateScheduleActivity extends AppCompatActivity {
 
     public void eventSheetSchedule(){
         bottomSheetDialog = new BottomSheetDialog(CreateScheduleActivity.this, R.style.BottomSheetTheme);
-        View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_schedule, (ViewGroup) findViewById(R.id.layout_schedule));
+        View view = LayoutInflater.from(CreateScheduleActivity.this).inflate(R.layout.bottom_sheet_schedule, (ViewGroup) findViewById(R.id.layout_schedule));
         final RadioButton radioInterView = (RadioButton) view.findViewById(R.id.radiohenpv);
         final RadioButton radioWork = (RadioButton) view.findViewById(R.id.radiodilam);
         Button btnChoose = (Button) view.findViewById(R.id.buttonchon);
@@ -748,9 +748,9 @@ public class CreateScheduleActivity extends AppCompatActivity {
         editCandidate = (EditText) findViewById(R.id.editcandidate);
         jobArrayList = new ArrayList<>();
         candidateArrayList = new ArrayList<>();
-        positionScheduleAdapter = new PositionScheduleAdapter(getApplicationContext(), jobArrayList, CreateScheduleActivity.this, kind);
+        positionScheduleAdapter = new PositionScheduleAdapter(CreateScheduleActivity.this, jobArrayList, CreateScheduleActivity.this, kind);
         getDataPosition();
-        candidateScheduleAdapter = new CandidateScheduleAdapter(getApplicationContext(), candidateArrayList, this);
+        candidateScheduleAdapter = new CandidateScheduleAdapter(CreateScheduleActivity.this, candidateArrayList, CreateScheduleActivity.this);
 
     }
 

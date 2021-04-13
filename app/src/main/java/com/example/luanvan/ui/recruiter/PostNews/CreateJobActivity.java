@@ -2,6 +2,7 @@ package com.example.luanvan.ui.recruiter.PostNews;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
@@ -25,12 +26,18 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
+import com.example.luanvan.ui.Adapter.job.TagAdapter;
 import com.example.luanvan.ui.Adapter.update_personal_info.SpinnerNewAdapter;
 import com.example.luanvan.ui.Model.GeneralObject;
 import com.example.luanvan.ui.Model.JobList;
+import com.example.luanvan.ui.Model.SkillKey;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CandidateDocumentFragment;
 import com.example.luanvan.ui.recruiter.RecruiterActivity;
+import com.google.android.flexbox.AlignItems;
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexWrap;
+import com.google.android.flexbox.FlexboxLayoutManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -66,6 +73,10 @@ public class CreateJobActivity extends AppCompatActivity {
     // id job vừa đăng
     int idjobJust = 0;
     ProgressDialog progressDialog;
+    RecyclerView recyclerView;
+    TagAdapter tagAdapter;
+    ArrayList<SkillKey> arrayListSKill;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -465,6 +476,28 @@ public class CreateJobActivity extends AppCompatActivity {
         spinnerLoaiHinh = (Spinner) findViewById(R.id.spinnerloaihinh);
         spinnerNganhnghe = (Spinner) findViewById(R.id.spinnernganhnghe);
         btnPost = (Button) findViewById(R.id.buttondangtin);
+        recyclerView = (RecyclerView) findViewById(R.id.recycleview);
+        recyclerView.setHasFixedSize(true);
+        arrayListSKill = new ArrayList<>();
+        FlexboxLayoutManager layoutManager = new FlexboxLayoutManager();
+        layoutManager.setFlexWrap(FlexWrap.WRAP);
+        layoutManager.setFlexDirection(FlexDirection.ROW);
+        layoutManager.setAlignItems(AlignItems.STRETCH);
+        recyclerView.setLayoutManager(layoutManager);
+        arrayListSKill.add(new SkillKey(1,"a"));
+        arrayListSKill.add(new SkillKey(2,"asasasa"));
+        arrayListSKill.add(new SkillKey(3,"asasasa"));
+        arrayListSKill.add(new SkillKey(1,"a"));
+        arrayListSKill.add(new SkillKey(2,"asasasa"));
+        arrayListSKill.add(new SkillKey(3,"asasasa"));
+        arrayListSKill.add(new SkillKey(1,"a"));
+        arrayListSKill.add(new SkillKey(2,"asasasa"));
+        arrayListSKill.add(new SkillKey(3,"asasasa"));
+        arrayListSKill.add(new SkillKey(1,"a"));
+        arrayListSKill.add(new SkillKey(2,"asasasa"));
+        arrayListSKill.add(new SkillKey(3,"asasasa"));
+        tagAdapter = new TagAdapter(CreateJobActivity.this, arrayListSKill, CreateJobActivity.this );
+        recyclerView.setAdapter(tagAdapter);
 
         dataArea = new ArrayList();
         dataProfession = new ArrayList<>();

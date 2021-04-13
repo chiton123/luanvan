@@ -73,7 +73,7 @@ public class JobListFragment extends Fragment {
                 checkNothing();
                 progressDialog.dismiss();
             }
-        },2000);
+        },4000);
 
         return view;
 

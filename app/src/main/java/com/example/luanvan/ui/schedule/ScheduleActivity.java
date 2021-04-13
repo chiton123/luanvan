@@ -238,7 +238,7 @@ public class ScheduleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 bottomSheetDialog = new BottomSheetDialog(ScheduleActivity.this, R.style.BottomSheetTheme);
-                View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_schedule, (ViewGroup) findViewById(R.id.layout_schedule));
+                View view = LayoutInflater.from(ScheduleActivity.this).inflate(R.layout.bottom_sheet_schedule, (ViewGroup) findViewById(R.id.layout_schedule));
                 final RadioButton radioInterView = (RadioButton) view.findViewById(R.id.radiohenpv);
                 final RadioButton radioWork = (RadioButton) view.findViewById(R.id.radiodilam);
                 Button btnChoose = (Button) view.findViewById(R.id.buttonchon);

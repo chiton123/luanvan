@@ -71,7 +71,7 @@ public class CandidateDocumentFragment extends Fragment {
                 }
                 progressDialog.dismiss();
             }
-        },2000);
+        },4000);
 
         return view;
     }

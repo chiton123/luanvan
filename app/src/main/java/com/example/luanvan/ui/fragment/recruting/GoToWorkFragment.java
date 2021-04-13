@@ -1,5 +1,6 @@
 package com.example.luanvan.ui.fragment.recruting;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -42,6 +43,7 @@ public class GoToWorkFragment extends Fragment {
     public static CVFilterAdapter adapter;
     int job_id = 0;
     Handler handler;
+    ProgressDialog progressDialog;
     public static LinearLayout layout, layout_nothing;
     // kind: 1: lọc CV, 2: phỏng vấn, 3: nhận việc để cập nhật sau khi đánh giá, 0: candidateDocument
     @Override
@@ -49,6 +51,7 @@ public class GoToWorkFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_go_to_work, container, false);
+        loading();
         layout = (LinearLayout) view.findViewById(R.id.layout);
         layout_nothing = (LinearLayout) view.findViewById(R.id.layout_nothing);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
@@ -67,6 +70,7 @@ public class GoToWorkFragment extends Fragment {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
+                progressDialog.dismiss();
                 if(CVManageActivity.arrayListGoToWork.size() == 0){
                     layout_nothing.setVisibility(View.VISIBLE);
                     layout.setVisibility(View.GONE);
@@ -75,11 +79,17 @@ public class GoToWorkFragment extends Fragment {
                     layout.setVisibility(View.VISIBLE);
                 }
             }
-        },2000);
+        },4000);
 
         return view;
     }
-
+    void loading(){
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Loading");
+        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
+    }
     private void getData() {
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlFilterCV,

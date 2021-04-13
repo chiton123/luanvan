@@ -8,8 +8,7 @@
     android:padding="5dp"
     android:id="@+id/layout">
     <RadioButton
-        android:layout_marginLeft="20dp"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/radioposition"
         android:text="Abc"

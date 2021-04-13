@@ -1,5 +1,6 @@
 package com.example.luanvan.ui.recruiter.PostNews;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -49,10 +50,12 @@ public class DisplayJobFragment extends Fragment {
     // kind: 0 là của joblistfragment chuyển qua, 1: là của tin tuyển dụng chuyển qua
     public static LinearLayout layout, layout_nothing;
     Handler handler;
+    ProgressDialog progressDialog;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_display_job, container, false);
+        loading();
         layout = (LinearLayout) view.findViewById(R.id.layout);
         layout_nothing = (LinearLayout) view.findViewById(R.id.layout_nothing);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
@@ -68,10 +71,18 @@ public class DisplayJobFragment extends Fragment {
             @Override
             public void run() {
                 checkNothing();
+                progressDialog.dismiss();
             }
-        },1500);
+        },4000);
 
         return view;
+    }
+    void loading(){
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Loading");
+        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
     }
     public void checkNothing(){
         if(RecruiterActivity.arrayListJobList.size() == 0){

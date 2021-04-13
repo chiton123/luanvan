@@ -1,5 +1,6 @@
 package com.example.luanvan.ui.recruiter.PostNews;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -24,12 +25,14 @@ public class OutdatedJobFragment extends Fragment {
     public static NewPostAdapter adapter;
     public static LinearLayout layout, layout_nothing;
     Handler handler;
+    ProgressDialog progressDialog;
     // fragment 1: Đang hiển thị, 2 : Chờ xác thực, 3: Hết hạn, 4: Từ chối , khi chuyển qua bên adjustJob thì cập nhật tương ứng với fragment
     // kind: 0 là của joblistfragment chuyển qua, 1: là của tin tuyển dụng chuyển qua
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_outdated_job, container, false);
+        loading();
         layout = (LinearLayout) view.findViewById(R.id.layout);
         layout_nothing = (LinearLayout) view.findViewById(R.id.layout_nothing);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
@@ -42,12 +45,19 @@ public class OutdatedJobFragment extends Fragment {
             @Override
             public void run() {
                 checkNothing();
+                progressDialog.dismiss();
             }
-        },1500);
+        },4000);
 
         return view;
     }
-
+    void loading(){
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Loading");
+        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
+    }
     public void checkNothing(){
         if(RecruiterActivity.arrayListOutdatedJobs.size() == 0){
             layout.setVisibility(View.GONE);

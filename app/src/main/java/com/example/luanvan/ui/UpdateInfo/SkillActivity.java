@@ -132,7 +132,7 @@ public class SkillActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(SkillActivity.this, LinearLayoutManager.VERTICAL, false));
-        adapter = new SkillPickAdapter(getApplicationContext(), arrayList, SkillActivity.this);
+        adapter = new SkillPickAdapter(SkillActivity.this, arrayList, SkillActivity.this);
         recyclerView.setAdapter(adapter);
         bottomSheetDialog.setContentView(view);
         bottomSheetDialog.show();

@@ -477,6 +477,44 @@
                         ></EditText>
                 </LinearLayout>
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="7dp"
+                    android:background="@drawable/textview_frame"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Quyền lợi"
+                        android:textColor="#040404"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        android:id="@+id/txta"
+                        ></TextView>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@id/txta"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:padding="5dp"
+
+                        >
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            android:id="@+id/recycleview"
+                            ></androidx.recyclerview.widget.RecyclerView>
+
+                    </RelativeLayout>
+
+
+
+
+                </RelativeLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -45,7 +45,7 @@ public class RecruitmentNewsActivity extends AppCompatActivity {
             public void run() {
                 progressDialog.dismiss();
             }
-        },1500);
+        },4000);
 
     }
     void loading(){
