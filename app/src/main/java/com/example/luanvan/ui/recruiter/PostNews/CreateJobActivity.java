@@ -82,7 +82,7 @@ public class CreateJobActivity extends AppCompatActivity {
     // id job vừa đăng
     int idjobJust = 0;
     ProgressDialog progressDialog;
-    RecyclerView recyclerView;
+    RecyclerView recyclerView, recyclerViewTag;
     TagAdapter tagAdapter;
     public static ArrayList<SkillKey>  arraylistChosenSkill;
     ArrayList<SkillCandidate> arraylistSkill;
@@ -587,20 +587,20 @@ public class CreateJobActivity extends AppCompatActivity {
         spinnerLoaiHinh = (Spinner) findViewById(R.id.spinnerloaihinh);
         spinnerNganhnghe = (Spinner) findViewById(R.id.spinnernganhnghe);
         btnPost = (Button) findViewById(R.id.buttondangtin);
-        recyclerView = (RecyclerView) findViewById(R.id.recycleview);
-        recyclerView.setFocusable(false);
-        recyclerView.setClickable(false);
-        recyclerView.setHasFixedSize(true);
+        recyclerViewTag = (RecyclerView) findViewById(R.id.recycleview);
+        recyclerViewTag.setFocusable(false);
+        recyclerViewTag.setClickable(false);
+        recyclerViewTag.setHasFixedSize(true);
         arraylistSkill = new ArrayList<>();
         arraylistChosenSkill = new ArrayList<>();
         FlexboxLayoutManager layoutManager = new FlexboxLayoutManager();
         layoutManager.setFlexWrap(FlexWrap.WRAP);
         layoutManager.setFlexDirection(FlexDirection.ROW);
         layoutManager.setAlignItems(AlignItems.STRETCH);
-        recyclerView.setLayoutManager(layoutManager);
+        recyclerViewTag.setLayoutManager(layoutManager);
 
         tagAdapter = new TagAdapter(CreateJobActivity.this, arraylistChosenSkill, CreateJobActivity.this, arraylistSkill );
-        recyclerView.setAdapter(tagAdapter);
+        recyclerViewTag.setAdapter(tagAdapter);
 
         dataArea = new ArrayList();
         dataProfession = new ArrayList<>();
