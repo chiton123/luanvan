@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="5dp"
     tools:context=".ui.Apply.ChooseCVActivity">
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
@@ -20,6 +19,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:weightSum="12"
+        android:padding="5dp"
         >
         <TextView
             android:layout_width="wrap_content"

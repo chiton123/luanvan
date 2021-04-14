@@ -20,12 +20,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:gravity="center_horizontal"
             >
             <TextView
                 android:layout_marginLeft="30dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tôn"
+                android:text="Nội dung"
                 android:textSize="18sp"
                 android:textColor="#070707"
                 android:textStyle="bold"
@@ -35,30 +36,11 @@
 
         </LinearLayout>
 
-        <TextView
-            android:layout_marginLeft="30dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="DBA"
-            android:textSize="14sp"
-            android:textColor="#070707"
-            android:id="@+id/position"
-            ></TextView>
 
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/stroke"
-        android:gravity="center_horizontal"
-        >
 
-
-    </LinearLayout>
     <LinearLayout
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="15dp"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"

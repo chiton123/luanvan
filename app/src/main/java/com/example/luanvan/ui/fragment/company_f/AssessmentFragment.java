@@ -80,7 +80,7 @@ public class AssessmentFragment extends Fragment {
                 checkNothing();
                 progressDialog.dismiss();
             }
-        },1500);
+        },2000);
         eventButton();
 
         return view;
@@ -185,6 +185,7 @@ public class AssessmentFragment extends Fragment {
             average = Float.valueOf(decimalFormat.format(total/arrayList.size()));
             txtRating.setText(average +"");
             overallRating.setRating(average);
+            checkNothing();
         }
 
 

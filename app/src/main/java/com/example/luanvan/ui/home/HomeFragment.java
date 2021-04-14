@@ -75,7 +75,7 @@ public class HomeFragment extends Fragment {
     RecyclerView recyclerViewViecLamMoiNhat;
     public static KindOfJobAdapter adapterViecLamMoiNhat;
     public static ArrayList<Job> arrayListViecLamMoiNhat;
-    public static TextView txtNotification, txtUnreadMessageNumber;
+    public static TextView txtNotification, txtUnreadMessageNumber, txtUsername;
     CircleImageView img;
     public static LinearLayout layout_vieclammoinhat;
     GridView gridViewJob, gridViewCompany;
@@ -88,6 +88,8 @@ public class HomeFragment extends Fragment {
 //    public static int check_notification = 0; // kiểm tra đã load số thông báo hay chưa
     ProgressDialog progressDialog;
     DatabaseReference reference;
+    LinearLayout layout_user;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
@@ -99,8 +101,10 @@ public class HomeFragment extends Fragment {
         recyclerViewViecLamMoiNhat.setHasFixedSize(true);
         layout_vieclammoinhat = (LinearLayout) view.findViewById(R.id.layout_vieclammoinhat);
         img = (CircleImageView) view.findViewById(R.id.img);
+        txtUsername = (TextView) view.findViewById(R.id.txtusername);
         gridViewJob = (GridView) view.findViewById(R.id.gridviewvieclam);
         gridViewCompany = (GridView) view.findViewById(R.id.gridviewnhatuyendunghangdau);
+        layout_user = (LinearLayout) view.findViewById(R.id.layout_user);
         arrayListJob = new ArrayList<>();
         arrayListCompany = new ArrayList<>();
         adapterJob = new AdminAdapter(getActivity(), arrayListJob);
@@ -122,17 +126,24 @@ public class HomeFragment extends Fragment {
         adapterViecLamMoiNhat = new KindOfJobAdapter(recyclerViewViecLamMoiNhat, getActivity(), arrayListViecLamMoiNhat, getActivity(),0);
         recyclerViewViecLamMoiNhat.setAdapter(adapterViecLamMoiNhat);
         // getdata 0 : all, 1: luong cao,2: lam tu xa, 3: thuc tap, 4: moi nhat
-        getData(4, page);
+
         getDataTopCompany();
         loadMore();
-
         handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getData(4, page);
+            }
+        },3000);
+
+
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 checkNothing();
             }
-        },4000);
+        },7000);
 
         if(MainActivity.login == 1){
             activateAfterLogin();
@@ -312,21 +323,19 @@ public class HomeFragment extends Fragment {
     public void activateAfterLogin(){
         setNotificationAndChat();
         toolbar.setTitle("");
-        MainActivity.mUserData.child(MainActivity.uid).addValueEventListener(new ValueEventListener() {
+        layout_user.setVisibility(View.VISIBLE);
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(MainActivity.uid);
+        reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                final String imgURL = snapshot.child("imageURL").getValue(String.class);
-                if(imgURL.equals("default")){
-                    img.setImageResource(R.drawable.user1);
+                final String avatar = snapshot.child("imageURL").getValue(String.class);
+                if(avatar.equals("default")){
+                    img.setImageResource(R.drawable.imgprofile);
                 }else {
-                    if(imgURL != null){
-                        try {
-
-                            Glide.with(getActivity()).load(imgURL).into(img);
-
-                        }catch (NullPointerException e){
-                            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
+                    try {
+                        Glide.with(getActivity()).load(avatar).into(img);
+                    }catch (NullPointerException e){
+                        Toast.makeText(getActivity(), "Lỗi", Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -337,7 +346,7 @@ public class HomeFragment extends Fragment {
 
             }
         });
-
+        txtUsername.setText(MainActivity.user.getName());
     }
 
     private void getDataNotification() {
@@ -525,76 +534,79 @@ public class HomeFragment extends Fragment {
 
 
     private void getData(final int kind, int page) {
-        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-        String url = MainActivity.urljob1 + String.valueOf(page);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                      //  Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_SHORT).show();
-                        if(response != null){
-                            try {
-                                JSONArray jsonArray = new JSONArray(response);
-                                for(int i=0; i < jsonArray.length(); i++){
-                                    JSONObject object = jsonArray.getJSONObject(i);
-                                    // kiểm tra xem có hết hạn nộp hay không
-                                    int status = object.getInt("status");
-                                    SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-                                    Date date = null;
+        if(getActivity() != null){
+            RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+            String url = MainActivity.urljob1 + String.valueOf(page);
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            //  Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_SHORT).show();
+                            if(response != null){
+                                try {
+                                    JSONArray jsonArray = new JSONArray(response);
+                                    for(int i=0; i < jsonArray.length(); i++){
+                                        JSONObject object = jsonArray.getJSONObject(i);
+                                        // kiểm tra xem có hết hạn nộp hay không
+                                        int status = object.getInt("status");
+                                        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+                                        Date date = null;
 
-                                    try {
-                                        date = fmt.parse(object.getString("end_date"));
-                                    } catch (ParseException e) {
-                                        e.printStackTrace();
+                                        try {
+                                            date = fmt.parse(object.getString("end_date"));
+                                        } catch (ParseException e) {
+                                            e.printStackTrace();
+                                        }
+                                        arrayListViecLamMoiNhat.add(new Job(
+                                                object.getInt("id"),
+                                                object.getString("name"),
+                                                object.getInt("idcompany"),
+                                                object.getInt("id_recruiter"),
+                                                object.getString("img"),
+                                                object.getString("address"),
+                                                object.getInt("idtype"),
+                                                object.getInt("idprofession"),
+                                                object.getString("start_date"),
+                                                object.getString("end_date"),
+                                                object.getInt("salary_min"),
+                                                object.getInt("salary_max"),
+                                                object.getInt("idarea"),
+                                                object.getString("area"),
+                                                object.getString("experience"),
+                                                object.getInt("number"),
+                                                object.getString("description"),
+                                                object.getString("requirement"),
+                                                object.getString("benefit"),
+                                                object.getInt("status"),
+                                                object.getString("company_name"),
+                                                object.getString("type_job")
+                                        ));
+                                        adapterViecLamMoiNhat.notifyDataSetChanged();
                                     }
-                                    arrayListViecLamMoiNhat.add(new Job(
-                                            object.getInt("id"),
-                                            object.getString("name"),
-                                            object.getInt("idcompany"),
-                                            object.getInt("id_recruiter"),
-                                            object.getString("img"),
-                                            object.getString("address"),
-                                            object.getInt("idtype"),
-                                            object.getInt("idprofession"),
-                                            object.getString("start_date"),
-                                            object.getString("end_date"),
-                                            object.getInt("salary_min"),
-                                            object.getInt("salary_max"),
-                                            object.getInt("idarea"),
-                                            object.getString("area"),
-                                            object.getString("experience"),
-                                            object.getInt("number"),
-                                            object.getString("description"),
-                                            object.getString("requirement"),
-                                            object.getString("benefit"),
-                                            object.getInt("status"),
-                                            object.getString("company_name"),
-                                            object.getString("type_job")
-                                    ));
-                                    adapterViecLamMoiNhat.notifyDataSetChanged();
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
                             }
-                        }
 
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
-                    }
-                }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> map = new HashMap<>();
-                map.put("kind", String.valueOf(kind));
-                return map;
-            }
-        };
-        requestQueue.add(stringRequest);
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    }){
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String,String> map = new HashMap<>();
+                    map.put("kind", String.valueOf(kind));
+                    return map;
+                }
+            };
+            requestQueue.add(stringRequest);
+        }
+
 
     }
 

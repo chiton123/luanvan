@@ -32,6 +32,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -491,10 +492,10 @@ public class CVActivity extends AppCompatActivity {
             if(e == 1){
                 for(int i=0; i < MainActivity.skillCVS.size(); i++){
                     if(i < 4){
-                        canvas.drawText(MainActivity.skillCVS.get(i).getName(), 30, x3 + 50 + i*180, contentPaint);
+                        canvas.drawText(MainActivity.skillCVS.get(i).getName(), 30, x3 + 50 + i*90, contentPaint);
                         float star1 = MainActivity.skillCVS.get(i).getStar()*60;
-                        canvas.drawLine(30, x3+100 + i*90, star1+30, x3 + 100 + i*180, kynang_paint);
-                        canvas.drawLine(star1 + 30, x3+100 + i*90, width + 30,x3 + 100 + i*180,  kynangphu );
+                        canvas.drawLine(30, x3+100 + i*90, star1+30, x3 + 100 + i*90, kynang_paint);
+                        canvas.drawLine(star1 + 30, x3+100 + i*90, width + 30,x3 + 100 + i*90,  kynangphu );
                     }else {
                         break;
                     }

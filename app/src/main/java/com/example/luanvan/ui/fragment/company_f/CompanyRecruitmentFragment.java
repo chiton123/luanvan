@@ -50,10 +50,13 @@ public class CompanyRecruitmentFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_company_recruitment, container, false);
-        loading();
         recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         arrayList = new ArrayList<>();
+        if(arrayList.size() == 0){
+            loading();
+        }
+
         adapter = new CompanyJobAdapter(getActivity(), arrayList, getActivity());
         recyclerView.setAdapter(adapter);
         layout = (LinearLayout) view.findViewById(R.id.layout);
@@ -63,10 +66,13 @@ public class CompanyRecruitmentFragment extends Fragment {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                progressDialog.dismiss();
+                if(progressDialog.isShowing()){
+                    progressDialog.dismiss();
+                }
+
                 checkNothing();
             }
-        },2000);
+        },2600);
 
         return view;
     }
