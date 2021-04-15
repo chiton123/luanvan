@@ -1,14 +1,18 @@
 package com.example.luanvan.ui.UpdateInfo;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.hardware.Camera;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -29,8 +33,25 @@ import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.position_a.PositionPickAdapter;
+import com.example.luanvan.ui.Adapter.skill.AreaBottomSheetTagAdapter;
+import com.example.luanvan.ui.Adapter.skill.SkillTagAdapter;
+import com.example.luanvan.ui.Adapter.skill.TagAdapter;
+import com.example.luanvan.ui.Adapter.skill.TagAreaAdapter;
+import com.example.luanvan.ui.Model.Area;
+import com.example.luanvan.ui.Model.AreaCandidate;
 import com.example.luanvan.ui.Model.Position;
+import com.example.luanvan.ui.Model.SkillCandidate;
+import com.example.luanvan.ui.Model.SkillKey;
+import com.example.luanvan.ui.recruiter.PostNews.CreateJobActivity;
+import com.google.android.flexbox.AlignItems;
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexWrap;
+import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -55,6 +76,17 @@ public class PersonalInfoActivity extends AppCompatActivity {
     PositionPickAdapter adapter;
     ArrayList<Position> arrayList;
     SearchView searchView;
+    RecyclerView recyclerViewArea, recyclerViewTagArea;
+    TagAreaAdapter tagAdapter; // Những tag trong recycleview
+    public static ArrayList<Area>  arraylistChosenArea; // Đã chọn
+    ArrayList<AreaCandidate> arraylistArea; // Trên bottemsheet có check hay k luôn
+    LinearLayout layout_area;
+    BottomSheetDialog bottomSheetArea;
+    SearchView searchViewArea;
+    AreaBottomSheetTagAdapter areaAdapter; // adapter trong bottomsheet
+    ProgressDialog progressDialog;
+    Handler handler ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,10 +96,159 @@ public class PersonalInfoActivity extends AppCompatActivity {
         eventUpdate();
         eventPickDate();
         eventPosition();
+        eventSkill();
 
     }
+    void loading(){
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading");
+        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
+    }
+    private void eventSkill() {
+        layout_area.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //  Toast.makeText(getApplicationContext(), "Â", Toast.LENGTH_SHORT).show();
+                bottomSheetArea = new BottomSheetDialog(PersonalInfoActivity.this, R.style.BottomSheetTheme);
+                View view = LayoutInflater.from(PersonalInfoActivity.this).inflate(R.layout.bottom_sheet_area, (ViewGroup) findViewById(R.id.bottom_sheet));
+                Button btnChoose = (Button) view.findViewById(R.id.buttonchon);
+                Button btnCancel = (Button) view.findViewById(R.id.buttonhuy);
+                bottomSheetArea.setCancelable(false);
+                searchView = (SearchView) view.findViewById(R.id.searchView);
+
+                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+                        areaAdapter.getFilter().filter(query);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onQueryTextChange(String newText) {
+                        areaAdapter.getFilter().filter(newText);
+                        return false;
+                    }
+                });
+                btnCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        bottomSheetArea.dismiss();
+                        tagAdapter.notifyDataSetChanged();
+                    }
+                });
+                btnChoose.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        tagAdapter.notifyDataSetChanged();
+                        bottomSheetArea.dismiss();
+                    }
+                });
+                recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
+                recyclerView.setHasFixedSize(true);
+                recyclerView.setLayoutManager(new LinearLayoutManager(PersonalInfoActivity.this, LinearLayoutManager.VERTICAL, false));
+                areaAdapter = new AreaBottomSheetTagAdapter(PersonalInfoActivity.this, arraylistArea, PersonalInfoActivity.this, arraylistChosenArea);
+                recyclerView.setAdapter(areaAdapter);
+                bottomSheetArea.setContentView(view);
+                bottomSheetArea.show();
+            }
+
+        });
+
+    }
+    private void getCandidateArea() {
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlGetCandidateArea,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(response != null){
+                            try {
+                                JSONArray jsonArray = new JSONArray(response);
+                                for(int i=0; i < jsonArray.length(); i++){
+                                    JSONObject object = jsonArray.getJSONObject(i);
+                                    arraylistChosenArea.add(new Area(
+                                            object.getInt("id"),
+                                            object.getString("name")
+                                    ));
+                                    tagAdapter.notifyDataSetChanged();
+                                }
+                                for(int i=0; i < arraylistArea.size(); i++){
+                                    for(int j=0; j < arraylistChosenArea.size(); j++){
+                                        if(arraylistArea.get(i).getId() == arraylistChosenArea.get(j).getId()){
+                                            arraylistArea.get(i).setCheck(1);
+                                        }
+                                    }
+                                }
 
 
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("iduser", String.valueOf(MainActivity.iduser));
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+
+    }
+    private void postAreaCandidate() {
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlAddAreaCandidate,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+//                        if(response.equals("success")){
+//                            Toast.makeText(getApplicationContext(), "Cập nhật kỹ năng cho tin tuyển dụng thành công", Toast.LENGTH_SHORT).show();
+//                        }else {
+//                            Toast.makeText(getApplicationContext(), "Cập nhật kỹ năng cho tin tuyển dụng thất bại", Toast.LENGTH_SHORT).show();
+//                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                JSONArray jsonArray = new JSONArray();
+                for(int i=0; i < arraylistChosenArea.size(); i++){
+                    JSONObject object = new JSONObject();
+                    try {
+                        object.put("iduser", String.valueOf(MainActivity.iduser));
+                        object.put("idarea", String.valueOf(arraylistChosenArea.get(i).getId()));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    jsonArray.put(object);
+                }
+                map.put("iduser", String.valueOf(MainActivity.iduser));
+                map.put("jsonarray", jsonArray.toString());
+
+
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+
+    }
     private void eventPosition() {
         editposition.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,7 +256,6 @@ public class PersonalInfoActivity extends AppCompatActivity {
                 eventListPosition();
             }
         });
-
 
     }
     private void eventListPosition() {
@@ -171,6 +351,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
 
     private void getInfo() {
         if(MainActivity.login == 1){
+            getCandidateArea();
             editname.setText(MainActivity.user.getName());
             editemail.setText(MainActivity.user.getEmail());
             String ngay = MainActivity.user.getBirthday();
@@ -238,6 +419,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Không đúng định dạng số điện thoại", Toast.LENGTH_SHORT).show();
                 } else
                 {
+                    loading();
                     String gender = "";
                     if(btnNam.isChecked()){
                         gender += 0;
@@ -253,6 +435,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
                                 public void onResponse(String response) {
                                     if(response.equals("success")){
                                         Toast.makeText(getApplicationContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                                        postAreaCandidate();
                                         MainActivity.user.setAddress(address);
                                         MainActivity.user.setBirthday(date_post);
                                         MainActivity.user.setEmail(email);
@@ -263,17 +446,27 @@ public class PersonalInfoActivity extends AppCompatActivity {
                                         MainActivity.user.setPhone(Integer.parseInt(phone));
                                         MainActivity.user.setIdposition(idposition);
                                         MainActivity.user.setPosition(position);
-                                        Intent intent = new Intent();
-                                        setResult(234);
-                                        finish();
+                                        Handler handler = new Handler();
+                                        handler.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                progressDialog.dismiss();
+                                                Intent intent = new Intent();
+                                                setResult(234);
+                                                finish();
+                                            }
+                                        },2000);
+
                                     }else {
                                         Toast.makeText(getApplicationContext(), "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+                                        progressDialog.dismiss();
                                     }
                                 }
                             },
                             new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
+                                    progressDialog.dismiss();
                                     Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
                                 }
                             }){
@@ -333,8 +526,92 @@ public class PersonalInfoActivity extends AppCompatActivity {
         getInfo();
         arrayList = new ArrayList<>();
         getDataPosition();
+        arraylistArea = new ArrayList<>();
+        arraylistChosenArea = new ArrayList<>();
+        getDataArea();
+        layout_area = (LinearLayout) findViewById(R.id.layout_area);
+
+        recyclerViewTagArea = (RecyclerView) findViewById(R.id.recycleview);
+        recyclerViewTagArea.setFocusable(false);
+        recyclerViewTagArea.setClickable(false);
+        recyclerViewTagArea.setHasFixedSize(true);
+        FlexboxLayoutManager layoutManager = new FlexboxLayoutManager();
+        layoutManager.setFlexWrap(FlexWrap.WRAP);
+        layoutManager.setFlexDirection(FlexDirection.ROW);
+        layoutManager.setAlignItems(AlignItems.STRETCH);
+        recyclerViewTagArea.setLayoutManager(layoutManager);
+
+        tagAdapter = new TagAreaAdapter(PersonalInfoActivity.this, arraylistChosenArea, PersonalInfoActivity.this, arraylistArea );
+        recyclerViewTagArea.setAdapter(tagAdapter);
 
 
+
+    }
+
+    private void getDataArea() {
+        arraylistArea.add(new AreaCandidate(1,"An Giang",0));
+        arraylistArea.add(new AreaCandidate(2,"Bà Rịa - Vũng Tàu",0));
+        arraylistArea.add(new AreaCandidate(3,"Bắc Giang",0));
+        arraylistArea.add(new AreaCandidate(4,"Bắc Kạn",0));
+        arraylistArea.add(new AreaCandidate(5,"Bạc Liêu",0));
+        arraylistArea.add(new AreaCandidate(6,"Bắc Ninh",0));
+        arraylistArea.add(new AreaCandidate(7,"Bến Tre",0));
+        arraylistArea.add(new AreaCandidate(8,"Bình Định",0));
+        arraylistArea.add(new AreaCandidate(9,"Bình Dương",0));
+        arraylistArea.add(new AreaCandidate(10,"Bình Phước",0));
+        arraylistArea.add(new AreaCandidate(11,"Bình Thuận",0));
+        arraylistArea.add(new AreaCandidate(12,"Cà Mau",0));
+        arraylistArea.add(new AreaCandidate(13,"Cao Bằng",0));
+        arraylistArea.add(new AreaCandidate(14,"Đắk Lắk",0));
+        arraylistArea.add(new AreaCandidate(15,"Đắk Nông",0));
+        arraylistArea.add(new AreaCandidate(16,"Điện Biên",0));
+        arraylistArea.add(new AreaCandidate(17,"Đồng Nai",0));
+        arraylistArea.add(new AreaCandidate(18,"Đồng Tháp",0));
+        arraylistArea.add(new AreaCandidate(19,"Gia Lai",0));
+        arraylistArea.add(new AreaCandidate(20,"Hà Giang",0));
+        arraylistArea.add(new AreaCandidate(21,"Hà Nam",0));
+        arraylistArea.add(new AreaCandidate(22,"Hà Tĩnh",0));
+        arraylistArea.add(new AreaCandidate(23,"Hải Dương",0));
+        arraylistArea.add(new AreaCandidate(24,"Hậu Giang",0));
+        arraylistArea.add(new AreaCandidate(25,"Hòa Bình",0));
+        arraylistArea.add(new AreaCandidate(26,"Hưng Yên",0));
+        arraylistArea.add(new AreaCandidate(27,"Khánh Hòa",0));
+        arraylistArea.add(new AreaCandidate(28,"Kiên Giang",0));
+        arraylistArea.add(new AreaCandidate(29,"Kon Tum",0));
+        arraylistArea.add(new AreaCandidate(30,"Lai Châu",0));
+        arraylistArea.add(new AreaCandidate(31,"Lâm Đồng",0));
+        arraylistArea.add(new AreaCandidate(32,"Lạng Sơn",0));
+        arraylistArea.add(new AreaCandidate(33,"Lào Cai",0));
+        arraylistArea.add(new AreaCandidate(34,"Long An",0));
+        arraylistArea.add(new AreaCandidate(35,"Nam Định",0));
+        arraylistArea.add(new AreaCandidate(36,"Nghệ An",0));
+        arraylistArea.add(new AreaCandidate(37,"Ninh Bình",0));
+        arraylistArea.add(new AreaCandidate(38,"Ninh Thuận",0));
+        arraylistArea.add(new AreaCandidate(39,"Phú Thọ",0));
+        arraylistArea.add(new AreaCandidate(40,"Quảng Bình",0));
+        arraylistArea.add(new AreaCandidate(41,"Quảng Nam",0));
+        arraylistArea.add(new AreaCandidate(42,"Quảng Ngãi",0));
+        arraylistArea.add(new AreaCandidate(43,"Quảng Ninh",0));
+        arraylistArea.add(new AreaCandidate(44,"Quảng Trị",0));
+        arraylistArea.add(new AreaCandidate(45,"Sóc Trăng",0));
+        arraylistArea.add(new AreaCandidate(46,"Sơn La",0));
+        arraylistArea.add(new AreaCandidate(47,"Tây Ninh",0));
+        arraylistArea.add(new AreaCandidate(48,"Thái Bình",0));
+        arraylistArea.add(new AreaCandidate(49,"Thái Nguyên",0));
+        arraylistArea.add(new AreaCandidate(50,"Thanh Hóa",0));
+        arraylistArea.add(new AreaCandidate(51,"Thừa Thiên Huế",0));
+        arraylistArea.add(new AreaCandidate(52,"Tiền Giang",0));
+        arraylistArea.add(new AreaCandidate(53,"Trà Vinh",0));
+        arraylistArea.add(new AreaCandidate(54,"Tuyên Quang",0));
+        arraylistArea.add(new AreaCandidate(55,"Vĩnh Long",0));
+        arraylistArea.add(new AreaCandidate(56,"Vĩnh Phúc",0));
+        arraylistArea.add(new AreaCandidate(57,"Yên Bái",0));
+        arraylistArea.add(new AreaCandidate(58,"Phú Yên",0));
+        arraylistArea.add(new AreaCandidate(59,"Cần Thơ",0));
+        arraylistArea.add(new AreaCandidate(60,"Đà Nẵng",0));
+        arraylistArea.add(new AreaCandidate(61,"Hải Phòng",0));
+        arraylistArea.add(new AreaCandidate(62,"Hà Nội",0));
+        arraylistArea.add(new AreaCandidate(63,"TP HCM",0));
 
     }
 
