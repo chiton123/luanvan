@@ -15,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.schedule.SchedualCandidateActivity"></activity>
+        <activity android:name=".ui.UpdateInfo.PersonalInfoActivity"></activity>
+        <activity android:name=".ui.schedule.ScheduleCandidateActivity" />
         <activity android:name=".ui.recruiter.AssessmentManagementActivity" />
         <activity android:name=".ui.User.CreateAssessmentActivity" />
 
@@ -62,7 +63,6 @@
         <activity android:name=".ui.UpdateInfo.SkillActivity" />
         <activity android:name=".ui.UpdateInfo.ExperienceActivity" />
         <activity android:name=".ui.UpdateInfo.StudyActivity" />
-        <activity android:name=".ui.User.PersonalInfoActivity" />
         <activity android:name=".ui.login.LoginActivity" />
         <activity android:name=".ui.KindofJob.KindOfJobActivity" />
         <activity android:name=".ui.DetailedJob.DetailJobActivity" />

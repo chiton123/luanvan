@@ -56,7 +56,6 @@ public class SkillActivity extends AppCompatActivity {
     SkillPickAdapter adapter;
     ArrayList<SkillKey> arrayList;
     SearchView searchView;
-    TextView textView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -34,6 +34,7 @@ import com.example.luanvan.ui.Adapter.update_personal_info.StudyAdapter;
 import com.example.luanvan.ui.Model.Profile;
 import com.example.luanvan.ui.Model.User;
 import com.example.luanvan.ui.UpdateInfo.EditCombineActivity;
+import com.example.luanvan.ui.UpdateInfo.PersonalInfoActivity;
 import com.example.luanvan.ui.login.LoginActivity;
 import com.example.luanvan.ui.modelCV.UserCV;
 import com.example.luanvan.ui.recruiter.LoginRecruiterActivity;
@@ -352,10 +353,11 @@ public class NotificationsFragment extends Fragment {
         if(MainActivity.login == 1){
            // Toast.makeText(getActivity(), MainActivity.user.getName() + "username", Toast.LENGTH_SHORT).show();
             try {
-                name.setText(MainActivity.user.getName());
-                if(MainActivity.user.getPosition().equals("")){
+                if(!MainActivity.user.getName().equals("")){
+                    name.setText(MainActivity.user.getName());
+                }
 
-                }else {
+                if(!MainActivity.user.getPosition().equals("")){
                     positon.setText(MainActivity.user.getPosition());
                 }
             }catch (NullPointerException e){
@@ -401,16 +403,30 @@ public class NotificationsFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
      //   Toast.makeText(getActivity(), "Result code: " + resultCode + " request: " + requestCode, Toast.LENGTH_SHORT).show();
         if(requestCode == REQUEST_CODE && resultCode == 123){
-            linearLayout1.setVisibility(View.GONE);
-            linearLayout2.setVisibility(View.VISIBLE);
-            scrollView.setVisibility(View.VISIBLE);
-            getInfo();
-            getInfoFromFirebase();
+            handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    linearLayout1.setVisibility(View.GONE);
+                    linearLayout2.setVisibility(View.VISIBLE);
+                    scrollView.setVisibility(View.VISIBLE);
+                    getInfo();
+                    getInfoFromFirebase();
+                }
+            },1500);
+
 
         }
         if(requestCode == REQUEST_CODE2 && resultCode == 234){
-            getInfo();
-            getInfoFromFirebase();
+            handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    getInfo();
+                    getInfoFromFirebase();
+                }
+            },1500);
+
         }
 
         if(requestCode == IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null){

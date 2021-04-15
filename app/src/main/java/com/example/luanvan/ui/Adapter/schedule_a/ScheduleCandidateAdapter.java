@@ -5,10 +5,12 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -26,6 +28,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
+import com.example.luanvan.ui.DetailedJob.DetailJobActivity;
 import com.example.luanvan.ui.Model.Schedule;
 import com.example.luanvan.ui.Model.ScheduleCandidate;
 import com.example.luanvan.ui.schedule.CreateScheduleActivity;
@@ -43,8 +46,11 @@ public class ScheduleCandidateAdapter extends RecyclerView.Adapter<ScheduleCandi
     Context context;
     ArrayList<ScheduleCandidate> arrayList;
     Activity activity;
-    BottomSheetDialog bottomSheetDialog;
+    BottomSheetDialog bottomSheetDialogAnswer;
     int REQUEST_CODE = 123;
+    String type_notification = "";
+    String content = "";
+    int ap_id = 0;
     public ScheduleCandidateAdapter(Context context, ArrayList<ScheduleCandidate> arrayList, Activity activity) {
         this.context = context;
         this.arrayList = arrayList;
@@ -69,7 +75,7 @@ public class ScheduleCandidateAdapter extends RecyclerView.Adapter<ScheduleCandi
             holder.txtTypeSchedule.setText("Nhắc lịch đi làm ");
         }
         holder.txtPosition.setText(schedule.getJob_name());
-        holder.txtCandidate.setText(schedule.getUsername());
+        holder.txtCompany.setText(schedule.getCompany_name());
         String start = schedule.getStart_hour();
         String end = schedule.getEnd_hour();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
@@ -106,34 +112,14 @@ public class ScheduleCandidateAdapter extends RecyclerView.Adapter<ScheduleCandi
             holder.txtNote.setVisibility(View.GONE);
             holder.view_straight.setVisibility(View.GONE);
         }
-        holder.layout.setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bottomSheetDialog = new BottomSheetDialog(activity, R.style.BottomSheetTheme);
-                View view = LayoutInflater.from(activity).inflate(R.layout.bottom_sheet_chinhsua_xoa, (ViewGroup)activity.findViewById(R.id.bottom_sheet));
-                Button btnAdjust = (Button) view.findViewById(R.id.buttonadjust);
-                Button btnDelete = (Button) view.findViewById(R.id.buttondelete);
-                Button btnStop = (Button) view.findViewById(R.id.buttonstop);
-                btnStop.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        bottomSheetDialog.dismiss();
-                    }
-                });
-
-                btnAdjust.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(context, CreateScheduleActivity.class);
-                        intent.putExtra("kind", 2); // kind: 1: create, 2: adjust
-                        intent.putExtra("schedule", schedule);
-                        intent.putExtra("position", position); // position trên list
-                        activity.startActivityForResult(intent, REQUEST_CODE);
-                    }
-                });
-
-                bottomSheetDialog.setContentView(view);
-                bottomSheetDialog.show();
+                try {
+                    dialogAnswerSchedule(position);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         });
         if(schedule.getStatus() == 0){
@@ -155,10 +141,191 @@ public class ScheduleCandidateAdapter extends RecyclerView.Adapter<ScheduleCandi
 
     }
     public void stopBottomSheet(){
-        bottomSheetDialog.dismiss();
+        bottomSheetDialogAnswer.dismiss();
+    }
+    public void dialogAnswerSchedule(final int position) throws ParseException {
+        bottomSheetDialogAnswer = new BottomSheetDialog(activity, R.style.BottomSheetTheme);
+        final View view = LayoutInflater.from(activity).inflate(R.layout.bottom_sheet_answer, (ViewGroup)activity.findViewById(R.id.bottom_sheet));
+        TextView txtSchedule = (TextView) view.findViewById(R.id.name);
+        final EditText editNote = (EditText) view.findViewById(R.id.editnote);
+        Button btnDongY = (Button) view.findViewById(R.id.buttondongy);
+        Button btnTuChoi = (Button) view.findViewById(R.id.buttontuchoi);
+        Button btnLuiLich = (Button) view.findViewById(R.id.buttonluilich);
+        TextView txtDate = (TextView) view.findViewById(R.id.txtdate);
+        if(arrayList.get(position).getType() == 1){
+            txtSchedule.setText("Hẹn phỏng vấn");
+        }else {
+            txtSchedule.setText("Hẹn làm việc");
+        }
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-mm-dd");
+        Date date = null;
+        date = simpleDateFormat.parse(arrayList.get(position).getDate());
+        SimpleDateFormat fmtOut  = new SimpleDateFormat("dd/mm/yyyy");
+        String start = arrayList.get(position).getStart_hour();
+        String end = arrayList.get(position).getEnd_hour();
+        SimpleDateFormat fmtTime = new SimpleDateFormat("HH:mm:ss");
+        Date time1 = null;
+        Date time2 = null;
+        try {
+            time1 =  fmtTime.parse(start);
+            time2 = fmtTime.parse(end);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        SimpleDateFormat formatHour = new SimpleDateFormat("HH:mm");
+        txtDate.setText("Ngày: "+ fmtOut.format(date) + ", từ " + formatHour.format(time1) + " đến " + formatHour.format(time2));
+        // status : 0 chưa xác nhận, 1 đồng ý , 2 từ chối , 3 dời lịch pv
+        btnDongY.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateSchedule(arrayList.get(position).getId(), 1, editNote.getText().toString());
+                getApId(position, 1,1);
+                arrayList.get(position).setStatus(1);
+                arrayList.get(position).setNote_candidate(editNote.getText().toString());
+                bottomSheetDialogAnswer.dismiss();
+                notifyDataSetChanged();
+            }
+        });
+        btnTuChoi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateSchedule(arrayList.get(position).getId(), 2, editNote.getText().toString());
+                getApId(position, 1,2);
+                arrayList.get(position).setStatus(2);
+                arrayList.get(position).setNote_candidate(editNote.getText().toString());
+                bottomSheetDialogAnswer.dismiss();
+                notifyDataSetChanged();
+            }
+        });
+        btnLuiLich.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateSchedule(arrayList.get(position).getId(), 3, editNote.getText().toString());
+                getApId(position, 1, 3);
+                arrayList.get(position).setStatus(3);
+                arrayList.get(position).setNote_candidate(editNote.getText().toString());
+                bottomSheetDialogAnswer.dismiss();
+                notifyDataSetChanged();
+            }
+        });
+
+
+        bottomSheetDialogAnswer.setContentView(view);
+
+
+        bottomSheetDialogAnswer.show();
+
     }
 
 
+    // Để post notification lên
+    private void getApId(final int position, final int type_user, final int status) {
+        RequestQueue requestQueue = Volley.newRequestQueue(activity);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlCheckApply,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(response.length() > 4){
+                            String test = response.substring(0,5);
+                            ap_id = Integer.parseInt(response.substring(5, response.length()));
+                            postNotificationSchedule(type_user, status, position);
+
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("job_id", String.valueOf(arrayList.get(position).getId_job()));
+                map.put("user_id", String.valueOf(MainActivity.iduser));
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+
+    }
+
+
+    public void postNotificationSchedule(final int type_user, int status, final int position){
+        type_notification = "Trả lời lịch hẹn của ứng viên";
+        if(status == 1){
+            content = "Ứng viên " + MainActivity.username +" đồng ý phỏng vấn";
+        }else if(status == 2) {
+            content = "Ứng viên " + MainActivity.username +" từ chối phỏng vấn";
+        }else {
+            content = "Ứng viên " + MainActivity.username +" muốn dời lịch phỏng vấn";
+        }
+        //    Toast.makeText(getApplicationContext(), ap_id + "", Toast.LENGTH_SHORT).show();
+        RequestQueue requestQueue = Volley.newRequestQueue(activity);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlPostNotification,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(response.equals("success")){
+                            Toast.makeText(context, "Thông báo thành công", Toast.LENGTH_SHORT).show();
+                        }else {
+                            Toast.makeText(context, "Thông báo thất bại", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("id_application", String.valueOf(ap_id));
+                map.put("type_notification", type_notification);
+                map.put("content", content);
+                map.put("iduser", String.valueOf(arrayList.get(position).getId_recruiter()));
+                map.put("type_user", String.valueOf(type_user));
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+
+    }
+    public void updateSchedule(final int id_sche, final int status, final String note_candidate){
+        RequestQueue requestQueue = Volley.newRequestQueue(activity);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlUpdateScheduleCandidate,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(response.equals("success")){
+                            Toast.makeText(context, "Cập nhật schedule thành công", Toast.LENGTH_SHORT).show();
+                        }else {
+                            Toast.makeText(context, "Cập nhật schedule thất bại", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("id_sche", String.valueOf(id_sche));
+                map.put("status", String.valueOf(status));
+                map.put("note_candidate", note_candidate);
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+
+    }
 
     @Override
     public int getItemCount() {

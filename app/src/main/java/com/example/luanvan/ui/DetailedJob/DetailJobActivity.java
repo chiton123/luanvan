@@ -85,9 +85,7 @@ public class DetailJobActivity extends AppCompatActivity {
     String type_notification = "Hồ sơ mới ứng tuyển";
     String content = "";
     public static int checkApplyAgain = 0;  // kiểm tra xem job đã ứng tuyển hay chưa
-    BottomSheetDialog bottomSheetDialogAnswer;
-    Button btnSchedule; // button lịch hẹn khi có thì xuất hiện
-    Schedule schedule; // status : 0 chưa xác nhận, 1 đồng ý , 2 từ chối , 3 dời lịch pv
+
     int ap_id = 0; // id application của job đó với user hiện tại;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +97,6 @@ public class DetailJobActivity extends AppCompatActivity {
         eventButton();
         if(MainActivity.login == 1){
             checkApplyOrNot();
-            getSchedule();
         }
 
 
@@ -107,16 +104,6 @@ public class DetailJobActivity extends AppCompatActivity {
     }
 
     private void eventButton() {
-        btnSchedule.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    dialogAnswerSchedule();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
         btnApply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -142,206 +129,6 @@ public class DetailJobActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-
-    private void getSchedule() {
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlGetScheduleCandidate,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        if(response != null){
-                            try {
-                                JSONArray jsonArray = new JSONArray(response);
-                                if(jsonArray.length() > 0){
-                                    btnSchedule.setVisibility(View.VISIBLE);
-                                }
-                                for(int i=0; i < jsonArray.length(); i++){
-                                    JSONObject object = jsonArray.getJSONObject(i);
-                                    schedule = new Schedule(
-                                            object.getInt("id"),
-                                            object.getInt("id_recruiter"),
-                                            object.getInt("id_job"),
-                                            object.getString("job_name"),
-                                            object.getInt("id_user"),
-                                            object.getString("username"),
-                                            object.getInt("type"),
-                                            object.getString("date"),
-                                            object.getString("start_hour"),
-                                            object.getString("end_hour"),
-                                            object.getString("note"),
-                                            object.getString("note_candidate"),
-                                            object.getInt("status")
-                                    );
-
-                                }
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
-                    }
-                }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> map = new HashMap<>();
-                map.put("iduser", String.valueOf(MainActivity.iduser));
-                map.put("idjob", String.valueOf(job_id));
-                return map;
-            }
-        };
-        requestQueue.add(stringRequest);
-    }
-
-    public void dialogAnswerSchedule() throws ParseException {
-        bottomSheetDialogAnswer = new BottomSheetDialog(DetailJobActivity.this, R.style.BottomSheetTheme);
-        View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_answer, (ViewGroup) findViewById(R.id.bottom_sheet));
-        TextView txtSchedule = (TextView) view.findViewById(R.id.name);
-        final EditText editNote = (EditText) view.findViewById(R.id.editnote);
-        Button btnDongY = (Button) view.findViewById(R.id.buttondongy);
-        Button btnTuChoi = (Button) view.findViewById(R.id.buttontuchoi);
-        Button btnLuiLich = (Button) view.findViewById(R.id.buttonluilich);
-        TextView txtDate = (TextView) view.findViewById(R.id.txtdate);
-        if(schedule.getType() == 1){
-            txtSchedule.setText("Hẹn phỏng vấn");
-        }else {
-            txtSchedule.setText("Hẹn làm việc");
-        }
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-mm-dd");
-        Date date = null;
-        date = simpleDateFormat.parse(schedule.getDate());
-        SimpleDateFormat fmtOut  = new SimpleDateFormat("dd/mm/yyyy");
-        String start = schedule.getStart_hour();
-        String end = schedule.getEnd_hour();
-        SimpleDateFormat fmtTime = new SimpleDateFormat("HH:mm:ss");
-        Date time1 = null;
-        Date time2 = null;
-        try {
-            time1 =  fmtTime.parse(start);
-            time2 = fmtTime.parse(end);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        SimpleDateFormat formatHour = new SimpleDateFormat("HH:mm");
-        txtDate.setText("Ngày: "+ fmtOut.format(date) + ", từ " + formatHour.format(time1) + " đến " + formatHour.format(time2));
-        // status : 0 chưa xác nhận, 1 đồng ý , 2 từ chối , 3 dời lịch pv
-        btnDongY.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateSchedule(schedule.getId(), 1, editNote.getText().toString());
-                postNotificationSchedule(1,1);
-                bottomSheetDialogAnswer.dismiss();
-                btnSchedule.setVisibility(View.GONE);
-            }
-        });
-        btnTuChoi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateSchedule(schedule.getId(), 2, editNote.getText().toString());
-                postNotificationSchedule(1,2);
-                bottomSheetDialogAnswer.dismiss();
-                btnSchedule.setVisibility(View.GONE);
-            }
-        });
-        btnLuiLich.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateSchedule(schedule.getId(), 3, editNote.getText().toString());
-                postNotificationSchedule(1,3);
-                bottomSheetDialogAnswer.dismiss();
-                btnSchedule.setVisibility(View.GONE);
-            }
-        });
-
-
-        bottomSheetDialogAnswer.setContentView(view);
-
-
-        bottomSheetDialogAnswer.show();
-
-    }
-    public void postNotificationSchedule(final int type_user, int status){
-        type_notification = "Trả lời lịch hẹn của ứng viên";
-        if(status == 1){
-            content = "Ứng viên " + MainActivity.username +" đồng ý phỏng vấn";
-        }else if(status == 2) {
-            content = "Ứng viên " + MainActivity.username +" từ chối phỏng vấn";
-        }else {
-            content = "Ứng viên " + MainActivity.username +" muốn dời lịch phỏng vấn";
-        }
-    //    Toast.makeText(getApplicationContext(), ap_id + "", Toast.LENGTH_SHORT).show();
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlPostNotification,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        if(response.equals("success")){
-                            Toast.makeText(getApplicationContext(), "Thông báo thành công", Toast.LENGTH_SHORT).show();
-                        }else {
-                            Toast.makeText(getApplicationContext(), "Thông báo thất bại", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
-                    }
-                }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> map = new HashMap<>();
-                map.put("id_application", String.valueOf(ap_id));
-                map.put("type_notification", type_notification);
-                map.put("content", content);
-                map.put("iduser", String.valueOf(job.getId_recruiter()));
-                map.put("type_user", String.valueOf(type_user));
-                return map;
-            }
-        };
-        requestQueue.add(stringRequest);
-
-    }
-
-
-    public void updateSchedule(final int id_sche, final int status, final String note_candidate){
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlUpdateScheduleCandidate,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                       if(response.equals("success")){
-                           Toast.makeText(getApplicationContext(), "Cập nhật schedule thành công", Toast.LENGTH_SHORT).show();
-                       }else {
-                           Toast.makeText(getApplicationContext(), "Cập nhật schedule thất bại", Toast.LENGTH_SHORT).show();
-                       }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
-                    }
-                }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> map = new HashMap<>();
-                map.put("id_sche", String.valueOf(id_sche));
-                map.put("status", String.valueOf(status));
-                map.put("note_candidate", note_candidate);
-                return map;
-            }
-        };
-        requestQueue.add(stringRequest);
-
     }
 
 
@@ -443,40 +230,6 @@ public class DetailJobActivity extends AppCompatActivity {
                             content = "Ứng viên " + MainActivity.username + " - " + job.getName();
                             // Toast.makeText(getApplicationContext(), id_application + content , Toast.LENGTH_SHORT).show();
                             postNotification(1);
-//                            if(checkApplyAgain == 1){
-//                                // remove job trong list đã ứng tuyển
-//                                for(int i=0; i < HomeFragment.arrayListDaUngTuyen.size(); i++){
-//                                    if(HomeFragment.arrayListDaUngTuyen.get(i).getId() == job_id){
-//                                        HomeFragment.arrayListDaUngTuyen.remove(i);
-//                                    }
-//                                }
-//                            }
-//
-//                            HomeFragment.arrayListDaUngTuyen.add(new Job_Apply(
-//                                    job.getId(),
-//                                    job.getName(),
-//                                    job.getIdcompany(),
-//                                    job.getId_recruiter(),
-//                                    MainActivity.arrayListCV.get(0).getKey(),
-//                                    job.getImg(),
-//                                    job.getAddress(),
-//                                    job.getIdtype(),
-//                                    job.getIdprofession(),
-//                                    job.getStart_date(),
-//                                    job.getEnd_date(),
-//                                    job.getSalary_min(),
-//                                    job.getSalary_max(),
-//                                    job.getIdarea(),
-//                                    job.getExperience(),
-//                                    job.getNumber(),
-//                                    job.getDescription(),
-//                                    job.getRequirement(),
-//                                    job.getBenefit(),
-//                                    job.getStatus(),
-//                                    job.getCompany_name(),
-//                                    job.getType_job()
-//                            ));
-//                            HomeFragment.adapterDaUngTuyen.notifyDataSetChanged();
                         }else {
                             Toast.makeText(getApplicationContext(), "Ứng tuyển thất bại", Toast.LENGTH_SHORT).show();
                         }
@@ -516,31 +269,6 @@ public class DetailJobActivity extends AppCompatActivity {
                             // Toast.makeText(getApplicationContext(), id_application + content , Toast.LENGTH_SHORT).show();
                             postNotification(1);
 
-//                            HomeFragment.arrayListDaUngTuyen.add(new Job_Apply(
-//                                    job.getId(),
-//                                    job.getName(),
-//                                    job.getIdcompany(),
-//                                    job.getId_recruiter(),
-//                                    MainActivity.arrayListCV.get(0).getKey(),
-//                                    job.getImg(),
-//                                    job.getAddress(),
-//                                    job.getIdtype(),
-//                                    job.getIdprofession(),
-//                                    job.getStart_date(),
-//                                    job.getEnd_date(),
-//                                    job.getSalary_min(),
-//                                    job.getSalary_max(),
-//                                    job.getIdarea(),
-//                                    job.getExperience(),
-//                                    job.getNumber(),
-//                                    job.getDescription(),
-//                                    job.getRequirement(),
-//                                    job.getBenefit(),
-//                                    job.getStatus(),
-//                                    job.getCompany_name(),
-//                                    job.getType_job()
-//                            ));
-//                            HomeFragment.adapterDaUngTuyen.notifyDataSetChanged();
                         }else {
                             Toast.makeText(getApplicationContext(), "Ứng tuyển thất bại", Toast.LENGTH_SHORT).show();
                         }
@@ -657,7 +385,6 @@ public class DetailJobActivity extends AppCompatActivity {
         if(requestCode == REQUEST_CODE_LOGIN && resultCode == 123){
             checkApplyOrNot();
             getDataApplied();
-            getSchedule();
         }
         if(requestCode == REQUEST_CODE_CV && resultCode == 123){
             checkApplyOrNot();
@@ -844,35 +571,6 @@ public class DetailJobActivity extends AppCompatActivity {
                             JSONArray jsonArray = new JSONArray(response);
                             for(int i=0; i < jsonArray.length(); i++) {
                                 JSONObject object = jsonArray.getJSONObject(i);
-//                                HomeFragment.arrayListDaUngTuyen.add(new Job_Apply(
-//                                        object.getInt("id"),
-//                                        object.getString("name"),
-//                                        object.getInt("idcompany"),
-//                                        object.getInt("id_recruiter"),
-//                                        object.getString("id_cv"),
-//                                        object.getString("img"),
-//                                        object.getString("area"),
-//                                        object.getInt("idtype"),
-//                                        object.getInt("idprofession"),
-//                                        object.getString("start_date"),
-//                                        object.getString("end_date"),
-//                                        object.getInt("salary_min"),
-//                                        object.getInt("salary_max"),
-//                                        object.getInt("idarea"),
-//                                        object.getString("experience"),
-//                                        object.getInt("number"),
-//                                        object.getString("description"),
-//                                        object.getString("requirement"),
-//                                        object.getString("benefit"),
-//                                        object.getInt("status"),
-//                                        object.getString("company_name"),
-//                                        object.getString("type_job")
-//                                ));
-//
-//                            }
-//                            HomeFragment.adapterDaUngTuyen.notifyDataSetChanged();
-//                            HomeFragment.layout_daungtuyen.setVisibility(View.VISIBLE);
-
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -898,7 +596,6 @@ public class DetailJobActivity extends AppCompatActivity {
     private void anhxa() {
         checkApplyAgain = 0;
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        btnSchedule = (Button) findViewById(R.id.buttonschedule);
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbarcollapse);
         anhcongty = (ImageView) findViewById(R.id.hinhanh);
         txtcongty = (TextView) findViewById(R.id.tencongty);

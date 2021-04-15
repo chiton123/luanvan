@@ -23,7 +23,9 @@ import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.schedule_a.ScheduleAdapter;
+import com.example.luanvan.ui.Adapter.schedule_a.ScheduleCandidateAdapter;
 import com.example.luanvan.ui.Model.Schedule;
+import com.example.luanvan.ui.Model.ScheduleCandidate;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,18 +35,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SchedualCandidateActivity extends AppCompatActivity {
+public class ScheduleCandidateActivity extends AppCompatActivity {
     Toolbar toolbar;
     RecyclerView recyclerView;
-    public static ScheduleAdapter adapter;
-    public static ArrayList<Schedule> arrayList;
+    public static ScheduleCandidateAdapter adapter;
+    public static ArrayList<ScheduleCandidate> arrayList;
     int REQUEST_CODE = 123;
     public static LinearLayout layout, layout_nothing;
     Handler handler;
+    // status : 0 chưa xác nhận, 1 đồng ý , 2 từ chối , 3 dời lịch pv
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_schedual_candidate);
+        setContentView(R.layout.activity_schedule_candidate);
         anhxa();
         actionBar();
         getData();
@@ -54,10 +57,10 @@ public class SchedualCandidateActivity extends AppCompatActivity {
             public void run() {
                 checkNothing();
             }
-        },1800);
+        },2000);
+
 
     }
-
     public void checkNothing(){
         if(arrayList.size() == 0){
             layout_nothing.setVisibility(View.VISIBLE);
@@ -70,37 +73,40 @@ public class SchedualCandidateActivity extends AppCompatActivity {
 
     private void getData() {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlGetSchedule,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlGetScheduleCandidate,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        try {
+                        if(response != null){
+                            try {
+                                // Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
+                                JSONArray jsonArray = new JSONArray(response);
+                                for(int i=0; i < jsonArray.length(); i++){
+                                    JSONObject object = jsonArray.getJSONObject(i);
+                                    arrayList.add(new ScheduleCandidate(
+                                            object.getInt("id"),
+                                            object.getInt("id_recruiter"),
+                                            object.getInt("id_job"),
+                                            object.getString("job_name"),
+                                            object.getString("company_name"),
+                                            object.getInt("type"),
+                                            object.getString("date"),
+                                            object.getString("start_hour"),
+                                            object.getString("end_hour"),
+                                            object.getString("note"),
+                                            object.getString("note_candidate"),
+                                            object.getInt("status")
+                                    ));
+                                }
 
-                            // Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
-                            JSONArray jsonArray = new JSONArray(response);
-                            for(int i=0; i < jsonArray.length(); i++){
-                                JSONObject object = jsonArray.getJSONObject(i);
-                                arrayList.add(new Schedule(
-                                        object.getInt("id"),
-                                        object.getInt("id_recruiter"),
-                                        object.getInt("id_job"),
-                                        object.getString("job_name"),
-                                        object.getInt("id_user"),
-                                        object.getString("username"),
-                                        object.getInt("type"),
-                                        object.getString("date"),
-                                        object.getString("start_hour"),
-                                        object.getString("end_hour"),
-                                        object.getString("note"),
-                                        object.getString("note_candidate"),
-                                        object.getInt("status")
-                                ));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
+                            adapter.notifyDataSetChanged();
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+
                         }
-                        adapter.notifyDataSetChanged();
+
 
                     }
                 },
@@ -113,7 +119,7 @@ public class SchedualCandidateActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> map = new HashMap<>();
-                map.put("id_recruiter", String.valueOf(MainActivity.iduser));
+                map.put("iduser", String.valueOf(MainActivity.iduser));
                 return map;
             }
         };
@@ -152,7 +158,7 @@ public class SchedualCandidateActivity extends AppCompatActivity {
     private void anhxa() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         arrayList = new ArrayList<>();
-        adapter = new ScheduleAdapter(this, arrayList, this);
+        adapter = new ScheduleCandidateAdapter(this, arrayList, this);
         recyclerView = (RecyclerView) findViewById(R.id.recycleview);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -160,4 +166,7 @@ public class SchedualCandidateActivity extends AppCompatActivity {
         layout = (LinearLayout) findViewById(R.id.layout);
         layout_nothing = (LinearLayout) findViewById(R.id.layout_nothing);
     }
+
+
+
 }

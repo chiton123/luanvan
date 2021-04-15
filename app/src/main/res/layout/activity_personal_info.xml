@@ -80,6 +80,7 @@
                             android:layout_width="300dp"
                             android:layout_height="30dp"
                             android:id="@+id/editposition"
+                            android:hint="Vị trí"
                             android:background="@drawable/edittext_frame"
                             ></EditText>
                     </LinearLayout>

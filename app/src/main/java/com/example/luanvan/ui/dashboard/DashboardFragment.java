@@ -26,6 +26,7 @@ import com.example.luanvan.ui.admin.AdminActivity;
 import com.example.luanvan.ui.company.SearchCompanyActivity;
 import com.example.luanvan.ui.cv.CVIntroductionActivity;
 import com.example.luanvan.ui.login.LoginActivity;
+import com.example.luanvan.ui.schedule.ScheduleCandidateActivity;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
@@ -75,6 +76,16 @@ public class DashboardFragment extends Fragment {
                         Intent intent = new Intent(getActivity(), SearchCompanyActivity.class);
                         startActivity(intent);
                         break;
+                    case 3:
+                        if(MainActivity.login == 0){
+                            Intent intent1 = new Intent(getActivity(), LoginActivity.class);
+                            startActivityForResult(intent1, REQUEST_CODE);
+                        }else {
+                            Intent intent1 = new Intent(getActivity(), ScheduleCandidateActivity.class);
+                            startActivityForResult(intent1, REQUEST_CODE);
+                        }
+                        break;
+
 
                 }
             }

@@ -145,18 +145,22 @@ public class LoginFragment extends Fragment {
                             try {
                                 JSONArray jsonArray = new JSONArray(response);
                                 JSONObject object = jsonArray.getJSONObject(0);
-                                MainActivity.user.setAddress(object.getString("address"));
-                                MainActivity.user.setBirthday(object.getString("birthday"));
-                                MainActivity.user.setEmail(object.getString("email"));
-                                MainActivity.user.setGender(object.getInt("gender"));
-                                MainActivity.user.setStatus(object.getInt("status"));
-                                MainActivity.user.setIntroduction(object.getString("introduction"));
-                                MainActivity.user.setId(object.getInt("id"));
-                                MainActivity.user.setName(object.getString("name"));
-                                MainActivity.user.setPosition(object.getString("position"));
-                                MainActivity.user.setPhone(object.getInt("phone"));
+                                MainActivity.user = new User(
+                                        object.getInt("id"),
+                                        object.getInt("idposition"),
+                                        object.getString("position"),
+                                        object.getString("name"),
+                                        object.getString("birthday"),
+                                        object.getInt("gender"),
+                                        object.getString("address"),
+                                        object.getString("email"),
+                                        object.getString("introduction"),
+                                        object.getInt("phone"),
+                                        object.getInt("status"),
+                                        object.getInt("mode")
+
+                                );
                                 MainActivity.username = object.getString("name");
-                                MainActivity.user.setMode(object.getInt("mode"));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
