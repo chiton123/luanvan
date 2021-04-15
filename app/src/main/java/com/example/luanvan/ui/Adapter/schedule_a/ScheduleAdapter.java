@@ -1,4 +1,4 @@
-package com.example.luanvan.ui.Adapter.recruit;
+package com.example.luanvan.ui.Adapter.schedule_a;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -27,16 +27,10 @@ import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Schedule;
-import com.example.luanvan.ui.Model.UserApplicant;
 import com.example.luanvan.ui.schedule.CreateScheduleActivity;
 import com.example.luanvan.ui.schedule.ScheduleManagementActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

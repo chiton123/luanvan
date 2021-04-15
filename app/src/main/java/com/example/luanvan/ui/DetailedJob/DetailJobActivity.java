@@ -104,9 +104,6 @@ public class DetailJobActivity extends AppCompatActivity {
 
 
 
-
-
-
     }
 
     private void eventButton() {
@@ -154,35 +151,37 @@ public class DetailJobActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        try {
-                            // Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
-                            JSONArray jsonArray = new JSONArray(response);
-                            if(jsonArray.length() > 0){
-                                btnSchedule.setVisibility(View.VISIBLE);
-                            }
-                            for(int i=0; i < jsonArray.length(); i++){
-                                JSONObject object = jsonArray.getJSONObject(i);
-                                schedule = new Schedule(
-                                        object.getInt("id"),
-                                        object.getInt("id_recruiter"),
-                                        object.getInt("id_job"),
-                                        object.getString("job_name"),
-                                        object.getInt("id_user"),
-                                        object.getString("username"),
-                                        object.getInt("type"),
-                                        object.getString("date"),
-                                        object.getString("start_hour"),
-                                        object.getString("end_hour"),
-                                        object.getString("note"),
-                                        object.getString("note_candidate"),
-                                        object.getInt("status")
-                                );
+                        if(response != null){
+                            try {
+                                JSONArray jsonArray = new JSONArray(response);
+                                if(jsonArray.length() > 0){
+                                    btnSchedule.setVisibility(View.VISIBLE);
+                                }
+                                for(int i=0; i < jsonArray.length(); i++){
+                                    JSONObject object = jsonArray.getJSONObject(i);
+                                    schedule = new Schedule(
+                                            object.getInt("id"),
+                                            object.getInt("id_recruiter"),
+                                            object.getInt("id_job"),
+                                            object.getString("job_name"),
+                                            object.getInt("id_user"),
+                                            object.getString("username"),
+                                            object.getInt("type"),
+                                            object.getString("date"),
+                                            object.getString("start_hour"),
+                                            object.getString("end_hour"),
+                                            object.getString("note"),
+                                            object.getString("note_candidate"),
+                                            object.getInt("status")
+                                    );
 
-                            }
+                                }
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
+
                     }
                 },
                 new Response.ErrorListener() {
@@ -676,7 +675,7 @@ public class DetailJobActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                    //    Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
                         if(response != null){
                             try {
                                 JSONArray jsonArray = new JSONArray(response);
@@ -756,9 +755,11 @@ public class DetailJobActivity extends AppCompatActivity {
         }else {
             loading();
             job_id = getIntent().getIntExtra("job_id",0);
-            getJobInfo(job_id);
+         //   Toast.makeText(getApplicationContext(), "jobid " + job_id, Toast.LENGTH_SHORT).show();
             final int ap_status = getIntent().getIntExtra("ap_status" ,0);
             final String ap_note = getIntent().getStringExtra("ap_note");
+            getJobInfo(job_id);
+
             handler2 = new Handler();
             handler2.postDelayed(new Runnable() {
                 @Override
@@ -789,7 +790,7 @@ public class DetailJobActivity extends AppCompatActivity {
 
 
                 }
-            },4000);
+            },5000);
 
 
         }

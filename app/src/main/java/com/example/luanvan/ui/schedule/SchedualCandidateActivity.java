@@ -2,7 +2,6 @@ package com.example.luanvan.ui.schedule;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,7 +24,6 @@ import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.schedule_a.ScheduleAdapter;
 import com.example.luanvan.ui.Model.Schedule;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,24 +33,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ScheduleManagementActivity extends AppCompatActivity {
+public class SchedualCandidateActivity extends AppCompatActivity {
     Toolbar toolbar;
     RecyclerView recyclerView;
-    FloatingActionButton buttonAction;
     public static ScheduleAdapter adapter;
     public static ArrayList<Schedule> arrayList;
     int REQUEST_CODE = 123;
-    public static int checkLoad = 0; // check xem coi đã vào activity này hay chưa
     public static LinearLayout layout, layout_nothing;
     Handler handler;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_schedule_management);
+        setContentView(R.layout.activity_schedual_candidate);
         anhxa();
         actionBar();
-        eventButton();
         getData();
         handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -61,7 +55,9 @@ public class ScheduleManagementActivity extends AppCompatActivity {
                 checkNothing();
             }
         },1800);
+
     }
+
     public void checkNothing(){
         if(arrayList.size() == 0){
             layout_nothing.setVisibility(View.VISIBLE);
@@ -73,7 +69,6 @@ public class ScheduleManagementActivity extends AppCompatActivity {
     }
 
     private void getData() {
-        checkLoad = 1;
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlGetSchedule,
                 new Response.Listener<String>() {
@@ -141,17 +136,7 @@ public class ScheduleManagementActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void eventButton() {
-        buttonAction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), CreateScheduleActivity.class);
-                intent.putExtra("kind", 1); // kind: 1: create, 2: adjust
-                startActivityForResult(intent, REQUEST_CODE);
-            }
-        });
 
-    }
 
     private void actionBar() {
         setSupportActionBar(toolbar);
@@ -166,7 +151,6 @@ public class ScheduleManagementActivity extends AppCompatActivity {
 
     private void anhxa() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        buttonAction = (FloatingActionButton) findViewById(R.id.buttonaction);
         arrayList = new ArrayList<>();
         adapter = new ScheduleAdapter(this, arrayList, this);
         recyclerView = (RecyclerView) findViewById(R.id.recycleview);

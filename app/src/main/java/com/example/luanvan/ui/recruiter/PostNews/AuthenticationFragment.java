@@ -58,6 +58,9 @@ public class AuthenticationFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         if(RecruiterActivity.arrayListAuthenticationJobs.size() == 0){
             getData(1);
+        }else {
+            RecruiterActivity.arrayListAuthenticationJobs.clear();
+            getData(1);
         }
         handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -94,7 +97,7 @@ public class AuthenticationFragment extends Fragment {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            //Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_SHORT).show();
+                        //    Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_SHORT).show();
                             JSONArray jsonArray = new JSONArray(response);
                             for(int i=0; i < jsonArray.length(); i++){
                                 JSONObject object = jsonArray.getJSONObject(i);

@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
     public static int color = 0;
 
 
-    public static String host = "http://10.10.43.165:8888/luanvan/";
+    public static String host = "http://10.10.45.46:8888/luanvan/";
     public static String urljob1 = host + "job1.php?page=";
     public static String urlJobCompany = host + "job_company.php";
     public static String urlJobRelate = host + "job_relate.php";

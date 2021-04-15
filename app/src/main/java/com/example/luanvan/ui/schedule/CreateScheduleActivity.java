@@ -529,7 +529,7 @@ public class CreateScheduleActivity extends AppCompatActivity {
 
     public void eventSheetCandidate(){
         bottomSheetDialogCandidate = new BottomSheetDialog(CreateScheduleActivity.this, R.style.BottomSheetTheme);
-        final View view = LayoutInflater.from(CreateScheduleActivity.this).inflate(R.layout.bottom_sheet_position, (ViewGroup) findViewById(R.id.bottom_sheet));
+        final View view = LayoutInflater.from(CreateScheduleActivity.this).inflate(R.layout.bottom_sheet_candidate, (ViewGroup) findViewById(R.id.bottom_sheet));
         Button btnChoose = (Button) view.findViewById(R.id.buttonchon);
         Button btnCancel = (Button) view.findViewById(R.id.buttonhuy);
         LinearLayout layout_nothing = (LinearLayout) view.findViewById(R.id.layout_nothing);
