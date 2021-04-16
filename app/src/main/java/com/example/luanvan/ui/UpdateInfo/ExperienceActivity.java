@@ -264,7 +264,7 @@ public class ExperienceActivity extends AppCompatActivity {
                                 new Response.Listener<String>() {
                                     @Override
                                     public void onResponse(String response) {
-                                        if(response.equals("success")){
+                                        if(!response.equals("fail")){
                                             Toast.makeText(getApplicationContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
                                             id = Integer.parseInt(response.toString());
                                             final Experience experience = new Experience(id, MainActivity.iduser, company, position1, date_post_start, date_post_end, mota);

@@ -273,7 +273,7 @@ public class StudyActivity extends AppCompatActivity {
                                     new Response.Listener<String>() {
                                         @Override
                                         public void onResponse(String response) {
-                                            if(response.equals("success")){
+                                            if(!response.equals("fail")){
                                                 Toast.makeText(getApplicationContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
                                                 id = Integer.parseInt(response.toString());
                                                 final Study study = new Study(id, MainActivity.iduser, school, major, date_post_start, date_post_end, mota);

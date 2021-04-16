@@ -38,6 +38,7 @@ import com.example.luanvan.ui.chat.UserListActivity;
 import com.example.luanvan.ui.notification.RecruiterNotificationActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
 import com.example.luanvan.ui.recruiter.PostNews.RecruitmentNewsActivity;
+import com.example.luanvan.ui.recruiter.search_r.SearchCandidateActivity;
 import com.example.luanvan.ui.schedule.ScheduleManagementActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
@@ -299,6 +300,10 @@ public class RecruiterActivity extends AppCompatActivity {
                     case 3:
                         Intent intent3 = new Intent(getApplicationContext(), AssessmentManagementActivity.class);
                         startActivity(intent3);
+                        break;
+                    case 5:
+                        Intent intent5 = new Intent(getApplicationContext(), SearchCandidateActivity.class);
+                        startActivity(intent5);
                         break;
                 }
             }

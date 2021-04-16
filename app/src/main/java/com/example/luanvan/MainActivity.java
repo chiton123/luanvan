@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
     public static int color = 0;
 
 
-    public static String host = "http://10.10.43.182:8888/luanvan/";
+    public static String host = "http://10.3.74.117:8888/luanvan/";
     public static String urljob1 = host + "job1.php?page=";
     public static String urlJobCompany = host + "job_company.php";
     public static String urlJobRelate = host + "job_relate.php";
@@ -214,6 +214,9 @@ public class MainActivity extends AppCompatActivity {
     public static String urlSwitchMode = host + "switch_mode.php";
     public static String urlCheckSwitch = host + "check_switch.php";
 
+
+    // search user
+    public static String urlSearchUser = host + "user_search.php";
 
 
     // evaluation
