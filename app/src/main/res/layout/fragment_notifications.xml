@@ -142,6 +142,22 @@
                         android:id="@+id/txtchangepassword"
                         android:layout_marginRight="20dp"
                         ></TextView>
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:layout_marginLeft="150dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Đang tắt tìm việc"
+                        android:textColor="#FD0303"
+                        android:textSize="18sp"
+                        android:id="@+id/switchcompat"
+                        app:thumbTint="@drawable/switch_thumb"
+                        app:trackTint="@drawable/switch_track"
+                        android:paddingRight="10dp"
+                        style="@style/ThemeOverlay.MySwitchCompat"
+                        android:switchPadding="10dp"
+                        android:thumbTextPadding="20dp"
+                        android:layoutDirection="rtl"
+                        ></androidx.appcompat.widget.SwitchCompat>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

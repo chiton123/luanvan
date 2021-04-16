@@ -269,6 +269,7 @@ public class ExperienceActivity extends AppCompatActivity {
                                             id = Integer.parseInt(response.toString());
                                             final Experience experience = new Experience(id, MainActivity.iduser, company, position1, date_post_start, date_post_end, mota);
                                             MainActivity.experiences.add(experience);
+                                            NotificationsFragment.experienceAdapter.notifyDataSetChanged();
                                         }else {
                                             Toast.makeText(getApplicationContext(), "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
                                         }

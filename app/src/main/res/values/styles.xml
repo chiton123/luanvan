@@ -31,4 +31,10 @@
         <item name="hintTextColor">#000000</item>
     </style>
 
+    <style name="ThemeOverlay.MySwitchCompat" parent="">
+        <item name="colorControlActivated">#D50000</item>
+        <item name="colorSwitchThumbNormal">#f1f1f1</item>
+        <item name="android:colorForeground">#00C853</item>
+    </style>
+
 </resources>

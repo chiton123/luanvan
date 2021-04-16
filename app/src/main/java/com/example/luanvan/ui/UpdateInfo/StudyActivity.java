@@ -278,6 +278,7 @@ public class StudyActivity extends AppCompatActivity {
                                                 id = Integer.parseInt(response.toString());
                                                 final Study study = new Study(id, MainActivity.iduser, school, major, date_post_start, date_post_end, mota);
                                                 MainActivity.studies.add(study);
+                                                NotificationsFragment.studyAdapter.notifyDataSetChanged();
                                             }else {
                                                 Toast.makeText(getApplicationContext(), "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
                                             }

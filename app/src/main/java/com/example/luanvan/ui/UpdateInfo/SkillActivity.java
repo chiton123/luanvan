@@ -232,6 +232,7 @@ public class SkillActivity extends AppCompatActivity {
                                             id = Integer.parseInt(response.toString());
                                             final Skill skill = new Skill(id, MainActivity.iduser,idskill, name, star, mota);
                                             MainActivity.skills.add(skill);
+                                            NotificationsFragment.skillAdapter.notifyDataSetChanged();
                                         }else {
                                             Toast.makeText(getApplicationContext(), "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
                                         }
