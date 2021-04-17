@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Position;
 import com.example.luanvan.ui.UpdateInfo.PersonalInfoActivity;
+import com.example.luanvan.ui.recruiter.search_r.FilterCandidateActivity;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
@@ -25,12 +26,14 @@ public class PositionPickAdapter extends RecyclerView.Adapter<PositionPickAdapte
     ArrayList<Position> filterArraylist;
     ArrayList<Position> nameList;
     Activity activity;
+    int kind; // kind 1: Từ ứng viên cho, kind 2: Từ nhà tuyển dụng chọn
     int selectItem = 0;
-    public PositionPickAdapter(Context context, ArrayList<Position> arrayList, Activity activity) {
+    public PositionPickAdapter(Context context, ArrayList<Position> arrayList, Activity activity, int kind) {
         this.context = context;
         this.filterArraylist = arrayList;
         this.nameList = arrayList;
         this.activity = activity;
+        this.kind = kind;
     }
 
     @NonNull
@@ -48,8 +51,14 @@ public class PositionPickAdapter extends RecyclerView.Adapter<PositionPickAdapte
             holder.radioButton.setText(position_current.getName());
             holder.radioButton.setChecked(position == selectItem);
             if(holder.radioButton.isChecked()){
-                PersonalInfoActivity.idposition = filterArraylist.get(position).getId();
-                PersonalInfoActivity.position = filterArraylist.get(position).getName();
+                if(kind == 1){
+                    PersonalInfoActivity.idposition = filterArraylist.get(position).getId();
+                    PersonalInfoActivity.position = filterArraylist.get(position).getName();
+                }else {
+                    FilterCandidateActivity.idposition = filterArraylist.get(position).getId();
+                    FilterCandidateActivity.position = filterArraylist.get(position).getName();
+                }
+
             }
 
         }

@@ -1,6 +1,7 @@
 package com.example.luanvan.ui.recruiter.search_r;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -36,9 +37,9 @@ import java.util.Map;
 public class SearchCandidateActivity extends AppCompatActivity {
     Toolbar toolbar;
     RecyclerView recyclerView;
-    ArrayList<UserSearch> arrayList;
+    public static ArrayList<UserSearch> arrayList;
     CandidateSearchAdapter adapter;
-
+    int REQUEST_FILTER = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,25 +63,37 @@ public class SearchCandidateActivity extends AppCompatActivity {
                                 JSONArray jsonArray = new JSONArray(response);
                                 for(int i=0; i < jsonArray.length(); i++){
                                     JSONObject object = jsonArray.getJSONObject(i);
-                                    arrayList.add(new UserSearch(
-                                       object.getInt("iduser"),
-                                            object.getInt("idposition"),
-                                            object.getString("position"),
-                                            object.getInt("idcv"),
-                                            object.getString("user_id_f"),
-                                            object.getString("username"),
-                                            object.getString("birthday"),
-                                            object.getInt("gender"),
-                                            object.getString("address"),
-                                            object.getString("email"),
-                                            object.getString("introduction"),
-                                            object.getInt("phone"),
-                                            object.getInt("mode"),
-                                            object.getString("experience"),
-                                            object.getString("study"),
-                                            object.getInt("idarea"),
-                                            object.getString("area")
-                                    ));
+                                    int check_trunglap = 0;
+                                    if(arrayList.size() > 0){
+                                        for(int j=0; j < arrayList.size(); j++){
+                                            if(object.getInt("iduser") == arrayList.get(j).getIduser()){
+                                                check_trunglap = 1;
+                                            }
+                                        }
+                                    }
+
+                                    if(check_trunglap == 0){
+                                        arrayList.add(new UserSearch(
+                                                object.getInt("iduser"),
+                                                object.getInt("idposition"),
+                                                object.getString("position"),
+                                                object.getInt("idcv"),
+                                                object.getString("user_id_f"),
+                                                object.getString("username"),
+                                                object.getString("birthday"),
+                                                object.getInt("gender"),
+                                                object.getString("address"),
+                                                object.getString("email"),
+                                                object.getString("introduction"),
+                                                object.getInt("phone"),
+                                                object.getInt("mode"),
+                                                object.getString("experience"),
+                                                object.getString("study"),
+                                                object.getInt("idarea"),
+                                                object.getString("area")
+                                        ));
+                                    }
+
                                     adapter.notifyDataSetChanged();
                                 }
 
@@ -101,7 +114,7 @@ public class SearchCandidateActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> map = new HashMap<>();
-                map.put("a", "a");
+                map.put("idposition", String.valueOf(0));
                 return map;
             }
         };
@@ -116,11 +129,20 @@ public class SearchCandidateActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == REQUEST_FILTER && resultCode == 1){
+            adapter.notifyDataSetChanged();
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.filterhienthi:
                 Intent intent = new Intent(getApplicationContext(), FilterCandidateActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_FILTER);
                 break;
 
         }

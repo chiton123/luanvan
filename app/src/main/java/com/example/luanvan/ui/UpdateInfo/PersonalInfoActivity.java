@@ -96,7 +96,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
         eventUpdate();
         eventPickDate();
         eventPosition();
-        eventSkill();
+        eventArea();
 
     }
     void loading(){
@@ -106,7 +106,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
         progressDialog.show();
         progressDialog.setCancelable(false);
     }
-    private void eventSkill() {
+    private void eventArea() {
         layout_area.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -296,7 +296,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(PersonalInfoActivity.this, LinearLayoutManager.VERTICAL, false));
-        adapter = new PositionPickAdapter(PersonalInfoActivity.this, arrayList, PersonalInfoActivity.this);
+        adapter = new PositionPickAdapter(PersonalInfoActivity.this, arrayList, PersonalInfoActivity.this, 1); // kind 1: Từ ứng viên cho, kind 2: Từ nhà tuyển dụng chọn
         recyclerView.setAdapter(adapter);
         bottomSheetPosition.setContentView(view);
         bottomSheetPosition.show();

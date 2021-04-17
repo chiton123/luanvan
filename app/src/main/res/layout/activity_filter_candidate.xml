@@ -10,20 +10,109 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:id="@+id/toolbar"
-        app:title="Lọc ứng viên"
+        app:title="Tiêu chí tìm kiếm"
         android:background="#fff"
         ></androidx.appcompat.widget.Toolbar>
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:padding="5dp"
         >
-        <androidx.recyclerview.widget.RecyclerView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/recycleview"
-            ></androidx.recyclerview.widget.RecyclerView>
+            android:orientation="vertical"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="5dp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Vị trí công việc"
+                    android:textColor="#040404"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    ></TextView>
+                <EditText
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:textSize="13sp"
+                    android:textColor="#000000"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:id="@+id/editposition"
+                    android:hint="Chọn vị trí"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_height="?attr/dropdownListPreferredItemHeight"
+                    android:background="@drawable/edittext_frame"
+                    ></EditText>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="7dp"
+                android:orientation="vertical"
+                >
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Khu vực muốn làm việc"
+                    android:textColor="#040404"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    ></TextView>
+                <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/layout_area"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:padding="10dp"
+                    android:background="@drawable/textview_frame"
+                    >
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="90dp"
+                        android:id="@+id/recycleview"
+                        ></androidx.recyclerview.widget.RecyclerView>
 
-    </LinearLayout>
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            android:gravity="center_horizontal"
+            >
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="40dp"
+                android:id="@+id/buttonhuy"
+                android:background="@drawable/button_huy"
+                android:text="Hủy bộ lọc"
+                ></Button>
+            <Button
+                android:layout_marginLeft="30dp"
+                android:layout_width="150dp"
+                android:layout_height="40dp"
+                android:id="@+id/buttondongy"
+                android:background="@drawable/button_login"
+                android:text="Tìm kiếm"
+                android:textColor="#fff"
+                ></Button>
+        </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>
