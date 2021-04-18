@@ -54,7 +54,7 @@
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:padding="7dp"
                 android:orientation="vertical"
                 >
@@ -84,9 +84,38 @@
                         ></androidx.recyclerview.widget.RecyclerView>
 
                 </LinearLayout>
-
-
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="5dp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tin tuyển dụng"
+                    android:textColor="#040404"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    ></TextView>
+                <EditText
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:textSize="13sp"
+                    android:textColor="#000000"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:hint="Chọn tin tuyển dụng"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_height="?attr/dropdownListPreferredItemHeight"
+                    android:id="@+id/editjob"
+                    android:background="@drawable/edittext_frame"
+                    ></EditText>
+            </LinearLayout>
+
         </LinearLayout>
 
 

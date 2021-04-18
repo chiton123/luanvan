@@ -156,6 +156,12 @@ public class SearchCandidateActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                FilterCandidateActivity.search_or_not = 0;
+                FilterCandidateActivity.idposition = 0;
+                FilterCandidateActivity.job_id = 0;
+                FilterCandidateActivity.arraylistChosenArea.clear();
+                FilterCandidateActivity.job_name = "";
+                FilterCandidateActivity.position = "";
                 finish();
             }
         });

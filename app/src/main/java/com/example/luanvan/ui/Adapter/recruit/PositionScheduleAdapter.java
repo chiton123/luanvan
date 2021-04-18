@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Job;
 import com.example.luanvan.ui.Model.JobList;
+import com.example.luanvan.ui.recruiter.search_r.FilterCandidateActivity;
 import com.example.luanvan.ui.schedule.CreateScheduleActivity;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class PositionScheduleAdapter extends RecyclerView.Adapter<PositionSchedu
     ArrayList<JobList> arrayList;
     Activity activity;
     int selectItem = 0;
-    int kind; // kind: 1: create, 2: adjust
+    int kind; // kind: 1: create, 2: adjust, 3: search
 
     public PositionScheduleAdapter(Context context, ArrayList<JobList> arrayList, Activity activity, int kind) {
         this.context = context;
@@ -47,15 +48,21 @@ public class PositionScheduleAdapter extends RecyclerView.Adapter<PositionSchedu
             holder.radioButton.setText(job.getName());
             holder.radioButton.setChecked(position == selectItem);
             if(holder.radioButton.isChecked()){
-                CreateScheduleActivity.job_id = arrayList.get(position).getId();
-                CreateScheduleActivity.job_name = arrayList.get(position).getName();
-                if(kind == 2){
-                    if(CreateScheduleActivity.job_id != CreateScheduleActivity.job_id_update){
-                        CreateScheduleActivity.user_id = 0;
-                        CreateScheduleActivity.username = "";
-                        CreateScheduleActivity.editCandidate.setText("");
+                if(kind == 1 || kind == 2){
+                    CreateScheduleActivity.job_id = arrayList.get(position).getId();
+                    CreateScheduleActivity.job_name = arrayList.get(position).getName();
+                    if(kind == 2){
+                        if(CreateScheduleActivity.job_id != CreateScheduleActivity.job_id_update){
+                            CreateScheduleActivity.user_id = 0;
+                            CreateScheduleActivity.username = "";
+                            CreateScheduleActivity.editCandidate.setText("");
+                        }
                     }
+                }else {
+                    FilterCandidateActivity.job_id = arrayList.get(position).getId();
+                    FilterCandidateActivity.job_name = arrayList.get(position).getName();
                 }
+
 
             }
         }

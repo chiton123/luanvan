@@ -28,13 +28,19 @@ import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.position_a.PositionPickAdapter;
+import com.example.luanvan.ui.Adapter.recruit.CandidateScheduleAdapter;
+import com.example.luanvan.ui.Adapter.recruit.PositionScheduleAdapter;
 import com.example.luanvan.ui.Adapter.skill.AreaBottomSheetTagAdapter;
 import com.example.luanvan.ui.Adapter.skill.TagAreaAdapter;
 import com.example.luanvan.ui.Model.Area;
 import com.example.luanvan.ui.Model.AreaCandidate;
+import com.example.luanvan.ui.Model.JobList;
 import com.example.luanvan.ui.Model.Position;
+import com.example.luanvan.ui.Model.SkillKey;
+import com.example.luanvan.ui.Model.UserApplicant;
 import com.example.luanvan.ui.Model.UserSearch;
 import com.example.luanvan.ui.UpdateInfo.PersonalInfoActivity;
+import com.example.luanvan.ui.schedule.CreateScheduleActivity;
 import com.google.android.flexbox.AlignItems;
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexWrap;
@@ -51,13 +57,13 @@ import java.util.Map;
 
 public class FilterCandidateActivity extends AppCompatActivity {
     Toolbar toolbar;
-    EditText editPosition;
+    EditText editPosition, editJob;
     public static int idposition = 0;
     BottomSheetDialog bottomSheetPosition;
     public static String position  = "";
     RecyclerView recyclerView;
     PositionPickAdapter adapter;
-    ArrayList<Position> arrayList;
+    ArrayList<Position> arrayList; // posiotion
     SearchView searchView;
     RecyclerView recyclerViewArea, recyclerViewTagArea;
     TagAreaAdapter tagAdapter; // Những tag trong recycleview
@@ -68,22 +74,63 @@ public class FilterCandidateActivity extends AppCompatActivity {
     SearchView searchViewArea;
     AreaBottomSheetTagAdapter areaAdapter; // adapter trong bottomsheet
 
+    public static ArrayList<JobList> jobArrayList;
+    PositionScheduleAdapter positionScheduleAdapter;
+    RecyclerView recyclerViewJob; // Tin tuyen dung
+    BottomSheetDialog bottomSheetJob; // Tin tuyen dung
+    public static int job_id = 0;
+    public static String job_name = "";
+
     Button btnDongY, btnHuy;
     ProgressDialog progressDialog;
     Handler handler;
+    String jobSkill = "";
+    ArrayList<SkillKey> arrayListJobSkill;
+    public static int search_or_not = 0; // dang tim kiem hay k
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter_candidate);
         anhxa();
+      //  Toast.makeText(getApplicationContext(), job_id +"", Toast.LENGTH_SHORT).show();
         actionBar();
         eventEdit();
         eventButton();
         eventArea();
+        if(search_or_not == 1){
+            getInfo();
+        }
 
 
 
     }
+
+    private void getInfo() {
+        for(int i=0; i < arrayList.size(); i++){
+            if(arrayList.get(i).getId() == idposition){
+                editPosition.setText(arrayList.get(i).getName());
+            }
+        }
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                for(int i=0; i < jobArrayList.size(); i++){
+                    if(jobArrayList.get(i).getId() == job_id){
+                        job_name = jobArrayList.get(i).getName();
+                        editJob.setText(job_name);
+                    }
+                }
+            }
+        },500);
+
+
+
+
+
+
+    }
+
     void loading(){
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading");
@@ -148,12 +195,18 @@ public class FilterCandidateActivity extends AppCompatActivity {
         btnHuy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                arrayListJobSkill.clear();
+                arraylistChosenArea.clear();
+                idposition = 0;
+                job_id = 0;
+                search_or_not = 0;
                 finish();
             }
         });
         btnDongY.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                search_or_not = 1;
                 String area = "(";
                 for(int i=0; i < arraylistChosenArea.size(); i++){
                     if(i == arraylistChosenArea.size() - 1){
@@ -161,10 +214,16 @@ public class FilterCandidateActivity extends AppCompatActivity {
                     }else {
                         area += arraylistChosenArea.get(i).getId() + ",";
                     }
-
-
                 }
-               // Toast.makeText(getApplicationContext(), area, Toast.LENGTH_SHORT).show();
+                jobSkill = "(";
+                for(int i=0; i < arrayListJobSkill.size(); i++){
+                    if(i == arrayListJobSkill.size() - 1){
+                        jobSkill += arrayListJobSkill.get(i).getId() + ")";
+                    }else {
+                        jobSkill += arrayListJobSkill.get(i).getId() + ",";
+                    }
+                }
+            //    Toast.makeText(getApplicationContext(), jobSkill, Toast.LENGTH_SHORT).show();
               //  Toast.makeText(getApplicationContext(), arraylistChosenArea.size() + "", Toast.LENGTH_SHORT).show();
                 loading();
                 RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
@@ -173,7 +232,7 @@ public class FilterCandidateActivity extends AppCompatActivity {
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
-                                Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT).show();
+                           //     Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT).show();
                                 SearchCandidateActivity.arrayList.clear();
                                 if(response != null){
                                     try {
@@ -248,6 +307,12 @@ public class FilterCandidateActivity extends AppCompatActivity {
                         }
                         map.put("checkarea", String.valueOf(checkarea));
                         map.put("area", finalArea);
+                        int checkjobskill = 0;
+                        if(arrayListJobSkill.size() > 0){
+                            checkjobskill = 1;
+                        }
+                        map.put("checkjobskill", String.valueOf(checkjobskill));
+                        map.put("jobskill", jobSkill);
                         return map;
                     }
                 };
@@ -264,6 +329,81 @@ public class FilterCandidateActivity extends AppCompatActivity {
                 eventListPosition();
             }
         });
+        editJob.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                eventSheetJob();
+            }
+        });
+
+    }
+    public void eventSheetJob(){
+        bottomSheetJob = new BottomSheetDialog(FilterCandidateActivity.this, R.style.BottomSheetTheme);
+        final View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_position, (ViewGroup) findViewById(R.id.bottom_sheet));
+        Button btnChoose = (Button) view.findViewById(R.id.buttonchon);
+        Button btnCancel = (Button) view.findViewById(R.id.buttonhuy);
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetJob.dismiss();
+            }
+        });
+        btnChoose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editJob.setText(job_name);
+                getJobSkill();
+                bottomSheetJob.dismiss();
+            }
+        });
+
+
+        recyclerViewJob = (RecyclerView) view.findViewById(R.id.recycleview);
+        recyclerViewJob.setHasFixedSize(false);
+        recyclerViewJob.setLayoutManager(new LinearLayoutManager(FilterCandidateActivity.this, LinearLayoutManager.VERTICAL, false));
+        recyclerViewJob.setAdapter(positionScheduleAdapter);
+        bottomSheetJob.setContentView(view);
+        bottomSheetJob.show();
+
+    }
+    private void getJobSkill() {
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlGetJobSkill,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(response != null){
+                            try {
+                                JSONArray jsonArray = new JSONArray(response);
+                                for(int i=0; i < jsonArray.length(); i++){
+                                    JSONObject object = jsonArray.getJSONObject(i);
+                                    arrayListJobSkill.add(new SkillKey(
+                                            object.getInt("id"),
+                                            object.getString("name")
+                                    ));
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("idjob", String.valueOf(job_id));
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
 
     }
     private void eventListPosition() {
@@ -325,12 +465,17 @@ public class FilterCandidateActivity extends AppCompatActivity {
     private void anhxa() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         editPosition = (EditText) findViewById(R.id.editposition);
+        editJob = (EditText) findViewById(R.id.editjob);
         btnDongY = (Button) findViewById(R.id.buttondongy);
         btnHuy = (Button) findViewById(R.id.buttonhuy);
         arrayList = new ArrayList<>();
+        arrayListJobSkill = new ArrayList<>();
         getDataPosition();
         arraylistArea = new ArrayList<>();
-        arraylistChosenArea = new ArrayList<>();
+        if(search_or_not == 0){
+            arraylistChosenArea = new ArrayList<>();
+        }
+
 
         getDataArea();
         layout_area = (LinearLayout) findViewById(R.id.layout_area);
@@ -347,8 +492,81 @@ public class FilterCandidateActivity extends AppCompatActivity {
 
         tagAdapter = new TagAreaAdapter(FilterCandidateActivity.this, arraylistChosenArea, FilterCandidateActivity.this, arraylistArea );
         recyclerViewTagArea.setAdapter(tagAdapter);
+        if(search_or_not == 0){
+            jobArrayList = new ArrayList<>();
+            getDataJob();
+        }
+
+        // kind: 1: create, 2: adjust, 3: search
+        positionScheduleAdapter = new PositionScheduleAdapter(FilterCandidateActivity.this, jobArrayList, FilterCandidateActivity.this, 3);
 
 
+
+    }
+    private void getDataJob() {
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlJobList,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            //     Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
+                            JSONArray jsonArray = new JSONArray(response);
+                            for(int i=0; i < jsonArray.length(); i++){
+                                JSONObject object = jsonArray.getJSONObject(i);
+                                jobArrayList.add(new JobList(
+                                        object.getInt("id"),
+                                        object.getString("name"),
+                                        object.getInt("idcompany"),
+                                        object.getString("img"),
+                                        object.getString("address"),
+                                        object.getInt("idtype"),
+                                        object.getInt("idprofession"),
+                                        object.getString("start_date"),
+                                        object.getString("end_date"),
+                                        object.getInt("salary_min"),
+                                        object.getInt("salary_max"),
+                                        object.getInt("idarea"),
+                                        object.getString("area"),
+                                        object.getString("experience"),
+                                        object.getInt("number"),
+                                        object.getString("description"),
+                                        object.getString("requirement"),
+                                        object.getString("benefit"),
+                                        object.getInt("status"),
+                                        object.getString("company_name"),
+                                        object.getString("type_job"),
+                                        object.getString("note_reject"),
+                                        object.getInt("document"),
+                                        object.getInt("new_document"),
+                                        object.getInt("interview"),
+                                        object.getInt("work"),
+                                        object.getInt("skip")
+                                ));
+                            }
+                            positionScheduleAdapter.notifyDataSetChanged();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("idrecuiter", String.valueOf(MainActivity.iduser));
+                map.put("status_post", String.valueOf(0));
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
 
     }
     private void getDataPosition() {
