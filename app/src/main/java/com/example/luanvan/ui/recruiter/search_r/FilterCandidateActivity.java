@@ -154,12 +154,26 @@ public class FilterCandidateActivity extends AppCompatActivity {
         btnDongY.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String area = "(";
+                for(int i=0; i < arraylistChosenArea.size(); i++){
+                    if(i == arraylistChosenArea.size() - 1){
+                        area += arraylistChosenArea.get(i).getId() + ")";
+                    }else {
+                        area += arraylistChosenArea.get(i).getId() + ",";
+                    }
+
+
+                }
+               // Toast.makeText(getApplicationContext(), area, Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(getApplicationContext(), arraylistChosenArea.size() + "", Toast.LENGTH_SHORT).show();
                 loading();
                 RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                final String finalArea = area;
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlSearchUser,
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
+                                Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT).show();
                                 SearchCandidateActivity.arrayList.clear();
                                 if(response != null){
                                     try {
@@ -228,6 +242,12 @@ public class FilterCandidateActivity extends AppCompatActivity {
                     protected Map<String, String> getParams() throws AuthFailureError {
                         Map<String,String> map = new HashMap<>();
                         map.put("idposition", String.valueOf(idposition));
+                        int checkarea = 0;
+                        if(arraylistChosenArea.size() > 0){
+                            checkarea = 1;
+                        }
+                        map.put("checkarea", String.valueOf(checkarea));
+                        map.put("area", finalArea);
                         return map;
                     }
                 };
