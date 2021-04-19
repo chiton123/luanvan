@@ -15,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.recruiter.search_r.FilterCandidateActivity"></activity>
+        <activity android:name=".ui.recruiter.search_r.CandidateViewActivity"></activity>
+        <activity android:name=".ui.recruiter.search_r.FilterCandidateActivity" />
         <activity android:name=".ui.recruiter.search_r.SearchCandidateActivity" />
         <activity android:name=".ui.UpdateInfo.PersonalInfoActivity" />
         <activity android:name=".ui.schedule.ScheduleCandidateActivity" />

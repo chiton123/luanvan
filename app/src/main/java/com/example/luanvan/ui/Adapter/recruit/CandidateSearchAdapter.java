@@ -2,6 +2,7 @@ package com.example.luanvan.ui.Adapter.recruit;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.UserSearch;
+import com.example.luanvan.ui.recruiter.search_r.CandidateViewActivity;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;
@@ -39,7 +41,7 @@ public class CandidateSearchAdapter extends RecyclerView.Adapter<CandidateSearch
     @Override
     public void onBindViewHolder(@NonNull ItemHolder holder, int position) {
         if(arrayList.size() > 0){
-            UserSearch user = arrayList.get(position);
+            final UserSearch user = arrayList.get(position);
             holder.txtName.setText(user.getUsername());
             holder.txtPosition.setText(user.getPosition());
             if(user.getMode() == 0){
@@ -63,6 +65,14 @@ public class CandidateSearchAdapter extends RecyclerView.Adapter<CandidateSearch
                 holder.txtStudy.setText(xuongdong(user.getStudy()));
             }
 
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, CandidateViewActivity.class);
+                    intent.putExtra("user", user);
+                    activity.startActivity(intent);
+                }
+            });
 
         }
 

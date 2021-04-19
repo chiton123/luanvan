@@ -54,7 +54,16 @@ public class SearchCandidateActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search_candidate);
         anhxa();
         actionBar();
+        loading();
         getData();
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                sortByMode();
+                progressDialog.dismiss();
+            }
+        },2000);
 
 
 
@@ -178,9 +187,10 @@ public class SearchCandidateActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     checkNothing();
+                    sortByMode(); // Sắp xếp theo trạng thái tìm việc
                     progressDialog.dismiss();
                 }
-            },2000);
+            },3000);
         }
         if(requestCode == REQUEST_FILTER && resultCode == 2){
             loading();
@@ -199,6 +209,22 @@ public class SearchCandidateActivity extends AppCompatActivity {
 
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+    private void sortByMode() {
+        for(int i=0; i < arrayList.size(); i++){
+            for(int j=i+1; j < arrayList.size(); j++){
+                if(arrayList.get(i).getMode() == 0 && arrayList.get(j).getMode() == 1){
+                    UserSearch user = arrayList.get(i);
+                    arrayList.set(i, arrayList.get(j));
+                    arrayList.set(j, user);
+
+                }
+            }
+        }
+        adapter.notifyDataSetChanged();
+
+    }
+
     void loading(){
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading");

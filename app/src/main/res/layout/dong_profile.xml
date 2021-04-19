@@ -20,16 +20,17 @@
             android:gravity="center_vertical"
             >
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:id="@+id/hinh"
+                android:src="@drawable/school"
                 ></ImageView>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/name"
                 android:text="name"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 android:textColor="#050505"
                 ></TextView>
         </LinearLayout>

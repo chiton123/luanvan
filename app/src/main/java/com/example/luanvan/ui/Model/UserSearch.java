@@ -1,6 +1,8 @@
 package com.example.luanvan.ui.Model;
 
-public class UserSearch {
+import java.io.Serializable;
+
+public class UserSearch implements Serializable {
     private int iduser;
     private int idposition;
     private String position;
@@ -18,6 +20,9 @@ public class UserSearch {
     private String study;
     private int idarea;
     private String area;
+
+    public UserSearch() {
+    }
 
     public UserSearch(int iduser, int idposition, String position, int idcv, String user_id_f, String username, String birthday, int gender, String address, String email,
                       String introduction, int phone, int mode, String experience, String study, int idarea, String area) {

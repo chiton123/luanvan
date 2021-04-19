@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/bottom_sheet">
+    <TextView
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Email mời ứng tuyển"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        ></TextView>
+    <View
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#000000"
+        ></View>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        >
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nội dung"
+            android:textColor="#000000"
+            android:textSize="14sp"
+            android:layout_marginLeft="5dp"
+            android:textStyle="bold"
+            ></TextView>
+
+        <EditText
+            android:layout_margin="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:background="@drawable/edittext_sendemail"
+            android:id="@+id/editcontent"
+            android:lines="8"
+            android:padding="5dp"
+            android:gravity="top|left"
+            android:hint="Giới thiệu ngắn gọn về công ty, vị trí tuyển dụng và mong muốn ứng viên ứng tuyển. Lưu ý, bạn cần viết mô tả công việc tại đây"
+            android:textColor="#000000"
+            android:textSize="14sp"
+            android:maxLines="3"
+            ></EditText>
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_below="@id/layout_a"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        >
+
+        <Button
+            android:id="@+id/buttongui"
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:background="@drawable/button_shape"
+            android:text="Gửi"
+            android:textSize="13sp"
+            android:textColor="#fff"></Button>
+
+        <Button
+            android:layout_marginLeft="20dp"
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:text="Hủy"
+            android:background="@drawable/button_huy"
+            android:id="@+id/buttonhuy"
+            android:textColor="#000000"
+            android:textSize="13sp"
+            ></Button>
+
+    </LinearLayout>
+</LinearLayout>
