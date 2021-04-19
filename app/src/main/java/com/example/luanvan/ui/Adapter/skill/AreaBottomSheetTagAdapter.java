@@ -18,6 +18,7 @@ import com.example.luanvan.ui.Model.Area;
 import com.example.luanvan.ui.Model.AreaCandidate;
 import com.example.luanvan.ui.Model.SkillCandidate;
 import com.example.luanvan.ui.Model.SkillKey;
+import com.example.luanvan.ui.recruiter.search_r.SearchCandidateActivity;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
@@ -71,7 +72,7 @@ public class AreaBottomSheetTagAdapter extends RecyclerView.Adapter<AreaBottomSh
                      //   holder.radioButton.setChecked(true);
                         filterArraylist.get(position).setCheck(1);
                         arrayListChosen.add(new Area(filterArraylist.get(position).getId(), filterArraylist.get(position).getName()));
-                  //      Toast.makeText(context, "id: " + filterArraylist.get(position).getId(), Toast.LENGTH_SHORT).show();
+
                     }
                     notifyDataSetChanged();
 
@@ -80,6 +81,7 @@ public class AreaBottomSheetTagAdapter extends RecyclerView.Adapter<AreaBottomSh
             for(int i=0; i < arrayListChosen.size(); i++){
                 if(arrayListChosen.get(i).getId() == filterArraylist.get(position).getId()){
                     filterArraylist.get(position).setCheck(1);
+                    holder.radioButton.setChecked(true);
                 }
             }
 

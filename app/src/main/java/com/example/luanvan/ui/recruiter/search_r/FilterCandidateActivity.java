@@ -86,7 +86,6 @@ public class FilterCandidateActivity extends AppCompatActivity {
     Handler handler;
     String jobSkill = "";
     ArrayList<SkillKey> arrayListJobSkill;
-    public static int search_or_not = 0; // dang tim kiem hay k
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,7 +96,7 @@ public class FilterCandidateActivity extends AppCompatActivity {
         eventEdit();
         eventButton();
         eventArea();
-        if(search_or_not == 1){
+        if(SearchCandidateActivity.search_or_not == 1){
             getInfo();
         }
 
@@ -115,6 +114,9 @@ public class FilterCandidateActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
+                if(job_id != 0){
+                    getJobSkill();
+                }
                 for(int i=0; i < jobArrayList.size(); i++){
                     if(jobArrayList.get(i).getId() == job_id){
                         job_name = jobArrayList.get(i).getName();
@@ -123,7 +125,6 @@ public class FilterCandidateActivity extends AppCompatActivity {
                 }
             }
         },500);
-
 
 
 
@@ -167,6 +168,10 @@ public class FilterCandidateActivity extends AppCompatActivity {
                 btnCancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        arraylistChosenArea.clear();
+                        for(int i=0; i < arraylistArea.size(); i++){
+                            arraylistArea.get(i).setCheck(0);
+                        }
                         bottomSheetArea.dismiss();
                         tagAdapter.notifyDataSetChanged();
                     }
@@ -199,22 +204,27 @@ public class FilterCandidateActivity extends AppCompatActivity {
                 arraylistChosenArea.clear();
                 idposition = 0;
                 job_id = 0;
-                search_or_not = 0;
+                SearchCandidateActivity.search_or_not = 0;
+                Intent intent = new Intent();
+                setResult(2);
                 finish();
             }
         });
         btnDongY.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                search_or_not = 1;
+                SearchCandidateActivity.search_or_not = 1;
                 String area = "(";
-                for(int i=0; i < arraylistChosenArea.size(); i++){
-                    if(i == arraylistChosenArea.size() - 1){
-                        area += arraylistChosenArea.get(i).getId() + ")";
-                    }else {
-                        area += arraylistChosenArea.get(i).getId() + ",";
+                if(arraylistChosenArea.size() > 0){
+                    for(int i=0; i < arraylistChosenArea.size(); i++){
+                        if(i == arraylistChosenArea.size() - 1){
+                            area += arraylistChosenArea.get(i).getId() + ")";
+                        }else {
+                            area += arraylistChosenArea.get(i).getId() + ",";
+                        }
                     }
                 }
+
                 jobSkill = "(";
                 for(int i=0; i < arrayListJobSkill.size(); i++){
                     if(i == arrayListJobSkill.size() - 1){
@@ -223,7 +233,7 @@ public class FilterCandidateActivity extends AppCompatActivity {
                         jobSkill += arrayListJobSkill.get(i).getId() + ",";
                     }
                 }
-            //    Toast.makeText(getApplicationContext(), jobSkill, Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getApplicationContext(), jobSkill, Toast.LENGTH_SHORT).show();
               //  Toast.makeText(getApplicationContext(), arraylistChosenArea.size() + "", Toast.LENGTH_SHORT).show();
                 loading();
                 RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
@@ -345,6 +355,9 @@ public class FilterCandidateActivity extends AppCompatActivity {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                editJob.setText("");
+                job_id = 0;
+                arrayListJobSkill.clear();
                 bottomSheetJob.dismiss();
             }
         });
@@ -431,7 +444,8 @@ public class FilterCandidateActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 bottomSheetPosition.dismiss();
-                idposition = MainActivity.user.getIdposition();
+                idposition = 0;
+                editPosition.setText("");
             }
         });
         btnChoose.setOnClickListener(new View.OnClickListener() {
@@ -472,7 +486,7 @@ public class FilterCandidateActivity extends AppCompatActivity {
         arrayListJobSkill = new ArrayList<>();
         getDataPosition();
         arraylistArea = new ArrayList<>();
-        if(search_or_not == 0){
+        if(SearchCandidateActivity.search_or_not == 0){
             arraylistChosenArea = new ArrayList<>();
         }
 
@@ -492,14 +506,13 @@ public class FilterCandidateActivity extends AppCompatActivity {
 
         tagAdapter = new TagAreaAdapter(FilterCandidateActivity.this, arraylistChosenArea, FilterCandidateActivity.this, arraylistArea );
         recyclerViewTagArea.setAdapter(tagAdapter);
-        if(search_or_not == 0){
+        if(SearchCandidateActivity.search_or_not == 0){
             jobArrayList = new ArrayList<>();
             getDataJob();
         }
 
         // kind: 1: create, 2: adjust, 3: search
         positionScheduleAdapter = new PositionScheduleAdapter(FilterCandidateActivity.this, jobArrayList, FilterCandidateActivity.this, 3);
-
 
 
     }

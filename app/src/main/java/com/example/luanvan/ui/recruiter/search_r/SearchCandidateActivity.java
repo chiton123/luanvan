@@ -7,11 +7,14 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -40,6 +43,11 @@ public class SearchCandidateActivity extends AppCompatActivity {
     public static ArrayList<UserSearch> arrayList;
     CandidateSearchAdapter adapter;
     int REQUEST_FILTER = 1;
+    public static ArrayList<UserSearch> arrayListAll;
+    public static int search_or_not = 0;
+    LinearLayout layout, layout_nothing;
+    Handler handler;
+    ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +59,15 @@ public class SearchCandidateActivity extends AppCompatActivity {
 
 
     }
-
+    void checkNothing(){
+        if(arrayList.size() == 0){
+            layout_nothing.setVisibility(View.VISIBLE);
+            layout.setVisibility(View.GONE);
+        }else {
+            layout_nothing.setVisibility(View.GONE);
+            layout.setVisibility(View.VISIBLE);
+        }
+    }
     private void getData() {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlSearchUser,
@@ -74,6 +90,25 @@ public class SearchCandidateActivity extends AppCompatActivity {
 
                                     if(check_trunglap == 0){
                                         arrayList.add(new UserSearch(
+                                                object.getInt("iduser"),
+                                                object.getInt("idposition"),
+                                                object.getString("position"),
+                                                object.getInt("idcv"),
+                                                object.getString("user_id_f"),
+                                                object.getString("username"),
+                                                object.getString("birthday"),
+                                                object.getInt("gender"),
+                                                object.getString("address"),
+                                                object.getString("email"),
+                                                object.getString("introduction"),
+                                                object.getInt("phone"),
+                                                object.getInt("mode"),
+                                                object.getString("experience"),
+                                                object.getString("study"),
+                                                object.getInt("idarea"),
+                                                object.getString("area")
+                                        ));
+                                        arrayListAll.add(new UserSearch(
                                                 object.getInt("iduser"),
                                                 object.getInt("idposition"),
                                                 object.getString("position"),
@@ -115,6 +150,10 @@ public class SearchCandidateActivity extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> map = new HashMap<>();
                 map.put("idposition", String.valueOf(0));
+                map.put("checkarea", String.valueOf(0));
+                map.put("area", "a");
+                map.put("checkjobskill", String.valueOf(0));
+                map.put("jobskill", "a");
                 return map;
             }
         };
@@ -130,13 +169,43 @@ public class SearchCandidateActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        // filter
         if(requestCode == REQUEST_FILTER && resultCode == 1){
+            loading();
             adapter.notifyDataSetChanged();
+            handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    checkNothing();
+                    progressDialog.dismiss();
+                }
+            },2000);
+        }
+        if(requestCode == REQUEST_FILTER && resultCode == 2){
+            loading();
+            arrayList.clear();
+            arrayList.addAll(arrayListAll);
+            adapter.notifyDataSetChanged();
+            handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    checkNothing();
+                    progressDialog.dismiss();
+                }
+            },2000);
         }
 
         super.onActivityResult(requestCode, resultCode, data);
     }
-
+    void loading(){
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading");
+        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
+    }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
@@ -156,12 +225,7 @@ public class SearchCandidateActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FilterCandidateActivity.search_or_not = 0;
-                FilterCandidateActivity.idposition = 0;
-                FilterCandidateActivity.job_id = 0;
-                FilterCandidateActivity.arraylistChosenArea.clear();
-                FilterCandidateActivity.job_name = "";
-                FilterCandidateActivity.position = "";
+                search_or_not = 0;
                 finish();
             }
         });
@@ -173,8 +237,11 @@ public class SearchCandidateActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(SearchCandidateActivity.this, LinearLayoutManager.VERTICAL, false));
         arrayList = new ArrayList<>();
+        arrayListAll = new ArrayList<>();
         adapter = new CandidateSearchAdapter(SearchCandidateActivity.this, arrayList, SearchCandidateActivity.this);
         recyclerView.setAdapter(adapter);
+        layout = (LinearLayout) findViewById(R.id.layout);
+        layout_nothing = (LinearLayout) findViewById(R.id.layout_nothing);
 
 
     }
