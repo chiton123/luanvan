@@ -31,6 +31,8 @@ import com.example.luanvan.ui.Interface.ILoadMore;
 import com.example.luanvan.ui.Model.Job;
 import com.example.luanvan.ui.Model.Job_Apply;
 import com.example.luanvan.ui.Adapter.job_apply.*;
+import com.example.luanvan.ui.recruiter.search_r.SearchCandidateActivity;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -91,8 +93,55 @@ public class KindOfJobActivity extends AppCompatActivity {
     }
 
     private void getData(int page) {
+        int checkprofession = 0;
+        int checkarea = 0;
+        int checkskill = 0;
+        if(MainActivity.arrayListChosenProfession.size() > 0){
+            checkprofession = 1;
+        }
+        if(MainActivity.arraylistChosenArea.size() > 0){
+            checkarea = 1;
+        }
+        if(MainActivity.skills.size() > 0){
+            checkskill = 1;
+        }
+        String area = "(";
+        if(MainActivity.arraylistChosenArea.size() > 0){
+            for(int i=0; i < MainActivity.arraylistChosenArea.size(); i++){
+                if(i == MainActivity.arraylistChosenArea.size() - 1){
+                    area += MainActivity.arraylistChosenArea.get(i).getId() + ")";
+                }else {
+                    area += MainActivity.arraylistChosenArea.get(i).getId() + ",";
+                }
+            }
+        }
+
+        String skill = "(";
+        for(int i=0; i < MainActivity.skills.size(); i++){
+            if(i == MainActivity.skills.size() - 1){
+                skill += MainActivity.skills.get(i).getId() + ")";
+            }else {
+                skill += MainActivity.skills.get(i).getId() + ",";
+            }
+        }
+
+        String profession = "(";
+        for(int i=0; i < MainActivity.arrayListChosenProfession.size(); i++){
+            if(i == MainActivity.arrayListChosenProfession.size() - 1){
+                profession += MainActivity.arrayListChosenProfession.get(i).getId() + ")";
+            }else {
+                profession += MainActivity.arrayListChosenProfession.get(i).getId() + ",";
+            }
+        }
+      //  Toast.makeText(getApplicationContext(), "area: " + area + " skill : " + skill + " profession : " + profession, Toast.LENGTH_SHORT).show();
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         String url = MainActivity.urljob1 + String.valueOf(page);
+        final String finalArea = area;
+        final int finalCheckarea = checkarea;
+        final String finalSkill = skill;
+        final int finalCheckskill = checkskill;
+        final int finalCheckprofession = checkprofession;
+        final String finalProfession = profession;
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
@@ -105,30 +154,41 @@ public class KindOfJobActivity extends AppCompatActivity {
                                 int status = object.getInt("status");
                                 SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
                                 Date date = fmt.parse(object.getString("end_date"));
-                                arrayList.add(new Job(
-                                        object.getInt("id"),
-                                        object.getString("name"),
-                                        object.getInt("idcompany"),
-                                        object.getInt("id_recruiter"),
-                                        object.getString("img"),
-                                        object.getString("address"),
-                                        object.getInt("idtype"),
-                                        object.getInt("idprofession"),
-                                        object.getString("start_date"),
-                                        object.getString("end_date"),
-                                        object.getInt("salary_min"),
-                                        object.getInt("salary_max"),
-                                        object.getInt("idarea"),
-                                        object.getString("area"),
-                                        object.getString("experience"),
-                                        object.getInt("number"),
-                                        object.getString("description"),
-                                        object.getString("requirement"),
-                                        object.getString("benefit"),
-                                        object.getInt("status"),
-                                        object.getString("company_name"),
-                                        object.getString("type_job")
-                                ));
+                                int check_trunglap = 0;
+                                if(arrayList.size() > 0){
+                                    for(int j=0; j < arrayList.size(); j++){
+                                        if(object.getInt("id") == arrayList.get(j).getId()){
+                                            check_trunglap = 1;
+                                        }
+                                    }
+                                }
+                                if(check_trunglap == 0){
+                                    arrayList.add(new Job(
+                                            object.getInt("id"),
+                                            object.getString("name"),
+                                            object.getInt("idcompany"),
+                                            object.getInt("id_recruiter"),
+                                            object.getString("img"),
+                                            object.getString("address"),
+                                            object.getInt("idtype"),
+                                            object.getInt("idprofession"),
+                                            object.getString("start_date"),
+                                            object.getString("end_date"),
+                                            object.getInt("salary_min"),
+                                            object.getInt("salary_max"),
+                                            object.getInt("idarea"),
+                                            object.getString("area"),
+                                            object.getString("experience"),
+                                            object.getInt("number"),
+                                            object.getString("description"),
+                                            object.getString("requirement"),
+                                            object.getString("benefit"),
+                                            object.getInt("status"),
+                                            object.getString("company_name"),
+                                            object.getString("type_job")
+                                    ));
+                                }
+
                                 adapter.notifyDataSetChanged();
 
 
@@ -151,40 +211,16 @@ public class KindOfJobActivity extends AppCompatActivity {
                 Map<String,String> map = new HashMap<>();
                 map.put("kind", String.valueOf(kind));
                 if(kind == 7){
-                    map.put("idposition", String.valueOf(MainActivity.user.getIdposition()));
-                    int checkarea = 0;
-                    int checkskill = 0;
-                    if(MainActivity.arraylistChosenArea.size() > 0){
-                        checkarea = 1;
-                    }
-                    if(MainActivity.skills.size() > 0){
-                        checkskill = 1;
-                    }
-                    String area = "(";
-                    if(MainActivity.arraylistChosenArea.size() > 0){
-                        for(int i=0; i < MainActivity.arraylistChosenArea.size(); i++){
-                            if(i == MainActivity.arraylistChosenArea.size() - 1){
-                                area += MainActivity.arraylistChosenArea.get(i).getId() + ")";
-                            }else {
-                                area += MainActivity.arraylistChosenArea.get(i).getId() + ",";
-                            }
-                        }
-                    }
 
-                    String skill = "(";
-                    for(int i=0; i < MainActivity.skills.size(); i++){
-                        if(i == MainActivity.skills.size() - 1){
-                            skill += MainActivity.skills.get(i).getId() + ")";
-                        }else {
-                            skill += MainActivity.skills.get(i).getId() + ",";
-                        }
-                    }
-                    map.put("checkarea", String.valueOf(checkarea));
-                    map.put("area", area);
+                    map.put("checkarea", String.valueOf(finalCheckarea));
+                    map.put("area", finalArea);
 
+                    map.put("checkskill", String.valueOf(finalCheckskill));
+                    map.put("skill", finalSkill);
 
-                    map.put("checkskill", String.valueOf(checkskill));
-                    map.put("skill", skill);
+                    map.put("checkprofession", String.valueOf(finalCheckprofession));
+                    map.put("profession", finalProfession);
+
 
                 }
                 return map;

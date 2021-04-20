@@ -215,6 +215,56 @@ public class PersonalInfoActivity extends AppCompatActivity {
         });
 
     }
+    private void getCandidateProfession() {
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlGetCandidateProfession,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                       // Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT).show();
+                        if(response != null){
+                            try {
+                                JSONArray jsonArray = new JSONArray(response);
+                                for(int i=0; i < jsonArray.length(); i++){
+                                    JSONObject object = jsonArray.getJSONObject(i);
+                                    arrayListChosenProfession.add(new Profession(
+                                            object.getInt("id"),
+                                            object.getString("name")
+                                    ));
+                                    tagProfessionAdapter.notifyDataSetChanged();
+                                }
+                                for(int i=0; i < arrayListProfession.size(); i++){
+                                    for(int j=0; j < arrayListChosenProfession.size(); j++){
+                                        if(arrayListProfession.get(i).getId() == arrayListChosenProfession.get(j).getId()){
+                                            arrayListProfession.get(i).setCheck(1);
+                                        }
+                                    }
+                                }
+
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("iduser", String.valueOf(MainActivity.iduser));
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+
+    }
     private void getCandidateArea() {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlGetCandidateArea,
@@ -264,6 +314,50 @@ public class PersonalInfoActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
 
     }
+    private void postProfessionCandidate() {
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlAddProfessionCandidate,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+//                        if(response.equals("success")){
+//                            Toast.makeText(getApplicationContext(), "Cập nhật kỹ năng cho tin tuyển dụng thành công", Toast.LENGTH_SHORT).show();
+//                        }else {
+//                            Toast.makeText(getApplicationContext(), "Cập nhật kỹ năng cho tin tuyển dụng thất bại", Toast.LENGTH_SHORT).show();
+//                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                JSONArray jsonArray = new JSONArray();
+                for(int i=0; i < arrayListChosenProfession.size(); i++){
+                    JSONObject object = new JSONObject();
+                    try {
+                        object.put("iduser", String.valueOf(MainActivity.iduser));
+                        object.put("idprofession", String.valueOf(arrayListChosenProfession.get(i).getId()));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    jsonArray.put(object);
+                }
+                map.put("iduser", String.valueOf(MainActivity.iduser));
+                map.put("jsonarray", jsonArray.toString());
+
+
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+
+    }
+
     private void postAreaCandidate() {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlAddAreaCandidate,
@@ -361,102 +455,9 @@ public class PersonalInfoActivity extends AppCompatActivity {
 
     }
 
-    public void showDate() throws ParseException {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        String today = dateFormat.format(Calendar.getInstance().getTime());
-        final Date today1 = dateFormat.parse(today);
-        final Calendar calendar = Calendar.getInstance();
-        int ngay = calendar.get(Calendar.DATE);
-        int thang = calendar.get(Calendar.MONTH);
-        int nam = calendar.get(Calendar.YEAR);
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                calendar.set(year, month, dayOfMonth);
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
 
-                if(calendar.getTime().after(today1)){
-                    Toast.makeText(getApplicationContext(), "Phải lớn nhỏ ngày hiện tại", Toast.LENGTH_SHORT).show();
-                }else {
-                    editbirthday.setText(dateFormat.format(calendar.getTime()));
-                    SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-                    Date date = null;
-                    try {
-                        date = fmt.parse(fmt.format(calendar.getTime()));
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    date_post = fmt.format(date);
-                }
 
-            }
-        }, nam, thang, ngay);
-        datePickerDialog.show();
-    }
-    private void eventPickDate() {
-        editbirthday.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    showDate();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    private void getInfo() {
-        if(MainActivity.login == 1){
-            getCandidateArea();
-            editname.setText(MainActivity.user.getName());
-            editemail.setText(MainActivity.user.getEmail());
-            String ngay = MainActivity.user.getBirthday();
-            SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-            Date date = null;
-            try {
-                date = fmt.parse(ngay);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            SimpleDateFormat fmtOut = new SimpleDateFormat("dd/MM/yyyy");
-            editbirthday.setText(fmtOut.format(date));
-            date_post = fmt.format(date);
-            editposition.setText(MainActivity.user.getPosition());
-            editphone.setText(MainActivity.user.getPhone() + "");
-            editmota.setText(MainActivity.user.getIntroduction());
-            editaddress.setText(MainActivity.user.getAddress());
-            if(MainActivity.user.getGender() == 0 ){
-                btnNam.setChecked(true);
-            }else {
-                btnNu.setChecked(true);
-            }
-
-        }
-
-    }
-
-    public boolean isEmailValid(String email)
-    {
-        String regExpn =
-                "^(([\\w-]+\\.)+[\\w-]+|([a-zA-Z]{1}|[\\w-]{2,}))@"
-                        +"((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
-                        +"[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\."
-                        +"([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
-                        +"[0-9]{1,2}|25[0-5]|2[0-4][0-9])){1}|"
-                        +"([a-zA-Z]+[\\w-]+\\.)+[a-zA-Z]{2,4})$";
-
-        CharSequence inputStr = email;
-
-        Pattern pattern = Pattern.compile(regExpn,Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(inputStr);
-
-        if(matcher.matches())
-            return true;
-        else
-            return false;
-    }
     private void eventUpdate() {
         btnCapNhat.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -494,6 +495,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
                                     if(response.equals("success")){
                                         Toast.makeText(getApplicationContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
                                         postAreaCandidate();
+                                        postProfessionCandidate();
                                         MainActivity.user.setAddress(address);
                                         MainActivity.user.setBirthday(date_post);
                                         MainActivity.user.setEmail(email);
@@ -556,7 +558,103 @@ public class PersonalInfoActivity extends AppCompatActivity {
         });
 
     }
+    public void showDate() throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String today = dateFormat.format(Calendar.getInstance().getTime());
+        final Date today1 = dateFormat.parse(today);
+        final Calendar calendar = Calendar.getInstance();
+        int ngay = calendar.get(Calendar.DATE);
+        int thang = calendar.get(Calendar.MONTH);
+        int nam = calendar.get(Calendar.YEAR);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                calendar.set(year, month, dayOfMonth);
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
+
+                if(calendar.getTime().after(today1)){
+                    Toast.makeText(getApplicationContext(), "Phải lớn nhỏ ngày hiện tại", Toast.LENGTH_SHORT).show();
+                }else {
+                    editbirthday.setText(dateFormat.format(calendar.getTime()));
+                    SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+                    Date date = null;
+                    try {
+                        date = fmt.parse(fmt.format(calendar.getTime()));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    date_post = fmt.format(date);
+                }
+
+            }
+        }, nam, thang, ngay);
+        datePickerDialog.show();
+    }
+    private void eventPickDate() {
+        editbirthday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    showDate();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void getInfo() {
+        if(MainActivity.login == 1){
+            getCandidateArea();
+            getCandidateProfession();
+            editname.setText(MainActivity.user.getName());
+            editemail.setText(MainActivity.user.getEmail());
+            String ngay = MainActivity.user.getBirthday();
+            SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = null;
+            try {
+                date = fmt.parse(ngay);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            SimpleDateFormat fmtOut = new SimpleDateFormat("dd/MM/yyyy");
+            editbirthday.setText(fmtOut.format(date));
+            date_post = fmt.format(date);
+            editposition.setText(MainActivity.user.getPosition());
+            editphone.setText(MainActivity.user.getPhone() + "");
+            editmota.setText(MainActivity.user.getIntroduction());
+            editaddress.setText(MainActivity.user.getAddress());
+            if(MainActivity.user.getGender() == 0 ){
+                btnNam.setChecked(true);
+            }else {
+                btnNu.setChecked(true);
+            }
+
+        }
+
+    }
+
+    public boolean isEmailValid(String email)
+    {
+        String regExpn =
+                "^(([\\w-]+\\.)+[\\w-]+|([a-zA-Z]{1}|[\\w-]{2,}))@"
+                        +"((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
+                        +"[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\."
+                        +"([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
+                        +"[0-9]{1,2}|25[0-5]|2[0-4][0-9])){1}|"
+                        +"([a-zA-Z]+[\\w-]+\\.)+[a-zA-Z]{2,4})$";
+
+        CharSequence inputStr = email;
+
+        Pattern pattern = Pattern.compile(regExpn,Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(inputStr);
+
+        if(matcher.matches())
+            return true;
+        else
+            return false;
+    }
     private void actionBar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

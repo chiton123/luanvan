@@ -12,6 +12,7 @@ import com.example.luanvan.ui.Model.Area;
 import com.example.luanvan.ui.Model.Experience;
 import com.example.luanvan.ui.Model.Notification;
 import com.example.luanvan.ui.Model.NotificationAdmin;
+import com.example.luanvan.ui.Model.Profession;
 import com.example.luanvan.ui.Model.Skill;
 import com.example.luanvan.ui.Model.Study;
 import com.example.luanvan.ui.Model.User;
@@ -79,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
     // list CV
     public static ArrayList<PdfCV> arrayListCV = new ArrayList<>();
     public static ArrayList<Area>  arraylistChosenArea = new ArrayList<>(); // Đã chọn
+    public static ArrayList<Profession> arrayListChosenProfession = new ArrayList<>();
     // default CV info
     // - info connect : user
     // - Experience
@@ -205,9 +207,12 @@ public class MainActivity extends AppCompatActivity {
     public static String urlGetJobRecentCreate = host + "get_job_recent_create.php";
     // check cv in application
     public static String urlCheckCVInApplication = host + "check_cv_in_application.php";
-
+    // Area
     public static String urlAddAreaCandidate = host + "add_area_candidate.php";
     public static String urlGetCandidateArea = host + "get_candidate_area.php";
+    // Profession
+    public static String urlAddProfessionCandidate = host + "add_profession_candidate.php";
+    public static String urlGetCandidateProfession = host + "get_candidate_profession.php";
 
     // get iduser firebase
     public static String urlGetIdUserFirebase = host + "get_iduser_f.php";

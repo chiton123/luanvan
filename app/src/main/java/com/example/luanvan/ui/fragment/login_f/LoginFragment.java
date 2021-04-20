@@ -29,6 +29,7 @@ import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Area;
 import com.example.luanvan.ui.Model.Experience;
+import com.example.luanvan.ui.Model.Profession;
 import com.example.luanvan.ui.Model.Skill;
 import com.example.luanvan.ui.Model.Study;
 import com.example.luanvan.ui.Model.User;
@@ -90,7 +91,48 @@ public class LoginFragment extends Fragment {
         progressDialog.show();
         progressDialog.setCancelable(false);
     }
+    private void getCandidateProfession() {
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlGetCandidateProfession,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT).show();
+                        if(response != null){
+                            try {
+                                JSONArray jsonArray = new JSONArray(response);
+                                for(int i=0; i < jsonArray.length(); i++){
+                                    JSONObject object = jsonArray.getJSONObject(i);
+                                    MainActivity.arrayListChosenProfession.add(new Profession(
+                                            object.getInt("id"),
+                                            object.getString("name")
+                                    ));
+                                }
 
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("iduser", String.valueOf(MainActivity.iduser));
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+
+    }
     private void getCandidateArea() {
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlGetCandidateArea,
@@ -401,6 +443,7 @@ public class LoginFragment extends Fragment {
                                                             MainActivity.iduser = Integer.parseInt(response);
                                                             getInfo();
                                                             getCandidateArea();
+                                                            getCandidateProfession();
                                                             getInfoStudy();
                                                             getInfoExperience();
                                                             getInfoSkill();
