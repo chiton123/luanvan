@@ -27,6 +27,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
+import com.example.luanvan.ui.Model.Area;
 import com.example.luanvan.ui.Model.Experience;
 import com.example.luanvan.ui.Model.Skill;
 import com.example.luanvan.ui.Model.Study;
@@ -89,6 +90,51 @@ public class LoginFragment extends Fragment {
         progressDialog.show();
         progressDialog.setCancelable(false);
     }
+
+    private void getCandidateArea() {
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlGetCandidateArea,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(response != null){
+                            try {
+                                JSONArray jsonArray = new JSONArray(response);
+                                for(int i=0; i < jsonArray.length(); i++){
+                                    JSONObject object = jsonArray.getJSONObject(i);
+                                    MainActivity.arraylistChosenArea.add(new Area(
+                                            object.getInt("id"),
+                                            object.getString("name")
+                                    ));
+
+                                }
+
+
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("iduser", String.valueOf(MainActivity.iduser));
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+
+    }
+
     private void getDataCV() {
         final ChildEventListener childEventListener = new ChildEventListener() {
             @Override
@@ -354,7 +400,7 @@ public class LoginFragment extends Fragment {
                                                             MainActivity.login = 1;
                                                             MainActivity.iduser = Integer.parseInt(response);
                                                             getInfo();
-
+                                                            getCandidateArea();
                                                             getInfoStudy();
                                                             getInfoExperience();
                                                             getInfoSkill();
@@ -368,7 +414,7 @@ public class LoginFragment extends Fragment {
                                                                     getActivity().setResult(123);
                                                                     getActivity().finish();
                                                                 }
-                                                            },4000);
+                                                            },5000);
                                                         }else {
                                                             Toast.makeText(getActivity(), "Sai tên hoặc mật khẩu", Toast.LENGTH_SHORT).show();
                                                             progressDialog.dismiss();

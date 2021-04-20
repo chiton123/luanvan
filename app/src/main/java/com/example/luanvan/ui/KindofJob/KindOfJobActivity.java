@@ -71,7 +71,6 @@ public class KindOfJobActivity extends AppCompatActivity {
         adapter.setLoadmore(new ILoadMore() {
             @Override
             public void onLoadMore() {
-
                 handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
@@ -151,6 +150,43 @@ public class KindOfJobActivity extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> map = new HashMap<>();
                 map.put("kind", String.valueOf(kind));
+                if(kind == 7){
+                    map.put("idposition", String.valueOf(MainActivity.user.getIdposition()));
+                    int checkarea = 0;
+                    int checkskill = 0;
+                    if(MainActivity.arraylistChosenArea.size() > 0){
+                        checkarea = 1;
+                    }
+                    if(MainActivity.skills.size() > 0){
+                        checkskill = 1;
+                    }
+                    String area = "(";
+                    if(MainActivity.arraylistChosenArea.size() > 0){
+                        for(int i=0; i < MainActivity.arraylistChosenArea.size(); i++){
+                            if(i == MainActivity.arraylistChosenArea.size() - 1){
+                                area += MainActivity.arraylistChosenArea.get(i).getId() + ")";
+                            }else {
+                                area += MainActivity.arraylistChosenArea.get(i).getId() + ",";
+                            }
+                        }
+                    }
+
+                    String skill = "(";
+                    for(int i=0; i < MainActivity.skills.size(); i++){
+                        if(i == MainActivity.skills.size() - 1){
+                            skill += MainActivity.skills.get(i).getId() + ")";
+                        }else {
+                            skill += MainActivity.skills.get(i).getId() + ",";
+                        }
+                    }
+                    map.put("checkarea", String.valueOf(checkarea));
+                    map.put("area", area);
+
+
+                    map.put("checkskill", String.valueOf(checkskill));
+                    map.put("skill", skill);
+
+                }
                 return map;
             }
         };

@@ -34,12 +34,16 @@ import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.position_a.PositionPickAdapter;
 import com.example.luanvan.ui.Adapter.skill.AreaBottomSheetTagAdapter;
+import com.example.luanvan.ui.Adapter.skill.ProfessionBottomSheetTagAdapter;
 import com.example.luanvan.ui.Adapter.skill.SkillTagAdapter;
 import com.example.luanvan.ui.Adapter.skill.TagAdapter;
 import com.example.luanvan.ui.Adapter.skill.TagAreaAdapter;
+import com.example.luanvan.ui.Adapter.skill.TagProfessionAdapter;
 import com.example.luanvan.ui.Model.Area;
 import com.example.luanvan.ui.Model.AreaCandidate;
 import com.example.luanvan.ui.Model.Position;
+import com.example.luanvan.ui.Model.Profession;
+import com.example.luanvan.ui.Model.ProfessionCandidate;
 import com.example.luanvan.ui.Model.SkillCandidate;
 import com.example.luanvan.ui.Model.SkillKey;
 import com.example.luanvan.ui.recruiter.PostNews.CreateJobActivity;
@@ -76,14 +80,18 @@ public class PersonalInfoActivity extends AppCompatActivity {
     PositionPickAdapter adapter;
     ArrayList<Position> arrayList;
     SearchView searchView;
-    RecyclerView recyclerViewArea, recyclerViewTagArea;
+    RecyclerView recyclerViewArea, recyclerViewTagArea, recyclerViewProfession, recyclerViewTagProfession;
     TagAreaAdapter tagAdapter; // Những tag trong recycleview
+    TagProfessionAdapter tagProfessionAdapter;
     public static ArrayList<Area>  arraylistChosenArea; // Đã chọn
+    public static ArrayList<Profession> arrayListChosenProfession;
     ArrayList<AreaCandidate> arraylistArea; // Trên bottemsheet có check hay k luôn
-    LinearLayout layout_area;
-    BottomSheetDialog bottomSheetArea;
-    SearchView searchViewArea;
+    ArrayList<ProfessionCandidate> arrayListProfession;
+    LinearLayout layout_area, layout_profession;
+    BottomSheetDialog bottomSheetArea, bottomSheetProfession;
+    SearchView searchViewArea, searchViewProfession;
     AreaBottomSheetTagAdapter areaAdapter; // adapter trong bottomsheet
+    ProfessionBottomSheetTagAdapter professionAdapter;
     ProgressDialog progressDialog;
     Handler handler ;
 
@@ -97,15 +105,65 @@ public class PersonalInfoActivity extends AppCompatActivity {
         eventPickDate();
         eventPosition();
         eventArea();
+        eventProfession();
 
     }
-    void loading(){
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Loading");
-        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
-        progressDialog.show();
-        progressDialog.setCancelable(false);
+
+    private void eventProfession() {
+        layout_profession.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //  Toast.makeText(getApplicationContext(), "Â", Toast.LENGTH_SHORT).show();
+                bottomSheetProfession = new BottomSheetDialog(PersonalInfoActivity.this, R.style.BottomSheetTheme);
+                View view = LayoutInflater.from(PersonalInfoActivity.this).inflate(R.layout.bottom_sheet_profession, (ViewGroup) findViewById(R.id.bottom_sheet));
+                Button btnChoose = (Button) view.findViewById(R.id.buttonchon);
+                Button btnCancel = (Button) view.findViewById(R.id.buttonhuy);
+                bottomSheetProfession.setCancelable(false);
+                searchView = (SearchView) view.findViewById(R.id.searchView);
+
+                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+                        professionAdapter.getFilter().filter(query);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onQueryTextChange(String newText) {
+                        professionAdapter.getFilter().filter(newText);
+                        return false;
+                    }
+                });
+                btnCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        tagProfessionAdapter.notifyDataSetChanged();
+                        bottomSheetProfession.dismiss();
+                    }
+                });
+                btnChoose.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        tagProfessionAdapter.notifyDataSetChanged();
+                     //   Toast.makeText(getApplicationContext(), "s " + arrayListProfession.size(), Toast.LENGTH_SHORT).show();
+                        bottomSheetProfession.dismiss();
+                    }
+                });
+                recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
+                recyclerView.setHasFixedSize(true);
+                recyclerView.setLayoutManager(new LinearLayoutManager(PersonalInfoActivity.this, LinearLayoutManager.VERTICAL, false));
+                professionAdapter = new ProfessionBottomSheetTagAdapter(PersonalInfoActivity.this, arrayListProfession, PersonalInfoActivity.this, arrayListChosenProfession);
+                recyclerView.setAdapter(professionAdapter);
+                bottomSheetProfession.setCancelable(false);
+                bottomSheetProfession.setContentView(view);
+                bottomSheetProfession.show();
+            }
+
+        });
+
     }
+
+
     private void eventArea() {
         layout_area.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -528,24 +586,117 @@ public class PersonalInfoActivity extends AppCompatActivity {
         getDataPosition();
         arraylistArea = new ArrayList<>();
         arraylistChosenArea = new ArrayList<>();
+        arrayListProfession = new ArrayList<>();
+        arrayListChosenProfession = new ArrayList<>();
         getDataArea();
+        getDataProfession();
         layout_area = (LinearLayout) findViewById(R.id.layout_area);
-
+        layout_profession = (LinearLayout) findViewById(R.id.layout_profession);
         recyclerViewTagArea = (RecyclerView) findViewById(R.id.recycleview);
         recyclerViewTagArea.setFocusable(false);
         recyclerViewTagArea.setClickable(false);
         recyclerViewTagArea.setHasFixedSize(true);
+        recyclerViewTagProfession = (RecyclerView) findViewById(R.id.recycleviewprofession);
+        recyclerViewTagProfession.setFocusable(false);
+        recyclerViewTagProfession.setClickable(false);
+        recyclerViewTagProfession.setHasFixedSize(true);
         FlexboxLayoutManager layoutManager = new FlexboxLayoutManager();
         layoutManager.setFlexWrap(FlexWrap.WRAP);
         layoutManager.setFlexDirection(FlexDirection.ROW);
         layoutManager.setAlignItems(AlignItems.STRETCH);
         recyclerViewTagArea.setLayoutManager(layoutManager);
+        FlexboxLayoutManager layoutManager2 = new FlexboxLayoutManager();
+        layoutManager2.setFlexWrap(FlexWrap.WRAP);
+        layoutManager2.setFlexDirection(FlexDirection.ROW);
+        layoutManager2.setAlignItems(AlignItems.STRETCH);
+        recyclerViewTagProfession.setLayoutManager(layoutManager2);
 
         tagAdapter = new TagAreaAdapter(PersonalInfoActivity.this, arraylistChosenArea, PersonalInfoActivity.this, arraylistArea );
         recyclerViewTagArea.setAdapter(tagAdapter);
+        tagProfessionAdapter = new TagProfessionAdapter(PersonalInfoActivity.this, arrayListChosenProfession, PersonalInfoActivity.this, arrayListProfession);
+        recyclerViewTagProfession.setAdapter(tagProfessionAdapter);
+
+
+    }
+
+    private void getDataProfession() {
+        arrayListProfession.add(new ProfessionCandidate(1,"Kinh doanh / Bán hàng",0));
+        arrayListProfession.add(new ProfessionCandidate(2,"Biên / Phiên dịch",0));
+        arrayListProfession.add(new ProfessionCandidate(3,"Báo chí / Truyền hình",0));
+        arrayListProfession.add(new ProfessionCandidate(4,"Bưu chính - Viễn thông",0));
+        arrayListProfession.add(new ProfessionCandidate(5,"Bảo hiểm",0));
+        arrayListProfession.add(new ProfessionCandidate(6,"Bất động sản",0));
+        arrayListProfession.add(new ProfessionCandidate(7,"Chứng khoán / Vàng / Ngoại tệ",0));
+        arrayListProfession.add(new ProfessionCandidate(8,"Công nghệ cao",0));
+        arrayListProfession.add(new ProfessionCandidate(9,"Cơ khí - Chế tạo / Tự động hóa",0));
+        arrayListProfession.add(new ProfessionCandidate(10,"Du lịch",0));
+        arrayListProfession.add(new ProfessionCandidate(11,"Dầu khí/Hóa chất",0));
+        arrayListProfession.add(new ProfessionCandidate(12,"Dệt may / Da giày",0));
+        arrayListProfession.add(new ProfessionCandidate(13,"Dịch vụ khách hàng",0));
+        arrayListProfession.add(new ProfessionCandidate(14,"Điện tử viễn thông",0));
+        arrayListProfession.add(new ProfessionCandidate(15,"Điện / Điện tử / Điện lạnh",0));
+        arrayListProfession.add(new ProfessionCandidate(16,"Giáo dục / Đào tạo",0));
+        arrayListProfession.add(new ProfessionCandidate(17,"Hoá học 7 Sinh học",0));
+        arrayListProfession.add(new ProfessionCandidate(18,"Hoạch định/Dự án",0));
+        arrayListProfession.add(new ProfessionCandidate(19,"Hàng gia dụng",0));
+        arrayListProfession.add(new ProfessionCandidate(20,"Hàng hải",0));
+        arrayListProfession.add(new ProfessionCandidate(21,"Hàng không",0));
+        arrayListProfession.add(new ProfessionCandidate(22,"Hành chính / Văn phòng",0));
+        arrayListProfession.add(new ProfessionCandidate(23,"In ấn / Xuất bản",0));
+        arrayListProfession.add(new ProfessionCandidate(24,"IT Phần cứng / Mạng",0));
+        arrayListProfession.add(new ProfessionCandidate(25,"IT phần mềm",0));
+        arrayListProfession.add(new ProfessionCandidate(26,"Khách sạn / Nhà hàng",0));
+        arrayListProfession.add(new ProfessionCandidate(27,"Kế toán / Kiểm toán",0));
+        arrayListProfession.add(new ProfessionCandidate(28,"Marketing / Truyền thông - Quảng cáo",0));
+        arrayListProfession.add(new ProfessionCandidate(29,"Môi trường / Xử lý chất thải",0));
+        arrayListProfession.add(new ProfessionCandidate(30,"Mỹ phẩm / Trang sức",0));
+        arrayListProfession.add(new ProfessionCandidate(31,"Mỹ thuật / Nghệ thuật / Điện ảnh",0));
+        arrayListProfession.add(new ProfessionCandidate(32,"Ngân hàng / Tài chính",0));
+        arrayListProfession.add(new ProfessionCandidate(33,"Nhân sự",0));
+        arrayListProfession.add(new ProfessionCandidate(34,"Nông - Lâm / Ngư nghiệp",0));
+        arrayListProfession.add(new ProfessionCandidate(35,"Luật/Pháp lý",0));
+        arrayListProfession.add(new ProfessionCandidate(36,"Quản lý chất lượng (QA/QC)",0));
+        arrayListProfession.add(new ProfessionCandidate(37,"Quản lý điều hành",0));
+        arrayListProfession.add(new ProfessionCandidate(38,"Thiết kế đồ họa",0));
+        arrayListProfession.add(new ProfessionCandidate(39,"Thời trang",0));
+        arrayListProfession.add(new ProfessionCandidate(40,"Thực phẩm / Đồ uống",0));
+        arrayListProfession.add(new ProfessionCandidate(41,"Tư vấn",0));
+        arrayListProfession.add(new ProfessionCandidate(42,"Tổ chức sự kiện / Quà tặng",0));
+        arrayListProfession.add(new ProfessionCandidate(43,"Vận tải / Kho vận",0));
+        arrayListProfession.add(new ProfessionCandidate(44,"Logistics",0));
+        arrayListProfession.add(new ProfessionCandidate(45,"Xuất nhập khẩu",0));
+        arrayListProfession.add(new ProfessionCandidate(46,"Xây dựng",0));
+        arrayListProfession.add(new ProfessionCandidate(47,"Y tế / Dược",0));
+        arrayListProfession.add(new ProfessionCandidate(48,"Công nghệ Ô tô",0));
+        arrayListProfession.add(new ProfessionCandidate(49,"An toàn lao động",0));
+        arrayListProfession.add(new ProfessionCandidate(50,"Bán hàng kỹ thuật",0));
+        arrayListProfession.add(new ProfessionCandidate(51,"Bán lẻ / bán sỉ",0));
+        arrayListProfession.add(new ProfessionCandidate(52,"Bảo trì / Sửa chữa",0));
+        arrayListProfession.add(new ProfessionCandidate(53,"Dược phẩm | Công nghệ sinh học",0));
+        arrayListProfession.add(new ProfessionCandidate(54,"Địa chất / Khoáng sản",0));
+        arrayListProfession.add(new ProfessionCandidate(55,"Hàng cao cấp",0));
+        arrayListProfession.add(new ProfessionCandidate(56,"Hàng tiêu dùng",0));
+        arrayListProfession.add(new ProfessionCandidate(57,"Kiến trúc",0));
+        arrayListProfession.add(new ProfessionCandidate(58,"Phi chính phủ / Phi lợi nhuận",0));
+        arrayListProfession.add(new ProfessionCandidate(59,"Sản phẩm công nghiệp",0));
+        arrayListProfession.add(new ProfessionCandidate(60,"Sản xuất",0));
+        arrayListProfession.add(new ProfessionCandidate(61,"Tài chính / Đầu tư",0));
+        arrayListProfession.add(new ProfessionCandidate(62,"Thiết kế nội thất",0));
+        arrayListProfession.add(new ProfessionCandidate(63,"Thư ký / Trợ lý",0));
+        arrayListProfession.add(new ProfessionCandidate(64,"Spa / Làm đẹp",0));
+        arrayListProfession.add(new ProfessionCandidate(65,"Công nghệ thông tin",0));
+        arrayListProfession.add(new ProfessionCandidate(66,"NG0 / Phi chính phủ / Phi lợi nhuận",0));
+        arrayListProfession.add(new ProfessionCandidate(67,"Ngành nghề khác",0));
 
 
 
+    }
+    void loading(){
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading");
+        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
     }
 
     private void getDataArea() {

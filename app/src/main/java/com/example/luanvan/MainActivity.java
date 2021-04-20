@@ -8,6 +8,7 @@ import android.widget.Toast;
 import com.example.luanvan.ui.Adapter.update_personal_info.ExperienceAdapter;
 import com.example.luanvan.ui.Adapter.update_personal_info.SkillAdapter;
 import com.example.luanvan.ui.Adapter.update_personal_info.StudyAdapter;
+import com.example.luanvan.ui.Model.Area;
 import com.example.luanvan.ui.Model.Experience;
 import com.example.luanvan.ui.Model.Notification;
 import com.example.luanvan.ui.Model.NotificationAdmin;
@@ -77,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
     public static ArrayList<Skill> skills = new ArrayList<>();
     // list CV
     public static ArrayList<PdfCV> arrayListCV = new ArrayList<>();
+    public static ArrayList<Area>  arraylistChosenArea = new ArrayList<>(); // Đã chọn
     // default CV info
     // - info connect : user
     // - Experience
@@ -110,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
     public static int color = 0;
 
 
-    public static String host = "http://10.10.35.232:8888/luanvan/";
+    public static String host = "http://10.10.36.35:8888/luanvan/";
     public static String urljob1 = host + "job1.php?page=";
     public static String urlJobCompany = host + "job_company.php";
     public static String urlJobRelate = host + "job_relate.php";

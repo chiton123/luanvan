@@ -200,8 +200,44 @@
 
                         </LinearLayout>
 
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="7dp"
+                        android:orientation="vertical"
+                        >
+                        <TextView
+                            android:layout_marginTop="10dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ngành nghề có kinh nghiệm"
+                            android:textColor="#040404"
+                            android:textStyle="bold"
+                            android:textSize="15sp"
+                            ></TextView>
+                        <LinearLayout
+                            android:layout_marginTop="10dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/layout_profession"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:padding="10dp"
+                            android:background="@drawable/textview_frame"
+                            >
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:layout_width="match_parent"
+                                android:layout_height="90dp"
+                                android:id="@+id/recycleviewprofession"
+                                ></androidx.recyclerview.widget.RecyclerView>
+
+                        </LinearLayout>
+
 
                     </LinearLayout>
+
 
 
                     <LinearLayout
