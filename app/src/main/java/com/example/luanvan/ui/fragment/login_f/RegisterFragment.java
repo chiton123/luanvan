@@ -88,7 +88,7 @@ public class RegisterFragment extends Fragment {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if(task.isSuccessful()){
-                                            Toast.makeText(getActivity(), "Lưu thông tin firebase thành công", Toast.LENGTH_SHORT).show();
+                                         //   Toast.makeText(getActivity(), "Lưu thông tin firebase thành công", Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                 });
@@ -148,6 +148,7 @@ public class RegisterFragment extends Fragment {
                                         SignUp(email, pass);
                                     }else {
                                         Toast.makeText(getActivity(), "Đăng ký thất bại", Toast.LENGTH_SHORT).show();
+                                        progressDialog.dismiss();
                                     }
                                 }
                             },
@@ -155,6 +156,7 @@ public class RegisterFragment extends Fragment {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
                                     Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
+                                    progressDialog.dismiss();
                                 }
                             }){
                         @Override

@@ -49,7 +49,7 @@ public class TagAreaAdapter extends RecyclerView.Adapter<TagAreaAdapter.ItemHold
                 public void onClick(View v) {
                     for(int i=0; i < candidateArrayList.size(); i++){
                         if(candidateArrayList.get(i).getId() == arrayList.get(position).getId()){
-                            candidateArrayList.remove(i);
+                            candidateArrayList.get(i).setCheck(0);
                         }
                     }
 

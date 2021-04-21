@@ -234,7 +234,7 @@ public class SkillActivity extends AppCompatActivity {
                                             MainActivity.skills.add(skill);
                                             NotificationsFragment.skillAdapter.notifyDataSetChanged();
                                         }else {
-                                            Toast.makeText(getApplicationContext(), "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getApplicationContext(), "Kỹ năng đã tồn tại hoặc cập nhật thất bại", Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                 },

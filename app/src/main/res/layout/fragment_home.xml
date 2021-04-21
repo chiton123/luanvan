@@ -95,13 +95,31 @@
                     android:textColor="#0B0B0B"
                     android:textSize="16sp"
                     ></TextView>
-                <GridView
+                <HorizontalScrollView
+                    android:id="@+id/hori"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/gridviewnhatuyendunghangdau"
-                    android:numColumns="2"
-                    android:scrollbars="horizontal"
-                    ></GridView>
+                    android:layout_height="match_parent">
+
+                    <FrameLayout
+                        android:id="@+id/frame123"
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp">
+
+                        <LinearLayout
+                            android:layout_width="600dp"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <GridView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/gridviewnhatuyendunghangdau"
+                                android:numColumns="3"
+                                android:scrollbars="horizontal"
+                                ></GridView>
+                        </LinearLayout>
+                    </FrameLayout>
+                </HorizontalScrollView>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

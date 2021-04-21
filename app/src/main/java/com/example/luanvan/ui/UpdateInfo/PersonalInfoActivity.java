@@ -101,6 +101,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_personal_info);
         anhxa();
         actionBar();
+        idposition = MainActivity.user.getIdposition();
         eventUpdate();
         eventPickDate();
         eventPosition();

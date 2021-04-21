@@ -513,6 +513,7 @@ public class AdjustJobActivity extends AppCompatActivity {
 
                                     }else {
                                         Toast.makeText(getApplicationContext(), "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+                                        progressDialog.dismiss();
                                     }
                                 }
                             },
@@ -520,6 +521,7 @@ public class AdjustJobActivity extends AppCompatActivity {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
                                     Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                                    progressDialog.dismiss();
                                 }
                             }){
                         @Override
