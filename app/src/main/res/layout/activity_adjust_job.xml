@@ -81,6 +81,7 @@
                         <EditText
                             android:paddingLeft="8dp"
                             android:paddingRight="8dp"
+                            android:focusable="false"
                             android:textSize="13sp"
                             android:textColor="#000000"
                             android:layout_marginTop="5dp"
@@ -115,6 +116,7 @@
                             android:paddingLeft="8dp"
                             android:paddingRight="8dp"
                             android:textSize="13sp"
+                            android:focusable="false"
                             android:textColor="#000000"
                             android:layout_marginTop="5dp"
                             android:layout_margin="5dp"
@@ -477,44 +479,55 @@
                         ></EditText>
                 </LinearLayout>
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:padding="7dp"
-
                     >
-                    <TextView
-                        android:layout_marginTop="10dp"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Kỹ năng"
-                        android:textColor="#040404"
-                        android:textStyle="bold"
-                        android:textSize="14sp"
-                        android:id="@+id/txta"
-                        ></TextView>
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        >
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Kỹ năng"
+                            android:textColor="#040404"
+                            android:textStyle="bold"
+                            android:textSize="14sp"
+                            ></TextView>
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/addnew"
+                            android:layout_marginLeft="10dp"
+                            android:id="@+id/imgadd"
+                            ></ImageView>
+                    </LinearLayout>
+
                     <LinearLayout
                         android:layout_marginTop="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_below="@id/txta"
                         android:id="@+id/layout_skill"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
-                        android:padding="10dp"
+                        android:padding="5dp"
                         android:background="@drawable/textview_frame"
                         >
                         <androidx.recyclerview.widget.RecyclerView
                             android:layout_width="match_parent"
-                            android:layout_height="200dp"
+                            android:layout_height="150dp"
                             android:id="@+id/recycleview"
                             ></androidx.recyclerview.widget.RecyclerView>
 
                     </LinearLayout>
 
 
-                </RelativeLayout>
+                </LinearLayout>
 
 
                 <LinearLayout

@@ -5,21 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="13"
     android:background="#fff"
+    android:layout_marginBottom="60dp"
     tools:context=".ui.User.NotificationsFragment">
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="#02F1D0"
-        app:title="Hố Sơ Của Tôi"
-        app:titleTextColor="#fff"
+        app:title="Hồ Sơ Của Tôi"
+        app:titleTextColor="#000000"
         ></androidx.appcompat.widget.Toolbar>
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="11"
-        android:paddingTop="40dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
         android:background="#fff"
         >
         <LinearLayout
@@ -86,7 +85,6 @@
                     android:padding="5dp"
                     >
                     <de.hdodenhof.circleimageview.CircleImageView
-                        android:layout_marginTop="10dp"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:src="@drawable/imgprofile"
@@ -261,7 +259,6 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:layout_marginTop="20dp"
-                        android:layout_marginBottom="50dp"
                         >
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -310,6 +307,6 @@
 
 
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </LinearLayout>

@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
@@ -86,10 +87,10 @@ public class CreateJobActivity extends AppCompatActivity {
     TagAdapter tagAdapter;
     public static ArrayList<SkillKey>  arraylistChosenSkill;
     ArrayList<SkillCandidate> arraylistSkill;
-    LinearLayout layout_skill;
     BottomSheetDialog bottomSheetSKill;
     SearchView searchView;
     SkillTagAdapter skillAdapter;
+    ImageView imgAdd;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,7 +107,7 @@ public class CreateJobActivity extends AppCompatActivity {
     }
 
     private void eventSkill() {
-        layout_skill.setOnClickListener(new View.OnClickListener() {
+        imgAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
               //  Toast.makeText(getApplicationContext(), "Â", Toast.LENGTH_SHORT).show();
@@ -570,7 +571,7 @@ public class CreateJobActivity extends AppCompatActivity {
     }
 
     private void anhxa() {
-        layout_skill = (LinearLayout) findViewById(R.id.layout_skill);
+        imgAdd = (ImageView) findViewById(R.id.img);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         editPosition = (EditText) findViewById(R.id.editposition);
         editStart = (EditText) findViewById(R.id.editstart);

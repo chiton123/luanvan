@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -69,7 +70,7 @@ public class FilterCandidateActivity extends AppCompatActivity {
     TagAreaAdapter tagAdapter; // Những tag trong recycleview
     public static ArrayList<Area>  arraylistChosenArea; // Đã chọn
     ArrayList<AreaCandidate> arraylistArea; // Trên bottemsheet có check hay k luôn
-    LinearLayout layout_area;
+    ImageView imgAdd;
     BottomSheetDialog bottomSheetArea;
     SearchView searchViewArea;
     AreaBottomSheetTagAdapter areaAdapter; // adapter trong bottomsheet
@@ -141,7 +142,7 @@ public class FilterCandidateActivity extends AppCompatActivity {
     }
 
     private void eventArea() {
-        layout_area.setOnClickListener(new View.OnClickListener() {
+        imgAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //  Toast.makeText(getApplicationContext(), "Â", Toast.LENGTH_SHORT).show();
@@ -492,7 +493,7 @@ public class FilterCandidateActivity extends AppCompatActivity {
 
 
         getDataArea();
-        layout_area = (LinearLayout) findViewById(R.id.layout_area);
+        imgAdd = (ImageView) findViewById(R.id.imgadd);
 
         recyclerViewTagArea = (RecyclerView) findViewById(R.id.recycleview);
         recyclerViewTagArea.setFocusable(false);

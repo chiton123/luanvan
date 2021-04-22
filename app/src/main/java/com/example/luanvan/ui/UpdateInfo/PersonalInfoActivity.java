@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.SearchView;
@@ -87,13 +88,13 @@ public class PersonalInfoActivity extends AppCompatActivity {
     public static ArrayList<Profession> arrayListChosenProfession;
     ArrayList<AreaCandidate> arraylistArea; // Trên bottemsheet có check hay k luôn
     ArrayList<ProfessionCandidate> arrayListProfession;
-    LinearLayout layout_area, layout_profession;
     BottomSheetDialog bottomSheetArea, bottomSheetProfession;
     SearchView searchViewArea, searchViewProfession;
     AreaBottomSheetTagAdapter areaAdapter; // adapter trong bottomsheet
     ProfessionBottomSheetTagAdapter professionAdapter;
     ProgressDialog progressDialog;
     Handler handler ;
+    ImageView imgAddArea, imgAddProfession;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +112,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
     }
 
     private void eventProfession() {
-        layout_profession.setOnClickListener(new View.OnClickListener() {
+        imgAddProfession.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //  Toast.makeText(getApplicationContext(), "Â", Toast.LENGTH_SHORT).show();
@@ -166,7 +167,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
 
 
     private void eventArea() {
-        layout_area.setOnClickListener(new View.OnClickListener() {
+        imgAddArea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //  Toast.makeText(getApplicationContext(), "Â", Toast.LENGTH_SHORT).show();
@@ -689,8 +690,8 @@ public class PersonalInfoActivity extends AppCompatActivity {
         arrayListChosenProfession = new ArrayList<>();
         getDataArea();
         getDataProfession();
-        layout_area = (LinearLayout) findViewById(R.id.layout_area);
-        layout_profession = (LinearLayout) findViewById(R.id.layout_profession);
+        imgAddProfession = (ImageView) findViewById(R.id.imgaddnganhnghe);
+        imgAddArea = (ImageView) findViewById(R.id.imgaddkhuvuc);
         recyclerViewTagArea = (RecyclerView) findViewById(R.id.recycleview);
         recyclerViewTagArea.setFocusable(false);
         recyclerViewTagArea.setClickable(false);
