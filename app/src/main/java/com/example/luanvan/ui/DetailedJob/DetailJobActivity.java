@@ -152,7 +152,7 @@ public class DetailJobActivity extends AppCompatActivity {
                          //   Toast.makeText(getApplicationContext(), test, Toast.LENGTH_SHORT).show();
                             if(test.equals("apply")){
                                 btnApply.setClickable(false);
-                                btnApply.setBackgroundColor(Color.BLACK);
+                                btnApply.setBackgroundResource(R.drawable.background_button_daungtuyen);
                                 btnApply.setTextColor(Color.WHITE);
                                 btnApply.setText("Đã ứng tuyển");
                             }else if(test.equals("again")){

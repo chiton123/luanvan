@@ -571,7 +571,7 @@ public class CreateJobActivity extends AppCompatActivity {
     }
 
     private void anhxa() {
-        imgAdd = (ImageView) findViewById(R.id.img);
+        imgAdd = (ImageView) findViewById(R.id.imgadd);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         editPosition = (EditText) findViewById(R.id.editposition);
         editStart = (EditText) findViewById(R.id.editstart);

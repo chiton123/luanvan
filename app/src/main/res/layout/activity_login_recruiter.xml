@@ -3,13 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#fff"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.recruiter.LoginRecruiterActivity">
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:id="@+id/toolbar"
-        android:background="#fff"
+        android:background="#02F1D0"
         app:title="Đăng nhập của nhà tuyển dụng"
         ></androidx.appcompat.widget.Toolbar>
 
@@ -21,6 +22,7 @@
         android:orientation="vertical"
         android:gravity="center_horizontal"
         android:padding="15dp"
+        android:background="#fff"
         >
         <EditText
             android:layout_marginTop="50dp"
@@ -46,7 +48,10 @@
             android:layout_width="match_parent"
             android:text="Đăng nhập"
             android:textColor="#fff"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
+            android:textSize="14sp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:id="@+id/buttondangnhap"
             android:background="@drawable/button_login"
             ></Button>

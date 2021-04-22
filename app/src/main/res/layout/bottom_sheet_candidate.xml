@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:id="@+id/bottom_sheet">
     <TextView
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -13,7 +13,7 @@
         android:textSize="14sp"
         ></TextView>
     <View
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:background="#000000"
@@ -65,7 +65,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_horizontal"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="15dp"
         >
 
         <Button

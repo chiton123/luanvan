@@ -66,16 +66,17 @@ public class RegisterFragment extends Fragment {
         progressDialog.show();
         progressDialog.setCancelable(false);
     }
-    public void SignUp(String email, String password){
+    public void SignUp(final String email, String password, final String name){
         // firebase
         MainActivity.mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
-                            Toast.makeText(getActivity(), "Đăng ký thành công", Toast.LENGTH_SHORT).show();
+
                             String username = editName.getText().toString();
                             FirebaseUser firebaseUser = MainActivity.mAuth.getCurrentUser();
+                            registerMySQL(name, email, firebaseUser.getUid());
                             String userid = "";
                             if(firebaseUser != null){
                                 userid = firebaseUser.getUid();
@@ -137,43 +138,46 @@ public class RegisterFragment extends Fragment {
                     final String name = editName.getText().toString();
                     final String email = editEmail.getText().toString();
                     final String pass = editPass.getText().toString();
-                    RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+                    SignUp(email, pass, name);
 
-                    StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlRegister,
-                            new Response.Listener<String>() {
-                                @Override
-                                public void onResponse(String response) {
-                                    if(response.equals("success")){
-                                       // Toast.makeText(getActivity(), email + pass, Toast.LENGTH_SHORT).show();
-                                        SignUp(email, pass);
-                                    }else {
-                                        Toast.makeText(getActivity(), "Đăng ký thất bại", Toast.LENGTH_SHORT).show();
-                                        progressDialog.dismiss();
-                                    }
-                                }
-                            },
-                            new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
-                                    progressDialog.dismiss();
-                                }
-                            }){
-                        @Override
-                        protected Map<String, String> getParams() throws AuthFailureError {
-                            Map<String,String> map = new HashMap<>();
-                            map.put("name", name);
-                            map.put("email", email);
-                            return map;
-                        }
-                    };
-                    requestQueue.add(stringRequest);
                 }
 
             }
         });
     }
 
+    public void registerMySQL(final String name, final String email, final String uid_f){
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlRegister,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(response.equals("success")){
+                            Toast.makeText(getActivity(), "Đăng ký thành công", Toast.LENGTH_SHORT).show();
+                        }else {
+                            Toast.makeText(getActivity(), "Đăng ký thất bại", Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("name", name);
+                map.put("email", email);
+                map.put("uid", uid_f);
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
 
     public boolean isEmailValid(String email)
     {

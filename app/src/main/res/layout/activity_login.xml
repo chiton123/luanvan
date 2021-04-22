@@ -15,6 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:id="@+id/toolbar"
+            android:background="#02F1D0"
             app:title="Đăng nhập"
             ></androidx.appcompat.widget.Toolbar>
         <com.google.android.material.tabs.TabLayout

@@ -126,7 +126,7 @@ public class InfoFragment extends Fragment {
             DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
             txtsalary.setText("Từ " + decimalFormat.format( + job.getSalary_min()) + "đ đến " + decimalFormat.format(job.getSalary_max()) + "đ" );
             txthinhthuc.setText(job.getType_job());
-            txtnumber.setText(job.getNumber()+"");
+            txtnumber.setText(job.getNumber()+" người");
             txtexperience.setText(job.getExperience());
 
             String mota = xuongdong(job.getDescription());

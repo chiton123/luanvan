@@ -21,56 +21,14 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-
             >
             <LinearLayout
+                android:layout_marginBottom="9dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:layout_marginBottom="100dp"
+                android:padding="8dp"
                 >
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="5dp"
-                    >
-                    <ImageView
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:id="@+id/hinhanh"
-                        android:layout_margin="5dp"
-                        ></ImageView>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        >
-                        <TextView
-                            android:id="@+id/tencongviec"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
-                            android:text="nhan vien kinh doanh"
-                            android:textColor="#040404"
-                            android:textSize="15sp"></TextView>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/tencongty"
-                            android:textSize="13sp"
-                            android:layout_margin="5dp"
-                            android:text="cong ty abc"
-                            android:textColor="#040404"
-                            ></TextView>
-                    </LinearLayout>
-
-                </LinearLayout>
-
-
-
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -78,53 +36,21 @@
                     >
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:layout_marginTop="10dp"
-                        android:padding="5dp"
-                        >
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:src="@drawable/calendar"
-                            ></ImageView>
-                        <TextView
-                            android:layout_marginLeft="10dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="14sp"
-                            android:text="Hạn nộp hồ sơ "
-                            android:textColor="#040404"
-                            ></TextView>
-                        <TextView
-                            android:layout_marginLeft="5dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/hannop"
-                            android:textSize="14sp"
-                            android:text="10/10/2020"
-                            android:textColor="#040404"
-                            ></TextView>
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
-                        android:padding="5dp"
                         >
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            android:src="@drawable/luong"
+                            android:src="@drawable/c_salary"
                             ></ImageView>
                         <TextView
                             android:textSize="13sp"
                             android:layout_marginLeft="10dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Mức lương"
+                            android:text="Mức lương:"
                             android:textColor="#FB2323"
                             android:textStyle="bold"
                             ></TextView>
@@ -142,19 +68,18 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:padding="5dp"
+                        android:layout_marginTop="5dp"
                         >
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            android:src="@drawable/area"
+                            android:src="@drawable/map2"
                             ></ImageView>
                         <TextView
                             android:layout_marginLeft="10dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Khu vực"
+                            android:text="Khu vực:"
                             android:textColor="#0B0B0A"
                             android:textStyle="bold"
                             android:textSize="13sp"
@@ -175,7 +100,6 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
-                        android:padding="5dp"
                         >
                         <ImageView
                             android:layout_width="20dp"
@@ -187,7 +111,7 @@
                             android:layout_marginLeft="10dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Hình thức"
+                            android:text="Hình thức:"
                             android:textColor="#0B0B0A"
                             android:textStyle="bold"
                             ></TextView>
@@ -207,7 +131,6 @@
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
                         android:layout_marginTop="5dp"
-                        android:padding="5dp"
                         >
                         <ImageView
                             android:layout_width="20dp"
@@ -219,7 +142,7 @@
                             android:layout_marginLeft="10dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Số lượng cần tuyển"
+                            android:text="Số lượng cần tuyển:"
                             android:textColor="#0B0B0A"
                             android:textStyle="bold"
                             ></TextView>
@@ -240,7 +163,6 @@
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
                         android:layout_marginTop="5dp"
-                        android:padding="5dp"
                         >
                         <ImageView
                             android:layout_width="20dp"
@@ -252,7 +174,7 @@
                             android:layout_marginLeft="10dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Kinh nghiệm"
+                            android:text="Kinh nghiệm:"
                             android:textColor="#0B0B0A"
                             android:textStyle="bold"
                             ></TextView>
@@ -271,8 +193,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginTop="10dp"
-                    android:padding="5dp"
+                    android:layout_marginTop="20dp"
                     >
                     <TextView
                         android:textSize="13sp"
@@ -288,6 +209,10 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/motacongviec"
                         android:text="abc"
+                        android:textColor="#494948"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginLeft="5dp"
                         ></TextView>
 
                 </LinearLayout>
@@ -296,7 +221,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_marginTop="10dp"
-                    android:padding="5dp"
                     >
                     <TextView
                         android:textSize="13sp"
@@ -312,6 +236,10 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/yeucaucongviec"
                         android:text="abc"
+                        android:textColor="#494948"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginLeft="5dp"
                         ></TextView>
 
                 </LinearLayout>
@@ -320,7 +248,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_marginTop="10dp"
-                    android:padding="5dp"
                     >
                     <TextView
                         android:textSize="13sp"
@@ -336,14 +263,16 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/quyenloi"
                         android:text="abc"
+                        android:textColor="#494948"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginLeft="5dp"
                         ></TextView>
 
                 </LinearLayout>
 
             </LinearLayout>
-
         </FrameLayout>
-
     </ScrollView>
     <LinearLayout
         android:layout_width="match_parent"
