@@ -171,19 +171,19 @@ public class EditCombineActivity extends AppCompatActivity {
         number = intent.getIntExtra("number",0);
         switch (number){
             case 1:
-                studyAdapter = new StudyAdapter(getApplicationContext(), MainActivity.studies, this, 0);
+                studyAdapter = new StudyAdapter(EditCombineActivity.this , MainActivity.studies, this, 0);
                 recyclerView.setAdapter(studyAdapter);
                 getSupportActionBar().setTitle("Học vấn");
                 checkStudy();
                 break;
             case 2:
-                experienceAdapter = new ExperienceAdapter(getApplicationContext(), MainActivity.experiences, this, 0);
+                experienceAdapter = new ExperienceAdapter(EditCombineActivity.this, MainActivity.experiences, this, 0);
                 recyclerView.setAdapter(experienceAdapter);
                 getSupportActionBar().setTitle("Kinh nghiệm");
                 checkExperience();
                 break;
             case 3:
-                skillAdapter = new SkillAdapter(getApplicationContext(), MainActivity.skills, this, 0);
+                skillAdapter = new SkillAdapter(EditCombineActivity.this, MainActivity.skills, this, 0);
                 recyclerView.setAdapter(skillAdapter);
                 getSupportActionBar().setTitle("Kỹ năng");
                 checkSkill();
@@ -208,7 +208,7 @@ public class EditCombineActivity extends AppCompatActivity {
     private void anhxa() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         recyclerView = (RecyclerView) findViewById(R.id.recycleview);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(EditCombineActivity.this, LinearLayoutManager.VERTICAL, false));
         layout = (LinearLayout) findViewById(R.id.layout);
         layout_nothing = (LinearLayout) findViewById(R.id.layout_nothing);
 

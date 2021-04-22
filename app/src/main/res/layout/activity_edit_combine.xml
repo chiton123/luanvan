@@ -11,18 +11,19 @@
         android:layout_height="?attr/actionBarSize"
         android:id="@+id/toolbar"
         app:title="Kinh nghiệm"
-        android:background="#fff"
+        android:background="#02F1D0"
         ></androidx.appcompat.widget.Toolbar>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
+        android:background="#fff"
         >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:id="@+id/layout"
+            android:background="#fff"
             >
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
@@ -38,6 +39,7 @@
             android:gravity="center"
             android:visibility="gone"
             android:id="@+id/layout_nothing"
+            android:background="#fff"
             >
             <TextView
                 android:layout_width="wrap_content"

@@ -1,59 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:padding="5dp">
-    <ImageView
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:src="@drawable/salary"
-        android:id="@+id/hinh"
-        ></ImageView>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_toRightOf="@id/hinh"
-        android:layout_marginLeft="10dp"
-        android:id="@+id/a"
-        >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/skill"
-            android:text="DHCT"
-            android:textSize="14sp"
-            android:textColor="#020202"
-            android:textStyle="bold"
-            ></TextView>
-        <RatingBar
-            android:layout_width="176dp"
-            android:layout_height="35dp"
-            android:id="@+id/rating"
-            style="?android:attr/ratingBarStyleIndicator"
-            ></RatingBar>
-    </LinearLayout>
-    <LinearLayout
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="3dp"
+    android:padding="5dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    >
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/linear"
-        android:layout_toRightOf="@id/a"
-        android:orientation="vertical"
-        android:gravity="right"
+        app:cardCornerRadius="10dp"
+        app:cardBackgroundColor="#F6FDFC"
         >
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/editgreen"
-            android:id="@+id/edit"
-            android:layout_margin="10dp"
-            ></ImageView>
-        <ImageView
-            android:layout_margin="10dp"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/trash"
-            android:id="@+id/delete"
-            ></ImageView>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
 
-    </LinearLayout>
+            >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                >
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/salary"
+                    android:id="@+id/hinh"
+                    ></ImageView>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_toRightOf="@id/hinh"
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/a"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/skill"
+                        android:text="DHCT"
+                        android:textSize="14sp"
+                        android:textColor="#020202"
+                        android:textStyle="bold"
+                        ></TextView>
+                    <RatingBar
+                        android:layout_width="176dp"
+                        android:layout_height="35dp"
+                        android:id="@+id/rating"
+                        style="?android:attr/ratingBarStyleIndicator"
+                        ></RatingBar>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/linear"
+                    android:layout_toRightOf="@id/a"
+                    android:orientation="vertical"
+                    android:gravity="right"
+                    >
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:src="@drawable/editgreen"
+                        android:id="@+id/edit"
+                        android:layout_margin="10dp"
+                        ></ImageView>
+                    <ImageView
+                        android:layout_margin="10dp"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:src="@drawable/trash"
+                        android:id="@+id/delete"
+                        ></ImageView>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+
+
+        </FrameLayout>
+
+
+
+    </androidx.cardview.widget.CardView>
+
+
+
 </RelativeLayout>

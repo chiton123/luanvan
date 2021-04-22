@@ -506,6 +506,7 @@ public class NotificationsFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
      //   Toast.makeText(getActivity(), "Result code: " + resultCode + " request: " + requestCode, Toast.LENGTH_SHORT).show();
+        // Dang nhap
         if(requestCode == REQUEST_CODE && resultCode == 123){
             handler = new Handler();
             handler.postDelayed(new Runnable() {
@@ -517,7 +518,7 @@ public class NotificationsFragment extends Fragment {
                     getInfo();
                     getInfoFromFirebase();
                 }
-            },1500);
+            },200);
 
 
         }
@@ -529,7 +530,7 @@ public class NotificationsFragment extends Fragment {
                     getInfo();
                     getInfoFromFirebase();
                 }
-            },1500);
+            },200);
 
         }
 
