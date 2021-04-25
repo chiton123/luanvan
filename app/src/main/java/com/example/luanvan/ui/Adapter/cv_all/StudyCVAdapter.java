@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.luanvan.R;
 
+import com.example.luanvan.ui.cv_content.CVStudyActivity;
 import com.example.luanvan.ui.modelCV.StudyCV;
 
 import java.util.ArrayList;
@@ -118,6 +119,7 @@ public class StudyCVAdapter extends RecyclerView.Adapter<StudyCVAdapter.ItemHold
                                 public void onClick(DialogInterface dialog, int which) {
                                     arrayList.remove(position);
                                     notifyDataSetChanged();
+                                    ((CVStudyActivity) activity).checkNothing();
                                 }
                             });
 

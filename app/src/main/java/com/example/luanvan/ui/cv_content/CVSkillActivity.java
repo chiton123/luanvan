@@ -27,6 +27,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
@@ -71,15 +72,25 @@ public class CVSkillActivity extends AppCompatActivity {
     public static int x0 = 0, x1 = 0, x2 = 0, x3 = 0;
     // kiem tra xem x1, x2, x3 có nhảy lên bậc nào hay k khi tạo CV
     public static int checkX1 = 0, checkX2 = 0, checkX3 = 0; // chưa sử dụng
+    LinearLayout layout, layout_nothing;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_c_v_skill);
+        loading();
         anhxa();
         actionBar();
         eventButton();
         storageReference = FirebaseStorage.getInstance().getReference();
         getInfo();
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.dismiss();
+                checkNothing();
+            }
+        },1500);
 
     }
     void loading(){
@@ -88,6 +99,15 @@ public class CVSkillActivity extends AppCompatActivity {
         progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
         progressDialog.show();
         progressDialog.setCancelable(false);
+    }
+    public void checkNothing(){
+        if(MainActivity.skillCVS.size() == 0){
+            layout_nothing.setVisibility(View.VISIBLE);
+            layout.setVisibility(View.GONE);
+        }else {
+            layout_nothing.setVisibility(View.GONE);
+            layout.setVisibility(View.VISIBLE);
+        }
     }
     private void getData() {
         MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(CVActivity.key).child("com/example/luanvan/ui/Adapter/skill").addValueEventListener(new ValueEventListener() {
@@ -135,6 +155,7 @@ public class CVSkillActivity extends AppCompatActivity {
                     MainActivity.skillCVS.add(skill);
                     adapter.notifyDataSetChanged();
                     dialog.dismiss();
+                    checkNothing();
 
                 }
 
@@ -516,7 +537,8 @@ public class CVSkillActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         adapter = new SkillCVAdapter(getApplicationContext(), MainActivity.skillCVS, this, 0);
         recyclerView.setAdapter(adapter);
-
+        layout = (LinearLayout) findViewById(R.id.layout);
+        layout_nothing = (LinearLayout) findViewById(R.id.layout_nothing);
 
 
     }

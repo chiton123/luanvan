@@ -22,6 +22,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
+import com.example.luanvan.ui.cv_content.CVSkillActivity;
+import com.example.luanvan.ui.cv_content.CVStudyActivity;
 import com.example.luanvan.ui.modelCV.SkillCV;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -145,6 +147,7 @@ public class SkillCVAdapter extends RecyclerView.Adapter<SkillCVAdapter.ItemHold
                                 public void onClick(DialogInterface dialog, int which) {
                                     arrayList.remove(position);
                                     notifyDataSetChanged();
+                                    ((CVSkillActivity) activity).checkNothing();
                                 }
                             });
 

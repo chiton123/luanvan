@@ -251,7 +251,7 @@ public class CVActivity extends AppCompatActivity {
                 webView.loadUrl(finalUrl);
                 progressDialog.dismiss();
             }
-        },2000);
+        },3000);
 
     }
 

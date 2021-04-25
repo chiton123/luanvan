@@ -64,7 +64,7 @@ public class CVShowActivity extends AppCompatActivity {
                     webView.loadUrl(url1);
                     progressDialog.dismiss();
                 }
-            },1500);
+            },3000);
 
         }else {
             cv_id = getIntent().getStringExtra("cv_id");
@@ -103,7 +103,7 @@ public class CVShowActivity extends AppCompatActivity {
                     webView.loadUrl(url1);
                     progressDialog.dismiss();
                 }
-            },2000);
+            },3000);
 
 
         }

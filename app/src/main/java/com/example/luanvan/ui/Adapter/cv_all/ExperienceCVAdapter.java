@@ -25,6 +25,7 @@ import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Experience;
 import com.example.luanvan.ui.UpdateInfo.ExperienceActivity;
+import com.example.luanvan.ui.cv_content.CVExperienceActivity;
 import com.example.luanvan.ui.modelCV.ExperienceCV;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -113,7 +114,7 @@ public class ExperienceCVAdapter extends RecyclerView.Adapter<ExperienceCVAdapte
             holder.delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AlertDialog.Builder alert = new AlertDialog.Builder(activity);
+                    final AlertDialog.Builder alert = new AlertDialog.Builder(activity);
                     alert.setTitle("Xác nhận");
                     alert.setMessage("Bạn có muốn xóa không ?");
                     alert.setNegativeButton("Không",
@@ -129,6 +130,7 @@ public class ExperienceCVAdapter extends RecyclerView.Adapter<ExperienceCVAdapte
                                 public void onClick(DialogInterface dialog, int which) {
                                     arrayList.remove(position);
                                     notifyDataSetChanged();
+                                    ((CVExperienceActivity) activity).checkNothing();
                                 }
                             });
 

@@ -27,6 +27,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.luanvan.MainActivity;
@@ -75,16 +76,26 @@ public class CVStudyActivity extends AppCompatActivity {
     public static int x0 = 0, x1 = 0, x2 = 0, x3 = 0;
     // kiem tra xem x1, x2, x3 có nhảy lên bậc nào hay k khi tạo CV
     public static int checkX1 = 0, checkX2 = 0, checkX3 = 0; // chưa sử dụng
+    LinearLayout layout, layout_nothing;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_c_v_study);
+        loading();
         anhxa();
         actionBar();
         eventButton();
         storageReference = FirebaseStorage.getInstance().getReference();
         getInfo();
-
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.dismiss();
+                checkNothing();
+            }
+        },1500);
     }
     void loading(){
         progressDialog = new ProgressDialog(this);
@@ -93,6 +104,16 @@ public class CVStudyActivity extends AppCompatActivity {
         progressDialog.show();
         progressDialog.setCancelable(false);
     }
+    public void checkNothing(){
+        if(MainActivity.studyCVS.size() == 0){
+            layout_nothing.setVisibility(View.VISIBLE);
+            layout.setVisibility(View.GONE);
+        }else {
+            layout_nothing.setVisibility(View.GONE);
+            layout.setVisibility(View.VISIBLE);
+        }
+    }
+
     private void getData() {
         MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(CVActivity.key).child("study").addValueEventListener(new ValueEventListener() {
             @Override
@@ -146,6 +167,7 @@ public class CVStudyActivity extends AppCompatActivity {
                     MainActivity.studyCVS.add(studyCV);
                     adapter.notifyDataSetChanged();
                     dialog.dismiss();
+                    checkNothing();
 
                 }
 
@@ -525,7 +547,8 @@ public class CVStudyActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         adapter = new StudyCVAdapter(getApplicationContext(), MainActivity.studyCVS, this, 0);
         recyclerView.setAdapter(adapter);
-
+        layout = (LinearLayout) findViewById(R.id.layout);
+        layout_nothing = (LinearLayout) findViewById(R.id.layout_nothing);
 
 
     }
