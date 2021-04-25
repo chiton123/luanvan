@@ -37,6 +37,7 @@ public class CreateAssessmentActivity extends AppCompatActivity {
     EditText editRemark;
     RatingBar ratingBar;
     Button btnAssess;
+    int checkAssessOrNot = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +45,37 @@ public class CreateAssessmentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_assessment);
         anhxa();
         actionBar();
+        checkAccessOrNot();
         eventAssess();
+    }
+
+    private void checkAccessOrNot() {
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlCheckAssessment,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(response.equals("yes")){
+                            checkAssessOrNot = 1;
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("idcompany", String.valueOf(CompanyActivity.company.getId()));
+                map.put("iduser", String.valueOf(MainActivity.iduser));
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+
     }
 
     private void eventAssess() {
@@ -55,7 +86,10 @@ public class CreateAssessmentActivity extends AppCompatActivity {
                 final float star = ratingBar.getRating();
                 if(remark.equals("") || star == 0){
                     Toast.makeText(getApplicationContext(), "Vui lòng điền đủ thông tin", Toast.LENGTH_SHORT).show();
-                }else {
+                }else if(checkAssessOrNot == 1){
+                    Toast.makeText(getApplicationContext(), "Bạn đã đánh giá rồi", Toast.LENGTH_SHORT).show();
+                }
+                else {
                     RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
                     StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlRemark,
                             new Response.Listener<String>() {

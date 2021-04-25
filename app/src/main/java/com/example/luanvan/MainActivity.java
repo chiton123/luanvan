@@ -230,6 +230,7 @@ public class MainActivity extends AppCompatActivity {
     public static String urlGetRemark = host + "get_remark.php";
     public static String urlRemark = host + "remark.php";
     public static String urlDeleteAssessment = host + "delete_assessment.php";
+    public static String urlCheckAssessment = host + "check_assess.php";
     // put CV
     public static String urlPutCV = host + "putcv.php";
     public static String urlDeleteCV = host + "deletecv.php";
@@ -266,12 +267,6 @@ public class MainActivity extends AppCompatActivity {
     public static String urlDeleteSkill = host + "delete_skill.php";
 
 
-//    Fragment homeFragment = new HomeFragment();
-//    Fragment dashbashFragment = new DashboardFragment();
-//    Fragment notificationFragment = new NotificationsFragment();
-//    Fragment adminFragment = new AdminFragment();
-//    Fragment active = homeFragment;
-//    FragmentManager fm = getSupportFragmentManager();
 
 
     @Override
@@ -288,11 +283,7 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(navView, navController);
 
-//        // Mới
-//        fm.beginTransaction().add(R.id.navigation_home, homeFragment, "1").commit();
-//        fm.beginTransaction().add(R.id.navigation_dashboard, homeFragment, "2").hide(dashbashFragment).commit();
-//        fm.beginTransaction().add(R.id.navigation_notifications, homeFragment, "3").hide(notificationFragment).commit();
-//        fm.beginTransaction().add(R.id.navigation_admin, homeFragment, "4").hide(adminFragment).commit();
+
 //
 //        navView.setOnNavigationItemSelectedListener(th);
 

@@ -10,7 +10,7 @@
         android:layout_height="?attr/actionBarSize"
         android:id="@+id/toolbar"
         app:title="Đặt lịch hẹn ứng viên"
-        android:background="#fff"
+        android:background="#02F1D0"
         ></androidx.appcompat.widget.Toolbar>
     <FrameLayout
         android:layout_below="@id/toolbar"

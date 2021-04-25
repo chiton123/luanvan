@@ -58,11 +58,6 @@ public class AccessmentManagementAdapter extends RecyclerView.Adapter<Accessment
             holder.txtCandidate.setText(assessment.getUsername());
             holder.txtRemark.setText(assessment.getRemark());
             holder.ratingBar.setRating(assessment.getStar());
-            if(position == arrayList.size() - 1){
-                holder.view.setVisibility(View.GONE);
-            }else {
-                holder.view.setVisibility(View.VISIBLE);
-            }
             holder.btnDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -120,13 +115,11 @@ public class AccessmentManagementAdapter extends RecyclerView.Adapter<Accessment
         TextView txtCandidate, txtRemark;
         RatingBar ratingBar;
         Button btnDelete;
-        View view;
         public ItemHolder(@NonNull View itemView) {
             super(itemView);
             txtCandidate = (TextView) itemView.findViewById(R.id.txtcandidate);
             txtRemark = (TextView) itemView.findViewById(R.id.txtremark);
             ratingBar = (RatingBar) itemView.findViewById(R.id.rating);
-            view = (View) itemView.findViewById(R.id.view);
             btnDelete = (Button) itemView.findViewById(R.id.buttondelete);
 
 

@@ -92,10 +92,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Nhà tuyển dụng hàng đầu"
-                    android:textColor="#0B0B0B"
-                    android:textSize="16sp"
+                    android:textColor="#FA0606"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
                     ></TextView>
                 <HorizontalScrollView
+                    android:layout_marginTop="10dp"
                     android:id="@+id/hori"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
@@ -131,7 +133,8 @@
                         android:layout_height="wrap_content"
                         android:text="Việc làm mới nhất"
                         android:textColor="#0B0B0B"
-                        android:textSize="16sp"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
                         ></TextView>
                     <androidx.recyclerview.widget.RecyclerView
                         android:layout_marginTop="10dp"

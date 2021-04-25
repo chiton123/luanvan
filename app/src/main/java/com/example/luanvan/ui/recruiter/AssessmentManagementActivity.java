@@ -84,7 +84,7 @@ public class AssessmentManagementActivity extends AppCompatActivity {
         progressDialog.setCancelable(false);
     }
     private void getData() {
-        Toast.makeText(getApplicationContext(), "" + MainActivity.idcompany, Toast.LENGTH_SHORT).show();
+   //     Toast.makeText(getApplicationContext(), "" + MainActivity.idcompany, Toast.LENGTH_SHORT).show();
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlGetRemark,
                 new Response.Listener<String>() {

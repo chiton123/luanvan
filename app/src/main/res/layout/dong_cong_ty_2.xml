@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="wrap_content"
-    android:background="#fff"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
     >
@@ -11,11 +10,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:cardCornerRadius="10dp"
+        app:cardBackgroundColor="#fff"
         >
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#fff"
             >
             <LinearLayout
                 android:layout_width="match_parent"
@@ -77,11 +76,8 @@
                             ></TextView>
                     </LinearLayout>
 
-
                 </RelativeLayout>
             </LinearLayout>
-
-
 
         </FrameLayout>
 

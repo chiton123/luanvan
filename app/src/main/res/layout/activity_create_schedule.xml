@@ -11,11 +11,12 @@
         android:layout_height="?attr/actionBarSize"
         android:id="@+id/toolbar"
         app:title="Đặt lịch hẹn ứng viên"
-        android:background="#fff"
+        android:background="#02F1D0"
         ></androidx.appcompat.widget.Toolbar>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#fff"
         >
         <FrameLayout
             android:layout_width="match_parent"
@@ -46,8 +47,8 @@
                         android:paddingLeft="8dp"
                         android:paddingRight="8dp"
                         android:textSize="13sp"
-                        android:focusable="false"
                         android:textColor="#000000"
+                        android:focusable="false"
                         android:layout_marginTop="5dp"
                         android:layout_width="match_parent"
                         android:layout_marginRight="10dp"
@@ -240,6 +241,7 @@
                         android:layout_width="match_parent"
                         android:layout_marginRight="10dp"
                         android:layout_marginLeft="10dp"
+                        android:focusable="false"
                         android:layout_height="120dp"
                         android:id="@+id/editnote"
                         android:maxLines="10"

@@ -106,7 +106,7 @@ public class CVIntroductionActivity extends AppCompatActivity {
         // update nhe
         if(resultCode == 123 && requestCode == 123){
            // Toast.makeText(getApplicationContext(), "size " + MainActivity.arrayListCV.size(), Toast.LENGTH_SHORT).show();
-            //adapter.notifyDataSetChanged();
+            adapter.notifyDataSetChanged();
             handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override

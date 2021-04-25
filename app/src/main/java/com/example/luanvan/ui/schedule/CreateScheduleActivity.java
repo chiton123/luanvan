@@ -402,7 +402,7 @@ public class CreateScheduleActivity extends AppCompatActivity {
     private void sendMail() {
         JavaMailAPI mail = new JavaMailAPI(this, email, type_notification, content);
         mail.execute();
-        Toast.makeText(getApplicationContext(), "Đã gửi mail", Toast.LENGTH_SHORT).show();
+      //  Toast.makeText(getApplicationContext(), "Đã gửi mail", Toast.LENGTH_SHORT).show();
     }
     public void postNotification(final int type_user, String date, String start_hour, String end_hour){
         if(type_schedule == 1){
@@ -692,6 +692,13 @@ public class CreateScheduleActivity extends AppCompatActivity {
                 ShowTime(2);
             }
         });
+        editNote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editNote.setFocusable(true);
+            }
+        });
+
 
 
     }

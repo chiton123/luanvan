@@ -138,6 +138,7 @@ public class CVAdapter extends RecyclerView.Adapter<CVAdapter.ItemHolder> {
                 intent.putExtra("url", arrayList.get(position).getUrl());
                 intent.putExtra("cvname", arrayList.get(position).getName());
                 intent.putExtra("key", arrayList.get(position).getKey());
+                intent.putExtra("position", position);
                 CVIntroductionActivity.position = position;
                 activity.startActivityForResult(intent, REQUEST_CODE);
             }
@@ -242,7 +243,7 @@ public class CVAdapter extends RecyclerView.Adapter<CVAdapter.ItemHolder> {
                     @Override
                     public void onResponse(String response) {
                         if(response.equals("success")){
-                            Toast.makeText(context, "Xóa lên Mysql thành công", Toast.LENGTH_SHORT).show();
+                          //  Toast.makeText(context, "Xóa lên Mysql thành công", Toast.LENGTH_SHORT).show();
                             MainActivity.mData.child("cv").child(MainActivity.uid).child(arrayList.get(position).getKey()).removeValue();
                             MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(arrayList.get(position).getKey()).removeValue();
                             arrayList.remove(position);

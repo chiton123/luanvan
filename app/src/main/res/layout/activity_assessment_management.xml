@@ -10,7 +10,7 @@
         android:layout_height="?attr/actionBarSize"
         android:id="@+id/toolbar"
         app:title="Quản lý đánh giá"
-        android:background="#fff"
+        android:background="#02F1D0"
         ></androidx.appcompat.widget.Toolbar>
     <LinearLayout
         android:layout_below="@id/toolbar"

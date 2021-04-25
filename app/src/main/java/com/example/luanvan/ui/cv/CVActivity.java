@@ -110,6 +110,7 @@ public class CVActivity extends AppCompatActivity {
     public static int checkX1 = 0, checkX2 = 0, checkX3 = 0; // chưa sử dụng
     String CVNameToPost = "";
     ProgressDialog progressDialog;
+    int position = 0; // vị trí của cv bên CVIntroduction
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -534,7 +535,7 @@ public class CVActivity extends AppCompatActivity {
                         //     Toast.makeText(getApplicationContext(), uri.toString(), Toast.LENGTH_SHORT).show();
                         Pdf pdf = new Pdf(MainActivity.uid,"audit1.pdf", uri.toString());
                         MainActivity.mData.child("preview").child("audit").setValue(pdf);
-                        Toast.makeText(getApplicationContext(), "upload success", Toast.LENGTH_SHORT).show();
+                    //    Toast.makeText(getApplicationContext(), "upload success", Toast.LENGTH_SHORT).show();
 
                     }
                 }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -786,6 +787,8 @@ public class CVActivity extends AppCompatActivity {
                     }else {
                         try {
                             updateCVAll();
+                            MainActivity.arrayListCV.remove(position);
+
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -827,7 +830,7 @@ public class CVActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         if(response.equals("success")){
                           //  MainActivity.arrayListCV.add(new PdfCV(MainActivity.uid, cvName.getText().toString(), MainActivity.urlCV, String.valueOf(idCV+1)));
-                            Toast.makeText(getApplicationContext(), "Cập nhật lên Mysql thành công", Toast.LENGTH_SHORT).show();
+                        //    Toast.makeText(getApplicationContext(), "Cập nhật lên Mysql thành công", Toast.LENGTH_SHORT).show();
                             pushAddAll(); // làm ngược lại là ID sẽ tăng lên, k đồng bộ
                         }else {
                             Toast.makeText(getApplicationContext(), "Cập nhật lên Mysql thất bại", Toast.LENGTH_SHORT).show();
@@ -906,6 +909,7 @@ public class CVActivity extends AppCompatActivity {
             cvName.setText(nameUpdate);
             key = getIntent().getStringExtra("key");
             MainActivity.urlCV = urlX;
+            position = getIntent().getIntExtra("position", 0);
         }
         arrayListRemove = new ArrayList<>();
         arrayListAdd = new ArrayList<>();

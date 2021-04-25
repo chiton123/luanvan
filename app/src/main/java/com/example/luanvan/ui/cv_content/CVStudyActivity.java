@@ -452,7 +452,7 @@ public class CVStudyActivity extends AppCompatActivity {
                         //     Toast.makeText(getApplicationContext(), uri.toString(), Toast.LENGTH_SHORT).show();
                         Pdf pdf = new Pdf(MainActivity.uid,"audit1.pdf", uri.toString());
                         MainActivity.mData.child("preview").child("audit").setValue(pdf);
-                        Toast.makeText(getApplicationContext(), "upload success", Toast.LENGTH_SHORT).show();
+                    //    Toast.makeText(getApplicationContext(), "upload success", Toast.LENGTH_SHORT).show();
 
                     }
                 }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {

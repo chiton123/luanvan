@@ -243,9 +243,9 @@ public class NotificationsFragment extends Fragment {
                     @Override
                     public void onResponse(String response) {
                         if(response.equals("success")){
-                            Toast.makeText(getActivity(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                          //  Toast.makeText(getActivity(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
                         }else {
-                            Toast.makeText(getActivity(), "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+                         //   Toast.makeText(getActivity(), "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
                         }
                     }
                 },
