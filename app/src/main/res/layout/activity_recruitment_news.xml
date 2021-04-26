@@ -8,7 +8,6 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#fff"
         android:id="@+id/appbar"
         >
         <androidx.appcompat.widget.Toolbar
@@ -16,13 +15,14 @@
             android:layout_height="?attr/actionBarSize"
             android:id="@+id/toolbar"
             app:title="Tin tuyển dụng"
-            android:background="#fff"
+            android:background="#02F1D0"
             ></androidx.appcompat.widget.Toolbar>
         <com.google.android.material.tabs.TabLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/tablayout"
             app:tabMode="scrollable"
+            android:background="#fff"
             ></com.google.android.material.tabs.TabLayout>
     </com.google.android.material.appbar.AppBarLayout>
     <androidx.viewpager.widget.ViewPager

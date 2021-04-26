@@ -83,7 +83,7 @@ public class RecruitmentNewsActivity extends AppCompatActivity {
             authenticationFragment.onActivityResult(requestCode, resultCode, data);
         }
         if(requestCode == 123 && resultCode == 345){
-            Toast.makeText(getApplicationContext(), "reject ", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(getApplicationContext(), "reject ", Toast.LENGTH_SHORT).show();
             RejectJobFragment rejectJobFragment = (RejectJobFragment) viewPageAdapter.getItem(3);
             rejectJobFragment.onActivityResult(requestCode, resultCode, data);
         }
@@ -96,7 +96,7 @@ public class RecruitmentNewsActivity extends AppCompatActivity {
             outdatedJobFragment.onActivityResult(requestCode, resultCode, data);
         }
         if(requestCode == REQUEST_CODE_ADD_JOB && resultCode == 123){
-            Toast.makeText(getApplicationContext(), "authe ", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(getApplicationContext(), "authe ", Toast.LENGTH_SHORT).show();
             AuthenticationFragment authenticationFragment = (AuthenticationFragment) viewPageAdapter.getItem(1);
             authenticationFragment.onActivityResult(requestCode, resultCode, data);
         }

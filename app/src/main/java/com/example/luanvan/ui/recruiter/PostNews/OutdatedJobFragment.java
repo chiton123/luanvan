@@ -47,7 +47,7 @@ public class OutdatedJobFragment extends Fragment {
                 checkNothing();
                 progressDialog.dismiss();
             }
-        },4000);
+        },3000);
 
         return view;
     }

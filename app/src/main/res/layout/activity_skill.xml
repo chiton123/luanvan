@@ -49,7 +49,7 @@
                     android:textColor="#000000"
                     android:hint="JAVA"
                     android:layout_marginTop="5dp"
-                    android:focusable="false"
+                    android:cursorVisible="false"
                     android:layout_width="match_parent"
                     android:id="@+id/editskill"
                     android:layout_marginRight="10dp"

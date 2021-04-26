@@ -58,9 +58,6 @@ public class AuthenticationFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         if(RecruiterActivity.arrayListAuthenticationJobs.size() == 0){
             getData(1);
-        }else {
-            RecruiterActivity.arrayListAuthenticationJobs.clear();
-            getData(1);
         }
         handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -69,7 +66,7 @@ public class AuthenticationFragment extends Fragment {
                 checkNothing();
                 progressDialog.dismiss();
             }
-        },4000);
+        },3000);
 
         return view;
     }
@@ -131,6 +128,7 @@ public class AuthenticationFragment extends Fragment {
                                         object.getInt("skip")
                                 ));
                             }
+
                             adapter.notifyDataSetChanged();
 
                         } catch (JSONException e) {
@@ -159,8 +157,8 @@ public class AuthenticationFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(requestCode == 123 && resultCode == 234){
-            Toast.makeText(getActivity(), "auth ", Toast.LENGTH_SHORT).show();
+        if(requestCode == 5 && resultCode == 123){
+          //  Toast.makeText(getActivity(), "auth + size: " + RecruiterActivity.arrayListAuthenticationJobs.size(), Toast.LENGTH_SHORT).show();
             adapter.notifyDataSetChanged();
             checkNothing();
         }

@@ -692,12 +692,7 @@ public class CreateScheduleActivity extends AppCompatActivity {
                 ShowTime(2);
             }
         });
-        editNote.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editNote.setFocusable(true);
-            }
-        });
+
 
 
 

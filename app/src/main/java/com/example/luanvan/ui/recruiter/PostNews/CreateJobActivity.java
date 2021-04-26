@@ -324,8 +324,9 @@ public class CreateJobActivity extends AppCompatActivity {
 
                                         idjobJust = Integer.parseInt(response.substring(k+1, response.length()));
                                      //   Toast.makeText(getApplicationContext(), idjobJust + " id", Toast.LENGTH_SHORT).show();
-                                        postNotificationForAdmin(0); // 0: cho admin
                                         getJobRecentCreate();
+                                        postNotificationForAdmin(0); // 0: cho admin
+
                                         postJobSkill();
                                         handler = new Handler();
                                         handler.postDelayed(new Runnable() {
@@ -336,7 +337,7 @@ public class CreateJobActivity extends AppCompatActivity {
                                                 setResult(123);
                                                 finish();
                                             }
-                                        },4000);
+                                        },6000);
 
 
                                     }else {
@@ -429,41 +430,41 @@ public class CreateJobActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            //Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
                             JSONArray jsonArray = new JSONArray(response);
-                            for(int i=0; i < jsonArray.length(); i++){
-                                JSONObject object = jsonArray.getJSONObject(i);
-                                RecruiterActivity.arrayListAuthenticationJobs.add(new JobList(
-                                        object.getInt("id"),
-                                        object.getString("name"),
-                                        object.getInt("idcompany"),
-                                        object.getString("img"),
-                                        object.getString("address"),
-                                        object.getInt("idtype"),
-                                        object.getInt("idprofession"),
-                                        object.getString("start_date"),
-                                        object.getString("end_date"),
-                                        object.getInt("salary_min"),
-                                        object.getInt("salary_max"),
-                                        object.getInt("idarea"),
-                                        object.getString("area"),
-                                        object.getString("experience"),
-                                        object.getInt("number"),
-                                        object.getString("description"),
-                                        object.getString("requirement"),
-                                        object.getString("benefit"),
-                                        object.getInt("status"),
-                                        object.getString("company_name"),
-                                        object.getString("type_job"),
-                                        object.getString("note_reject"),
-                                        object.getInt("document"),
-                                        object.getInt("new_document"),
-                                        object.getInt("interview"),
-                                        object.getInt("work"),
-                                        object.getInt("skip")
-                                ));
-                                AuthenticationFragment.adapter.notifyDataSetChanged();
-                            }
+                            JSONObject object = jsonArray.getJSONObject(0);
+
+                            RecruiterActivity.arrayListAuthenticationJobs.add(new JobList(
+                                    idjobJust,
+                                    object.getString("name"),
+                                    object.getInt("idcompany"),
+                                    object.getString("img"),
+                                    object.getString("address"),
+                                    object.getInt("idtype"),
+                                    object.getInt("idprofession"),
+                                    object.getString("start_date"),
+                                    object.getString("end_date"),
+                                    object.getInt("salary_min"),
+                                    object.getInt("salary_max"),
+                                    object.getInt("idarea"),
+                                    object.getString("area"),
+                                    object.getString("experience"),
+                                    object.getInt("number"),
+                                    object.getString("description"),
+                                    object.getString("requirement"),
+                                    object.getString("benefit"),
+                                    object.getInt("status"),
+                                    object.getString("company_name"),
+                                    object.getString("type_job"),
+                                    object.getString("note_reject"),
+                                    object.getInt("document"),
+                                    object.getInt("new_document"),
+                                    object.getInt("interview"),
+                                    object.getInt("work"),
+                                    object.getInt("skip")
+                            ));
+//                            Toast.makeText(getApplicationContext(), RecruiterActivity.arrayListAuthenticationJobs.size() + ""
+//                                  , Toast.LENGTH_SHORT).show();
 
                         } catch (JSONException e) {
                             e.printStackTrace();

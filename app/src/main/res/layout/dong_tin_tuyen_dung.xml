@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         app:cardCornerRadius="10dp"
         android:id="@+id/cardview"
-        app:cardBackgroundColor="#fff"
+        app:cardBackgroundColor="#F6FBFB"
         >
         <FrameLayout
             android:layout_width="match_parent"
@@ -35,7 +35,7 @@
                        android:layout_height="wrap_content"
                        android:id="@+id/txtposition"
                        android:text="Nhan vien"
-                       android:textColor="#070707"
+                       android:textColor="#D50000"
                        android:textSize="15sp"
                        android:textStyle="bold"
                        ></TextView>
@@ -220,7 +220,10 @@
                        android:layout_width="match_parent"
                        android:layout_height="35dp"
                        android:text="Sửa tin"
-                       android:textColor="#000000"
+                       android:textColor="#fff"
+                       android:layout_marginLeft="15dp"
+                       android:layout_marginRight="15dp"
+                       android:textSize="13sp"
                        android:background="@drawable/button_chinhsuatin"
                        android:id="@+id/buttonadjust"
                        ></Button>
