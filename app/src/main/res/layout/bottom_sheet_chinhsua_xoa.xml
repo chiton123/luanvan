@@ -27,6 +27,7 @@
         android:layout_height="wrap_content"
         android:text="Chỉnh sửa"
         android:textColor="#047DE8"
+        android:textAllCaps="false"
         android:textSize="15sp"
         android:id="@+id/buttonadjust"
         android:background="#fff"
@@ -39,6 +40,7 @@
         ></View>
     <Button
         android:layout_marginTop="5dp"
+        android:textAllCaps="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -54,10 +56,11 @@
         android:layout_height="0.5dp"
         android:background="#000000"
         ></View>
-    <Button
+    <Button 
         android:background="#fff"
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
+        android:textAllCaps="false"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="Đóng"

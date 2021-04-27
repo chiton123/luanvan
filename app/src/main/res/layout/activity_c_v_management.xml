@@ -16,7 +16,7 @@
             android:layout_height="?attr/actionBarSize"
             android:id="@+id/toolbar"
             app:title="Chi tiết vị trí"
-            android:background="#fff"
+            android:background="#02F1D0"
             ></androidx.appcompat.widget.Toolbar>
         <com.google.android.material.tabs.TabLayout
             android:layout_width="match_parent"

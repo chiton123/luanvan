@@ -60,7 +60,7 @@ public class SearchActivity extends AppCompatActivity {
         anhxa();
         actionBar();
         // all jobs
-        getData(0, page);
+        getData(8, page);
         loadMore();
         handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -85,7 +85,7 @@ public class SearchActivity extends AppCompatActivity {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        getData(0,++page);
+                        getData(8,++page);
                         adapter.notifyDataSetChanged();
                         adapter.setIsloaded(false);
 
@@ -185,7 +185,7 @@ public class SearchActivity extends AppCompatActivity {
         if(requestCode == REQUEST_CODE_FILTER && resultCode == 234){
             SearchActivity.arrayList.clear();
             page = 1;
-            getData(0, page);
+            getData(8, page);
             adapter.setIsloaded(false);
             loadMore();
             handler = new Handler();

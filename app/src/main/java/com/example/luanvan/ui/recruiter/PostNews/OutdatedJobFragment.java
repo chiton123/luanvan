@@ -32,7 +32,6 @@ public class OutdatedJobFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_outdated_job, container, false);
-        loading();
         layout = (LinearLayout) view.findViewById(R.id.layout);
         layout_nothing = (LinearLayout) view.findViewById(R.id.layout_nothing);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
@@ -45,9 +44,8 @@ public class OutdatedJobFragment extends Fragment {
             @Override
             public void run() {
                 checkNothing();
-                progressDialog.dismiss();
             }
-        },3000);
+        },2500);
 
         return view;
     }

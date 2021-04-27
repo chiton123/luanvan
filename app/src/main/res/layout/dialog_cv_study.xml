@@ -125,11 +125,13 @@
             android:layout_width="100dp"
             android:layout_height="37dp"
             android:background="@drawable/button_huy"
+            android:textAllCaps="false"
             android:text="Hủy"></Button>
         <Button
             android:layout_marginLeft="30dp"
             android:layout_width="100dp"
             android:layout_height="37dp"
+            android:textAllCaps="false"
             android:text="Lưu"
             android:background="@drawable/button_dangnhap"
             android:textColor="#fff"

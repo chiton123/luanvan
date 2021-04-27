@@ -50,6 +50,7 @@
                 android:id="@+id/buttonquaylai"
                 android:text="Quay lại"
                 android:background="@drawable/button_huy"
+                android:textAllCaps="false"
                 ></Button>
             <Button
                 android:background="@drawable/button_login"
@@ -58,6 +59,7 @@
                 android:layout_width="110dp"
                 android:layout_height="40dp"
                 android:id="@+id/buttonungtuyen"
+                android:textAllCaps="false"
                 android:text="Ứng tuyển"
                 ></Button>
 

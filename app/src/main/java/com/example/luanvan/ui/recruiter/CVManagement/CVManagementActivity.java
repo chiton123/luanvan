@@ -6,8 +6,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Toast;
 
@@ -46,14 +48,32 @@ public class CVManagementActivity extends AppCompatActivity {
     int kind = 0;
     int statusApplication = 0;
     public static int position_job_list = 0; // chỉ dùng được cho danh sách vị trí
+    ProgressDialog progressDialog;
+    Handler handler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_c_v_management);
         anhxa();
         actionBar();
+//        loading();
+//        handler = new Handler();
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                progressDialog.dismiss();
+//            }
+//        },3000);
 
 
+
+    }
+    void loading(){
+        progressDialog = new ProgressDialog(getApplicationContext());
+        progressDialog.setMessage("Loading");
+        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
     }
     // 1: lọc cv, 2: phỏng vấn , 3: nhận việc
     public void reloadFilterCV(){

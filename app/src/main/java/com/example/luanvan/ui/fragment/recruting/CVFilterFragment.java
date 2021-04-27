@@ -53,7 +53,6 @@ public class CVFilterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_c_v_filter, container, false);
-        loading();
         layout = (LinearLayout) view.findViewById(R.id.layout);
         layout_nothing = (LinearLayout) view.findViewById(R.id.layout_nothing);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
@@ -71,20 +70,22 @@ public class CVFilterFragment extends Fragment {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                progressDialog.dismiss();
-                if(CVManageActivity.arrayListCVFilter.size() == 0){
-                    layout_nothing.setVisibility(View.VISIBLE);
-                    layout.setVisibility(View.GONE);
-                }else {
-                    layout_nothing.setVisibility(View.GONE);
-                    layout.setVisibility(View.VISIBLE);
-                }
+                checkNothing();
             }
-        },4000);
+        },3000);
 
         return view;
     }
 
+    public void checkNothing(){
+        if(CVManageActivity.arrayListCVFilter.size() == 0){
+            layout_nothing.setVisibility(View.VISIBLE);
+            layout.setVisibility(View.GONE);
+        }else {
+            layout_nothing.setVisibility(View.GONE);
+            layout.setVisibility(View.VISIBLE);
+        }
+    }
     void loading(){
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("Loading");

@@ -11,19 +11,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center_vertical"
         >
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="35dp"
             android:layout_height="35dp"
+            android:layout_marginTop="8dp"
             android:src="@drawable/userchat"
             android:id="@+id/img"
+
             ></de.hdodenhof.circleimageview.CircleImageView>
         <TextView
             android:layout_marginLeft="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Name"
+            android:gravity="top"
+            android:layout_marginTop="7dp"
             android:textColor="#090908"
             android:textSize="16sp"
             android:id="@+id/name"
@@ -38,6 +41,7 @@
         android:textColor="#047368"
         android:textSize="12sp"
         android:maxLines="1"
+        android:ellipsize="end"
         android:id="@+id/txt_lastmessage"
         ></TextView>
     <View

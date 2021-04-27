@@ -224,6 +224,7 @@
                        android:layout_marginLeft="15dp"
                        android:layout_marginRight="15dp"
                        android:textSize="13sp"
+                       android:textAllCaps="false"
                        android:background="@drawable/button_chinhsuatin"
                        android:id="@+id/buttonadjust"
                        ></Button>

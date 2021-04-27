@@ -35,18 +35,17 @@ public class RecruitmentNewsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recruitment_news);
-        loading();
         anhxa();
         actionBar();
         eventButton();
+        loading();
         handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 progressDialog.dismiss();
             }
-        },4000);
-
+        },2500);
     }
     void loading(){
         progressDialog = new ProgressDialog(this);

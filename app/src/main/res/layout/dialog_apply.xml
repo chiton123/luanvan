@@ -136,12 +136,14 @@
                 android:layout_height="40dp"
                 android:id="@+id/buttonthaydoi"
                 android:text="Thay đổi"
+                android:textAllCaps="false"
                 android:background="@drawable/button_huy"
                 ></Button>
             <Button
                 android:background="@drawable/button_login"
                 android:textColor="#fff"
                 android:layout_marginLeft="20dp"
+                android:textAllCaps="false"
                 android:layout_width="110dp"
                 android:layout_height="40dp"
                 android:id="@+id/buttonsudung"

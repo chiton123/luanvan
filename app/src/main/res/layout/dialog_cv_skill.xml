@@ -61,10 +61,12 @@
             android:text="Hủy"
             android:background="@drawable/button_huy"
             android:id="@+id/huy"
+            android:textAllCaps="false"
             ></Button>
         <Button
             android:layout_marginLeft="30dp"
             android:layout_width="100dp"
+            android:textAllCaps="false"
             android:layout_height="50dp"
             android:text="Lưu"
             android:background="@drawable/button_dangnhap"

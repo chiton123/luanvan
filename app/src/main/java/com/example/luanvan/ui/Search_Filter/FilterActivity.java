@@ -88,7 +88,7 @@ public class FilterActivity extends AppCompatActivity {
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
-                            //    Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
+                              //  Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
                                 SearchActivity.arrayList.clear();
                                 try {
                                     JSONArray jsonArray = new JSONArray(response);
@@ -142,6 +142,7 @@ public class FilterActivity extends AppCompatActivity {
                             @Override
                             public void onErrorResponse(VolleyError error) {
                                 Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                                progressDialog.dismiss();
                             }
                         }){
                     @Override

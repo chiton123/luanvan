@@ -49,7 +49,6 @@ public class InterviewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_interview, container, false);
-        loading();
         layout = (LinearLayout) view.findViewById(R.id.layout);
         layout_nothing = (LinearLayout) view.findViewById(R.id.layout_nothing);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
@@ -68,19 +67,22 @@ public class InterviewFragment extends Fragment {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                progressDialog.dismiss();
-                if(CVManageActivity.arrayListInterView.size() == 0){
-                    layout_nothing.setVisibility(View.VISIBLE);
-                    layout.setVisibility(View.GONE);
-                }else {
-                    layout_nothing.setVisibility(View.GONE);
-                    layout.setVisibility(View.VISIBLE);
-                }
+               checkNothing();
             }
-        },4000);
+        },2200);
 
         return view;
     }
+    void checkNothing(){
+        if(CVManageActivity.arrayListInterView.size() == 0){
+            layout_nothing.setVisibility(View.VISIBLE);
+            layout.setVisibility(View.GONE);
+        }else {
+            layout_nothing.setVisibility(View.GONE);
+            layout.setVisibility(View.VISIBLE);
+        }
+    }
+
     void loading(){
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("Loading");

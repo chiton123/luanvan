@@ -11,7 +11,7 @@
         android:layout_height="?attr/actionBarSize"
         android:id="@+id/toolbar"
         app:title="Tìm kiếm công ty"
-        android:background="#fff"
+        android:background="#02F1D0"
         ></androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
@@ -19,6 +19,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="5dp"
+        android:background="#F0FBF5"
         >
         <SearchView
             android:id="@+id/searchView"

@@ -21,10 +21,10 @@
                 android:layout_height="?attr/actionBarSize"
                 android:id="@+id/toolbar"
                 app:title="Nhà tuyển dụng"
-                android:background="#fff"
+                android:background="#02F1D0"
                 ></androidx.appcompat.widget.Toolbar>
             <LinearLayout
-                android:background="#FBFBFB"
+                android:background="#F0FBF5"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"

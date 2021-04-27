@@ -23,6 +23,7 @@
             android:background="@drawable/button_login"
             android:textColor="#fff"
             android:id="@+id/buttoncreate"
+            android:textAllCaps="false"
             ></Button>
     </LinearLayout>
     <LinearLayout

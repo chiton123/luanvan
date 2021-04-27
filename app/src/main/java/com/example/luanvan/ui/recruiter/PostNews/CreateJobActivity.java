@@ -430,7 +430,7 @@ public class CreateJobActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
+                         //   Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
                             JSONArray jsonArray = new JSONArray(response);
                             JSONObject object = jsonArray.getJSONObject(0);
 

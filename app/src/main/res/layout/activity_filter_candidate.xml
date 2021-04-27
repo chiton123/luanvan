@@ -150,6 +150,7 @@
                 android:id="@+id/buttonhuy"
                 android:background="@drawable/button_huy"
                 android:text="Hủy bộ lọc"
+                android:textAllCaps="false"
                 ></Button>
             <Button
                 android:layout_marginLeft="30dp"
@@ -159,6 +160,7 @@
                 android:background="@drawable/button_login"
                 android:text="Tìm kiếm"
                 android:textColor="#fff"
+                android:textAllCaps="false"
                 ></Button>
         </LinearLayout>
     </RelativeLayout>

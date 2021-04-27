@@ -24,11 +24,12 @@
                 android:background="#fff"
                 ></androidx.appcompat.widget.Toolbar>
             <LinearLayout
-                android:background="#FBFBFB"
+                android:background="#F0FBF5"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:padding="5dp"
+
                 >
                 <GridView
                     android:layout_width="match_parent"

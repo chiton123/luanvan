@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         app:cardCornerRadius="10dp"
         android:id="@+id/cardview"
-        app:cardBackgroundColor="#fff"
+        app:cardBackgroundColor="#F6FBFB"
         >
         <FrameLayout
             android:layout_width="match_parent"

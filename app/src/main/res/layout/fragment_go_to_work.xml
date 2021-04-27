@@ -3,12 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#fff"
     tools:context=".ui.fragment.recruting.GoToWorkFragment">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:id="@+id/layout"
+        android:paddingBottom="20dp"
         >
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"

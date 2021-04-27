@@ -270,6 +270,7 @@
                         android:background="@drawable/button_corner"
                         android:id="@+id/buttonluu"
                         android:textColor="#fff"
+                        android:textAllCaps="false"
                         ></Button>
                     <Button
                         android:layout_marginRight="20dp"
@@ -280,6 +281,7 @@
                         android:background="@drawable/button_huy_xam"
                         android:id="@+id/buttonhuy"
                         android:textColor="#fff"
+                        android:textAllCaps="false"
                         ></Button>
                 </LinearLayout>
             </LinearLayout>

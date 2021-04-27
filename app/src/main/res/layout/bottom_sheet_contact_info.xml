@@ -181,6 +181,7 @@
             android:layout_height="35dp"
             android:background="@drawable/button_shape"
             android:text="Đóng"
+            android:textAllCaps="false"
             android:textSize="13sp"
             android:textColor="#fff"></Button>
 

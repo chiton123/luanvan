@@ -81,6 +81,7 @@
             android:background="@drawable/button_shape"
             android:text="Đồng ý"
             android:textSize="13sp"
+            android:textAllCaps="false"
             android:textColor="#fff"></Button>
 
         <Button
@@ -88,6 +89,7 @@
             android:layout_width="100dp"
             android:layout_height="35dp"
             android:text="Từ chối"
+            android:textAllCaps="false"
             android:background="@drawable/button_huy"
             android:id="@+id/buttontuchoi"
             android:textColor="#000000"
@@ -98,6 +100,7 @@
             android:layout_width="100dp"
             android:layout_height="35dp"
             android:text="Lùi lịch"
+            android:textAllCaps="false"
             android:background="@drawable/button_chinhsua"
             android:id="@+id/buttonluilich"
             android:textColor="#FFFFFF"

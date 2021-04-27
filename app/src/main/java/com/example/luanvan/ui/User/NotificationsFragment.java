@@ -389,6 +389,7 @@ public class NotificationsFragment extends Fragment {
         MainActivity.arraylistChosenArea.clear();
         MainActivity.arrayListChosenProfession.clear();
         MainActivity.userCV = new UserCV();
+        MainActivity.userCV = null;
         MainActivity.experienceCVS.clear();
         MainActivity.studyCVS.clear();
         MainActivity.skillCVS.clear();

@@ -103,6 +103,7 @@
             android:background="#DC0904"
             android:id="@+id/buttoncapnhat"
             android:textColor="#fff"
+            android:textAllCaps="false"
             ></Button>
         <Button
             android:layout_marginRight="20dp"
@@ -112,6 +113,7 @@
             android:text="Hủy"
             android:background="#878585"
             android:id="@+id/buttonhuy"
+            android:textAllCaps="false"
             android:textColor="#fff"
             ></Button>
     </LinearLayout>

@@ -159,6 +159,7 @@
                 android:paddingLeft="10dp"
                 android:background="@drawable/button_nhattin"
                 android:id="@+id/buttonnhantin"
+                android:textAllCaps="false"
                 ></Button>
             <Button
                 android:layout_width="110dp"
@@ -169,6 +170,7 @@
                 android:layout_margin="5dp"
                 android:textSize="11sp"
                 android:id="@+id/buttonungtuyen"
+                android:textAllCaps="false"
                 ></Button>
         </LinearLayout>
     </FrameLayout>

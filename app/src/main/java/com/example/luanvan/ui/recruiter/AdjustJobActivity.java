@@ -405,9 +405,22 @@ public class AdjustJobActivity extends AppCompatActivity {
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(editEnd.getText().equals("") || editStart.getText().equals("") || editAddress.getText().equals("") || editBenefit.getText().equals("")
-                    || editDescription.getText().equals("") || editRequirement.getText().equals("") || editNumber.getText().equals("") || editSalaryMin.getText().equals("")
-                    || editPosition.getText().equals("") || editSalaryMax.getText().equals("")){
+                position = editPosition.getText().toString();
+                address = editAddress.getText().toString();
+                benefit = editBenefit.getText().toString();
+                description = editDescription.getText().toString();
+                requirement = editRequirement.getText().toString();
+                number = editNumber.getText().toString();
+                salary_min = Integer.parseInt(editSalaryMin.getText().toString());
+                salary_max = Integer.parseInt(editSalaryMax.getText().toString());
+                String end = editEnd.getText().toString();
+                String start = editStart.getText().toString();
+                String min = editSalaryMin.getText().toString();
+                String max = editSalaryMax.getText().toString();
+           //     Toast.makeText(getApplicationContext(),"start: " + date_post_start + " start: " + date_post_end, Toast.LENGTH_SHORT).show();
+                if(end.equals("") || start.equals("") || address.equals("") || benefit.equals("")
+                    || description.equals("") || requirement.equals("") || number.equals("") || min.equals("")
+                    || position.equals("") || max.equals("")){
                     Toast.makeText(getApplicationContext(), "Vui lòng điền đủ thông tin", Toast.LENGTH_SHORT).show();
                 }else if(idExperience == 0){
                     Toast.makeText(getApplicationContext(), "Vui lòng chọn kinh nghiệm", Toast.LENGTH_SHORT).show();
@@ -423,15 +436,24 @@ public class AdjustJobActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Ngày bắt đầu phải trước ngày kết thúc", Toast.LENGTH_SHORT).show();
                 }
                 else {
+//                    Toast.makeText(getApplicationContext(), job_id + "", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), position + "", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), address + "", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), benefit + "", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), description + "", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), requirement + "", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), number + "", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), salary_min + "", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), salary_max + "", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), date_post_start + "", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), date_post_end + "", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), idArea + "", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), idProfession + "", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), idExperience + "", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), idKindJob + "", Toast.LENGTH_SHORT).show();
+
                     loading();
-                    position = editPosition.getText().toString();
-                    address = editAddress.getText().toString();
-                    benefit = editBenefit.getText().toString();
-                    description = editDescription.getText().toString();
-                    requirement = editRequirement.getText().toString();
-                    number = editNumber.getText().toString();
-                    salary_min = Integer.parseInt(editSalaryMin.getText().toString());
-                    salary_max = Integer.parseInt(editSalaryMax.getText().toString());
+
 
                     RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
                     StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlUpdateJob,

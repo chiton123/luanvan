@@ -74,6 +74,7 @@
             android:layout_height="40dp"
             android:background="@drawable/button_shape"
             android:text="Chọn"
+            android:textAllCaps="false"
             android:textColor="#fff"></Button>
 
         <Button
@@ -81,6 +82,7 @@
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:text="Hủy"
+            android:textAllCaps="false"
             android:background="@drawable/button_huy"
             android:id="@+id/buttonhuy"
             android:textColor="#000000"

@@ -43,9 +43,10 @@
                 android:background="@drawable/button_dangnhap"
                 android:textColor="#fff"
                 android:text="+ TẠO MỚI"
-                android:textSize="11sp"
+                android:textSize="14sp"
                 android:layout_marginLeft="100dp"
                 android:id="@+id/buttontaomoi"
+                android:textAllCaps="false"
                 ></Button>
         </LinearLayout>
         <RelativeLayout

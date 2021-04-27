@@ -68,6 +68,7 @@
                     android:id="@+id/buttonhuy"
                     android:background="@drawable/button_huy"
                     android:text="Hủy"
+                    android:textAllCaps="false"
                     ></Button>
                 <Button
                     android:layout_marginLeft="20dp"
@@ -77,6 +78,7 @@
                     android:background="@drawable/button_login"
                     android:text="Lưu"
                     android:textColor="#fff"
+                    android:textAllCaps="false"
                     ></Button>
             </LinearLayout>
         </LinearLayout>

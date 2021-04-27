@@ -291,6 +291,7 @@
             android:id="@+id/buttonxacnhan"
             android:textColor="#FFFFFF"
             android:background="@drawable/button_xacnhan"
+            android:textAllCaps="false"
             ></Button>
         <Button
             android:layout_width="120dp"
@@ -302,6 +303,7 @@
             android:layout_marginLeft="30dp"
             android:textColor="#000000"
             android:background="@drawable/background_button_view_cv"
+            android:textAllCaps="false"
             ></Button>
     </LinearLayout>
 

@@ -51,7 +51,6 @@ public class GoToWorkFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_go_to_work, container, false);
-        loading();
         layout = (LinearLayout) view.findViewById(R.id.layout);
         layout_nothing = (LinearLayout) view.findViewById(R.id.layout_nothing);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
@@ -70,18 +69,20 @@ public class GoToWorkFragment extends Fragment {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                progressDialog.dismiss();
-                if(CVManageActivity.arrayListGoToWork.size() == 0){
-                    layout_nothing.setVisibility(View.VISIBLE);
-                    layout.setVisibility(View.GONE);
-                }else {
-                    layout_nothing.setVisibility(View.GONE);
-                    layout.setVisibility(View.VISIBLE);
-                }
+               checkNothing();
             }
-        },4000);
+        },2200);
 
         return view;
+    }
+    void checkNothing(){
+        if(CVManageActivity.arrayListGoToWork.size() == 0){
+            layout_nothing.setVisibility(View.VISIBLE);
+            layout.setVisibility(View.GONE);
+        }else {
+            layout_nothing.setVisibility(View.GONE);
+            layout.setVisibility(View.VISIBLE);
+        }
     }
     void loading(){
         progressDialog = new ProgressDialog(getActivity());

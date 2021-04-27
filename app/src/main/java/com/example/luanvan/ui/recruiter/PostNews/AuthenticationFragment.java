@@ -44,11 +44,12 @@ public class AuthenticationFragment extends Fragment {
     ProgressDialog progressDialog;
     // fragment  1: Đang hiển thị, 2 : Chờ xác thực, 3: Hết hạn, 4: Từ chối , khi chuyển qua bên adjustJob thì cập nhật tương ứng với fragment
    // kind: 0 là của joblistfragment chuyển qua, 1: là của tin tuyển dụng chuyển qua
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_authentication, container, false);
-        loading();
+
         layout = (LinearLayout) view.findViewById(R.id.layout);
         layout_nothing = (LinearLayout) view.findViewById(R.id.layout_nothing);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
@@ -64,9 +65,8 @@ public class AuthenticationFragment extends Fragment {
             @Override
             public void run() {
                 checkNothing();
-                progressDialog.dismiss();
             }
-        },3000);
+        },2500);
 
         return view;
     }
