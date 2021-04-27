@@ -50,7 +50,6 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.ItemHolder> {
                             candidateArrayList.get(i).setCheck(0);
                         }
                     }
-
                     arrayList.remove(position);
                     notifyDataSetChanged();
                 }

@@ -123,10 +123,9 @@ public class CVIntroductionActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     adapter.notifyDataSetChanged();
-                  //  Toast.makeText(getApplicationContext(), "size " + MainActivity.arrayListCV.size(), Toast.LENGTH_SHORT).show();
                     checkNothing();
                 }
-            },1000);
+            },2500);
 
             handler = new Handler();
             handler.postDelayed(new Runnable() {

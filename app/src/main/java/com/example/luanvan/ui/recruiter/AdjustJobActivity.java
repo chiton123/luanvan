@@ -42,6 +42,7 @@ import com.example.luanvan.ui.Model.SkillCandidate;
 import com.example.luanvan.ui.Model.SkillKey;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CandidateDocumentFragment;
+import com.example.luanvan.ui.recruiter.CVManagement.JobListFragment;
 import com.example.luanvan.ui.recruiter.PostNews.CreateJobActivity;
 import com.example.luanvan.ui.recruiter.PostNews.DisplayJobFragment;
 import com.example.luanvan.ui.recruiter.PostNews.RecruitmentNewsActivity;
@@ -591,6 +592,7 @@ public class AdjustJobActivity extends AppCompatActivity {
         RecruiterActivity.arrayListJobList.get(position_job).setIdtype(idKindJob);
         RecruiterActivity.arrayListJobList.get(position_job).setStart_date(date_post_start);
         RecruiterActivity.arrayListJobList.get(position_job).setEnd_date(date_post_end);
+        JobListFragment.adapter.notifyDataSetChanged();
         // cập nhật cho hồ sơ ứng tuyển
         for(int i=0; i < CVManageActivity.arrayListAll.size(); i++){
             if(CVManageActivity.arrayListAll.get(i).getJob_id() == job_id){

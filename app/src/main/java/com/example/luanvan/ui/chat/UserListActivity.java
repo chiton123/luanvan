@@ -7,13 +7,16 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.luanvan.MainActivity;
@@ -38,14 +41,36 @@ public class UserListActivity extends AppCompatActivity {
     DatabaseReference reference;
     ArrayList<String> userList;
     SearchView searchView;
+    LinearLayout layout, layout_nothing;
+    Handler handler;
+    ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_list);
+      //  loading();
         anhxa();
         actionBar();
 
 
+
+    }
+
+    void loading(){
+        progressDialog = new ProgressDialog(getApplicationContext());
+        progressDialog.setMessage("Loading");
+        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
+    }
+    void checkNothing(){
+        if(arrayList.size() == 0){
+            layout.setVisibility(View.GONE);
+            layout_nothing.setVisibility(View.VISIBLE);
+        }else {
+            layout.setVisibility(View.VISIBLE);
+            layout_nothing.setVisibility(View.GONE);
+        }
     }
 
     private void actionBar() {
@@ -98,6 +123,8 @@ public class UserListActivity extends AppCompatActivity {
         arrayList = new ArrayList<>();
         adapter = new UserAdapter(UserListActivity.this, arrayList, UserListActivity.this);
         recyclerView.setAdapter(adapter);
+        layout = (LinearLayout) findViewById(R.id.layout);
+        layout_nothing = (LinearLayout) findViewById(R.id.layout_nothing);
         reference = FirebaseDatabase.getInstance().getReference("Chats");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -151,6 +178,14 @@ public class UserListActivity extends AppCompatActivity {
 
             }
         });
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                checkNothing();
+            }
+        },2000);
+
 
     }
     public void readChat(){

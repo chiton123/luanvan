@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.AuthFailureError;
@@ -29,8 +30,13 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
+import com.example.luanvan.ui.Adapter.skill.AssessCandidateAdapter;
+import com.example.luanvan.ui.Adapter.skill.SkillPickAdapter;
 import com.example.luanvan.ui.Model.Applicant;
 import com.example.luanvan.ui.Model.Profile;
+import com.example.luanvan.ui.Model.SkillCandidate;
+import com.example.luanvan.ui.Model.SkillKey;
+import com.example.luanvan.ui.UpdateInfo.SkillActivity;
 import com.example.luanvan.ui.fragment.recruting.CVFilterFragment;
 import com.example.luanvan.ui.fragment.recruting.GoToWorkFragment;
 import com.example.luanvan.ui.fragment.recruting.InterviewFragment;
@@ -42,6 +48,7 @@ import com.example.luanvan.ui.recruiter.RecruiterActivity;
 import com.example.luanvan.ui.schedule.ScheduleActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.StorageReference;
 
@@ -55,7 +62,7 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
     ArrayList<Profile> arrayList;
     Activity activity;
     Applicant applicant;
-    int statusApplication = 0;
+    public static int statusApplication = 0;
     int positionX; // vị trí arraylist của cvmanagmentactivity 3 cái cvfilter, interview, work
     String note = "";
     int kind;
@@ -66,6 +73,9 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
     String name_cv = "";
     String type_notification = "";
     String content = "";
+    // bottomsheet
+    BottomSheetDialog bottomSheetAssess;
+    AssessCandidateAdapter assessCandidateAdapter;
 
     public ProfileCadidateAdapter(Context context, ArrayList<Profile> arrayList, Activity activity, Applicant applicant, int kind, int positionX,
                                   String url_cv, String name_cv) {
@@ -134,91 +144,105 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
         });
     }
 
-    public void showDialogAccessCandidate(final int position){
+    public void showDialogAccessCandidate(final int position) {
         job_id = applicant.getJob_id();
-        for(int i=0; i < RecruiterActivity.arrayListJobList.size(); i++){
-            if(RecruiterActivity.arrayListJobList.get(i).getId() == job_id){
+        for (int i = 0; i < RecruiterActivity.arrayListJobList.size(); i++) {
+            if (RecruiterActivity.arrayListJobList.get(i).getId() == job_id) {
                 positionJobList = i;
             }
         }
-        final Dialog dialog = new Dialog(activity);
-        dialog.setTitle("Đánh giá ứng viên");
-        dialog.setContentView(R.layout.dialog_access_candidate);
-        dialog.setCancelable(false);
-        TextView txtName = (TextView) dialog.findViewById(R.id.name);
-        final EditText editNote = (EditText) dialog.findViewById(R.id.editnote);
-        Button btnUpdate = (Button) dialog.findViewById(R.id.buttoncapnhat);
-        Button btnCancel = (Button) dialog.findViewById(R.id.buttonhuy);
+        bottomSheetAssess = new BottomSheetDialog(activity, R.style.BottomSheetTheme);
+        View view = LayoutInflater.from(activity).inflate(R.layout.bottom_sheet_assess_candidate, (ViewGroup) activity.findViewById(R.id.bottom_sheet));
+        Button btnUpdate = (Button) view.findViewById(R.id.buttoncapnhat);
+        Button btnCancel = (Button) view.findViewById(R.id.buttondong);
+        TextView txtName = (TextView) view.findViewById(R.id.txtname);
+        TextView txtStatus = (TextView) view.findViewById(R.id.txtstatus);
+        txtName.setText(applicant.getUsername());
+        final EditText editNote = (EditText) view.findViewById(R.id.editnote);
         editNote.setText(applicant.getNote());
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                bottomSheetAssess.dismiss();
             }
         });
+        bottomSheetAssess.setCancelable(false);
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if((statusApplication == 2 || statusApplication == 11)){
-                    if(editNote.getText().toString().equals("")){
+               // Toast.makeText(context, "status: " + statusApplication, Toast.LENGTH_SHORT).show();
+                if ((statusApplication == 2 || statusApplication == 11)) {
+                    if (editNote.getText().toString().equals("")) {
                         Toast.makeText(context, "Vui lòng điền lý do không đạt vào ghi chú", Toast.LENGTH_SHORT).show();
-                    }else {
+                    } else {
                         note = editNote.getText().toString();
                         updateStatus(position);
                         postNotification(0);
-                        dialog.dismiss();
+                        bottomSheetAssess.dismiss();
                     }
 
-                }else {
+                } else {
                     note = editNote.getText().toString();
                     updateStatus(position);
                     postNotification(0);
-                    dialog.dismiss();
+                    bottomSheetAssess.dismiss();
                 }
 
             }
         });
-        Spinner spinner = (Spinner) dialog.findViewById(R.id.spinner);
-        txtName.setText(applicant.getUsername());
-        // lọc CV: 0 chưa đánh giá, 1: đạt yêu cầu, 2: không đạt yêu cầu
-        // phỏng vấn : 3: Chưa liên hệ, 4: Không liên hệ được , 5: Đồng ý phỏng vấn, 6:Từ chối phỏng vấn, 7 Đến phỏng vấn, 8 Không đến phỏng vấn,
-        // 9: Lùi lịch phỏng vấn, 10 Đạt phỏng vấn, 11: Không đạt phỏng vấn
-        // nhận việc: 12: Đã thông báo kết quả, 13: Đã đến nhận việc, 14: Từ chối nhận việc
-        final String[] mang = new String[] {
-                "Chưa đánh giá",
-                "Đạt yêu cầu",
-                "Không đạt yêu cầu",
-                "Chưa liên hệ",
-                "Không liên hệ được",
-                "Đồng ý phỏng vấn",
-                "Từ chối phỏng vấn",
-                "Đến phỏng vấn",
-                "Không đến phỏng vấn",
-                "Lùi lịch phỏng vấn",
-                "Đạt phỏng vấn"
-                ,"Không đạt phỏng vấn",
-                "Đã thông báo kết quả",
-                "Đã đến nhận việc",
-                "Từ chối nhận việc"};
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false));
+        ArrayList<SkillCandidate> arrayListStatus = new ArrayList();
+        arrayListStatus.add(new SkillCandidate(0, "Chưa đánh giá",0));
+        arrayListStatus.add(new SkillCandidate(1, "Đạt yêu cầu",0));
+        arrayListStatus.add(new SkillCandidate(2, "Không đạt yêu cầu",0));
+        arrayListStatus.add(new SkillCandidate(3, "Chưa liên hệ",0));
+        arrayListStatus.add(new SkillCandidate(4, "Không liên hệ được",0));
+        arrayListStatus.add(new SkillCandidate(5, "Đồng ý phỏng vấn",0));
+        arrayListStatus.add(new SkillCandidate(6, "Từ chối phỏng vấn",0));
+        arrayListStatus.add(new SkillCandidate(7, "Đến phỏng vấn",0));
+        arrayListStatus.add(new SkillCandidate(8, "Không đến phỏng vấn",0));
+        arrayListStatus.add(new SkillCandidate(9, "Lùi lịch phỏng vấn",0));
+        arrayListStatus.add(new SkillCandidate(10, "Đạt phỏng vấn",0));
+        arrayListStatus.add(new SkillCandidate(11, "Không đạt phỏng vấn",0));
+        arrayListStatus.add(new SkillCandidate(12, "Đã thông báo kết quả",0));
+        arrayListStatus.add(new SkillCandidate(13, "Đã đến nhận việc",0));
+        arrayListStatus.add(new SkillCandidate(14, "Từ chối nhận việc",0));
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, mang);
-        adapter.setDropDownViewResource(android.R.layout.simple_list_item_1);
-        spinner.setAdapter(adapter);
-        spinner.setSelection(applicant.getStatus());
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, final int position, long id) {
-                //Toast.makeText(context, parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
-                statusApplication = position;
 
+        for (int i = 0; i < arrayListStatus.size(); i++) {
+            if (arrayListStatus.get(i).getId() == applicant.getStatus()) {
+                txtStatus.setText(arrayListStatus.get(i).getName());
+                arrayListStatus.get(i).setCheck(1);
+                notifyDataSetChanged();
             }
+        }
+        assessCandidateAdapter = new AssessCandidateAdapter(activity, arrayListStatus, activity, txtStatus);
+        recyclerView.setAdapter(assessCandidateAdapter);
+            // lọc CV: 0 chưa đánh giá, 1: đạt yêu cầu, 2: không đạt yêu cầu
+            // phỏng vấn : 3: Chưa liên hệ, 4: Không liên hệ được , 5: Đồng ý phỏng vấn, 6:Từ chối phỏng vấn, 7 Đến phỏng vấn, 8 Không đến phỏng vấn,
+            // 9: Lùi lịch phỏng vấn, 10 Đạt phỏng vấn, 11: Không đạt phỏng vấn
+            // nhận việc: 12: Đã thông báo kết quả, 13: Đã đến nhận việc, 14: Từ chối nhận việc
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
 
-            }
-        });
-        dialog.show();
+//        spinner.setSelection(applicant.getStatus());
+//        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, final int position, long id) {
+//                //Toast.makeText(context, parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
+//                statusApplication = position;
+//
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//       });
+        bottomSheetAssess.setContentView(view);
+        bottomSheetAssess.show();
+
     }
 
     public void kindOne(final int position){
@@ -452,6 +476,7 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
                             intent.putExtra("kind", kind);
                             intent.putExtra("status", statusApplication);
                             activity.setResult(123, intent);
+                            statusApplication = 0;
                             activity.finish();
 
                         }else {

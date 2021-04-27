@@ -783,7 +783,6 @@ public class CVActivity extends AppCompatActivity {
                     loading();
                     if(kind == 1){
                         putMysql();
-
                     }else {
                         try {
                             updateCVAll();

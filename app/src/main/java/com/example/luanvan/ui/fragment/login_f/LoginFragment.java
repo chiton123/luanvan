@@ -39,9 +39,12 @@ import com.example.luanvan.ui.modelCV.PdfCV;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
@@ -432,9 +435,9 @@ public class LoginFragment extends Fragment {
                                                         if(task.isSuccessful()){
                                                             Toast.makeText(getActivity(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                                                             MainActivity.password = pass;
-                                                            MainActivity.mUser = MainActivity.mAuth.getCurrentUser();
-
-                                                            MainActivity.uid = MainActivity.mUser.getUid();
+                                                            FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                                                            MainActivity.mAuth = FirebaseAuth.getInstance();
+                                                            MainActivity.uid = firebaseUser.getUid();
                                                        //     Toast.makeText(getActivity(), MainActivity.uid, Toast.LENGTH_SHORT).show();
                                                             editEmail.setText("");
                                                             editPass.setText("");

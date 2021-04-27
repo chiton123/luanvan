@@ -58,27 +58,30 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ItemHolder> im
 
     @Override
     public void onBindViewHolder(@NonNull ItemHolder holder, int position) {
-        final UserF userF = filterArraylist.get(position);
-        holder.txtUsername.setText(userF.getUsername());
-        if(userF.getImageURL().equals("default")){
-            holder.img.setImageResource(R.drawable.userchat);
-        }else {
-            Glide.with(context).load(userF.getImageURL()).into(holder.img);
-        }
-        lastMessage(userF.getId(), holder.txtLastMessage);
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, MessageActivity.class);
-                intent.putExtra("kind",2); // 1: từ detailjob qua, 2: từ chat qua
-                intent.putExtra("idrecruiter", userF.getId());
-                activity.startActivity(intent);
+        if(filterArraylist.size() > 0){
+            final UserF userF = filterArraylist.get(position);
+            holder.txtUsername.setText(userF.getUsername());
+            if(userF.getImageURL().equals("default")){
+                holder.img.setImageResource(R.drawable.userchat);
+            }else {
+                Glide.with(context).load(userF.getImageURL()).into(holder.img);
             }
-        });
-        if(position == filterArraylist.size() - 1){
-            holder.view.setVisibility(View.GONE);
+            lastMessage(userF.getId(), holder.txtLastMessage);
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, MessageActivity.class);
+                    intent.putExtra("kind",2); // 1: từ detailjob qua, 2: từ chat qua
+                    intent.putExtra("idrecruiter", userF.getId());
+                    activity.startActivity(intent);
+                }
+            });
+            if(position == filterArraylist.size() - 1){
+                holder.view.setVisibility(View.GONE);
+            }
         }
+
 
 
     }
