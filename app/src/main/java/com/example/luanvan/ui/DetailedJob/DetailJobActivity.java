@@ -4,13 +4,19 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import android.app.Dialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -37,6 +43,7 @@ import com.example.luanvan.ui.Adapter.ViewPageAdapter;
 import com.example.luanvan.ui.Apply.ChooseCVActivity;
 import com.example.luanvan.ui.Model.Job;
 import com.example.luanvan.ui.Model.Job_Apply;
+import com.example.luanvan.ui.Model.Notification;
 import com.example.luanvan.ui.Model.Schedule;
 import com.example.luanvan.ui.chat.MessageActivity;
 import com.example.luanvan.ui.fragment.job_f.CompanyFragment;
@@ -44,6 +51,10 @@ import com.example.luanvan.ui.fragment.job_f.InfoFragment;
 import com.example.luanvan.ui.fragment.job_f.RelevantJobFragment;
 import com.example.luanvan.ui.home.HomeFragment;
 import com.example.luanvan.ui.login.LoginActivity;
+import com.example.luanvan.ui.notification.CandidateNotificationActivity;
+import com.example.luanvan.ui.notification.RecruiterNotificationActivity;
+import com.example.luanvan.ui.recruiter.LoginRecruiterActivity;
+import com.example.luanvan.ui.recruiter.RecruiterActivity;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -99,9 +110,40 @@ public class DetailJobActivity extends AppCompatActivity {
             checkApplyOrNot();
         }
 
+        createNotificationChannel();
 
 
     }
+
+
+    private void createNotificationChannel() {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel notificationChannel = new NotificationChannel(getString(R.string.NEWS_CHANNEL_ID), getString(R.string.CHANNEL_NEWS),
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            notificationChannel.setDescription(getString(R.string.CHANNEL_DESCRIPTION));
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(notificationChannel);
+
+        }
+
+    }
+    public void phoneNotification(){
+        Intent intent = new Intent(DetailJobActivity.this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this,0, intent,0);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, getString(R.string.NEWS_CHANNEL_ID))
+                .setSmallIcon(R.drawable.notification)
+                .setContentTitle("TOPCV")
+                .setContentText("abccdsdsdsd")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(false);
+
+        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
+        notificationManagerCompat.notify(getResources().getInteger(R.integer.config_navAnimTime), builder.build());
+
+    }
+
 
     private void eventButton() {
         btnApply.setOnClickListener(new View.OnClickListener() {
@@ -302,6 +344,7 @@ public class DetailJobActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         if(response.equals("success")){
                             Toast.makeText(getApplicationContext(), "Thông báo thành công", Toast.LENGTH_SHORT).show();
+                            phoneNotification();
                         }else {
                             Toast.makeText(getApplicationContext(), "Thông báo thất bại", Toast.LENGTH_SHORT).show();
                         }
