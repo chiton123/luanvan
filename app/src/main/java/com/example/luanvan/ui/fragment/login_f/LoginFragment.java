@@ -373,12 +373,13 @@ public class LoginFragment extends Fragment {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                      //  Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_SHORT).show();
                         if(response != null){
                             try {
                                 JSONArray jsonArray = new JSONArray(response);
                                 for(int i=0; i < jsonArray.length(); i++){
                                     JSONObject object = jsonArray.getJSONObject(i);
+                                  //  Toast.makeText(getActivity(), "idskill " + object.getInt("idskill"), Toast.LENGTH_SHORT).show();
                                     MainActivity.skills.add(new Skill(
                                             object.getInt("id"),
                                             object.getInt("iduser"),

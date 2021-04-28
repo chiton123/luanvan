@@ -1,9 +1,13 @@
 package com.example.luanvan.ui.Adapter.admin_a;
 
 import android.app.Activity;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +23,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -290,7 +296,34 @@ public class JobReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     }
 
+    private void createNotificationChannel() {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel notificationChannel = new NotificationChannel(activity.getString(R.string.NEWS_CHANNEL_ID), activity.getString(R.string.CHANNEL_NEWS),
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            notificationChannel.setDescription(activity.getString(R.string.CHANNEL_DESCRIPTION));
+            NotificationManager notificationManager = activity.getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(notificationChannel);
+
+        }
+
+    }
+    public void phoneNotification(){
+        Intent intent = new Intent(activity, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(activity,0, intent,0);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(activity, activity.getString(R.string.NEWS_CHANNEL_ID))
+                .setSmallIcon(R.drawable.topcv)
+                .setContentTitle(type_notification)
+                .setContentText(content)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(false);
+
+        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(activity);
+        notificationManagerCompat.notify(activity.getResources().getInteger(R.integer.config_navAnimTime), builder.build());
+
+    }
     private void postNotification(final int type_user, final int position) {
+        createNotificationChannel();
         RequestQueue requestQueue = Volley.newRequestQueue(activity);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlPostNotificationForAdmin,
                 new Response.Listener<String>() {
@@ -298,6 +331,7 @@ public class JobReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     public void onResponse(String response) {
                         if(response.equals("success")){
                             Toast.makeText(context, "Thông báo thành công", Toast.LENGTH_SHORT).show();
+                            phoneNotification();
                         }else {
                             Toast.makeText(context, "Thông báo thất bại", Toast.LENGTH_SHORT).show();
                         }

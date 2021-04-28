@@ -50,6 +50,7 @@
                     android:hint="JAVA"
                     android:layout_marginTop="5dp"
                     android:cursorVisible="false"
+                    android:focusable="false"
                     android:layout_width="match_parent"
                     android:id="@+id/editskill"
                     android:layout_marginRight="10dp"

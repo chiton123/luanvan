@@ -165,6 +165,7 @@ public class SkillActivity extends AppCompatActivity {
         btncapnhat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+             //   Toast.makeText(getApplicationContext(), "idskill : " + idskill, Toast.LENGTH_SHORT).show();
                 final String name = editname.getText().toString();
                 final String mota = editmota.getText().toString();
                 final float star = ratingBar.getRating();

@@ -59,6 +59,7 @@ public class JobReviewActivity extends AppCompatActivity {
         loadMore();
 
     }
+
     private void loadMore() {
         adapter.setLoadmore(new ILoadMore() {
             @Override

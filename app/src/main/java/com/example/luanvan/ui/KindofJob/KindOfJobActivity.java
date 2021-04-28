@@ -119,10 +119,11 @@ public class KindOfJobActivity extends AppCompatActivity {
         String skill = "(";
         for(int i=0; i < MainActivity.skills.size(); i++){
             if(i == MainActivity.skills.size() - 1){
-                skill += MainActivity.skills.get(i).getId() + ")";
+                skill += MainActivity.skills.get(i).getIdskill() + ")";
             }else {
-                skill += MainActivity.skills.get(i).getId() + ",";
+                skill += MainActivity.skills.get(i).getIdskill() + ",";
             }
+          //  Toast.makeText(getApplicationContext(),  MainActivity.skills.get(i).getIdskill() + ",", Toast.LENGTH_SHORT).show();
         }
 
         String profession = "(";
@@ -146,7 +147,7 @@ public class KindOfJobActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                       // Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
+                    //    Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
                         try {
                             JSONArray jsonArray = new JSONArray(response);
                             for(int i=0; i < jsonArray.length(); i++){

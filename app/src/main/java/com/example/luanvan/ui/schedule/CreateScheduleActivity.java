@@ -2,13 +2,19 @@ package com.example.luanvan.ui.schedule;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -33,6 +39,7 @@ import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.recruit.CandidateScheduleAdapter;
 import com.example.luanvan.ui.Adapter.recruit.PositionScheduleAdapter;
+import com.example.luanvan.ui.DetailedJob.DetailJobActivity;
 import com.example.luanvan.ui.Model.JavaMailAPI;
 import com.example.luanvan.ui.Model.JobList;
 import com.example.luanvan.ui.Model.Schedule;
@@ -94,6 +101,33 @@ public class CreateScheduleActivity extends AppCompatActivity {
         getInfo();
         eventEditText();
         eventButton();
+        createNotificationChannel();
+
+    }
+    private void createNotificationChannel() {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel notificationChannel = new NotificationChannel(getString(R.string.NEWS_CHANNEL_ID), getString(R.string.CHANNEL_NEWS),
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            notificationChannel.setDescription(getString(R.string.CHANNEL_DESCRIPTION));
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(notificationChannel);
+
+        }
+
+    }
+    public void phoneNotification(){
+        Intent intent = new Intent(CreateScheduleActivity.this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this,0, intent,0);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, getString(R.string.NEWS_CHANNEL_ID))
+                .setSmallIcon(R.drawable.topcv)
+                .setContentTitle(type_notification)
+                .setContentText(content)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(false);
+
+        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
+        notificationManagerCompat.notify(getResources().getInteger(R.integer.config_navAnimTime), builder.build());
 
     }
 
@@ -422,6 +456,7 @@ public class CreateScheduleActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         if(response.equals("success")){
                             Toast.makeText(getApplicationContext(), "Thông báo thành công", Toast.LENGTH_SHORT).show();
+                            phoneNotification();
                         }else {
                             Toast.makeText(getApplicationContext(), "Thông báo thất bại", Toast.LENGTH_SHORT).show();
                         }

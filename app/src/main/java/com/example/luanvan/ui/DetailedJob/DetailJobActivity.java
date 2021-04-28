@@ -130,11 +130,10 @@ public class DetailJobActivity extends AppCompatActivity {
     public void phoneNotification(){
         Intent intent = new Intent(DetailJobActivity.this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,0, intent,0);
-
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, getString(R.string.NEWS_CHANNEL_ID))
-                .setSmallIcon(R.drawable.notification)
-                .setContentTitle("TOPCV")
-                .setContentText("abccdsdsdsd")
+                .setSmallIcon(R.drawable.topcv)
+                .setContentTitle(type_notification)
+                .setContentText(content)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(false);
