@@ -13,6 +13,7 @@ import com.example.luanvan.ui.Model.Experience;
 import com.example.luanvan.ui.Model.Notification;
 import com.example.luanvan.ui.Model.NotificationAdmin;
 import com.example.luanvan.ui.Model.Profession;
+import com.example.luanvan.ui.Model.Recruiter;
 import com.example.luanvan.ui.Model.Skill;
 import com.example.luanvan.ui.Model.Study;
 import com.example.luanvan.ui.Model.User;
@@ -74,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
     public static String email_recruiter = "";
     public static String urlCV = "";
     public static User user = new User();
+    public static Recruiter recruiter = new Recruiter();
     public static ArrayList<Study> studies = new ArrayList<>();
     public static ArrayList<Experience> experiences = new ArrayList<>();
     public static ArrayList<Skill> skills = new ArrayList<>();
@@ -131,6 +133,8 @@ public class MainActivity extends AppCompatActivity {
     public static String urllogin = host + "login.php";
     // Đăng nhập nhà tuyển dụng
     public static String urlLoginRecruiter = host + "login_recruiter.php";
+    public static String urlUpdateRecruiter = host + "update_recruiter.php";
+    public static String urlGetInfoRecruiter = host + "recruiter.php";
     // Đăng nhập admin
     public static String urlLoginAdmin = host + "login_admin.php";
     public static String urluserinfo = host + "userinfo.php";

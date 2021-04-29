@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#fff"
     android:layout_marginBottom="60dp"
     tools:context=".ui.User.NotificationsFragment">
     <androidx.appcompat.widget.Toolbar
@@ -14,12 +13,13 @@
         android:background="#02F1D0"
         app:title="Hồ Sơ Của Tôi"
         app:titleTextColor="#000000"
+        android:id="@+id/toolbar"
         ></androidx.appcompat.widget.Toolbar>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="#fff"
+        android:background="#F8F7F7"
         >
         <LinearLayout
             android:layout_width="match_parent"
@@ -91,14 +91,7 @@
                         android:id="@+id/imgprofile"
                         android:layout_gravity="center_horizontal"
                         ></de.hdodenhof.circleimageview.CircleImageView>
-                    <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:id="@+id/edit"
-                        android:src="@drawable/edit"
-                        android:layout_gravity="right"
-                        android:layout_margin="10dp"
-                        ></ImageView>
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -119,31 +112,9 @@
                         android:layout_marginTop="10dp"
                         android:id="@+id/position"
                         ></TextView>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Đăng xuất"
-                        android:textSize="18sp"
-                        android:textColor="#07DD10"
-                        android:layout_gravity="right"
-                        android:layout_marginTop="10dp"
-                        android:id="@+id/logout"
-                        android:layout_marginRight="20dp"
-                        ></TextView>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Đổi mật khẩu"
-                        android:textSize="18sp"
-                        android:textColor="#07DD10"
-                        android:layout_gravity="right"
-                        android:layout_marginTop="10dp"
-                        android:id="@+id/txtchangepassword"
-                        android:layout_marginRight="20dp"
-                        ></TextView>
                     <androidx.appcompat.widget.SwitchCompat
-                        android:layout_marginLeft="150dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginLeft="200dp"
                         android:layout_width="300dp"
                         android:layout_height="wrap_content"
                         android:text="Đang tắt tìm việc"
@@ -158,11 +129,76 @@
                         android:thumbTextPadding="20dp"
                         android:layoutDirection="rtl"
                         ></androidx.appcompat.widget.SwitchCompat>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:layout_marginTop="50dp"
+                        android:layout_marginTop="30dp"
+                        >
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:background="#fff"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:id="@+id/layout_editprofile"
+                            >
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/draw_profile"
+                                android:layout_marginLeft="10dp"
+                                ></ImageView>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Cập nhật thông tin cá nhân"
+                                android:textSize="16sp"
+                                android:textColor="#040404"
+                                android:layout_marginLeft="30dp"
+                                ></TextView>
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:background="#fff"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:id="@+id/layout_passwordreset"
+                            >
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/draw_password_reset"
+                                android:layout_marginLeft="10dp"
+                                ></ImageView>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Đổi mật khẩu"
+                                android:textSize="16sp"
+                                android:textColor="#040404"
+                                android:layout_marginLeft="30dp"
+                                ></TextView>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="30dp"
                         >
                         <androidx.recyclerview.widget.RecyclerView
                             android:layout_width="match_parent"

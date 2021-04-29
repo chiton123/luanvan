@@ -27,6 +27,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
+import com.example.luanvan.ui.Model.Recruiter;
 import com.example.luanvan.ui.User.ResetPasswordActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManagementActivity;
@@ -70,6 +71,48 @@ public class LoginRecruiterActivity extends AppCompatActivity {
         });
 
     }
+    public void getInfo(){
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlGetInfoRecruiter,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(response != null){
+                            try {
+                                JSONArray jsonArray = new JSONArray(response);
+                                JSONObject object = jsonArray.getJSONObject(0);
+                                MainActivity.recruiter = new Recruiter(
+                                    object.getInt("id"),
+                                    object.getString("name"),
+                                    object.getString("email"),
+                                    object.getString("address"),
+                                    object.getInt("phone"),
+                                    object.getString("introduction"),
+                                    object.getInt("status")
+                                );
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("idrecruiter", String.valueOf(MainActivity.iduser));
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
 
     public void logOut(){
         MainActivity.login_recruiter = 0;
@@ -90,6 +133,8 @@ public class LoginRecruiterActivity extends AppCompatActivity {
         MainActivity.email_recruiter = "";
         MainActivity.password = "";
         MainActivity.k_chat = 0;
+        MainActivity.recruiter = new Recruiter();
+
     }
 
 
@@ -143,6 +188,7 @@ public class LoginRecruiterActivity extends AppCompatActivity {
 
                                                     MainActivity.login_recruiter = 1;
                                                     MainActivity.iduser = Integer.parseInt(response);
+                                                    getInfo();
                                                     getCompanyInfo();
                                                     Handler handler = new Handler();
                                                     handler.postDelayed(new Runnable() {

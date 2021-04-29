@@ -8,13 +8,19 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +28,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -37,10 +46,13 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
+import com.example.luanvan.ui.Adapter.admin_a.AdminAdapter;
+import com.example.luanvan.ui.Adapter.admin_a.InfoAdapter;
 import com.example.luanvan.ui.Adapter.update_personal_info.ExperienceAdapter;
 import com.example.luanvan.ui.Adapter.update_personal_info.ProfileAdapter;
 import com.example.luanvan.ui.Adapter.update_personal_info.SkillAdapter;
 import com.example.luanvan.ui.Adapter.update_personal_info.StudyAdapter;
+import com.example.luanvan.ui.Model.Admin;
 import com.example.luanvan.ui.Model.Profile;
 import com.example.luanvan.ui.Model.User;
 import com.example.luanvan.ui.UpdateInfo.EditCombineActivity;
@@ -52,6 +64,7 @@ import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -70,6 +83,7 @@ import static android.app.Activity.RESULT_OK;
 
 
 public class NotificationsFragment extends Fragment {
+    Toolbar toolbar;
     public static StudyAdapter studyAdapter;
     public static ExperienceAdapter experienceAdapter;
     public static SkillAdapter skillAdapter;
@@ -80,8 +94,8 @@ public class NotificationsFragment extends Fragment {
     int REQUEST_CODE_RECRUITER = 333;
     // edit hoc van, kinh nghiem, skill
     int REQUEST_HOCVAN = 111, REQUEST_KINHNGHIEM = 2, REQUEST_KYNANG = 3;
-    ImageView edit;
-    TextView name, positon, company_name, txtLogOut, txtChangePassword;
+
+    TextView name, positon, company_name;
     RecyclerView recyclerView, recyclerViewstudy, recyclerViewexperience, recyclerViewskill;
     ProfileAdapter profileAdapter;
     DatabaseReference reference;
@@ -96,30 +110,31 @@ public class NotificationsFragment extends Fragment {
     MainActivity activity;
     Handler handler;
     SwitchCompat switchCompat;
-
+    LinearLayout layout_editProfile, layout_passwordReset;
+    TextView txtLogout;
     private NotificationsViewModel notificationsViewModel;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         notificationsViewModel =
                 ViewModelProviders.of(this).get(NotificationsViewModel.class);
         View view = inflater.inflate(R.layout.fragment_notifications, container, false);
+        toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        layout_editProfile = (LinearLayout) view.findViewById(R.id.layout_editprofile);
+        layout_passwordReset = (LinearLayout) view.findViewById(R.id.layout_passwordreset);
         linearLayout1 = (LinearLayout) view.findViewById(R.id.linear);
         linearLayout2 = (LinearLayout) view.findViewById(R.id.linear2);
         edithocvan = (ImageView) view.findViewById(R.id.edithocvan);
         editkinhnghiem = (ImageView) view.findViewById(R.id.editkinhnghiem);
         editkynang = (ImageView) view.findViewById(R.id.editkynang);
         btndangnhap = (Button) view.findViewById(R.id.buttondangnhap);
-        edit = (ImageView) view.findViewById(R.id.edit);
         name = (TextView) view.findViewById(R.id.name);
         positon = (TextView) view.findViewById(R.id.position);
         company_name = (TextView) view.findViewById(R.id.company);
         btnLoginRecruiter = (Button) view.findViewById(R.id.buttondangnhaptuyendung);
         scrollView = (ScrollView)  view.findViewById(R.id.scrollview);
-        txtChangePassword = (TextView) view.findViewById(R.id.txtchangepassword);
         switchCompat = (SwitchCompat) view.findViewById(R.id.switchcompat);
         arrayList = new ArrayList<>();
         getProfile();
-        txtLogOut = (TextView) view.findViewById(R.id.logout);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
         recyclerViewexperience = (RecyclerView) view.findViewById(R.id.recycleviewexperience);
         recyclerViewstudy = (RecyclerView) view.findViewById(R.id.recycleviewstudy);
@@ -160,12 +175,9 @@ public class NotificationsFragment extends Fragment {
             },1000);
 
         }
-
         eventLogin();
-        eventUpdateInfo();
         getInfo();
         eventEdit();
-        eventLogout();
         storageReference = FirebaseStorage.getInstance().getReference("photo");
         imgProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,13 +185,72 @@ public class NotificationsFragment extends Fragment {
                 openImage();
             }
         });
-        eventChangePassword();
         if(MainActivity.login == 1){
             checkSwitch();
         }
         eventSwitch();
-
+        eventEditProfileAndPasswordReset();
+//        visabletxtLogout();
         return view;
+    }
+
+    private void eventEditProfileAndPasswordReset() {
+        layout_passwordReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent2 = new Intent(getActivity(), ChangePasswordActivity.class);
+                startActivity(intent2);
+            }
+        });
+        layout_editProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), PersonalInfoActivity.class);
+                startActivityForResult(intent, REQUEST_CODE2);
+            }
+        });
+        MainActivity mainActivity = (MainActivity) getActivity();
+        mainActivity.setSupportActionBar(toolbar);
+        toolbar.inflateMenu(R.menu.menu_main);
+        setHasOptionsMenu(true);
+
+    }
+
+
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_signout, menu);
+        final MenuItem menuItem = menu.findItem(R.id.signout);
+        if(MainActivity.login == 0){
+            menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+            menuItem.setTitle("Đăng nhập");
+        }else {
+            menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+            menuItem.setTitle("Đăng xuất");
+        }
+
+
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.signout:
+                if(MainActivity.login == 1){
+                    setDefault();
+                    getActivity().recreate();
+                    break;
+                }else{
+                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    startActivityForResult(intent, REQUEST_CODE);
+                }
+
+
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void checkSwitch() {
@@ -267,15 +338,7 @@ public class NotificationsFragment extends Fragment {
     }
 
 
-    private void eventChangePassword() {
-        txtChangePassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ChangePasswordActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
+
 
     private void openImage() {
         Intent intent = new Intent();
@@ -408,15 +471,7 @@ public class NotificationsFragment extends Fragment {
 
     }
 
-    private void eventLogout() {
-        txtLogOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setDefault();
-                getActivity().recreate();
-            }
-        });
-    }
+
 
     private void eventEdit() {
         edithocvan.setOnClickListener(new View.OnClickListener() {
@@ -474,16 +529,7 @@ public class NotificationsFragment extends Fragment {
 
     }
 
-    private void eventUpdateInfo() {
-        edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), PersonalInfoActivity.class);
-                startActivityForResult(intent, REQUEST_CODE2);
-            }
-        });
 
-    }
 
     private void eventLogin() {
         btndangnhap.setOnClickListener(new View.OnClickListener() {
@@ -518,6 +564,7 @@ public class NotificationsFragment extends Fragment {
                     scrollView.setVisibility(View.VISIBLE);
                     getInfo();
                     getInfoFromFirebase();
+                    getActivity().invalidateOptionsMenu();
                 }
             },200);
 

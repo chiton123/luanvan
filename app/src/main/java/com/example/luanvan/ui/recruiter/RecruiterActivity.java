@@ -29,6 +29,7 @@ import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.admin_a.AdminAdapter;
 import com.example.luanvan.ui.Adapter.admin_a.AdminAdapter_a;
+import com.example.luanvan.ui.Adapter.admin_a.InfoAdapter;
 import com.example.luanvan.ui.Model.Admin;
 import com.example.luanvan.ui.Model.Chat;
 import com.example.luanvan.ui.Model.JobList;
@@ -39,6 +40,7 @@ import com.example.luanvan.ui.notification.RecruiterNotificationActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
 import com.example.luanvan.ui.recruiter.PostNews.RecruitmentNewsActivity;
 import com.example.luanvan.ui.recruiter.search_r.SearchCandidateActivity;
+import com.example.luanvan.ui.recruiter.updateInfo.UpdateRecruiterActivity;
 import com.example.luanvan.ui.schedule.ScheduleManagementActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
@@ -63,8 +65,8 @@ public class RecruiterActivity extends AppCompatActivity {
     GridView gridView;
     AdminAdapter adminAdapter;
     ListView listView;
-    AdminAdapter_a adapter ;
-    ArrayList<String> arrayListMenu;
+    InfoAdapter infoAdapter ;
+    ArrayList<Admin> arrayListMenu;
     public static TextView txtNotification;
     Handler handler;
     public static ArrayList<NotificationRecruiter> arrayListNotificationRecruiter = new ArrayList<>();
@@ -104,6 +106,10 @@ public class RecruiterActivity extends AppCompatActivity {
                         Intent intent = new Intent();
                         setResult(RESULT_OK);
                         finish();
+                        break;
+                    case 1:
+                        Intent intent1 = new Intent(getApplicationContext(), UpdateRecruiterActivity.class);
+                        startActivity(intent1);
                         break;
 
                 }
@@ -335,10 +341,11 @@ public class RecruiterActivity extends AppCompatActivity {
     private void anhxa() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         arrayListMenu = new ArrayList<>();
-        arrayListMenu.add("Logout");
-        adapter = new AdminAdapter_a(RecruiterActivity.this, arrayListMenu);
+        arrayListMenu.add(new Admin(1, "Đăng xuất", R.drawable.draw_signout));
+        arrayListMenu.add(new Admin(2, "Hồ sơ", R.drawable.draw_profile));
+        infoAdapter = new InfoAdapter(RecruiterActivity.this, arrayListMenu);
         listView = (ListView) findViewById(R.id.listview);
-        listView.setAdapter(adapter);
+        listView.setAdapter(infoAdapter);
         gridView = (GridView) findViewById(R.id.gridview);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerlayout);
         navigationView = (NavigationView) findViewById(R.id.navi);
