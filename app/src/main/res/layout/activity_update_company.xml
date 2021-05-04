@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:id="@+id/toolbar"
-        app:title="Hồ sơ nhà tuyển dụng"
+        app:title="Thông tin công ty"
         android:background="#02F1D0"
         ></androidx.appcompat.widget.Toolbar>
     <ScrollView
@@ -37,7 +37,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Họ tên"
+                        android:text="Tên công ty"
                         android:textColor="#040404"
                         android:textStyle="bold"
                         android:textSize="14sp"
@@ -57,34 +57,7 @@
                         ></EditText>
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="5dp"
-                    >
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Email"
-                        android:textColor="#040404"
-                        android:textStyle="bold"
-                        android:textSize="14sp"
-                        ></TextView>
-                    <EditText
-                        android:paddingLeft="8dp"
-                        android:paddingRight="8dp"
-                        android:textSize="13sp"
-                        android:textColor="#000000"
-                        android:layout_marginTop="5dp"
-                        android:layout_width="match_parent"
-                        android:id="@+id/editemail"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_height="?attr/dropdownListPreferredItemHeight"
-                        android:background="@drawable/edittext_frame"
-                        ></EditText>
-                </LinearLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -119,12 +92,49 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
+                    android:layout_margin="10dp"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Khu vực"
+                        android:textColor="#040404"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        ></TextView>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/edittext_frame"
+                        android:layout_margin="5dp"
+                        >
+                        <Spinner
+                            android:id="@+id/spinnerkhuvuc"
+                            style="@style/Widget.AppCompat.Spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="?attr/dropdownListPreferredItemHeight"
+                            android:background="@drawable/abc_spinner_mtrl_am_alpha"
+                            android:dropDownWidth="300dp"
+                            android:spinnerMode="dialog"
+                            android:dropDownVerticalOffset="?attr/dropdownListPreferredItemHeight"
+                            android:paddingRight="14dp"
+                            android:popupBackground="@android:color/white"
+                            android:popupElevation="3dp" />
+                    </RelativeLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
                     android:padding="5dp"
                     >
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Số điện thoại"
+                        android:text="Website"
                         android:textColor="#040404"
                         android:textStyle="bold"
                         android:textSize="14sp"
@@ -136,8 +146,37 @@
                         android:textColor="#000000"
                         android:layout_marginTop="5dp"
                         android:layout_width="match_parent"
-                        android:id="@+id/editphone"
+                        android:id="@+id/editwebsite"
                         android:inputType="number"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_height="?attr/dropdownListPreferredItemHeight"
+                        android:background="@drawable/edittext_frame"
+                        ></EditText>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="5dp"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Quy mô"
+                        android:textColor="#040404"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        ></TextView>
+                    <EditText
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:textSize="13sp"
+                        android:textColor="#000000"
+                        android:layout_marginTop="5dp"
+                        android:layout_width="match_parent"
+                        android:id="@+id/editsize"
                         android:layout_marginRight="10dp"
                         android:layout_marginLeft="10dp"
                         android:layout_height="?attr/dropdownListPreferredItemHeight"
@@ -160,8 +199,7 @@
                         android:textSize="14sp"
                         ></TextView>
                     <EditText
-                        android:paddingLeft="8dp"
-                        android:paddingRight="8dp"
+                        android:padding="8dp"
                         android:textSize="13sp"
                         android:textColor="#000000"
                         android:layout_marginTop="5dp"
@@ -169,7 +207,7 @@
                         android:id="@+id/editintroduction"
                         android:layout_marginRight="10dp"
                         android:layout_marginLeft="10dp"
-                        android:layout_height="?attr/dropdownListPreferredItemHeight"
+                        android:layout_height="160dp"
                         android:background="@drawable/edittext_frame"
                         ></EditText>
                 </LinearLayout>

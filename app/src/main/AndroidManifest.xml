@@ -16,7 +16,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.recruiter.updateInfo.UpdateRecruiterActivity"></activity>
+        <activity android:name=".ui.admin.RecruiterManagementActivity"></activity>
+        <activity android:name=".ui.admin.UserManagementActivity" />
+        <activity android:name=".ui.recruiter.updateInfo.UpdateCompanyActivity" />
+        <activity android:name=".ui.recruiter.updateInfo.UpdateRecruiterActivity" />
         <activity android:name=".ui.recruiter.search_r.CandidateViewActivity" />
         <activity android:name=".ui.recruiter.search_r.FilterCandidateActivity" />
         <activity android:name=".ui.recruiter.search_r.SearchCandidateActivity" />

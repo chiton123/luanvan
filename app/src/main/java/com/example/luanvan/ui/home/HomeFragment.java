@@ -246,7 +246,6 @@ public class HomeFragment extends Fragment {
                                             object.getString("website"),
                                             object.getString("size"),
                                             object.getInt("number_job"),
-                                            object.getInt("status"),
                                             object.getDouble("vido"),
                                             object.getDouble("kinhdo")
                                     ));

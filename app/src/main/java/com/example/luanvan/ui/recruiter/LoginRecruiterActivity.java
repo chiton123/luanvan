@@ -27,6 +27,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
+import com.example.luanvan.ui.Model.Company;
 import com.example.luanvan.ui.Model.Recruiter;
 import com.example.luanvan.ui.User.ResetPasswordActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
@@ -51,6 +52,7 @@ public class LoginRecruiterActivity extends AppCompatActivity {
     LinearLayout layoutLogin;
     int REQUEST_CODE = 123;
     TextView txt_forgotPassword;
+    public static Company company;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,6 +125,7 @@ public class LoginRecruiterActivity extends AppCompatActivity {
         MainActivity.k = 0;
         MainActivity.idcompany = 0;
         MainActivity.company_name = "";
+        LoginRecruiterActivity.company = new Company();
         RecruiterActivity.arrayListJobList.clear();
         RecruiterActivity.arrayListNotificationRecruiter.clear();
         CVManageActivity.arrayListInterView.clear();
@@ -170,7 +173,7 @@ public class LoginRecruiterActivity extends AppCompatActivity {
                             new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(final String response) {
-                                    if(!response.equals("fail")){
+                                    if(!response.equals("fail") && !response.equals("fail2")){
                                         MainActivity.mAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                             @Override
                                             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -201,11 +204,16 @@ public class LoginRecruiterActivity extends AppCompatActivity {
                                                     },2000);
                                                 }else {
                                                     progressDialog.dismiss();
-                                                    Toast.makeText(getApplicationContext(), "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(getApplicationContext(), "Sai tên hoặc mật khẩu", Toast.LENGTH_SHORT).show();
                                                 }
                                             }
                                         });
-                                    }else {
+                                    }
+                                    else if(response.equals("fail2")){
+                                        progressDialog.dismiss();
+                                        Toast.makeText(getApplicationContext(), "Tài khoản đã bị khóa", Toast.LENGTH_SHORT).show();
+                                    }
+                                    else {
                                         progressDialog.dismiss();
                                         Toast.makeText(getApplicationContext(), "Sai tên hoặc mật khẩu", Toast.LENGTH_SHORT).show();
                                     }
@@ -243,6 +251,21 @@ public class LoginRecruiterActivity extends AppCompatActivity {
                                 JSONObject object = jsonArray.getJSONObject(0);
                                 MainActivity.idcompany = object.getInt("id");
                                 MainActivity.company_name = object.getString("name");
+                                company = new Company(
+                                        object.getInt("id"),
+                                        object.getString("name"),
+                                        object.getString("introduction"),
+                                        object.getString("address"),
+                                        object.getInt("idarea"),
+                                        object.getInt("idowner"),
+                                        object.getString("image"),
+                                        object.getString("image_background"),
+                                        object.getString("website"),
+                                        object.getString("size"),
+                                        object.getInt("number_job"),
+                                        object.getDouble("vido"),
+                                        object.getDouble("kinhdo")
+                                );
 
                             } catch (JSONException e) {
                                 e.printStackTrace();

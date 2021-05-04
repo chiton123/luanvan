@@ -261,7 +261,7 @@ public class LoginFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
                     }
                 }){
             @Override
@@ -428,7 +428,7 @@ public class LoginFragment extends Fragment {
                             new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(final String response) {
-                                    if(!response.equals("fail")){
+                                    if(!response.equals("fail") && !response.equals("fail2")){
                                         MainActivity.mAuth.signInWithEmailAndPassword(email, pass)
                                                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                                                     @Override
@@ -470,6 +470,9 @@ public class LoginFragment extends Fragment {
                                                 });
 
 
+                                    }else if(response.equals("fail2")){
+                                        Toast.makeText(getActivity(), "Tài khoản đã bị khóa", Toast.LENGTH_SHORT).show();
+                                        progressDialog.dismiss();
                                     }else {
                                         Toast.makeText(getActivity(), "Sai tên hoặc mật khẩu", Toast.LENGTH_SHORT).show();
                                         progressDialog.dismiss();

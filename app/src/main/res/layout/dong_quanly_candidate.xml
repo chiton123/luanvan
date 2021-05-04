@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="4dp"
+    android:orientation="vertical"
+    android:padding="5dp">
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="10dp"
+        android:id="@+id/cardview"
+        app:cardBackgroundColor="#F6FBFB"
+        >
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:src="@drawable/mailuser"
+                        android:id="@+id/hinh"
+                        android:layout_margin="3dp"
+                        ></de.hdodenhof.circleimageview.CircleImageView>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginLeft="5dp"
+                        >
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/txtname"
+                            android:text="candidate"
+                            android:textColor="#070707"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            ></TextView>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/txtphone"
+                            android:text="phone"
+                            android:layout_below="@id/cadidateName"
+                            android:textColor="#070707"
+                            android:textSize="14sp"
+                            ></TextView>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/txtemail"
+                            android:text="email"
+                            android:layout_below="@id/cadidateName"
+                            android:textColor="#070707"
+                            android:textSize="14sp"
+                            ></TextView>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="5dp"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtaddress"
+                        android:text="address"
+                        android:textColor="#070707"
+                        android:textSize="14sp"
+                        ></TextView>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtintroduce"
+                        android:text="txtintroduce"
+                        android:layout_below="@id/cadidateName"
+                        android:textColor="#070707"
+                        android:textSize="14sp"
+                        ></TextView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp"
+                    android:gravity="right"
+                    android:padding="5dp"
+                    >
+                    <Button
+                        android:layout_width="120dp"
+                        android:layout_height="35dp"
+                        android:text="Khóa"
+                        android:textSize="10sp"
+                        android:gravity="center"
+                        android:textAllCaps="false"
+                        android:id="@+id/buttonkhoa"
+                        android:textColor="#FFFFFF"
+                        android:background="@drawable/button_xacnhan"
+                        ></Button>
+
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+        </FrameLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

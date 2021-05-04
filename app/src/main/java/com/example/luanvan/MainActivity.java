@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
     public static int color = 0;
 
 
-    public static String host = "http://10.3.74.138:8888/luanvan/";
+    public static String host = "http://10.3.74.54:8888/luanvan/";
     public static String urljob1 = host + "job1.php?page=";
     public static String urlJobCompany = host + "job_company.php";
     public static String urlJobRelate = host + "job_relate.php";
@@ -128,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
     public static String urlCompanyInfo = host + "get_company_info.php";
     public static String urlCompanySearch = host + "get_company.php";
     public static String urlCompanyTop = host + "company_top.php";
+    public static String urlUpdateCompany = host + "update_company.php";
     // dang nhap
     public static String urlRegister = host + "register.php";
     public static String urllogin = host + "login.php";
@@ -137,8 +138,11 @@ public class MainActivity extends AppCompatActivity {
     public static String urlGetInfoRecruiter = host + "recruiter.php";
     // Đăng nhập admin
     public static String urlLoginAdmin = host + "login_admin.php";
+    // User
     public static String urluserinfo = host + "userinfo.php";
+    public static String urlUserAdmin = host + "user_admin.php";
     public static String urlupdateuser = host + "updateuser.php";
+    public static String urlUpdateUserStatus = host + "update_user_status.php";
     public static String urlPutMain = host + "user_update_maincv.php";
     // filter
     public static String urlFilter = host + "filter.php";
@@ -176,6 +180,8 @@ public class MainActivity extends AppCompatActivity {
     public static String urlGetNotification =  host + "get_notification.php";
     // get notification recruiter
     public static String urlGetNotificationRecruiter =  host + "get_notification_recruiter.php";
+    public static String urlUpdateRecruiterStatus = host + "update_recruiter_status.php";
+    public static String urlRecruiterAdmin = host + "recruiter_admin.php";
     // get notification admin
     public static String getUrlGetNotificationAdmin = host + "get_notification_admin.php";
     // update notification status

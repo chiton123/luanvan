@@ -200,6 +200,14 @@ public class AdminActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position){
+                    case 0:
+                        Intent intent1 = new Intent(getApplicationContext(), UserManagementActivity.class);
+                        startActivity(intent1);
+                        break;
+                    case 1:
+                        Intent intent2 = new Intent(getApplicationContext(), RecruiterManagementActivity.class);
+                        startActivity(intent2);
+                        break;
                     case 2:
                         Intent intent = new Intent(getApplicationContext(), JobReviewActivity.class);
                         startActivity(intent);
