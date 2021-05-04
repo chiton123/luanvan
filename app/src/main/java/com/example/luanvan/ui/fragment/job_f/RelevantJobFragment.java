@@ -24,6 +24,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.job.CompanyJobAdapter;
+import com.example.luanvan.ui.DetailedJob.DetailJobActivity;
 import com.example.luanvan.ui.Model.Job;
 import com.example.luanvan.ui.company.CompanyActivity;
 
@@ -31,6 +32,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,6 +46,8 @@ public class RelevantJobFragment extends Fragment {
     LinearLayout layout, layout_nothing;
     ProgressDialog progressDialog;
     Handler handler;
+    int kind;
+    int job_id = 0;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -56,18 +60,95 @@ public class RelevantJobFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         layout = (LinearLayout) view.findViewById(R.id.layout);
         layout_nothing = (LinearLayout) view.findViewById(R.id.layout_nothing);
-        job = (Job) getActivity().getIntent().getSerializableExtra("job");
-        getData();
-        handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                progressDialog.dismiss();
-                checkNothing();
-            }
-        },2000);
+        kind = getActivity().getIntent().getIntExtra("kind",0);
+        if(kind == 0){
+            job = (Job) getActivity().getIntent().getSerializableExtra("job");
+            getData();
+        }else {
+            job_id = getActivity().getIntent().getIntExtra("job_id",0);
+            getJobInfo(job_id);
+            handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                   getData();
+
+                }
+            },3000);
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    progressDialog.dismiss();
+                    checkNothing();
+                }
+            },4000);
+        }
+
+
 
         return view;
+    }
+    // dành cho từ notification chuyển qua
+    public void getJobInfo(final int job_id){
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlJobFromNotification,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //  Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_SHORT).show();
+                        if(response != null){
+                            try {
+                                JSONArray jsonArray = new JSONArray(response);
+                                JSONObject object = jsonArray.getJSONObject(0);
+                                job = new Job(
+                                        object.getInt("id"),
+                                        object.getString("name"),
+                                        object.getInt("idcompany"),
+                                        object.getInt("id_recruiter"),
+                                        object.getString("img"),
+                                        object.getString("address"),
+                                        object.getInt("idtype"),
+                                        object.getInt("idprofession"),
+                                        object.getString("start_date"),
+                                        object.getString("end_date"),
+                                        object.getInt("salary_min"),
+                                        object.getInt("salary_max"),
+                                        object.getInt("idarea"),
+                                        object.getString("area"),
+                                        object.getString("experience"),
+                                        object.getInt("number"),
+                                        object.getString("description"),
+                                        object.getString("requirement"),
+                                        object.getString("benefit"),
+                                        object.getInt("status"),
+                                        object.getString("company_name"),
+                                        object.getString("type_job")
+                                );
+
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("job_id", String.valueOf(job_id));
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+
     }
     public void checkNothing(){
         if(arrayList.size() == 0){
@@ -92,7 +173,7 @@ public class RelevantJobFragment extends Fragment {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        // Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
+                       //  Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_SHORT).show();
                         if(response != null){
                             try {
                                 JSONArray jsonArray = new JSONArray(response);

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -61,6 +62,10 @@ public class CandidateInfoActivity extends AppCompatActivity {
     ArrayList<Profile> arrayList;
     int kind = 0;
     int position = 0; // vị trí của 1 trong 3 mảng ở cvmanagementactivity
+    // để load lại 3 fragment phía trước -> kind, statusapplication
+    public static int status_application = 0;
+
+
 
     ProgressDialog progressDialog;
     @Override
@@ -137,6 +142,10 @@ public class CandidateInfoActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.putExtra("kind", kind);
+                intent.putExtra("status", status_application);
+                setResult(123, intent);
                 finish();
             }
         });

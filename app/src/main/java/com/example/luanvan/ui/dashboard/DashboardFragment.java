@@ -73,10 +73,6 @@ public class DashboardFragment extends Fragment {
                         }
                         break;
                     case 1:
-                        Intent intent = new Intent(getActivity(), SearchCompanyActivity.class);
-                        startActivity(intent);
-                        break;
-                    case 3:
                         if(MainActivity.login == 0){
                             Intent intent1 = new Intent(getActivity(), LoginActivity.class);
                             startActivityForResult(intent1, REQUEST_CODE);
@@ -94,9 +90,7 @@ public class DashboardFragment extends Fragment {
 
     public void addItem(){
         arrayList.add(new Admin(0, "Quản lý CV", R.drawable.cv_dashbard));
-        arrayList.add(new Admin(1, "Tìm kiếm công ty", R.drawable.company));
-        arrayList.add(new Admin(2, "Thương hiệu uy tín", R.drawable.good_company));
-        arrayList.add(new Admin(3, "Lịch hẹn", R.drawable.schedule));
+        arrayList.add(new Admin(1, "Lịch hẹn", R.drawable.schedule));
 
     }
 

@@ -43,6 +43,7 @@ import com.example.luanvan.ui.fragment.recruting.InterviewFragment;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManagementActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CandidateDocumentFragment;
+import com.example.luanvan.ui.recruiter.CVManagement.CandidateInfoActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.JobListFragment;
 import com.example.luanvan.ui.recruiter.RecruiterActivity;
 import com.example.luanvan.ui.schedule.ScheduleActivity;
@@ -471,13 +472,13 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
                             JobListFragment.adapter.notifyDataSetChanged();
 
                             infoNothing(); // khi k có ứng viên thì báo k có
-
-                            Intent intent = new Intent();
-                            intent.putExtra("kind", kind);
-                            intent.putExtra("status", statusApplication);
-                            activity.setResult(123, intent);
+                            CandidateInfoActivity.status_application = statusApplication;
+//                            Intent intent = new Intent();
+//                            intent.putExtra("kind", kind);
+//                            intent.putExtra("status", statusApplication);
+//                            activity.setResult(123, intent);
                             statusApplication = 0;
-                            activity.finish();
+                         //   activity.finish();
 
                         }else {
                             Toast.makeText(context, "Cập nhật thất bại", Toast.LENGTH_SHORT).show();

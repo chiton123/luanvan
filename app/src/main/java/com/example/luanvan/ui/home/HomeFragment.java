@@ -47,6 +47,7 @@ import com.example.luanvan.ui.Model.Job;
 import com.example.luanvan.ui.Model.Notification;
 import com.example.luanvan.ui.Search_Filter.SearchActivity;
 import com.example.luanvan.ui.chat.UserListActivity;
+import com.example.luanvan.ui.company.SearchCompanyActivity;
 import com.example.luanvan.ui.login.LoginActivity;
 import com.example.luanvan.ui.notification.CandidateNotificationActivity;
 import com.google.firebase.database.DataSnapshot;
@@ -192,15 +193,8 @@ public class HomeFragment extends Fragment {
 
                         break;
                     case 5:
-                        if(MainActivity.login == 1){
-                            Intent intent5 = new Intent(getActivity(), KindOfJobActivity.class);
-                            intent5.putExtra("kind", 5);
-                            startActivity(intent5);
-                        }else {
-                            Intent intent4 = new Intent(getActivity(), LoginActivity.class);
-                            startActivity(intent4);
-                        }
-
+                        Intent intent5 = new Intent(getActivity(), SearchCompanyActivity.class);
+                        startActivity(intent5);
                         break;
                     case 6:
                         Intent intent6 = new Intent(getActivity(), KindOfJobActivity.class);
@@ -276,7 +270,7 @@ public class HomeFragment extends Fragment {
         arrayListJob.add(new Admin(2, "Việc làm thêm", R.drawable.m_parttimejob));
         arrayListJob.add(new Admin(3, "Việc toàn thời gian", R.drawable.m_fulltimejob));
         arrayListJob.add(new Admin(4, "Việc đã ứng tuyển", R.drawable.m_appliedjob));
-        arrayListJob.add(new Admin(5, "Việc quan tâm", R.drawable.m_lovejob));
+        arrayListJob.add(new Admin(5, "Tìm kiếm công ty", R.drawable.company));
         arrayListJob.add(new Admin(6, "Việc mới nhất", R.drawable.m_newjob));
         arrayListJob.add(new Admin(7, "Việc phù hợp", R.drawable.m_suitablejob));
 
