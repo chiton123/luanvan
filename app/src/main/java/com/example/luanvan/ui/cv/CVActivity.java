@@ -48,9 +48,13 @@ import com.example.luanvan.ui.Adapter.add_remove.AddAdapter;
 import com.example.luanvan.ui.Adapter.add_remove.TitleAdapter;
 import com.example.luanvan.ui.Model.Pdf;
 import com.example.luanvan.ui.Model.Title;
+import com.example.luanvan.ui.modelCV.ExperienceCV;
 import com.example.luanvan.ui.modelCV.PdfCV;
+import com.example.luanvan.ui.modelCV.SkillCV;
+import com.example.luanvan.ui.modelCV.StudyCV;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -120,12 +124,134 @@ public class CVActivity extends AppCompatActivity {
         actionBar();
         getIDCV();
 
-        eventPDF();
         eventButton();
         storageReference = FirebaseStorage.getInstance().getReference();
+        if(kind == 2){
+            getInfoSkill();
+            getInfoStudy();
+            getInfoCV();
+            getInfoGoal();
+            getInfoExperience();
+        }
+        eventPDF();
 
 
     }
+    // get info of CV
+    private void getInfoExperience() {
+
+        MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(CVActivity.key).child("experience").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot x : snapshot.getChildren()){
+                    ExperienceCV a = x.getValue(ExperienceCV.class);
+                    experienceCVS.add(a);
+                }
+               // Toast.makeText(getApplicationContext(), "size ex: " + experienceCVS.size(), Toast.LENGTH_SHORT).show();
+
+                //   Toast.makeText(getApplicationContext(), "" + skillCVS.size(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+    private void getInfoGoal() {
+        MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(CVActivity.key).child("goal").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String goal = snapshot.getValue(String.class);
+                MainActivity.goal = goal;
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+    }
+    void getInfoCV(){
+        final ArrayList<String> list = new ArrayList<>();
+        final int[] i = {0};
+        MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(CVActivity.key).child("info").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                String chuoi = snapshot.getValue(String.class);
+                list.add(chuoi);
+                //Toast.makeText(getApplicationContext(), chuoi, Toast.LENGTH_SHORT).show();
+                if(i[0] == 6){
+                    MainActivity.userCV.setUsername(list.get(6));
+                    MainActivity.userCV.setAddress(list.get(0));
+                    MainActivity.userCV.setPosition(list.get(5));
+                    MainActivity.userCV.setEmail(list.get(2));
+                    MainActivity.userCV.setPhone(list.get(4));
+                    MainActivity.userCV.setBirthday(list.get(1));
+                    MainActivity.userCV.setGender(list.get(3));
+                }
+                i[0] = i[0] + 1;
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    public void getInfoStudy(){
+        MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(CVActivity.key).child("study").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot x : snapshot.getChildren()){
+                    StudyCV a = x.getValue(StudyCV.class);
+                    MainActivity.studyCVS.add(a);
+                }
+              //  Toast.makeText(getApplicationContext(), MainActivity.studyCVS.size() + " study", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+    private void getInfoSkill() {
+        MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(CVActivity.key).child("skill").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot x : snapshot.getChildren()){
+                    SkillCV a = x.getValue(SkillCV.class);
+                    MainActivity.skillCVS.add(a);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     void loading(){
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading");
@@ -253,7 +379,7 @@ public class CVActivity extends AppCompatActivity {
                 webView.loadUrl(finalUrl);
                 progressDialog.dismiss();
             }
-        },3000);
+        },10000);
 
     }
 
@@ -302,7 +428,7 @@ public class CVActivity extends AppCompatActivity {
 
         paint1.setColor(Color.WHITE);
         paint1.setTextAlign(Paint.Align.LEFT);
-        if(a == 1){
+        if(a == 1 || kind == 2){
             paint1.setTextSize(45);
             canvas.drawText(MainActivity.userCV.getUsername(), 30, 80, paint1);
             paint1.setTextSize(30);
@@ -335,7 +461,7 @@ public class CVActivity extends AppCompatActivity {
         if(checkGoal == 0){
             x0 = a0;
             canvas.drawText("MỤC TIÊU NGHỀ NGHIỆP", 30, x0, titlePaint);
-            if(b == 1){
+            if(b == 1 || kind == 2){
                 canvas.drawText(MainActivity.goal, 30, x0 + 70, contentPaint);
             }else {
                 canvas.drawText(MainActivity.goalDefault, 30, x0 + 70, contentPaint);
@@ -357,7 +483,7 @@ public class CVActivity extends AppCompatActivity {
             canvas.drawText("HỌC VẤN", 30,  x1 - 50, titlePaint);
             titlePaint2.setTextSize(30);
             titlePaint2.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-            if(c == 1){
+            if(c == 1 || kind == 2){
                 for(int i=0; i < MainActivity.studyCVS.size(); i++){
                     if(i < 4){
                         canvas.drawText(MainActivity.studyCVS.get(i).getSchool(), 30, x1 + i*180, titlePaint2);
@@ -414,7 +540,7 @@ public class CVActivity extends AppCompatActivity {
             }
 
             canvas.drawText("KINH NGHIỆM", 30, x2, titlePaint);
-            if(d == 1){
+            if(d == 1 || kind == 2){
                 for(int i=0; i < experienceCVS.size(); i++){
                     if(i < 4){
                         canvas.drawText(experienceCVS.get(i).getStart()+"-"+experienceCVS.get(i).getEnd(), 30, x2 + 50 + i*180, contentPaint);
@@ -491,7 +617,7 @@ public class CVActivity extends AppCompatActivity {
 
             canvas.drawText("KỸ NĂNG", 30, x3, titlePaint);
             int width = 300, height = 50;
-            if(e == 1){
+            if(e == 1 || kind == 2){
                 for(int i=0; i < MainActivity.skillCVS.size(); i++){
                     if(i < 4){
                         canvas.drawText(MainActivity.skillCVS.get(i).getName(), 30, x3 + 50 + i*90, contentPaint);
@@ -634,22 +760,22 @@ public class CVActivity extends AppCompatActivity {
         // skill
         if( checkSkill == 0){
             if(MainActivity.checkFirstSkill == 1){
-                MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("com/example/luanvan/ui/Adapter/skill").removeValue();
+                MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("skill").removeValue();
                 for(int i=0; i < MainActivity.skillCVS.size(); i++){
                     String keyx = MainActivity.mData.push().getKey();
                     MainActivity.skillCVS.get(i).setId(keyx);
-                    MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("com/example/luanvan/ui/Adapter/skill").push().setValue(MainActivity.skillCVS.get(i));
+                    MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("skill").push().setValue(MainActivity.skillCVS.get(i));
                 }
             }else {
                 for(int i=0; i < MainActivity.skillCVArray.size(); i++){
                     String keyx = MainActivity.mData.push().getKey();
                     MainActivity.skillCVArray.get(i).setId(keyx);
-                    MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(String.valueOf(CVActivity.idCV+1)).child("com/example/luanvan/ui/Adapter/skill").push().setValue(MainActivity.skillCVArray.get(i));
+                    MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(String.valueOf(CVActivity.idCV+1)).child("skill").push().setValue(MainActivity.skillCVArray.get(i));
                 }
             }
 
         }else if(checkSkill == 1){
-            MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("com/example/luanvan/ui/Adapter/skill").removeValue();
+            MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("skill").removeValue();
         }
 
     }
@@ -710,13 +836,13 @@ public class CVActivity extends AppCompatActivity {
             for(int i=0; i < MainActivity.skillCVS.size(); i++){
                 String keyx = MainActivity.mData.push().getKey();
                 MainActivity.skillCVS.get(i).setId(keyx);
-                MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(String.valueOf(CVActivity.idCV+1)).child("com/example/luanvan/ui/Adapter/skill").push().setValue(MainActivity.skillCVS.get(i));
+                MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(String.valueOf(CVActivity.idCV+1)).child("skill").push().setValue(MainActivity.skillCVS.get(i));
             }
         }else {
             for(int i=0; i < MainActivity.skillCVArray.size(); i++){
                 String keyx = MainActivity.mData.push().getKey();
                 MainActivity.skillCVArray.get(i).setId(keyx);
-                MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(String.valueOf(CVActivity.idCV+1)).child("com/example/luanvan/ui/Adapter/skill").push().setValue(MainActivity.skillCVArray.get(i));
+                MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(String.valueOf(CVActivity.idCV+1)).child("skill").push().setValue(MainActivity.skillCVArray.get(i));
             }
         }
     }
@@ -786,8 +912,12 @@ public class CVActivity extends AppCompatActivity {
                         putMysql();
                     }else {
                         try {
-                            updateCVAll();
-                            MainActivity.arrayListCV.remove(position);
+                            if(MainActivity.checkFirstStudy != 0 || MainActivity.checkFirstSkill != 0 || MainActivity.checkFirstInfo != 0
+                            || MainActivity.checkFirstGoal != 0 || MainActivity.checkFirstExperience != 0){
+                                updateCVAll();
+                                MainActivity.arrayListCV.remove(position);
+                            }
+
 
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -864,6 +994,8 @@ public class CVActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 MainActivity.urlCV = "";
+                Intent intent = new Intent();
+                setResult(5);
                 finish();
             }
         });
@@ -887,7 +1019,7 @@ public class CVActivity extends AppCompatActivity {
                 }else {
                     checkExperience = 1;
                 }
-                if(snapshot.hasChild("com/example/luanvan/ui/Adapter/skill")){
+                if(snapshot.hasChild("skill")){
                     checkSkill = 0;
                 }else {
                     checkSkill = 1;

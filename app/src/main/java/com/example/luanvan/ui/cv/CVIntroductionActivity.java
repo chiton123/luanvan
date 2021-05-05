@@ -96,6 +96,13 @@ public class CVIntroductionActivity extends AppCompatActivity {
         MainActivity.checkFirstInfo = 0;
         MainActivity.skillCVS.clear();
         MainActivity.userCV = new UserCV();
+        MainActivity.userCV.setUsername(MainActivity.userCVDefault.getUsername());
+        MainActivity.userCV.setGender(MainActivity.userCVDefault.getGender());
+        MainActivity.userCV.setBirthday(MainActivity.userCVDefault.getBirthday());
+        MainActivity.userCV.setEmail(MainActivity.userCVDefault.getEmail());
+        MainActivity.userCV.setPhone(MainActivity.userCVDefault.getPhone());
+        MainActivity.userCV.setAddress(MainActivity.userCVDefault.getAddress());
+        MainActivity.userCV.setPosition(MainActivity.userCVDefault.getPosition());
         MainActivity.experienceCVS.clear();
         MainActivity.studyCVS.clear();
         MainActivity.goal = "";
@@ -114,7 +121,17 @@ public class CVIntroductionActivity extends AppCompatActivity {
                 public void run() {
                     getBackDefault();
                 }
-            },5000);
+            },2000);
+        }
+        // toolbar finish
+        if(requestCode == 123 && resultCode == 5){
+            handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    getBackDefault();
+                }
+            },1000);
         }
         // them
         if(resultCode == 123 && requestCode == REQUEST_CODE){
@@ -136,6 +153,7 @@ public class CVIntroductionActivity extends AppCompatActivity {
                 }
             },5000);
         }
+
 
         super.onActivityResult(requestCode, resultCode, data);
     }

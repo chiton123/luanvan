@@ -72,6 +72,7 @@ public class CVGoalActivity extends AppCompatActivity {
         storageReference = FirebaseStorage.getInstance().getReference();
         getInfo();
 
+
     }
     void loading(){
         progressDialog = new ProgressDialog(this);
@@ -80,7 +81,7 @@ public class CVGoalActivity extends AppCompatActivity {
         progressDialog.show();
         progressDialog.setCancelable(false);
     }
-    private void getData() {
+    private void getInfoGoal() {
         MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(CVActivity.key).child("goal").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -102,7 +103,7 @@ public class CVGoalActivity extends AppCompatActivity {
         }else if(MainActivity.checkFirstGoal == 1){
             editContent.setText(MainActivity.goal);
         }else if(MainActivity.checkFirstGoal == 0 && CVActivity.kind == 2) {
-            getData();
+            getInfoGoal();
         }
 
     }
@@ -144,7 +145,7 @@ public class CVGoalActivity extends AppCompatActivity {
 
         paint1.setColor(Color.WHITE);
         paint1.setTextAlign(Paint.Align.LEFT);
-        if(a == 1){
+        if(a == 1 || kind == 2){
             paint1.setTextSize(45);
             canvas.drawText(MainActivity.userCV.getUsername(), 30, 80, paint1);
             paint1.setTextSize(30);
@@ -177,7 +178,7 @@ public class CVGoalActivity extends AppCompatActivity {
         if(checkGoal == 0){
             x0 = a0;
             canvas.drawText("MỤC TIÊU NGHỀ NGHIỆP", 30, x0, titlePaint);
-            if(b == 1){
+            if(b == 1 || kind == 2){
                 canvas.drawText(MainActivity.goal, 30, x0 + 70, contentPaint);
             }else {
                 canvas.drawText(MainActivity.goalDefault, 30, x0 + 70, contentPaint);
@@ -199,7 +200,7 @@ public class CVGoalActivity extends AppCompatActivity {
             canvas.drawText("HỌC VẤN", 30,  x1 - 50, titlePaint);
             titlePaint2.setTextSize(30);
             titlePaint2.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-            if(c == 1){
+            if(c == 1 || kind == 2){
                 for(int i=0; i < MainActivity.studyCVS.size(); i++){
                     if(i < 4){
                         canvas.drawText(MainActivity.studyCVS.get(i).getSchool(), 30, x1 + i*180, titlePaint2);
@@ -256,7 +257,7 @@ public class CVGoalActivity extends AppCompatActivity {
             }
 
             canvas.drawText("KINH NGHIỆM", 30, x2, titlePaint);
-            if(d == 1){
+            if(d == 1 || kind == 2){
                 for(int i=0; i < experienceCVS.size(); i++){
                     if(i < 4){
                         canvas.drawText(experienceCVS.get(i).getStart()+"-"+experienceCVS.get(i).getEnd(), 30, x2 + 50 + i*180, contentPaint);
@@ -333,7 +334,7 @@ public class CVGoalActivity extends AppCompatActivity {
 
             canvas.drawText("KỸ NĂNG", 30, x3, titlePaint);
             int width = 300, height = 50;
-            if(e == 1){
+            if(e == 1 || kind == 2){
                 for(int i=0; i < MainActivity.skillCVS.size(); i++){
                     if(i < 4){
                         canvas.drawText(MainActivity.skillCVS.get(i).getName(), 30, x3 + 50 + i*90, contentPaint);

@@ -86,8 +86,10 @@ public class CVStudyActivity extends AppCompatActivity {
         anhxa();
         actionBar();
         eventButton();
+        MainActivity.studyCVS.clear();
+        getInfoStudy();
+
         storageReference = FirebaseStorage.getInstance().getReference();
-        getInfo();
         handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -104,6 +106,26 @@ public class CVStudyActivity extends AppCompatActivity {
         progressDialog.show();
         progressDialog.setCancelable(false);
     }
+    public void getInfoStudy(){
+        if(MainActivity.checkFirstStudy == 0 && CVActivity.kind == 2) {
+            MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(CVActivity.key).child("study").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for(DataSnapshot x : snapshot.getChildren()){
+                        StudyCV a = x.getValue(StudyCV.class);
+                        MainActivity.studyCVS.add(a);
+                        adapter.notifyDataSetChanged();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+
+    }
     public void checkNothing(){
         if(MainActivity.studyCVS.size() == 0){
             layout_nothing.setVisibility(View.VISIBLE);
@@ -114,30 +136,9 @@ public class CVStudyActivity extends AppCompatActivity {
         }
     }
 
-    private void getData() {
-        MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(CVActivity.key).child("study").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot x : snapshot.getChildren()){
-                    StudyCV a = x.getValue(StudyCV.class);
-                    MainActivity.studyCVS.add(a);
-                    adapter.notifyDataSetChanged();
-                }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
-    }
 
-    public void getInfo(){
-        if(MainActivity.checkFirstStudy == 0 && CVActivity.kind == 2) {
-            getData();
-        }
-
-    }
     public void showDialog(){
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -221,7 +222,7 @@ public class CVStudyActivity extends AppCompatActivity {
 
         paint1.setColor(Color.WHITE);
         paint1.setTextAlign(Paint.Align.LEFT);
-        if(a == 1){
+        if(a == 1 || kind == 2){
             paint1.setTextSize(45);
             canvas.drawText(MainActivity.userCV.getUsername(), 30, 80, paint1);
             paint1.setTextSize(30);
@@ -254,7 +255,7 @@ public class CVStudyActivity extends AppCompatActivity {
         if(checkGoal == 0){
             x0 = a0;
             canvas.drawText("MỤC TIÊU NGHỀ NGHIỆP", 30, x0, titlePaint);
-            if(b == 1){
+            if(b == 1 || kind == 2){
                 canvas.drawText(MainActivity.goal, 30, x0 + 70, contentPaint);
             }else {
                 canvas.drawText(MainActivity.goalDefault, 30, x0 + 70, contentPaint);
@@ -276,20 +277,20 @@ public class CVStudyActivity extends AppCompatActivity {
             canvas.drawText("HỌC VẤN", 30,  x1 - 50, titlePaint);
             titlePaint2.setTextSize(30);
             titlePaint2.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-            if(c == 1){
+            if(c == 1 || kind == 2){
                 for(int i=0; i < MainActivity.studyCVS.size(); i++){
                     if(i < 4){
                         canvas.drawText(MainActivity.studyCVS.get(i).getSchool(), 30, x1 + i*180, titlePaint2);
                         canvas.drawText(MainActivity.studyCVS.get(i).getStart() + " - " + MainActivity.studyCVS.get(i).getEnd(), 30, x1 + 50 + i*180, contentPaint);
                         canvas.drawText("CHUYÊN NGÀNH: " + MainActivity.studyCVS.get(i).getMajor(), 500, x1 + i*180, titlePaint2 );
-                   //     canvas.drawText(MainActivity.studyCVS.get(i).getDescription(), 500, x1 + 50 + i*180, contentPaint);
+                        //     canvas.drawText(MainActivity.studyCVS.get(i).getDescription(), 500, x1 + 50 + i*180, contentPaint);
                         TextPaint mTextPaint=new TextPaint();
                         mTextPaint.setTextSize(30);
                         mTextPaint.setColor(Color.BLACK);
                         StaticLayout mTextLayout = new StaticLayout(xuongdong(MainActivity.studyCVS.get(i).getDescription()), mTextPaint, canvas.getWidth(), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
 
                         canvas.save();
-                    // calculate x and y position where your text will be placed
+                        // calculate x and y position where your text will be placed
 
                         int textX = 500;
                         int textY = x1 + 20+ i*180;
@@ -333,7 +334,7 @@ public class CVStudyActivity extends AppCompatActivity {
             }
 
             canvas.drawText("KINH NGHIỆM", 30, x2, titlePaint);
-            if(d == 1){
+            if(d == 1 || kind == 2){
                 for(int i=0; i < experienceCVS.size(); i++){
                     if(i < 4){
                         canvas.drawText(experienceCVS.get(i).getStart()+"-"+experienceCVS.get(i).getEnd(), 30, x2 + 50 + i*180, contentPaint);
@@ -410,7 +411,7 @@ public class CVStudyActivity extends AppCompatActivity {
 
             canvas.drawText("KỸ NĂNG", 30, x3, titlePaint);
             int width = 300, height = 50;
-            if(e == 1){
+            if(e == 1 || kind == 2){
                 for(int i=0; i < MainActivity.skillCVS.size(); i++){
                     if(i < 4){
                         canvas.drawText(MainActivity.skillCVS.get(i).getName(), 30, x3 + 50 + i*90, contentPaint);

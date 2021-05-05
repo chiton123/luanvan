@@ -84,8 +84,10 @@ public class CVExperienceActivity extends AppCompatActivity {
         anhxa();
         actionBar();
         eventButton();
+        experienceCVS.clear();
+        getInfoExperience();
+
         storageReference = FirebaseStorage.getInstance().getReference();
-        getInfo();
         handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -96,7 +98,28 @@ public class CVExperienceActivity extends AppCompatActivity {
         },1500);
 
     }
+    private void getInfoExperience() {
+        if(MainActivity.checkFirstExperience == 0 && CVActivity.kind == 2){
+            MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(CVActivity.key).child("experience").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for(DataSnapshot x : snapshot.getChildren()){
+                        ExperienceCV a = x.getValue(ExperienceCV.class);
+                        experienceCVS.add(a);
+                        adapter.notifyDataSetChanged();
+                    }
 
+                    //   Toast.makeText(getApplicationContext(), "" + skillCVS.size(), Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+
+    }
     void loading(){
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading");
@@ -115,33 +138,9 @@ public class CVExperienceActivity extends AppCompatActivity {
         }
     }
 
-    private void getData() {
-        MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(CVActivity.key).child("experience").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot x : snapshot.getChildren()){
-                    ExperienceCV a = x.getValue(ExperienceCV.class);
-                    experienceCVS.add(a);
-                    adapter.notifyDataSetChanged();
-                }
-
-                //   Toast.makeText(getApplicationContext(), "" + skillCVS.size(), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
 
 
-    private void getInfo() {
-        if(MainActivity.checkFirstExperience == 0 && CVActivity.kind == 2){
-            getData();
-        }
 
-    }
 
     public void showDialog(){
         final Dialog dialog = new Dialog(this);
@@ -225,7 +224,7 @@ public class CVExperienceActivity extends AppCompatActivity {
 
         paint1.setColor(Color.WHITE);
         paint1.setTextAlign(Paint.Align.LEFT);
-        if(a == 1){
+        if(a == 1 || kind == 2){
             paint1.setTextSize(45);
             canvas.drawText(MainActivity.userCV.getUsername(), 30, 80, paint1);
             paint1.setTextSize(30);
@@ -258,7 +257,7 @@ public class CVExperienceActivity extends AppCompatActivity {
         if(checkGoal == 0){
             x0 = a0;
             canvas.drawText("MỤC TIÊU NGHỀ NGHIỆP", 30, x0, titlePaint);
-            if(b == 1){
+            if(b == 1 || kind == 2){
                 canvas.drawText(MainActivity.goal, 30, x0 + 70, contentPaint);
             }else {
                 canvas.drawText(MainActivity.goalDefault, 30, x0 + 70, contentPaint);
@@ -280,7 +279,7 @@ public class CVExperienceActivity extends AppCompatActivity {
             canvas.drawText("HỌC VẤN", 30,  x1 - 50, titlePaint);
             titlePaint2.setTextSize(30);
             titlePaint2.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-            if(c == 1){
+            if(c == 1 || kind == 2){
                 for(int i=0; i < MainActivity.studyCVS.size(); i++){
                     if(i < 4){
                         canvas.drawText(MainActivity.studyCVS.get(i).getSchool(), 30, x1 + i*180, titlePaint2);
@@ -337,7 +336,7 @@ public class CVExperienceActivity extends AppCompatActivity {
             }
 
             canvas.drawText("KINH NGHIỆM", 30, x2, titlePaint);
-            if(d == 1){
+            if(d == 1 || kind == 2){
                 for(int i=0; i < experienceCVS.size(); i++){
                     if(i < 4){
                         canvas.drawText(experienceCVS.get(i).getStart()+"-"+experienceCVS.get(i).getEnd(), 30, x2 + 50 + i*180, contentPaint);
@@ -414,7 +413,7 @@ public class CVExperienceActivity extends AppCompatActivity {
 
             canvas.drawText("KỸ NĂNG", 30, x3, titlePaint);
             int width = 300, height = 50;
-            if(e == 1){
+            if(e == 1 || kind == 2){
                 for(int i=0; i < MainActivity.skillCVS.size(); i++){
                     if(i < 4){
                         canvas.drawText(MainActivity.skillCVS.get(i).getName(), 30, x3 + 50 + i*90, contentPaint);

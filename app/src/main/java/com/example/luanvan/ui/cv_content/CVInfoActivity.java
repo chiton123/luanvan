@@ -126,7 +126,7 @@ public class CVInfoActivity extends AppCompatActivity {
 
         paint1.setColor(Color.WHITE);
         paint1.setTextAlign(Paint.Align.LEFT);
-        if(a == 1){
+        if(a == 1 || kind == 2){
             paint1.setTextSize(45);
             canvas.drawText(MainActivity.userCV.getUsername(), 30, 80, paint1);
             paint1.setTextSize(30);
@@ -159,7 +159,7 @@ public class CVInfoActivity extends AppCompatActivity {
         if(checkGoal == 0){
             x0 = a0;
             canvas.drawText("MỤC TIÊU NGHỀ NGHIỆP", 30, x0, titlePaint);
-            if(b == 1){
+            if(b == 1 || kind == 2){
                 canvas.drawText(MainActivity.goal, 30, x0 + 70, contentPaint);
             }else {
                 canvas.drawText(MainActivity.goalDefault, 30, x0 + 70, contentPaint);
@@ -181,7 +181,7 @@ public class CVInfoActivity extends AppCompatActivity {
             canvas.drawText("HỌC VẤN", 30,  x1 - 50, titlePaint);
             titlePaint2.setTextSize(30);
             titlePaint2.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-            if(c == 1){
+            if(c == 1 || kind == 2){
                 for(int i=0; i < MainActivity.studyCVS.size(); i++){
                     if(i < 4){
                         canvas.drawText(MainActivity.studyCVS.get(i).getSchool(), 30, x1 + i*180, titlePaint2);
@@ -238,7 +238,7 @@ public class CVInfoActivity extends AppCompatActivity {
             }
 
             canvas.drawText("KINH NGHIỆM", 30, x2, titlePaint);
-            if(d == 1){
+            if(d == 1 || kind == 2){
                 for(int i=0; i < experienceCVS.size(); i++){
                     if(i < 4){
                         canvas.drawText(experienceCVS.get(i).getStart()+"-"+experienceCVS.get(i).getEnd(), 30, x2 + 50 + i*180, contentPaint);
@@ -315,7 +315,7 @@ public class CVInfoActivity extends AppCompatActivity {
 
             canvas.drawText("KỸ NĂNG", 30, x3, titlePaint);
             int width = 300, height = 50;
-            if(e == 1){
+            if(e == 1 || kind == 2){
                 for(int i=0; i < MainActivity.skillCVS.size(); i++){
                     if(i < 4){
                         canvas.drawText(MainActivity.skillCVS.get(i).getName(), 30, x3 + 50 + i*90, contentPaint);
@@ -428,51 +428,51 @@ public class CVInfoActivity extends AppCompatActivity {
             editbirthday.setText(MainActivity.userCV.getBirthday());
         }
     }
-    // update function
-    public void getInfoUpdate(){
-        final ArrayList<String> list = new ArrayList<>();
-        final int[] i = {0};
-        MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(CVActivity.key).child("info").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                String chuoi = snapshot.getValue(String.class);
-                list.add(chuoi);
-                if(i[0] == 6){
-                    editname.setText(list.get(6));
-                    editaddress.setText(list.get(0));
-                    editposition.setText(list.get(5));
-                    editemail.setText(list.get(2));
-                    editphone.setText(list.get(4));
-                    editgender.setText(list.get(3));
-                    editbirthday.setText(list.get(1));
+    void getInfoCV(){
+        if(MainActivity.checkFirstInfo == 0 && CVActivity.kind == 2){
+            final ArrayList<String> list = new ArrayList<>();
+            final int[] i = {0};
+            MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(CVActivity.key).child("info").addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                    String chuoi = snapshot.getValue(String.class);
+                    list.add(chuoi);
+                    if(i[0] == 6){
+                        editname.setText(list.get(6));
+                        editaddress.setText(list.get(0));
+                        editposition.setText(list.get(5));
+                        editemail.setText(list.get(2));
+                        editphone.setText(list.get(4));
+                        editgender.setText(list.get(3));
+                        editbirthday.setText(list.get(1));
+                    }
+                    i[0] = i[0] + 1;
                 }
-                i[0] = i[0] + 1;
-            }
 
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
-            }
+                }
 
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot snapshot) {
 
-            }
+                }
 
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
-            }
+                }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
-
-
-
+                }
+            });
+        }
     }
+
+
 
     private void getInfo() {
         //Toast.makeText(getApplicationContext(), "kind " + CVActivity.kind, Toast.LENGTH_SHORT).show();
@@ -480,9 +480,8 @@ public class CVInfoActivity extends AppCompatActivity {
             getInfoAdd();
         }else if(MainActivity.checkFirstInfo == 1){
             getInfoAdd();
-        }else if(MainActivity.checkFirstInfo == 0 && CVActivity.kind == 2){
-            getInfoUpdate();
         }
+        getInfoCV();
 
     }
 
