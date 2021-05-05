@@ -52,6 +52,7 @@ import com.example.luanvan.ui.modelCV.ExperienceCV;
 import com.example.luanvan.ui.modelCV.PdfCV;
 import com.example.luanvan.ui.modelCV.SkillCV;
 import com.example.luanvan.ui.modelCV.StudyCV;
+import com.example.luanvan.ui.modelCV.UserCV;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
@@ -185,13 +186,14 @@ public class CVActivity extends AppCompatActivity {
                 list.add(chuoi);
                 //Toast.makeText(getApplicationContext(), chuoi, Toast.LENGTH_SHORT).show();
                 if(i[0] == 6){
-                    MainActivity.userCV.setUsername(list.get(6));
-                    MainActivity.userCV.setAddress(list.get(0));
-                    MainActivity.userCV.setPosition(list.get(5));
-                    MainActivity.userCV.setEmail(list.get(2));
-                    MainActivity.userCV.setPhone(list.get(4));
-                    MainActivity.userCV.setBirthday(list.get(1));
-                    MainActivity.userCV.setGender(list.get(3));
+                    MainActivity.userCV = new UserCV(list.get(6), list.get(5),list.get(2),list.get(4),list.get(0),list.get(3),list.get(1));
+//                    MainActivity.userCV.setUsername(list.get(6));
+//                    MainActivity.userCV.setAddress(list.get(0));
+//                    MainActivity.userCV.setPosition(list.get(5));
+//                    MainActivity.userCV.setEmail(list.get(2));
+//                    MainActivity.userCV.setPhone(list.get(4));
+//                    MainActivity.userCV.setBirthday(list.get(1));
+//                    MainActivity.userCV.setGender(list.get(3));
                 }
                 i[0] = i[0] + 1;
             }
@@ -371,6 +373,7 @@ public class CVActivity extends AppCompatActivity {
         }else {
             url1 += urlX;
         }
+       // Toast.makeText(getApplicationContext(), url1, Toast.LENGTH_SHORT).show();
         handler = new Handler();
         final String finalUrl = url1;
         handler.postDelayed(new Runnable() {
@@ -379,7 +382,7 @@ public class CVActivity extends AppCompatActivity {
                 webView.loadUrl(finalUrl);
                 progressDialog.dismiss();
             }
-        },10000);
+        },7000);
 
     }
 
@@ -649,7 +652,8 @@ public class CVActivity extends AppCompatActivity {
         File file = new File(Environment.getExternalStorageDirectory(), "/a10.pdf");
         pdfDocument.writeTo(new FileOutputStream(file));
         pdfDocument.close();
-        CVNameToPost = idCV + "_" + cvName.getText().toString();
+
+        CVNameToPost =  cvName.getText().toString();
         // lưu thật sự file pdf, còn CV content như goal, study ... thì chỉ lưu nháp trong file abc.pdf thôi, k dc giống nhe
         storageReference.child(CVNameToPost+".pdf").putFile(Uri.fromFile(file))
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -699,7 +703,7 @@ public class CVActivity extends AppCompatActivity {
 
     public void updateInfoCVAll(){
         MainActivity.mData.child("cv").child(MainActivity.uid).child(key).removeValue();
-        PdfCV pdfCV = new PdfCV(MainActivity.uid, idCV + "_" + cvName.getText().toString(), MainActivity.urlCV, key);
+        PdfCV pdfCV = new PdfCV(MainActivity.uid,  cvName.getText().toString(), MainActivity.urlCV, key);
         MainActivity.mData.child("cv").child(MainActivity.uid).child(key).push().setValue(pdfCV);
         // khi checkfirst = 1, nghĩa là đã cập nhật, nên cập nhật lại CSDL
         // info
@@ -857,7 +861,7 @@ public class CVActivity extends AppCompatActivity {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    PdfCV pdfCV = new PdfCV(MainActivity.uid, idCV + "_" + cvName.getText().toString(), MainActivity.urlCV, key);
+                    PdfCV pdfCV = new PdfCV(MainActivity.uid,  cvName.getText().toString(), MainActivity.urlCV, key);
                     MainActivity.mData.child("cv").child(MainActivity.uid).child(String.valueOf(idCV + 1)).push().setValue(pdfCV);
                 }
             },3000);
@@ -903,7 +907,7 @@ public class CVActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.luu:
-                String cv_name = idCV + "_" + cvName.getText().toString();
+                String cv_name = cvName.getText().toString();
                 if(cv_name.equals("")){
                     Toast.makeText(getApplicationContext(), "Vui lòng điền tên CV", Toast.LENGTH_SHORT).show();
                 }else {
@@ -913,7 +917,7 @@ public class CVActivity extends AppCompatActivity {
                     }else {
                         try {
                             if(MainActivity.checkFirstStudy != 0 || MainActivity.checkFirstSkill != 0 || MainActivity.checkFirstInfo != 0
-                            || MainActivity.checkFirstGoal != 0 || MainActivity.checkFirstExperience != 0){
+                            || MainActivity.checkFirstGoal != 0 || MainActivity.checkFirstExperience != 0 || nameUpdate.equals(cvName.getText().toString())){
                                 updateCVAll();
                                 MainActivity.arrayListCV.remove(position);
                             }
@@ -962,8 +966,6 @@ public class CVActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         if(response.equals("success")){
-                          //  MainActivity.arrayListCV.add(new PdfCV(MainActivity.uid, cvName.getText().toString(), MainActivity.urlCV, String.valueOf(idCV+1)));
-                        //    Toast.makeText(getApplicationContext(), "Cập nhật lên Mysql thành công", Toast.LENGTH_SHORT).show();
                             pushAddAll(); // làm ngược lại là ID sẽ tăng lên, k đồng bộ
                         }else {
                             Toast.makeText(getApplicationContext(), "Cập nhật lên Mysql thất bại", Toast.LENGTH_SHORT).show();
