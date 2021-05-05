@@ -35,6 +35,7 @@ import com.example.luanvan.ui.recruiter.CVManagement.CVManagementActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseUser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -182,9 +183,8 @@ public class LoginRecruiterActivity extends AppCompatActivity {
                                                     Toast.makeText(getApplicationContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                                                     MainActivity.email_recruiter = email;
                                                     MainActivity.password = pass;
-                                                    MainActivity.mUser = MainActivity.mAuth.getCurrentUser();
-
-                                                    MainActivity.uid = MainActivity.mUser.getUid();
+                                                    FirebaseUser firebaseUser = MainActivity.mAuth.getCurrentUser();
+                                                    MainActivity.uid = firebaseUser.getUid();
 
                                                     editEmail.setText("");
                                                     editPass.setText("");

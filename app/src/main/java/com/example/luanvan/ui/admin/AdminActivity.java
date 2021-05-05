@@ -29,11 +29,13 @@ import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.admin_a.AdminAdapter;
 import com.example.luanvan.ui.Adapter.admin_a.AdminAdapter_a;
+import com.example.luanvan.ui.Adapter.admin_a.InfoAdapter;
 import com.example.luanvan.ui.Model.Admin;
 import com.example.luanvan.ui.Model.NotificationAdmin;
 import com.example.luanvan.ui.Model.NotificationRecruiter;
 import com.example.luanvan.ui.notification.AdminNotificationActivity;
 import com.example.luanvan.ui.notification.RecruiterNotificationActivity;
+import com.example.luanvan.ui.recruiter.RecruiterActivity;
 import com.google.android.material.navigation.NavigationView;
 
 import org.json.JSONArray;
@@ -52,8 +54,8 @@ public class AdminActivity extends AppCompatActivity {
     GridView gridView;
     AdminAdapter adminAdapter;
     ListView listView;
-    AdminAdapter_a adapter ;
-    ArrayList<String> arrayListMenu;
+    InfoAdapter infoAdapter ;
+    ArrayList<Admin> arrayListMenu;
     public static TextView txtNotification;
     Handler handler;
     @Override
@@ -239,10 +241,10 @@ public class AdminActivity extends AppCompatActivity {
     }
     private void anhxa() {
         arrayListMenu = new ArrayList<>();
-        arrayListMenu.add("Logout");
-        adapter = new AdminAdapter_a(AdminActivity.this, arrayListMenu);
+        arrayListMenu.add(new Admin(1, "Đăng xuất", R.drawable.draw_signout));
+        infoAdapter = new InfoAdapter(AdminActivity.this, arrayListMenu);
         listView = (ListView) findViewById(R.id.listview);
-        listView.setAdapter(adapter);
+        listView.setAdapter(infoAdapter);
         gridView = (GridView) findViewById(R.id.gridview);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerlayout);
         navigationView = (NavigationView) findViewById(R.id.navi);

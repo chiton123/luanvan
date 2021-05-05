@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
     public static DatabaseReference mData = FirebaseDatabase.getInstance().getReference("one");
     public static DatabaseReference mUserData = FirebaseDatabase.getInstance().getReference("Users");
     public static FirebaseAuth mAuth = FirebaseAuth.getInstance() ;
-    public static FirebaseUser mUser;
     public static FirebaseStorage storage = FirebaseStorage.getInstance();
     // fragment notification
 

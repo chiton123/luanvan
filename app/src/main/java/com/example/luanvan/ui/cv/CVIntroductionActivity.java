@@ -100,6 +100,7 @@ public class CVIntroductionActivity extends AppCompatActivity {
         MainActivity.studyCVS.clear();
         MainActivity.goal = "";
         MainActivity.color = 0;
+        MainActivity.urlCV = "";
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

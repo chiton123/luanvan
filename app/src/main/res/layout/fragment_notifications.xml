@@ -114,12 +114,12 @@
                         ></TextView>
                     <androidx.appcompat.widget.SwitchCompat
                         android:layout_marginTop="20dp"
-                        android:layout_marginLeft="200dp"
+                        android:layout_marginLeft="150dp"
                         android:layout_width="300dp"
                         android:layout_height="wrap_content"
                         android:text="Đang tắt tìm việc"
                         android:textColor="#FD0303"
-                        android:textSize="18sp"
+                        android:textSize="16sp"
                         android:id="@+id/switchcompat"
                         app:thumbTint="@drawable/switch_thumb"
                         app:trackTint="@drawable/switch_track"

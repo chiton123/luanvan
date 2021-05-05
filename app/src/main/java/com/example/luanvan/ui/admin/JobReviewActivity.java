@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -30,7 +31,6 @@ import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.admin_a.JobReviewAdapter;
-import com.example.luanvan.ui.Interface.ILoadMore;
 import com.example.luanvan.ui.Model.JobPost;
 
 import org.json.JSONArray;
@@ -47,43 +47,52 @@ public class JobReviewActivity extends AppCompatActivity {
     JobReviewAdapter adapter;
     public static ArrayList<JobPost> jobPostArrayList;
     Handler handler;
-    int page = 1;
     SearchView searchView;
+    ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_job_review);
         anhxa();
         actionBar();
-        getData(page);
-        loadMore();
-
-    }
-
-    private void loadMore() {
-        adapter.setLoadmore(new ILoadMore() {
+        loading();
+        getData();
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
             @Override
-            public void onLoadMore() {
-
-                handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        getData(++page);
-                        adapter.notifyDataSetChanged();
-                        adapter.setIsloaded(false);
-
-                    }
-                },2000);
-
+            public void run() {
+                sort();
+                progressDialog.dismiss();
             }
-        });
+        },3000);
+
+    }
+    void loading(){
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading");
+        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
+    }
+    void sort(){
+        if(jobPostArrayList.size() > 0){
+            for(int j=0; j < jobPostArrayList.size(); j++){
+                for(int k=j+1; k < jobPostArrayList.size(); k++){
+                    if(jobPostArrayList.get(j).getStatus_post() != 1 && jobPostArrayList.get(k).getStatus_post() == 1){
+                        JobPost jobPost = jobPostArrayList.get(j);
+                        jobPostArrayList.set(j,jobPostArrayList.get(k));
+                        jobPostArrayList.set(k, jobPost);
+                    }
+
+                }
+            }
+            adapter.notifyDataSetChanged();
+        }
     }
 
-    private void getData(int page) {
+    private void getData() {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        String url = MainActivity.urlJobPost + String.valueOf(page);
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, MainActivity.urlJobPost, null,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {

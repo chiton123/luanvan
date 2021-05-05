@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -43,11 +44,13 @@ public class ScheduleCandidateActivity extends AppCompatActivity {
     int REQUEST_CODE = 123;
     public static LinearLayout layout, layout_nothing;
     Handler handler;
+    ProgressDialog progressDialog;
     // status : 0 chưa xác nhận, 1 đồng ý , 2 từ chối , 3 dời lịch pv
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule_candidate);
+        loading();
         anhxa();
         actionBar();
         getData();
@@ -56,11 +59,34 @@ public class ScheduleCandidateActivity extends AppCompatActivity {
             @Override
             public void run() {
                 checkNothing();
+                sort();
+                progressDialog.dismiss();
             }
         },2000);
 
 
     }
+    void loading(){
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading");
+        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
+    }
+    void sort(){
+        for(int i=0; i < arrayList.size(); i++){
+            for(int j=i+1; j < arrayList.size(); j++){
+                if(arrayList.get(i).getStatus() != 0 && arrayList.get(j).getStatus() == 0){
+                    ScheduleCandidate scheduleCandidate = arrayList.get(i);
+                    arrayList.set(i, arrayList.get(j));
+                    arrayList.set(j, scheduleCandidate);
+                }
+
+            }
+        }
+        adapter.notifyDataSetChanged();
+    }
+
     public void checkNothing(){
         if(arrayList.size() == 0){
             layout_nothing.setVisibility(View.VISIBLE);

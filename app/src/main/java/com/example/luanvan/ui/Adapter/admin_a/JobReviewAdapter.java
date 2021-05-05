@@ -57,13 +57,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-class LoadingViewHolder extends RecyclerView.ViewHolder{
-    public ProgressBar progressBar;
-    public LoadingViewHolder(@NonNull View itemView) {
-        super(itemView);
-        progressBar = (ProgressBar) itemView.findViewById(R.id.progressbar);
-    }
-}
 
 public class JobReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable {
     Context context;
@@ -73,11 +66,6 @@ public class JobReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     int REQUEST_CODE = 123;
     BottomSheetDialog bottomSheetDialog;
     String note_reject = "";
-    private final int VIEW_TYPE_ITEM = 0, VIEW_TYPE_LOADING = 1;
-    ILoadMore loadmore;
-    boolean isloading;
-    int visableThreadHold = 3;
-    int lastVisableItem,totalItemcount;
     String type_notification = "";
     String content = "";
     public JobReviewAdapter(RecyclerView recyclerView, Context context, ArrayList<JobPost> arrayList, Activity activity) {
@@ -85,36 +73,13 @@ public class JobReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         this.nameList = arrayList;
         this.filterArraylist = arrayList;
         this.activity = activity;
-        final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                totalItemcount = linearLayoutManager.getItemCount();
-                lastVisableItem = linearLayoutManager.findLastVisibleItemPosition();
-                if(!isloading && totalItemcount < (lastVisableItem + visableThreadHold)){
-                    if(loadmore != null){
-                        loadmore.onLoadMore();
-                    }
-                    isloading = true;
-                }
-
-            }
-        });
-
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if(viewType == VIEW_TYPE_ITEM){
-            View view = LayoutInflater.from(context).inflate(R.layout.dong_tin_tuyen_dung_admin, parent, false);
-            return new ItemHolder(view);
-        }else if(viewType == VIEW_TYPE_LOADING){
-            View view = LayoutInflater.from(context).inflate(R.layout.item_loading, parent, false);
-            return new LoadingViewHolder(view);
-        }
-        return null;
+        View view = LayoutInflater.from(context).inflate(R.layout.dong_tin_tuyen_dung_admin, parent, false);
+        return new ItemHolder(view);
     }
 
     @Override
@@ -202,23 +167,10 @@ public class JobReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             }
 
 
-        }else if(holder instanceof LoadingViewHolder) {
-            LoadingViewHolder loadingViewHoler = (LoadingViewHolder) holder;
-            loadingViewHoler.progressBar.setIndeterminate(true);
         }
 
     }
-    public void setLoadmore(ILoadMore loadmore) {
-        this.loadmore = loadmore;
-    }
-    @Override
-    public int getItemViewType(int position) {
-        return filterArraylist.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
-    }
 
-    public void setIsloaded(boolean x) {
-        this.isloading = x;
-    }
 
     public void rejectDialog(final int position){
         bottomSheetDialog = new BottomSheetDialog(activity, R.style.BottomSheetTheme);

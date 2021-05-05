@@ -118,9 +118,7 @@ public class CVActivity extends AppCompatActivity {
         loading();
         anhxa();
         actionBar();
-        if(kind == 1){
-            getIDCV();
-        }
+        getIDCV();
 
         eventPDF();
         eventButton();
@@ -144,7 +142,10 @@ public class CVActivity extends AppCompatActivity {
                 Random random1 = new Random();
                 Random random2 = new Random();
                 idCV = random.nextInt(30)*20 + random1.nextInt(200)*4 + random2.nextInt(400);
-                cvName.setText("Ứng tuyển "+ String.valueOf(idCV + 1));
+                if(kind == 1){
+                    cvName.setText("Ứng tuyển "+ String.valueOf(idCV + 1));
+                }
+
             }
 
             @Override
@@ -522,7 +523,7 @@ public class CVActivity extends AppCompatActivity {
         File file = new File(Environment.getExternalStorageDirectory(), "/a10.pdf");
         pdfDocument.writeTo(new FileOutputStream(file));
         pdfDocument.close();
-        CVNameToPost = cvName.getText().toString();
+        CVNameToPost = idCV + "_" + cvName.getText().toString();
         // lưu thật sự file pdf, còn CV content như goal, study ... thì chỉ lưu nháp trong file abc.pdf thôi, k dc giống nhe
         storageReference.child(CVNameToPost+".pdf").putFile(Uri.fromFile(file))
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -572,7 +573,7 @@ public class CVActivity extends AppCompatActivity {
 
     public void updateInfoCVAll(){
         MainActivity.mData.child("cv").child(MainActivity.uid).child(key).removeValue();
-        PdfCV pdfCV = new PdfCV(MainActivity.uid, cvName.getText().toString(), MainActivity.urlCV, key);
+        PdfCV pdfCV = new PdfCV(MainActivity.uid, idCV + "_" + cvName.getText().toString(), MainActivity.urlCV, key);
         MainActivity.mData.child("cv").child(MainActivity.uid).child(key).push().setValue(pdfCV);
         // khi checkfirst = 1, nghĩa là đã cập nhật, nên cập nhật lại CSDL
         // info
@@ -654,7 +655,6 @@ public class CVActivity extends AppCompatActivity {
     }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void updateCVAll() throws IOException {
-
         // tạo cv mới rồi up lên
         createCV(MainActivity.checkFirstInfo, MainActivity.checkFirstGoal, MainActivity.checkFirstStudy, MainActivity.checkFirstExperience,
                 MainActivity.checkFirstSkill);
@@ -665,6 +665,7 @@ public class CVActivity extends AppCompatActivity {
                 updateInfoCVAll();
             }
         },4000);
+
 
     }
     // push goal
@@ -730,7 +731,7 @@ public class CVActivity extends AppCompatActivity {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    PdfCV pdfCV = new PdfCV(MainActivity.uid, cvName.getText().toString(), MainActivity.urlCV, key);
+                    PdfCV pdfCV = new PdfCV(MainActivity.uid, idCV + "_" + cvName.getText().toString(), MainActivity.urlCV, key);
                     MainActivity.mData.child("cv").child(MainActivity.uid).child(String.valueOf(idCV + 1)).push().setValue(pdfCV);
                 }
             },3000);
@@ -776,7 +777,7 @@ public class CVActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.luu:
-                String cv_name = cvName.getText().toString();
+                String cv_name = idCV + "_" + cvName.getText().toString();
                 if(cv_name.equals("")){
                     Toast.makeText(getApplicationContext(), "Vui lòng điền tên CV", Toast.LENGTH_SHORT).show();
                 }else {
@@ -801,6 +802,7 @@ public class CVActivity extends AppCompatActivity {
                             progressDialog.dismiss();
                             Intent intent = new Intent();
                             setResult(123);
+                            MainActivity.urlCV = "";
                             finish();
                         }
                     },5000);
@@ -812,7 +814,9 @@ public class CVActivity extends AppCompatActivity {
                         || MainActivity.checkFirstGoal != 0 || MainActivity.checkFirstInfo != 0){
                     Toast.makeText(getApplicationContext(), "Bạn đã thay đổi nội dung của CV, hãy chọn lưu", Toast.LENGTH_SHORT).show();
                 }else {
+                    MainActivity.urlCV = "";
                     finish();
+
                     break;
                 }
         }
@@ -859,6 +863,7 @@ public class CVActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MainActivity.urlCV = "";
                 finish();
             }
         });

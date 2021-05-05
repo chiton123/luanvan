@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,6 +26,7 @@ import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.schedule_a.ScheduleAdapter;
 import com.example.luanvan.ui.Model.Schedule;
+import com.example.luanvan.ui.Model.ScheduleCandidate;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
@@ -45,11 +47,12 @@ public class ScheduleManagementActivity extends AppCompatActivity {
     public static int checkLoad = 0; // check xem coi đã vào activity này hay chưa
     public static LinearLayout layout, layout_nothing;
     Handler handler;
-
+    ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule_management);
+        loading();
         anhxa();
         actionBar();
         eventButton();
@@ -59,8 +62,23 @@ public class ScheduleManagementActivity extends AppCompatActivity {
             @Override
             public void run() {
                 checkNothing();
+                sort();
+                progressDialog.dismiss();
             }
-        },1800);
+        },2000);
+    }
+    void sort(){
+        for(int i=0; i < arrayList.size(); i++){
+            for(int j=i+1; j < arrayList.size(); j++){
+                if(arrayList.get(i).getStatus() == 0 && arrayList.get(j).getStatus() != 0){
+                    Schedule schedule = arrayList.get(i);
+                    arrayList.set(i, arrayList.get(j));
+                    arrayList.set(j, schedule);
+                }
+
+            }
+        }
+        adapter.notifyDataSetChanged();
     }
     public void checkNothing(){
         if(arrayList.size() == 0){
@@ -175,5 +193,12 @@ public class ScheduleManagementActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         layout = (LinearLayout) findViewById(R.id.layout);
         layout_nothing = (LinearLayout) findViewById(R.id.layout_nothing);
+    }
+    void loading(){
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading");
+        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
     }
 }

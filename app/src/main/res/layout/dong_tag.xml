@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:cardCornerRadius="10dp"
+        app:cardBackgroundColor="#D3FBE4"
         >
         <FrameLayout
             android:layout_width="match_parent"
