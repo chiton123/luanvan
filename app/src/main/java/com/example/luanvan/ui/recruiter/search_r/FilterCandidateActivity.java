@@ -59,28 +59,32 @@ import java.util.Map;
 public class FilterCandidateActivity extends AppCompatActivity {
     Toolbar toolbar;
     EditText editPosition, editJob;
-    public static int idposition = 0;
+
     BottomSheetDialog bottomSheetPosition;
+    public static int idposition = 0;
     public static String position  = "";
+    public static ArrayList<Area>  arraylistChosenArea; // Đã chọn
+    public static ArrayList<JobList> jobArrayList;
+    public static int job_id = 0;
+    public static String job_name = "";
+
     RecyclerView recyclerView;
     PositionPickAdapter adapter;
     ArrayList<Position> arrayList; // posiotion
     SearchView searchView;
     RecyclerView recyclerViewArea, recyclerViewTagArea;
     TagAreaAdapter tagAdapter; // Những tag trong recycleview
-    public static ArrayList<Area>  arraylistChosenArea; // Đã chọn
+
     ArrayList<AreaCandidate> arraylistArea; // Trên bottemsheet có check hay k luôn
     ImageView imgAdd;
     BottomSheetDialog bottomSheetArea;
     SearchView searchViewArea;
     AreaBottomSheetTagAdapter areaAdapter; // adapter trong bottomsheet
 
-    public static ArrayList<JobList> jobArrayList;
+
     PositionScheduleAdapter positionScheduleAdapter;
     RecyclerView recyclerViewJob; // Tin tuyen dung
     BottomSheetDialog bottomSheetJob; // Tin tuyen dung
-    public static int job_id = 0;
-    public static String job_name = "";
 
     Button btnDongY, btnHuy;
     ProgressDialog progressDialog;
@@ -381,11 +385,13 @@ public class FilterCandidateActivity extends AppCompatActivity {
 
     }
     private void getJobSkill() {
+        arrayListJobSkill.clear();
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlGetJobSkill,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                      //  Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
                         if(response != null){
                             try {
                                 JSONArray jsonArray = new JSONArray(response);
@@ -509,6 +515,10 @@ public class FilterCandidateActivity extends AppCompatActivity {
         recyclerViewTagArea.setAdapter(tagAdapter);
         if(SearchCandidateActivity.search_or_not == 0){
             jobArrayList = new ArrayList<>();
+            idposition = 0;
+            job_id = 0;
+            job_name = "";
+            arraylistChosenArea.clear();
             getDataJob();
         }
 

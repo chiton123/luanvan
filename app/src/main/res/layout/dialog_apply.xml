@@ -4,16 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#fff"
     android:gravity="center">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="450dp"
+        android:layout_height="380dp"
         android:orientation="vertical"
         >
         <TextView
             android:layout_width="400dp"
             android:layout_height="wrap_content"
-            android:text="Sử dụng CV đã ứng tuyển"
+            android:text="Sử dụng CV để ứng tuyển"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
             android:layout_marginTop="10dp"

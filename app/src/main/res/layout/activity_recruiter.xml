@@ -21,7 +21,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:id="@+id/toolbar"
                 app:title="Nhà tuyển dụng"
-                android:background="#02F1D0"
+                android:background="#D8FAF5"
                 ></androidx.appcompat.widget.Toolbar>
             <LinearLayout
                 android:background="#F0FBF5"

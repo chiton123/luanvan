@@ -110,13 +110,13 @@
                         >
                         <ImageView
                             android:layout_width="0dp"
-                            android:layout_weight="1"
+                            android:layout_weight="2"
                             android:layout_height="20dp"
                             android:src="@drawable/position"
                             ></ImageView>
                         <TextView
                             android:layout_width="0dp"
-                            android:layout_weight="14"
+                            android:layout_weight="13"
                             android:layout_height="wrap_content"
                             android:text="Developer - FPT SOFTWARE"
                             android:id="@+id/txtexperience1"
@@ -137,13 +137,13 @@
                         >
                         <ImageView
                             android:layout_width="0dp"
-                            android:layout_weight="1"
+                            android:layout_weight="2"
                             android:layout_height="20dp"
                             android:src="@drawable/school"
                             ></ImageView>
                         <TextView
                             android:layout_width="0dp"
-                            android:layout_weight="14"
+                            android:layout_weight="13"
                             android:layout_height="wrap_content"
                             android:text="Major: IT - CTU"
                             android:id="@+id/txtstudy"
@@ -162,13 +162,13 @@
                         >
                         <ImageView
                             android:layout_width="0dp"
-                            android:layout_weight="1"
+                            android:layout_weight="2"
                             android:layout_height="17dp"
                             android:src="@drawable/map2"
                             ></ImageView>
                         <TextView
                             android:layout_width="0dp"
-                            android:layout_weight="14"
+                            android:layout_weight="13"
                             android:layout_height="wrap_content"
                             android:text="Địa điểm: Hà Nội"
                             android:id="@+id/txtarea"

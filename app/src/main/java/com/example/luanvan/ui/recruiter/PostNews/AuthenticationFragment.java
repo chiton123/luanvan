@@ -157,8 +157,8 @@ public class AuthenticationFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(requestCode == 5 && resultCode == 123){
-          //  Toast.makeText(getActivity(), "auth + size: " + RecruiterActivity.arrayListAuthenticationJobs.size(), Toast.LENGTH_SHORT).show();
+        if(requestCode == 123 && resultCode == 234){
+         //   Toast.makeText(getActivity(), "auth + size: " + RecruiterActivity.arrayListAuthenticationJobs.size(), Toast.LENGTH_SHORT).show();
             adapter.notifyDataSetChanged();
             checkNothing();
         }

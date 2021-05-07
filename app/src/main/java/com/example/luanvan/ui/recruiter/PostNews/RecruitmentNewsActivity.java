@@ -29,7 +29,7 @@ public class RecruitmentNewsActivity extends AppCompatActivity {
     FloatingActionButton btnAdd;
     Handler handler;
   //  public static ArrayList<JobList> arrayListDisplay = new ArrayList<>();
-    int REQUEST_CODE_ADD_JOB = 5;
+    int REQUEST_CODE_ADD_JOB = 123;
     ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,38 +67,37 @@ public class RecruitmentNewsActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == 123 && resultCode == 123){
-          //  Toast.makeText(getApplicationContext(), data.getStringExtra("abc"), Toast.LENGTH_SHORT).show();
-         //   Toast.makeText(getApplicationContext(), "outdated ", Toast.LENGTH_SHORT).show();
             OutdatedJobFragment outdatedJobFragment = (OutdatedJobFragment) viewPageAdapter.getItem(2);
             outdatedJobFragment.onActivityResult(requestCode, resultCode, data);
-        //    Toast.makeText(getApplicationContext(), "display ", Toast.LENGTH_SHORT).show();
+
             DisplayJobFragment displayJobFragment = (DisplayJobFragment) viewPageAdapter.getItem(0);
             displayJobFragment.onActivityResult(requestCode, resultCode, data);
 
         }
         if(requestCode == 123 && resultCode == 234 ){
-           // Toast.makeText(getApplicationContext(), "auth ", Toast.LENGTH_SHORT).show();
+
+            AuthenticationFragment authenticationFragment = (AuthenticationFragment) viewPageAdapter.getItem(1);
+            authenticationFragment.onActivityResult(requestCode, resultCode, data);
+        }
+        // Giống trên kia mới dc nhe
+        if(requestCode == REQUEST_CODE_ADD_JOB && resultCode == 234){
             AuthenticationFragment authenticationFragment = (AuthenticationFragment) viewPageAdapter.getItem(1);
             authenticationFragment.onActivityResult(requestCode, resultCode, data);
         }
         if(requestCode == 123 && resultCode == 345){
-           // Toast.makeText(getApplicationContext(), "reject ", Toast.LENGTH_SHORT).show();
+
             RejectJobFragment rejectJobFragment = (RejectJobFragment) viewPageAdapter.getItem(3);
             rejectJobFragment.onActivityResult(requestCode, resultCode, data);
         }
         if(requestCode == 123 && resultCode == 333){
-       //     Toast.makeText(getApplicationContext(), "display ", Toast.LENGTH_SHORT).show();
+
             DisplayJobFragment displayJobFragment = (DisplayJobFragment) viewPageAdapter.getItem(0);
             displayJobFragment.onActivityResult(requestCode, resultCode, data);
-         //   Toast.makeText(getApplicationContext(), "outdated ", Toast.LENGTH_SHORT).show();
+
             OutdatedJobFragment outdatedJobFragment = (OutdatedJobFragment) viewPageAdapter.getItem(2);
             outdatedJobFragment.onActivityResult(requestCode, resultCode, data);
         }
-        if(requestCode == REQUEST_CODE_ADD_JOB && resultCode == 123){
-           // Toast.makeText(getApplicationContext(), "authe ", Toast.LENGTH_SHORT).show();
-            AuthenticationFragment authenticationFragment = (AuthenticationFragment) viewPageAdapter.getItem(1);
-            authenticationFragment.onActivityResult(requestCode, resultCode, data);
-        }
+
 
         super.onActivityResult(requestCode, resultCode, data);
     }

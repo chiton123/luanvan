@@ -143,7 +143,7 @@ public class CVIntroductionActivity extends AppCompatActivity {
                     adapter.notifyDataSetChanged();
                     checkNothing();
                 }
-            },2500);
+            },2000);
 
             handler = new Handler();
             handler.postDelayed(new Runnable() {

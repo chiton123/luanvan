@@ -189,7 +189,7 @@ public class ScheduleActivity extends AppCompatActivity {
     private void sendMail() {
         JavaMailAPI mail = new JavaMailAPI(this, applicant.getEmail(), type_notification, content);
         mail.execute();
-        Toast.makeText(getApplicationContext(), "Đã gửi mail", Toast.LENGTH_SHORT).show();
+     //   Toast.makeText(getApplicationContext(), "Đã gửi mail", Toast.LENGTH_SHORT).show();
     }
     public void postNotification(final int type_user, String date, String start_hour, String end_hour){
         if(type_schedule == 1){
@@ -205,7 +205,7 @@ public class ScheduleActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         if(response.equals("success")){
-                            Toast.makeText(getApplicationContext(), "Thông báo thành công", Toast.LENGTH_SHORT).show();
+                          //  Toast.makeText(getApplicationContext(), "Thông báo thành công", Toast.LENGTH_SHORT).show();
                             phoneNotification();
                         }else {
                             Toast.makeText(getApplicationContext(), "Thông báo thất bại", Toast.LENGTH_SHORT).show();

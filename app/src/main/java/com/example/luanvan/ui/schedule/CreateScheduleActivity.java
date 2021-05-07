@@ -455,7 +455,7 @@ public class CreateScheduleActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         if(response.equals("success")){
-                            Toast.makeText(getApplicationContext(), "Thông báo thành công", Toast.LENGTH_SHORT).show();
+                          //  Toast.makeText(getApplicationContext(), "Thông báo thành công", Toast.LENGTH_SHORT).show();
                             phoneNotification();
                         }else {
                             Toast.makeText(getApplicationContext(), "Thông báo thất bại", Toast.LENGTH_SHORT).show();

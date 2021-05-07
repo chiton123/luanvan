@@ -64,6 +64,7 @@ public class RelevantJobFragment extends Fragment {
         if(kind == 0){
             job = (Job) getActivity().getIntent().getSerializableExtra("job");
             getData();
+            progressDialog.dismiss();
         }else {
             job_id = getActivity().getIntent().getIntExtra("job_id",0);
             getJobInfo(job_id);

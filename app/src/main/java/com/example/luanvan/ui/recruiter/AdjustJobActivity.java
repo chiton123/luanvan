@@ -484,7 +484,6 @@ public class AdjustJobActivity extends AppCompatActivity {
                                                         updatePreviousJobDisplay();
                                                         RecruiterActivity.arrayListOutdatedJobs.add(RecruiterActivity.arrayListJobList.get(position_job));
                                                         RecruiterActivity.arrayListJobList.remove(position_job);
-                                                        abc = "new" ;
                                                     }
                                                     break;
                                                 case 2:
@@ -503,7 +502,6 @@ public class AdjustJobActivity extends AppCompatActivity {
                                                         updatePreviousOutdatedJob();
                                                         RecruiterActivity.arrayListJobList.add(RecruiterActivity.arrayListOutdatedJobs.get(position_job));
                                                         RecruiterActivity.arrayListOutdatedJobs.remove(position_job);
-                                                        abc = "new";
                                                     }else {
                                                         updatePreviousOutdatedJob();
                                                     }
@@ -511,6 +509,15 @@ public class AdjustJobActivity extends AppCompatActivity {
                                                     break;
                                                 case 4:
                                                     updatePreviousRejectJob();
+                                                    handler = new Handler();
+                                                    handler.postDelayed(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            RecruiterActivity.arrayListAuthenticationJobs.add(RecruiterActivity.arrayListRejectJobs.get(position_job));
+                                                            RecruiterActivity.arrayListRejectJobs.remove(position_job);
+                                                        }
+                                                    },2000);
+
                                                     break;
                                             }
 
@@ -521,7 +528,6 @@ public class AdjustJobActivity extends AppCompatActivity {
                                             public void run() {
                                                 progressDialog.dismiss();
                                                 Intent intent = new Intent();
-                                                intent.putExtra("abc", abc);
                                                 if(fragment == 1){
                                                     setResult(123);
                                                 }else if(fragment == 2){
@@ -533,7 +539,7 @@ public class AdjustJobActivity extends AppCompatActivity {
                                                 }
                                                 finish();
                                             }
-                                        },2200);
+                                        },3000);
 
 
                                     }else {
@@ -727,6 +733,8 @@ public class AdjustJobActivity extends AppCompatActivity {
         RecruiterActivity.arrayListRejectJobs.get(position_job).setIdtype(idKindJob);
         RecruiterActivity.arrayListRejectJobs.get(position_job).setStart_date(date_post_start);
         RecruiterActivity.arrayListRejectJobs.get(position_job).setEnd_date(date_post_end);
+        RecruiterActivity.arrayListRejectJobs.get(position_job).setStatus(1);
+        RecruiterActivity.arrayListRejectJobs.get(position_job).setNote_reject("");
         //    DisplayJobFragment.adapter.notifyDataSetChanged();
         switch (idExperience){
             case 1:
@@ -754,6 +762,41 @@ public class AdjustJobActivity extends AppCompatActivity {
                 RecruiterActivity.arrayListRejectJobs.get(position_job).setExperience("Trên 5 năm");
                 break;
         }
+        moveToAutheJob(1, position_job);
+
+    }
+    public void moveToAutheJob(final int status, final int position){
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlAcceptJob,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(response.equals("success")){
+                            Toast.makeText(getApplicationContext(), "Cập nhật thành công qua bên kia", Toast.LENGTH_SHORT).show();
+
+                        }else {
+                            Toast.makeText(getApplicationContext(), "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("job_id", String.valueOf(RecruiterActivity.arrayListRejectJobs.get(position).getId()));
+                map.put("status", String.valueOf(status));
+                map.put("note_reject", "");
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+
+
     }
 
     public void updatePreviousAuthenticationJob(){

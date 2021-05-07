@@ -917,7 +917,7 @@ public class CVActivity extends AppCompatActivity {
                     }else {
                         try {
                             if(MainActivity.checkFirstStudy != 0 || MainActivity.checkFirstSkill != 0 || MainActivity.checkFirstInfo != 0
-                            || MainActivity.checkFirstGoal != 0 || MainActivity.checkFirstExperience != 0 || nameUpdate.equals(cvName.getText().toString())){
+                            || MainActivity.checkFirstGoal != 0 || MainActivity.checkFirstExperience != 0 || !nameUpdate.equals(cvName.getText().toString())){
                                 updateCVAll();
                                 MainActivity.arrayListCV.remove(position);
                             }

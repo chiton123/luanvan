@@ -236,7 +236,7 @@ public class AdminActivity extends AppCompatActivity {
         arrayList.add(new Admin(0, "Ứng viên", R.drawable.profilecandidate));
         arrayList.add(new Admin(1, "Nhà tuyển dụng", R.drawable.profilerecruiter));
         arrayList.add(new Admin(2, "Duyệt bài đăng", R.drawable.consider));
-        arrayList.add(new Admin(3, "Thống kê", R.drawable.stastitics));
+      //  arrayList.add(new Admin(3, "Thống kê", R.drawable.stastitics));
 
     }
     private void anhxa() {

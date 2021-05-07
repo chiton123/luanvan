@@ -541,7 +541,7 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
                     @Override
                     public void onResponse(String response) {
                         if(response.equals("success")){
-                            Toast.makeText(context, "Thông báo thành công", Toast.LENGTH_SHORT).show();
+                          //  Toast.makeText(context, "Thông báo thành công", Toast.LENGTH_SHORT).show();
                         }else {
                             Toast.makeText(context, "Thông báo thất bại", Toast.LENGTH_SHORT).show();
                         }

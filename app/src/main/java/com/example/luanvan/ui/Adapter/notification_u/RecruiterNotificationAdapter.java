@@ -33,6 +33,7 @@ import com.example.luanvan.ui.home.HomeFragment;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
 import com.example.luanvan.ui.recruiter.PostNews.RecruitmentNewsActivity;
 import com.example.luanvan.ui.recruiter.RecruiterActivity;
+import com.example.luanvan.ui.schedule.ScheduleManagementActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -103,9 +104,15 @@ public class RecruiterNotificationAdapter extends RecyclerView.Adapter<Recruiter
                     }
                 }
                 if(notification.getKind() == 1){
-                    Intent intent = new Intent(context, CVManageActivity.class);
-                    intent.putExtra("kind", 1); // Để nó trỏ tới hồ sơ ứng tuyển
-                    activity.startActivity(intent);
+                    if(notification.getType_notification().equals("Trả lời lịch hẹn của ứng viên")){
+                        Intent intent = new Intent(context, ScheduleManagementActivity.class);
+                        activity.startActivity(intent);
+                    }else {
+                        Intent intent = new Intent(context, CVManageActivity.class);
+                        intent.putExtra("kind", 1); // Để nó trỏ tới hồ sơ ứng tuyển
+                        activity.startActivity(intent);
+                    }
+
                 }else {
                     Intent intent = new Intent(context, RecruitmentNewsActivity.class);
                     activity.startActivity(intent);
