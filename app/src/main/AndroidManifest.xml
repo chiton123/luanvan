@@ -16,7 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.admin.RecruiterManagementActivity"></activity>
+        <activity android:name=".ui.company.CompanyAdminActivity"></activity>
+        <activity android:name=".ui.admin.CompanyListActivity" />
+        <activity android:name=".ui.admin.RecruiterManagementActivity" />
         <activity android:name=".ui.admin.UserManagementActivity" />
         <activity android:name=".ui.recruiter.updateInfo.UpdateCompanyActivity" />
         <activity android:name=".ui.recruiter.updateInfo.UpdateRecruiterActivity" />

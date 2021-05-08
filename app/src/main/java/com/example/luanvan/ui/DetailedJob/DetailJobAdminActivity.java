@@ -245,6 +245,7 @@ public class DetailJobAdminActivity extends AppCompatActivity {
             btnReject.setClickable(false);
             btnReject.setTextColor(Color.WHITE);
         }
+       // Toast.makeText(getApplicationContext(), jobPost.getAddress(), Toast.LENGTH_SHORT);
         Glide.with(getApplicationContext()).load(jobPost.getImg()).into(anhcongty);
         txttencongviec.setText(jobPost.getName());
         txtcongty.setText(jobPost.getCompany_name());

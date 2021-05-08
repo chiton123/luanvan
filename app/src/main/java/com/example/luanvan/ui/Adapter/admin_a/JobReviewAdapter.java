@@ -58,7 +58,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class JobReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable {
+public class JobReviewAdapter extends RecyclerView.Adapter<JobReviewAdapter.ItemHolder> implements Filterable {
     Context context;
     ArrayList<JobPost> filterArraylist;
     ArrayList<JobPost> nameList;
@@ -75,101 +75,8 @@ public class JobReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         this.activity = activity;
     }
 
-    @NonNull
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.dong_tin_tuyen_dung_admin, parent, false);
-        return new ItemHolder(view);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
-        if(holder instanceof ItemHolder){
-            ItemHolder itemHolder = (ItemHolder) holder;
-            JobPost job = filterArraylist.get(position);
-            itemHolder.txttencongviec.setText(job.getName());
-            itemHolder.txttencongty.setText(job.getCompany_name());
-            String ngaybatdau = job.getStart_date();
-            String ngayketthuc = job.getEnd_date();
-            SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-            Date date1 = null;
-            Date date2 = null;
-            try {
-                date1 = fmt.parse(ngaybatdau);
-                date2 = fmt.parse(ngayketthuc);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            SimpleDateFormat fmtOut = new SimpleDateFormat("dd/MM/yyyy");
-            // chỉ để hạn chót nộp hồ sơ
-            itemHolder.txttime.setText(fmtOut.format(date2));
-            DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-            itemHolder.txtsalary.setText("Từ " + decimalFormat.format( + job.getSalary_min()) + "đ đến " + decimalFormat.format(job.getSalary_max()) + "đ" );
-            itemHolder.txtarea.setText(job.getAddress());
-            Glide.with(context).load(job.getImg()).into(itemHolder.imganh);
-            if(job.getStatus_post() == 0){
-                itemHolder.txtstatus_post.setText("Đồng ý");
-            }else if(job.getStatus_post() == 1){
-                itemHolder.txtstatus_post.setText("Đang chờ xác thực");
-            }else {
-                itemHolder.txtstatus_post.setText("Từ chối");
-            }
-            itemHolder.imganh.setFocusable(false);
-            itemHolder.imganh.setFocusable(false);
-            itemHolder.btnReject.setFocusable(false);
-            itemHolder.btnConfirm.setFocusable(false);
-            itemHolder.btnConfirm.setClickable(false);
-            itemHolder.btnReject.setClickable(false);
-            itemHolder.layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(context, DetailJobAdminActivity.class);
-                    intent.putExtra("job", filterArraylist.get(position));
-                    intent.putExtra("position", position); // position trong mảng để load lại
-                    activity.startActivityForResult(intent, REQUEST_CODE);
-
-                }
-            });
-            if(job.getStatus_post() != 1){
-                itemHolder.btnReject.setClickable(false);
-                itemHolder.btnConfirm.setClickable(false);
-                itemHolder.btnConfirm.setBackgroundResource(R.drawable.button_black);
-                itemHolder.btnReject.setBackgroundResource(R.drawable.button_black);
-                itemHolder.btnReject.setTextColor(Color.WHITE);
-                itemHolder.btnConfirm.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(context, "Bạn đã xác nhận", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                itemHolder.btnReject.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(context, "Bạn đã xác nhận", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }else {
-                itemHolder.btnConfirm.setBackgroundResource(R.drawable.button_xacnhan);
-                itemHolder.btnReject.setBackgroundResource(R.drawable.background_button_view_cv);
-                itemHolder.btnReject.setTextColor(Color.BLACK);
-                itemHolder.btnConfirm.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        acceptOrRejectJob(0, position);
-                    }
-                });
-                itemHolder.btnReject.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        rejectDialog(position);
-                    }
-                });
-            }
 
 
-        }
-
-    }
 
 
     public void rejectDialog(final int position){
@@ -309,6 +216,98 @@ public class JobReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         requestQueue.add(stringRequest);
 
     }
+
+    @NonNull
+    @Override
+    public ItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.dong_tin_tuyen_dung_admin, parent, false);
+        return new ItemHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ItemHolder holder, final int position) {
+        JobPost job = filterArraylist.get(position);
+        holder.txttencongviec.setText(job.getName());
+        holder.txttencongty.setText(job.getCompany_name());
+        String ngaybatdau = job.getStart_date();
+        String ngayketthuc = job.getEnd_date();
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+        Date date1 = null;
+        Date date2 = null;
+        try {
+            date1 = fmt.parse(ngaybatdau);
+            date2 = fmt.parse(ngayketthuc);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        SimpleDateFormat fmtOut = new SimpleDateFormat("dd/MM/yyyy");
+        // chỉ để hạn chót nộp hồ sơ
+        holder.txttime.setText(fmtOut.format(date2));
+        DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
+        holder.txtsalary.setText("Từ " + decimalFormat.format( + job.getSalary_min()) + "đ đến " + decimalFormat.format(job.getSalary_max()) + "đ" );
+        holder.txtarea.setText(job.getAddress());
+        Glide.with(context).load(job.getImg()).into(holder.imganh);
+        if(job.getStatus_post() == 0){
+            holder.txtstatus_post.setText("Đồng ý");
+        }else if(job.getStatus_post() == 1){
+            holder.txtstatus_post.setText("Đang chờ xác thực");
+        }else {
+            holder.txtstatus_post.setText("Từ chối");
+        }
+        holder.imganh.setFocusable(false);
+        holder.imganh.setFocusable(false);
+        holder.btnReject.setFocusable(false);
+        holder.btnConfirm.setFocusable(false);
+        holder.btnConfirm.setClickable(false);
+        holder.btnReject.setClickable(false);
+        holder.layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, DetailJobAdminActivity.class);
+                intent.putExtra("job", filterArraylist.get(position));
+                intent.putExtra("position", position); // position trong mảng để load lại
+                activity.startActivityForResult(intent, REQUEST_CODE);
+
+            }
+        });
+        if(job.getStatus_post() != 1){
+            holder.btnReject.setClickable(false);
+            holder.btnConfirm.setClickable(false);
+            holder.btnConfirm.setBackgroundResource(R.drawable.button_black);
+            holder.btnReject.setBackgroundResource(R.drawable.button_black);
+            holder.btnReject.setTextColor(Color.WHITE);
+            holder.btnConfirm.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, "Bạn đã xác nhận", Toast.LENGTH_SHORT).show();
+                }
+            });
+            holder.btnReject.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, "Bạn đã xác nhận", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }else {
+            holder.btnConfirm.setBackgroundResource(R.drawable.button_xacnhan);
+            holder.btnReject.setBackgroundResource(R.drawable.background_button_view_cv);
+            holder.btnReject.setTextColor(Color.BLACK);
+            holder.btnConfirm.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    acceptOrRejectJob(0, position);
+                }
+            });
+            holder.btnReject.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    rejectDialog(position);
+                }
+            });
+        }
+
+    }
+
     @Override
     public int getItemCount() {
         return filterArraylist.size();

@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:id="@+id/toolbar"
-        android:background="#fff"
+        android:background="#02F1D0"
         app:title="Chi tiết việc làm"
         ></androidx.appcompat.widget.Toolbar>
     <ScrollView
@@ -17,6 +17,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar"
         android:background="#fff"
+        android:paddingBottom="40dp"
         >
         <FrameLayout
             android:layout_width="match_parent"
@@ -38,7 +39,84 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
+                        >
+                        <ImageView
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:id="@+id/hinhanh"
+                            android:src="@drawable/map2"
+                            android:layout_margin="5dp"
+                            ></ImageView>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            >
+                            <TextView
+                                android:id="@+id/tencongviec"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginTop="5dp"
+                                android:text="nhan vien kinh doanh"
+                                android:textColor="#040404"
+                                android:textSize="15sp"></TextView>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/tencongty"
+                                android:textSize="13sp"
+                                android:text="cong ty abc"
+                                android:textColor="#040404"
+                                android:layout_marginLeft="12dp"
+                                ></TextView>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal"
+                        android:layout_below="@id/hinhanh"
                         android:gravity="center_vertical"
+                        android:layout_marginTop="10dp"
+                        >
+                        <ImageView
+                            android:layout_marginLeft="5dp"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/calendar"
+                            ></ImageView>
+                        <TextView
+                            android:layout_marginLeft="5dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="14sp"
+                            android:text="Hạn nộp hồ sơ "
+                            android:textColor="#040404"
+                            ></TextView>
+                        <TextView
+                            android:layout_marginLeft="5dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/hannop"
+                            android:textSize="14sp"
+                            android:text="10/10/2020"
+                            android:textColor="#040404"
+                            ></TextView>
+                    </LinearLayout>
+
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginTop="10dp"
                         >
                         <ImageView
                             android:layout_width="20dp"
