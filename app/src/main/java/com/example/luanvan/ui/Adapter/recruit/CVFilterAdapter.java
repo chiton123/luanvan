@@ -144,7 +144,7 @@ public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHo
         Applicant applicant = arrayList.get(position);
         holder.txtName.setText(applicant.getUsername());
         holder.txtEmail.setText("Email : " + applicant.getEmail());
-        holder.txtPhone.setText("Số điện thoại: " + applicant.getPhone());
+        holder.txtPhone.setText("Số điện thoại: " +  "0"+ applicant.getPhone());
         holder.txtPosition.setText("Vị trí tuyển dụng: " + applicant.getJob_name());
         String ngay = applicant.getDate();
         SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm");

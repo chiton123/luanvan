@@ -624,7 +624,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
             editbirthday.setText(fmtOut.format(date));
             date_post = fmt.format(date);
             editposition.setText(MainActivity.user.getPosition());
-            editphone.setText(MainActivity.user.getPhone() + "");
+            editphone.setText("0"+ MainActivity.user.getPhone() + "");
             editmota.setText(MainActivity.user.getIntroduction());
             editaddress.setText(MainActivity.user.getAddress());
             if(MainActivity.user.getGender() == 0 ){

@@ -165,7 +165,7 @@ public class ViewCandidateAdapter extends RecyclerView.Adapter<ViewCandidateAdap
         });
         txtName.setText(userSearch.getUsername());
         txtEmail.setText(userSearch.getEmail());
-        txtPhone.setText(userSearch.getPhone()+"");
+        txtPhone.setText("0"+ userSearch.getPhone()+"");
         txtAddress.setText(userSearch.getAddress());
         String ngay = userSearch.getBirthday();
         Date date = null;

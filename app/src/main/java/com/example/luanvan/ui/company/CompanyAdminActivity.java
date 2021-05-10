@@ -18,6 +18,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -25,24 +26,41 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
 
-public class CompanyAdminActivity extends AppCompatActivity implements OnMapReadyCallback{
+public class CompanyAdminActivity extends AppCompatActivity{
     Toolbar toolbar;
     ImageView img, img_background;
     TextView txtCompanyName, txtSize;
     public static Company company;
     TextView txtIntroduction, txtAddress;
     private GoogleMap mMap;
-    MapView mMapView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_company_admin);
         anhxa();
         actionBar();
-        mMapView.onCreate(savedInstanceState);
+        final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().
+                findFragmentById(R.id.map);
+        mapFragment.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(final GoogleMap googleMap) {
+                mMap = googleMap;
+                MarkerOptions markerOptions = new MarkerOptions();
+                // set position of marker
+
+                LatLng store = new LatLng(company.getVido(), company.getKinhdo());
+                markerOptions.position(store);
+                markerOptions.title("Công ty");
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker());
+                // zoom
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(store, 25));
+                mMap.addMarker(markerOptions);
+
+            }
+        });
 
         getInfo();
-        createMap();
+
     }
     private void getInfo() {
 
@@ -59,51 +77,12 @@ public class CompanyAdminActivity extends AppCompatActivity implements OnMapRead
     }
 
 
-    private void createMap() {
-        try {
-            MapsInitializer.initialize(getApplicationContext());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        mMapView.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap googleMap) {
-                mMap = googleMap;
 
-                // Add a marker in Sydney and move the camera
-                LatLng store = new LatLng(company.getVido(), company.getKinhdo());
-
-                mMap.addMarker(new MarkerOptions().position(store).title("Công ty")).setIcon(BitmapDescriptorFactory.defaultMarker());
-                mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-                CameraPosition cameraPosition = new CameraPosition.Builder().target(store).zoom(16).build();
-                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-                mMap.setMaxZoomPreference(15.0f);
-                mMap.setMinZoomPreference(6.0f);
-
-                //     mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
-                //    -- Để sau
-//                mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-//                    @Override
-//                    public void onMapClick(LatLng latLng) {
-//                        MarkerOptions markerOptions = new MarkerOptions();
-//                        markerOptions.position(latLng);
-//                        markerOptions.title(latLng.latitude + " : "+ latLng.longitude);
-//                        // Clear previously click position.
-//                        mMap.clear();
-//                        // Zoom the Marker
-//                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
-//                        // Add Marker on Map
-//                        mMap.addMarker(markerOptions);
-//                    }
-//                });
-            }
-        });
-    }
 
     private void anhxa() {
         txtAddress = (TextView) findViewById(R.id.diachi);
         txtIntroduction = (TextView) findViewById(R.id.gioithieu);
-        mMapView = (MapView) findViewById(R.id.mapview);
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         txtCompanyName = (TextView) findViewById(R.id.tencongty);
         img = (ImageView) findViewById(R.id.img);
@@ -112,18 +91,7 @@ public class CompanyAdminActivity extends AppCompatActivity implements OnMapRead
     }
 
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng store = new LatLng(company.getVido(), company.getKinhdo());
-        //   Toast.makeText(getApplicationContext(), getIntent().getIntExtra("vido", 0) +"" + getIntent().getIntExtra("kinhdo",0), Toast.LENGTH_SHORT).show();
-        mMap.addMarker(new MarkerOptions().position(store).title("Store")).setIcon(BitmapDescriptorFactory.defaultMarker());
-        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(store).zoom(15).build();
-        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-    }
     private void actionBar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

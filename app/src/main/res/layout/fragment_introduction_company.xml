@@ -1,105 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="5dp"
     >
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
+        android:orientation="vertical"
         >
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
             >
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
+                android:layout_marginTop="10dp"
                 >
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    >
+                    android:text="Giới thiệu"
+                    android:textSize="14sp"
+                    android:textColor="#050505"
+                    android:textStyle="bold"
+                    ></TextView>
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Giới thiệu công ty"
+                    android:textSize="13sp"
+                    android:id="@+id/gioithieu"
+                    android:textColor="#050505"
+                    ></TextView>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:layout_marginTop="10dp"
-                        >
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Giới thiệu"
-                            android:textSize="14sp"
-                            android:textColor="#050505"
-                            android:textStyle="bold"
-                            ></TextView>
-                        <TextView
-                            android:layout_marginTop="5dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Giới thiệu công ty"
-                            android:textSize="13sp"
-                            android:id="@+id/gioithieu"
-                            android:textColor="#050505"
-                            ></TextView>
-
-                    </LinearLayout>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Liên hệ"
-                        android:textSize="14sp"
-                        android:textColor="#050505"
-                        android:textStyle="bold"
-                        ></TextView>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="10dp"
-                        android:gravity="center_vertical"
-                        >
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:src="@drawable/map2"
-                            ></ImageView>
-                        <TextView
-                            android:layout_marginTop="5dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/diachi"
-                            android:textColor="#040404"
-                            android:textSize="13sp"
-                            android:text="dia chi"
-                            ></TextView>
-                    </LinearLayout>
-
-
-                </LinearLayout>
-
-                <com.google.android.gms.maps.MapView
-                    android:layout_width="match_parent"
-                    android:layout_height="400dp"
-                    android:id="@+id/mapview"
-                    android:layout_marginTop="20dp"
-                    ></com.google.android.gms.maps.MapView>
-
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Liên hệ"
+                android:textSize="14sp"
+                android:textColor="#050505"
+                android:textStyle="bold"
+                ></TextView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                >
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/map2"
+                    ></ImageView>
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/diachi"
+                    android:textColor="#040404"
+                    android:textSize="13sp"
+                    android:text="dia chi"
+                    ></TextView>
             </LinearLayout>
 
 
-        </FrameLayout>
+        </LinearLayout>
 
-    </ScrollView>
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_marginTop="30dp"
+            />
+
+    </LinearLayout>
 
 
-</LinearLayout>
+</RelativeLayout>

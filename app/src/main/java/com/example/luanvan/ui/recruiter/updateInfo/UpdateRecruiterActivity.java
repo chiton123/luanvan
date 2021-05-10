@@ -44,7 +44,7 @@ public class UpdateRecruiterActivity extends AppCompatActivity {
     private void getInfo() {
         editName.setText(MainActivity.recruiter.getName());
         editEmail.setText(MainActivity.recruiter.getEmail());
-        editPhone.setText(MainActivity.recruiter.getPhone() + "");
+        editPhone.setText("0"+MainActivity.recruiter.getPhone() + "");
         editIntroduction.setText(MainActivity.recruiter.getIntroduction());
         editAddress.setText(MainActivity.recruiter.getAddress());
 
@@ -78,7 +78,11 @@ public class UpdateRecruiterActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Chưa điền địa chỉ", Toast.LENGTH_SHORT).show();
                 }else if(intro.equals("")){
                     Toast.makeText(getApplicationContext(), "Chưa điền giới thiệu", Toast.LENGTH_SHORT).show();
-                }else {
+                }else if(phone.length() > 10){
+                    Toast.makeText(getApplicationContext(), "Số điện thoại phải ít hơn 11 số", Toast.LENGTH_SHORT).show();
+                }
+
+                else {
                     RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
                     StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlUpdateRecruiter,
                             new Response.Listener<String>() {
@@ -92,7 +96,6 @@ public class UpdateRecruiterActivity extends AppCompatActivity {
                                         MainActivity.recruiter.setName(name);
                                         MainActivity.recruiter.setIntroduction(intro);
                                         finish();
-
                                     }else{
                                         Toast.makeText(getApplicationContext(), "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
                                     }
