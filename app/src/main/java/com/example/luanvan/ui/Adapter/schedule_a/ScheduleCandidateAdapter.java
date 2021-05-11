@@ -301,7 +301,7 @@ public class ScheduleCandidateAdapter extends RecyclerView.Adapter<ScheduleCandi
                     @Override
                     public void onResponse(String response) {
                         if(response.equals("success")){
-                            Toast.makeText(context, "Thông báo thành công", Toast.LENGTH_SHORT).show();
+                         //   Toast.makeText(context, "Thông báo thành công", Toast.LENGTH_SHORT).show();
                             phoneNotification();
                         }else {
                             Toast.makeText(context, "Thông báo thất bại", Toast.LENGTH_SHORT).show();
@@ -335,9 +335,9 @@ public class ScheduleCandidateAdapter extends RecyclerView.Adapter<ScheduleCandi
                     @Override
                     public void onResponse(String response) {
                         if(response.equals("success")){
-                            Toast.makeText(context, "Cập nhật schedule thành công", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
                         }else {
-                            Toast.makeText(context, "Cập nhật schedule thất bại", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
                         }
                     }
                 },

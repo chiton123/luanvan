@@ -564,6 +564,7 @@ public class NotificationsFragment extends Fragment {
                     scrollView.setVisibility(View.VISIBLE);
                     getInfo();
                     getInfoFromFirebase();
+                    checkSwitch();
                     getActivity().invalidateOptionsMenu();
                 }
             },200);

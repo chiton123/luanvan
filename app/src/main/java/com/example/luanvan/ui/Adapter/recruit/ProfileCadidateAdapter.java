@@ -178,14 +178,21 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
                     } else {
                         note = editNote.getText().toString();
                         updateStatus(position);
-                        postNotification(0);
+                        if(statusApplication == 1 || statusApplication == 2 || statusApplication == 4 || statusApplication == 8 ||
+                                statusApplication == 10 || statusApplication == 11){
+                            postNotification(0);
+                        }
+
                         bottomSheetAssess.dismiss();
                     }
 
                 } else {
                     note = editNote.getText().toString();
                     updateStatus(position);
-                    postNotification(0);
+                    if(statusApplication == 1 || statusApplication == 2 || statusApplication == 4 || statusApplication == 8 ||
+                            statusApplication == 10 || statusApplication == 11){
+                        postNotification(0);
+                    }
                     bottomSheetAssess.dismiss();
                 }
 
