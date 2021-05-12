@@ -77,7 +77,7 @@
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:id="@+id/area_image"
-                                android:src="@drawable/area"
+                                android:src="@drawable/map2"
                                 ></ImageView>
                             <TextView
                                 android:layout_width="wrap_content"

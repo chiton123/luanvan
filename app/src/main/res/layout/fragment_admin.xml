@@ -71,7 +71,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Đăng Nhập"
-            android:background="#1E88E5"
+            android:background="@drawable/button_login"
             android:id="@+id/login"
             ></Button>
     </LinearLayout>

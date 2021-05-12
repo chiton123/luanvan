@@ -105,7 +105,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:lines="5"
-            android:padding="10dp"
+            android:padding="5dp"
             android:id="@+id/description"
             android:gravity="top|left"
             android:hint="Mô tả"

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -55,10 +57,13 @@ public class KindOfJobActivity extends AppCompatActivity {
     int page = 1;
     int kind = 0; // // kind : 0 : thuc tap, 1: tu xa, 2: ban thoi gian, 3 toan thoi gian, 4 da ung tuyen, 5 quan tam, 6 moi nhat, 7 phu hop
     SearchView searchView;
+    LinearLayout layout, layout_nothing;
+    ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kind_of_job);
+        loading();
         anhxa();
         actionBar();
         if(kind == 4){
@@ -66,9 +71,38 @@ public class KindOfJobActivity extends AppCompatActivity {
         }else {
             getData(page);
         }
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.dismiss();
+                checkNothing();
+            }
+        },3000);
         loadMore();
 
     }
+    public void checkNothing(){
+        if(kind == 4){
+            if(job_applyArrayList.size() == 0){
+                layout.setVisibility(View.INVISIBLE);
+                layout_nothing.setVisibility(View.VISIBLE);
+            }else {
+                layout.setVisibility(View.VISIBLE);
+                layout_nothing.setVisibility(View.INVISIBLE);
+            }
+        }else {
+            if(arrayList.size() == 0){
+                layout.setVisibility(View.INVISIBLE);
+                layout_nothing.setVisibility(View.VISIBLE);
+            }else {
+                layout.setVisibility(View.VISIBLE);
+                layout_nothing.setVisibility(View.INVISIBLE);
+            }
+        }
+
+    }
+
     private void loadMore() {
         adapter.setLoadmore(new ILoadMore() {
             @Override
@@ -248,13 +282,23 @@ public class KindOfJobActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                adapter.getFilter().filter(query);
+                if(kind == 4){
+                    jobApplyAdapter.getFilter().filter(query);
+                }else {
+                    adapter.getFilter().filter(query);
+                }
+
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                adapter.getFilter().filter(newText);
+                if(kind == 4){
+                    jobApplyAdapter.getFilter().filter(newText);
+                }else {
+                    adapter.getFilter().filter(newText);
+                }
+
                 return false;
             }
         });
@@ -387,7 +431,15 @@ public class KindOfJobActivity extends AppCompatActivity {
         }else {
             recyclerView.setAdapter(jobApplyAdapter); // 5: da ung tuyen
         }
+        layout = (LinearLayout) findViewById(R.id.layout);
+        layout_nothing = (LinearLayout) findViewById(R.id.layout_nothing);
 
-
+    }
+    void loading(){
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading");
+        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
     }
 }

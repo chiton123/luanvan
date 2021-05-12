@@ -44,12 +44,6 @@
         android:ellipsize="end"
         android:id="@+id/txt_lastmessage"
         ></TextView>
-    <View
-        android:id="@+id/view"
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="0.4dp"
-        android:background="#838383"
-        ></View>
+
 
 </LinearLayout>

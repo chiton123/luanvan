@@ -53,7 +53,7 @@
                     android:text="DANH GIA"
                     android:id="@+id/txtremark"
                     android:textColor="#838383"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     ></TextView>
 
                 <Button

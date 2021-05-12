@@ -47,6 +47,7 @@
             android:id="@+id/txtdate"
             ></TextView>
         <EditText
+            android:padding="5dp"
             android:layout_margin="5dp"
             android:layout_width="300dp"
             android:layout_height="100dp"

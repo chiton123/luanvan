@@ -77,9 +77,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ItemHolder> im
                     activity.startActivity(intent);
                 }
             });
-            if(position == filterArraylist.size() - 1){
-                holder.view.setVisibility(View.GONE);
-            }
+
         }
 
 
@@ -131,13 +129,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ItemHolder> im
     public class ItemHolder extends RecyclerView.ViewHolder{
         public TextView txtUsername, txtLastMessage;
         public CircleImageView img;
-        public View view;
+
 
         public ItemHolder(@NonNull View itemView) {
             super(itemView);
             txtUsername = (TextView) itemView.findViewById(R.id.name);
             img = (CircleImageView) itemView.findViewById(R.id.img);
-            view = (View) itemView.findViewById(R.id.view);
             txtLastMessage = (TextView) itemView.findViewById(R.id.txt_lastmessage);
         }
     }

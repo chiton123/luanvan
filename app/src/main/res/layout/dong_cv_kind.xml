@@ -12,7 +12,7 @@
         android:textColor="#BD360B"
         android:textStyle="bold"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="75dp"
+        android:layout_marginTop="90dp"
         ></TextView>
     <ImageView
         android:layout_width="150dp"
