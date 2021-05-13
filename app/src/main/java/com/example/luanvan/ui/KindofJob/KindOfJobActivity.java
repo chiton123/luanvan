@@ -168,8 +168,8 @@ public class KindOfJobActivity extends AppCompatActivity {
                 profession += MainActivity.arrayListChosenProfession.get(i).getId() + ",";
             }
         }
-      //  Toast.makeText(getApplicationContext(), "area: " + area + " skill : " + skill + " profession : " + profession, Toast.LENGTH_SHORT).show();
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+    //    Toast.makeText(getApplicationContext(), "p size: " + MainActivity.arrayListChosenProfession.size(), Toast.LENGTH_SHORT).show();
+    //    Toast.makeText(getApplicationContext(), "area: " + area + " skill : " + skill + " profession : " + profession, Toast.LENGTH_SHORT).show();
         String url = MainActivity.urljob1 + String.valueOf(page);
         final String finalArea = area;
         final int finalCheckarea = checkarea;
@@ -177,6 +177,8 @@ public class KindOfJobActivity extends AppCompatActivity {
         final int finalCheckskill = checkskill;
         final int finalCheckprofession = checkprofession;
         final String finalProfession = profession;
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override

@@ -83,7 +83,7 @@
                 >
                 <GridView
                     android:layout_width="match_parent"
-                    android:layout_height="500dp"
+                    android:layout_height="450dp"
                     android:id="@+id/gridviewvieclam"
                     android:numColumns="2"
                     ></GridView>
@@ -96,6 +96,7 @@
                     android:textSize="18sp"
                     android:textStyle="bold"
                     ></TextView>
+
                 <HorizontalScrollView
                     android:layout_marginTop="10dp"
                     android:id="@+id/hori"

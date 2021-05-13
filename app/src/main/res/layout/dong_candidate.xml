@@ -159,6 +159,7 @@
                         android:orientation="horizontal"
                         android:weightSum="15"
                         android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
                         >
                         <ImageView
                             android:layout_width="0dp"
@@ -174,6 +175,7 @@
                             android:id="@+id/txtarea"
                             android:textColor="#070707"
                             android:textSize="14sp"
+
                             ></TextView>
 
                     </LinearLayout>

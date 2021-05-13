@@ -84,8 +84,6 @@ public class PersonalInfoActivity extends AppCompatActivity {
     RecyclerView recyclerViewArea, recyclerViewTagArea, recyclerViewProfession, recyclerViewTagProfession;
     TagAreaAdapter tagAdapter; // Những tag trong recycleview
     TagProfessionAdapter tagProfessionAdapter;
-    public static ArrayList<Area>  arraylistChosenArea; // Đã chọn
-    public static ArrayList<Profession> arrayListChosenProfession;
     ArrayList<AreaCandidate> arraylistArea; // Trên bottemsheet có check hay k luôn
     ArrayList<ProfessionCandidate> arrayListProfession;
     BottomSheetDialog bottomSheetArea, bottomSheetProfession;
@@ -154,7 +152,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
                 recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
                 recyclerView.setHasFixedSize(true);
                 recyclerView.setLayoutManager(new LinearLayoutManager(PersonalInfoActivity.this, LinearLayoutManager.VERTICAL, false));
-                professionAdapter = new ProfessionBottomSheetTagAdapter(PersonalInfoActivity.this, arrayListProfession, PersonalInfoActivity.this, arrayListChosenProfession);
+                professionAdapter = new ProfessionBottomSheetTagAdapter(PersonalInfoActivity.this, arrayListProfession, PersonalInfoActivity.this, MainActivity.arrayListChosenProfession);
                 recyclerView.setAdapter(professionAdapter);
                 bottomSheetProfession.setCancelable(false);
                 bottomSheetProfession.setContentView(view);
@@ -208,7 +206,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
                 recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
                 recyclerView.setHasFixedSize(true);
                 recyclerView.setLayoutManager(new LinearLayoutManager(PersonalInfoActivity.this, LinearLayoutManager.VERTICAL, false));
-                areaAdapter = new AreaBottomSheetTagAdapter(PersonalInfoActivity.this, arraylistArea, PersonalInfoActivity.this, arraylistChosenArea);
+                areaAdapter = new AreaBottomSheetTagAdapter(PersonalInfoActivity.this, arraylistArea, PersonalInfoActivity.this, MainActivity.arraylistChosenArea);
                 recyclerView.setAdapter(areaAdapter);
                 bottomSheetArea.setContentView(view);
                 bottomSheetArea.show();
@@ -217,105 +215,8 @@ public class PersonalInfoActivity extends AppCompatActivity {
         });
 
     }
-    private void getCandidateProfession() {
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlGetCandidateProfession,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                       // Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT).show();
-                        if(response != null){
-                            try {
-                                JSONArray jsonArray = new JSONArray(response);
-                                for(int i=0; i < jsonArray.length(); i++){
-                                    JSONObject object = jsonArray.getJSONObject(i);
-                                    arrayListChosenProfession.add(new Profession(
-                                            object.getInt("id"),
-                                            object.getString("name")
-                                    ));
-                                    tagProfessionAdapter.notifyDataSetChanged();
-                                }
-                                for(int i=0; i < arrayListProfession.size(); i++){
-                                    for(int j=0; j < arrayListChosenProfession.size(); j++){
-                                        if(arrayListProfession.get(i).getId() == arrayListChosenProfession.get(j).getId()){
-                                            arrayListProfession.get(i).setCheck(1);
-                                        }
-                                    }
-                                }
 
 
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
-                    }
-                }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> map = new HashMap<>();
-                map.put("iduser", String.valueOf(MainActivity.iduser));
-                return map;
-            }
-        };
-        requestQueue.add(stringRequest);
-
-    }
-    private void getCandidateArea() {
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlGetCandidateArea,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        if(response != null){
-                            try {
-                                JSONArray jsonArray = new JSONArray(response);
-                                for(int i=0; i < jsonArray.length(); i++){
-                                    JSONObject object = jsonArray.getJSONObject(i);
-                                    arraylistChosenArea.add(new Area(
-                                            object.getInt("id"),
-                                            object.getString("name")
-                                    ));
-                                    tagAdapter.notifyDataSetChanged();
-                                }
-                                for(int i=0; i < arraylistArea.size(); i++){
-                                    for(int j=0; j < arraylistChosenArea.size(); j++){
-                                        if(arraylistArea.get(i).getId() == arraylistChosenArea.get(j).getId()){
-                                            arraylistArea.get(i).setCheck(1);
-                                        }
-                                    }
-                                }
-
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
-                    }
-                }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> map = new HashMap<>();
-                map.put("iduser", String.valueOf(MainActivity.iduser));
-                return map;
-            }
-        };
-        requestQueue.add(stringRequest);
-
-    }
     private void postProfessionCandidate() {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlAddProfessionCandidate,
@@ -339,11 +240,11 @@ public class PersonalInfoActivity extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> map = new HashMap<>();
                 JSONArray jsonArray = new JSONArray();
-                for(int i=0; i < arrayListChosenProfession.size(); i++){
+                for(int i=0; i < MainActivity.arrayListChosenProfession.size(); i++){
                     JSONObject object = new JSONObject();
                     try {
                         object.put("iduser", String.valueOf(MainActivity.iduser));
-                        object.put("idprofession", String.valueOf(arrayListChosenProfession.get(i).getId()));
+                        object.put("idprofession", String.valueOf(MainActivity.arrayListChosenProfession.get(i).getId()));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -383,11 +284,11 @@ public class PersonalInfoActivity extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> map = new HashMap<>();
                 JSONArray jsonArray = new JSONArray();
-                for(int i=0; i < arraylistChosenArea.size(); i++){
+                for(int i=0; i < MainActivity.arraylistChosenArea.size(); i++){
                     JSONObject object = new JSONObject();
                     try {
                         object.put("iduser", String.valueOf(MainActivity.iduser));
-                        object.put("idarea", String.valueOf(arraylistChosenArea.get(i).getId()));
+                        object.put("idarea", String.valueOf(MainActivity.arraylistChosenArea.get(i).getId()));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -608,8 +509,6 @@ public class PersonalInfoActivity extends AppCompatActivity {
 
     private void getInfo() {
         if(MainActivity.login == 1){
-            getCandidateArea();
-            getCandidateProfession();
             editname.setText(MainActivity.user.getName());
             editemail.setText(MainActivity.user.getEmail());
             String ngay = MainActivity.user.getBirthday();
@@ -685,9 +584,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
         arrayList = new ArrayList<>();
         getDataPosition();
         arraylistArea = new ArrayList<>();
-        arraylistChosenArea = new ArrayList<>();
         arrayListProfession = new ArrayList<>();
-        arrayListChosenProfession = new ArrayList<>();
         getDataArea();
         getDataProfession();
         imgAddProfession = (ImageView) findViewById(R.id.imgaddnganhnghe);
@@ -711,9 +608,9 @@ public class PersonalInfoActivity extends AppCompatActivity {
         layoutManager2.setAlignItems(AlignItems.STRETCH);
         recyclerViewTagProfession.setLayoutManager(layoutManager2);
 
-        tagAdapter = new TagAreaAdapter(PersonalInfoActivity.this, arraylistChosenArea, PersonalInfoActivity.this, arraylistArea );
+        tagAdapter = new TagAreaAdapter(PersonalInfoActivity.this, MainActivity.arraylistChosenArea, PersonalInfoActivity.this, arraylistArea );
         recyclerViewTagArea.setAdapter(tagAdapter);
-        tagProfessionAdapter = new TagProfessionAdapter(PersonalInfoActivity.this, arrayListChosenProfession, PersonalInfoActivity.this, arrayListProfession);
+        tagProfessionAdapter = new TagProfessionAdapter(PersonalInfoActivity.this, MainActivity.arrayListChosenProfession, PersonalInfoActivity.this, arrayListProfession);
         recyclerViewTagProfession.setAdapter(tagProfessionAdapter);
 
 
