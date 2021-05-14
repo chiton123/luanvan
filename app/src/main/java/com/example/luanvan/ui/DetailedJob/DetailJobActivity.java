@@ -66,6 +66,7 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -123,6 +124,7 @@ public class DetailJobActivity extends AppCompatActivity {
             notificationChannel.setDescription(getString(R.string.CHANNEL_DESCRIPTION));
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(notificationChannel);
+
 
         }
 
@@ -237,12 +239,18 @@ public class DetailJobActivity extends AppCompatActivity {
                 int status = job.getStatus();
                 SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
                 Date date = null;
+                Date current = new Date();
+                String now = fmt.format(current);
+             //   Toast.makeText(getApplicationContext(), current.toString(), Toast.LENGTH_SHORT).show();
                 try {
                     date = fmt.parse(job.getEnd_date());
+                    current = fmt.parse(now);
+
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                if(status == 0 && date.after(Calendar.getInstance().getTime())){
+           //     Toast.makeText(getApplicationContext(), current.toString(), Toast.LENGTH_SHORT).show();
+                if(status == 0 && (date.compareTo(current) == 0 || date.after(current))){
                     if(checkApplyAgain == 0){
                         apply();
                     }else {
@@ -384,7 +392,7 @@ public class DetailJobActivity extends AppCompatActivity {
         btnUse = (Button) dialog.findViewById(R.id.buttonsudung);
         txtName.setText(MainActivity.user.getName());
         txtEmail.setText(MainActivity.user.getEmail());
-        txtPhone.setText(MainActivity.user.getPhone() + "");
+        txtPhone.setText("0"+MainActivity.user.getPhone() + "");
         if(MainActivity.arrayListCV.size() > 0){
             txtCV.setText(MainActivity.arrayListCV.get(0).getName());
         }else {

@@ -106,7 +106,18 @@ public class DisplayJobFragment extends Fragment {
                                 Date date = null;
                                 SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
                                 date = fmt.parse(object.getString("end_date"));
-                                if(date.after(Calendar.getInstance().getTime())){
+
+                                Date current = new Date();
+                                String now = fmt.format(current);
+                                try {
+
+                                    current = fmt.parse(now);
+
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+
+                                if(date.compareTo(current) == 0 || date.after(current)){
                                     RecruiterActivity.arrayListJobList.add(new JobList(
                                             object.getInt("id"),
                                             object.getString("name"),

@@ -114,6 +114,7 @@ public class RegisterFragment extends Fragment {
 
                         }else {
                             Toast.makeText(getActivity(), "Đăng ký thất bại", Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
                         }
                     }
                 });
@@ -138,7 +139,35 @@ public class RegisterFragment extends Fragment {
                     final String name = editName.getText().toString();
                     final String email = editEmail.getText().toString();
                     final String pass = editPass.getText().toString();
-                    SignUp(email, pass, name);
+                    RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlCheckRegister,
+                            new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    if(response.equals("fail")){
+                                        SignUp(email, pass, name);
+                                    }else {
+                                        Toast.makeText(getActivity(), "Email này đã được sử dụng", Toast.LENGTH_SHORT).show();
+                                        progressDialog.dismiss();
+                                    }
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
+                                    progressDialog.dismiss();
+                                }
+                            }){
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            Map<String,String> map = new HashMap<>();
+                            map.put("email", email);
+                            return map;
+                        }
+                    };
+                    requestQueue.add(stringRequest);
+
 
                 }
 
@@ -156,7 +185,7 @@ public class RegisterFragment extends Fragment {
                             Toast.makeText(getActivity(), "Đăng ký thành công", Toast.LENGTH_SHORT).show();
                         }else {
                             Toast.makeText(getActivity(), "Đăng ký thất bại", Toast.LENGTH_SHORT).show();
-                            progressDialog.dismiss();
+                         //   progressDialog.dismiss();
                         }
                     }
                 },
@@ -164,7 +193,7 @@ public class RegisterFragment extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
-                        progressDialog.dismiss();
+                   //     progressDialog.dismiss();
                     }
                 }){
             @Override

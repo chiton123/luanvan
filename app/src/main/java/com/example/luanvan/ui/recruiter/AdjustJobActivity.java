@@ -478,7 +478,16 @@ public class AdjustJobActivity extends AppCompatActivity {
                                                     } catch (ParseException e) {
                                                         e.printStackTrace();
                                                     }
-                                                    if(date1.after(Calendar.getInstance().getTime())){
+                                                    Date current = new Date();
+                                                    String now = fmt1.format(current);
+                                                    try {
+
+                                                        current = fmt1.parse(now);
+
+                                                    } catch (ParseException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                    if(date1.compareTo(current) == 0 || date1.after(current)){
                                                         updatePreviousJobDisplay();
                                                     }else {
                                                         updatePreviousJobDisplay();
@@ -498,7 +507,17 @@ public class AdjustJobActivity extends AppCompatActivity {
                                                     } catch (ParseException e) {
                                                         e.printStackTrace();
                                                     }
-                                                    if(date.after(Calendar.getInstance().getTime())){
+
+                                                    Date current1 = new Date();
+                                                    String now1 = fmt.format(current1);
+                                                    try {
+                                                        current1 = fmt.parse(now1);
+
+                                                    } catch (ParseException e) {
+                                                        e.printStackTrace();
+                                                    }
+
+                                                    if(date.compareTo(current1) == 0 || date.after(current1)){
                                                         updatePreviousOutdatedJob();
                                                         RecruiterActivity.arrayListJobList.add(RecruiterActivity.arrayListOutdatedJobs.get(position_job));
                                                         RecruiterActivity.arrayListOutdatedJobs.remove(position_job);

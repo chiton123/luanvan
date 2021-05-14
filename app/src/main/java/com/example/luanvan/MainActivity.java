@@ -130,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
     public static String urlUpdateCompany = host + "update_company.php";
     // dang nhap
     public static String urlRegister = host + "register.php";
+    public static String urlCheckRegister = host + "check_register.php";
     public static String urllogin = host + "login.php";
     // Đăng nhập nhà tuyển dụng
     public static String urlLoginRecruiter = host + "login_recruiter.php";

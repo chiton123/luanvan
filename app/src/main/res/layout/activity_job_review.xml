@@ -11,7 +11,7 @@
         android:layout_height="?attr/actionBarSize"
         android:id="@+id/toolbar"
         android:background="#02F1D0"
-        app:title="Tin tuyển dụng"
+        app:title="Duyệt tin tuyển dụng"
         ></androidx.appcompat.widget.Toolbar>
     <RelativeLayout
         android:layout_width="match_parent"
