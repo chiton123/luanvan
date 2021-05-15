@@ -1,7 +1,7 @@
 package com.example.luanvan.ui.KindofJob;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
+
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -38,7 +38,7 @@ import com.example.luanvan.ui.recruiter.search_r.SearchCandidateActivity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import android.widget.SearchView;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -80,8 +80,35 @@ public class KindOfJobActivity extends AppCompatActivity {
             }
         },3000);
         loadMore();
+        search();
 
     }
+
+    private void search() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if(kind == 4){
+                    jobApplyAdapter.getFilter().filter(query);
+                }else {
+                    adapter.getFilter().filter(query);
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if(kind == 4){
+                    jobApplyAdapter.getFilter().filter(newText);
+                }else {
+                    adapter.getFilter().filter(newText);
+                }
+                return false;
+            }
+        });
+
+    }
+
     public void checkNothing(){
         if(kind == 4){
             if(job_applyArrayList.size() == 0){
@@ -266,47 +293,7 @@ public class KindOfJobActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
 
     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_search_kindjob, menu);
-        MenuItem searchItem = menu.findItem(R.id.searchhienthithongtin);
-        SearchManager searchManager = (SearchManager) this.getSystemService(Context.SEARCH_SERVICE);
 
-        searchView = null;
-        if (searchItem != null) {
-            searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
-        }
-        if (searchView != null) {
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(this.getComponentName()));
-        }
-
-        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                if(kind == 4){
-                    jobApplyAdapter.getFilter().filter(query);
-                }else {
-                    adapter.getFilter().filter(query);
-                }
-
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                if(kind == 4){
-                    jobApplyAdapter.getFilter().filter(newText);
-                }else {
-                    adapter.getFilter().filter(newText);
-                }
-
-                return false;
-            }
-        });
-
-        return super.onCreateOptionsMenu(menu);
-    }
 
     private void getDataApply(int page) {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
@@ -420,6 +407,7 @@ public class KindOfJobActivity extends AppCompatActivity {
     private void anhxa() {
         kind = getIntent().getIntExtra("kind",0);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        searchView = (SearchView) findViewById(R.id.searchView);
         arrayList = new ArrayList<>();
         job_applyArrayList = new ArrayList<>();
         recyclerView = (RecyclerView) findViewById(R.id.recycleview);

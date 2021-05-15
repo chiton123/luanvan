@@ -17,9 +17,20 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:id="@+id/layout"
-        android:layout_below="@id/toolbar"
         android:background="#F0FBF5"
+        android:layout_below="@id/toolbar"
         >
+        <SearchView
+            android:layout_margin="5dp"
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:iconifiedByDefault="false"
+            android:background="@drawable/searchview"
+            android:queryHint="Search...."
+            android:layout_alignParentTop="true" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:layout_below="@id/toolbar"
             android:layout_width="match_parent"
@@ -31,10 +42,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_below="@id/toolbar"
         android:gravity="center"
         android:id="@+id/layout_nothing"
         android:visibility="gone"
+        android:layout_below="@id/toolbar"
         >
         <TextView
             android:layout_width="wrap_content"
@@ -44,6 +55,8 @@
             android:textSize="18sp"
             ></TextView>
     </LinearLayout>
+
+
 
 
 </RelativeLayout>

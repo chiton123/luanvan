@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -51,6 +52,7 @@ public class JobListFragment extends Fragment {
     LinearLayout layout, layout_nothing;
     Handler handler;
     ProgressDialog progressDialog;
+    SearchView searchView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -63,6 +65,7 @@ public class JobListFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
+        searchView = (SearchView) view.findViewById(R.id.searchView);
         if(RecruiterActivity.arrayListJobList.size() == 0){
             getData(0);
         }
@@ -74,10 +77,27 @@ public class JobListFragment extends Fragment {
                 progressDialog.dismiss();
             }
         },4000);
-
+        search();
         return view;
 
     }
+
+    private void search() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                adapter.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+    }
+
     void loading(){
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("Loading");

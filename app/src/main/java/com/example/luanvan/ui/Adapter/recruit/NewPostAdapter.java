@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -36,6 +38,7 @@ import com.example.luanvan.ui.recruiter.PostNews.OutdatedJobFragment;
 import com.example.luanvan.ui.recruiter.PostNews.RejectJobFragment;
 import com.example.luanvan.ui.recruiter.RecruiterActivity;
 
+import java.text.Normalizer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -44,9 +47,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class NewPostAdapter extends RecyclerView.Adapter<NewPostAdapter.ItemHolder> {
+public class NewPostAdapter extends RecyclerView.Adapter<NewPostAdapter.ItemHolder> implements Filterable {
     Context context;
-    ArrayList<JobList> arrayList;
+    ArrayList<JobList> filterArraylist;
+    ArrayList<JobList> nameList;
     Activity activity;
     int kind;
     int REQUEST_CODE = 123;
@@ -54,7 +58,8 @@ public class NewPostAdapter extends RecyclerView.Adapter<NewPostAdapter.ItemHold
 
     public NewPostAdapter(Context context, ArrayList<JobList> arrayList, Activity activity, int kind, int fragment) {
         this.context = context;
-        this.arrayList = arrayList;
+        this.filterArraylist = arrayList;
+        this.nameList = arrayList;
         this.activity = activity;
         this.kind = kind;
         this.fragment = fragment;
@@ -70,7 +75,7 @@ public class NewPostAdapter extends RecyclerView.Adapter<NewPostAdapter.ItemHold
 
     @Override
     public void onBindViewHolder(@NonNull ItemHolder holder, final int position) {
-        JobList job = arrayList.get(position);
+        JobList job = filterArraylist.get(position);
         holder.txtPosition.setText(job.getName());
         holder.txtIDJob.setText(job.getId() + "");
         Date date1 = null, date2 = null;
@@ -98,7 +103,7 @@ public class NewPostAdapter extends RecyclerView.Adapter<NewPostAdapter.ItemHold
             public void onClick(View v) {
                 Intent intent1 = new Intent(activity, AdjustJobActivity.class);
                 intent1.putExtra("kind", kind); // kind: 0 JoblistFragment, 1: NewPostFragment
-                intent1.putExtra("job", arrayList.get(position));
+                intent1.putExtra("job", filterArraylist.get(position));
                 intent1.putExtra("position", position);
                 intent1.putExtra("fragment", fragment);
                 activity.startActivityForResult(intent1, REQUEST_CODE);
@@ -133,7 +138,7 @@ public class NewPostAdapter extends RecyclerView.Adapter<NewPostAdapter.ItemHold
                             public void onResponse(String response) {
                                 if(response.equals("success")){
                                     Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
-                                    arrayList.remove(position);
+                                    filterArraylist.remove(position);
                                     notifyDataSetChanged();
                                     switch (fragment){
                                         case 1:
@@ -165,7 +170,7 @@ public class NewPostAdapter extends RecyclerView.Adapter<NewPostAdapter.ItemHold
                     @Override
                     protected Map<String, String> getParams() throws AuthFailureError {
                         Map<String,String> map = new HashMap<>();
-                        map.put("job_id", String.valueOf(arrayList.get(position).getId()));
+                        map.put("job_id", String.valueOf(filterArraylist.get(position).getId()));
                         return map;
                     }
                 };
@@ -215,7 +220,38 @@ public class NewPostAdapter extends RecyclerView.Adapter<NewPostAdapter.ItemHold
     }
     @Override
     public int getItemCount() {
-        return arrayList.size();
+        return filterArraylist.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String charSequenceString = stripAccents(constraint.toString()).trim();
+                if(charSequenceString.isEmpty()){
+                    filterArraylist = nameList;
+                }else {
+                    ArrayList<JobList> filteredList = new ArrayList<>();
+                    for(JobList jobList : nameList){
+                        String name1 = stripAccents(jobList.getName()).trim();
+                        if(name1.toLowerCase().contains(charSequenceString.toLowerCase())){
+                            filteredList.add(jobList);
+                        }
+                        filterArraylist = filteredList;
+                    }
+                }
+                FilterResults results = new FilterResults();
+                results.values = filterArraylist;
+                return results;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                filterArraylist = (ArrayList<JobList>) results.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 
     public class ItemHolder extends RecyclerView.ViewHolder{
@@ -237,6 +273,12 @@ public class NewPostAdapter extends RecyclerView.Adapter<NewPostAdapter.ItemHold
             txtReason = (TextView) itemView.findViewById(R.id.txtreason);
 
         }
+    }
+    public static String stripAccents(String s)
+    {
+        s = Normalizer.normalize(s, Normalizer.Form.NFD);
+        s = s.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
+        return s;
     }
 
 }

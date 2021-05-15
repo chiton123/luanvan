@@ -2,7 +2,7 @@ package com.example.luanvan.ui.chat;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
+
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.luanvan.MainActivity;
@@ -51,11 +52,25 @@ public class UserListActivity extends AppCompatActivity {
       //  loading();
         anhxa();
         actionBar();
-
+        search();
 
 
     }
+    private void search() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                adapter.getFilter().filter(query);
+                return false;
+            }
 
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+    }
     void loading(){
         progressDialog = new ProgressDialog(getApplicationContext());
         progressDialog.setMessage("Loading");
@@ -83,38 +98,9 @@ public class UserListActivity extends AppCompatActivity {
             }
         });
     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_search_kindjob, menu);
-        MenuItem searchItem = menu.findItem(R.id.searchhienthithongtin);
-        SearchManager searchManager = (SearchManager) this.getSystemService(Context.SEARCH_SERVICE);
 
-        searchView = null;
-        if (searchItem != null) {
-            searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
-        }
-        if (searchView != null) {
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(this.getComponentName()));
-        }
-
-        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                adapter.getFilter().filter(query);
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                adapter.getFilter().filter(newText);
-                return false;
-            }
-        });
-
-        return super.onCreateOptionsMenu(menu);
-    }
     private void anhxa() {
+        searchView = (SearchView) findViewById(R.id.searchView);
         userList = new ArrayList<>();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         recyclerView = (RecyclerView) findViewById(R.id.recycleview);

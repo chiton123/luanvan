@@ -13,15 +13,27 @@
         android:background="#02F1D0"
         app:title="Công việc"
         ></androidx.appcompat.widget.Toolbar>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:id="@+id/layout"
+        android:padding="5dp"
         android:layout_below="@id/toolbar"
         >
+        <SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:iconifiedByDefault="false"
+            android:background="@drawable/searchview"
+            android:queryHint="Search...."
+            android:layout_alignParentTop="true" />
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
             android:layout_height="match_parent"
             android:id="@+id/recycleview"
             ></androidx.recyclerview.widget.RecyclerView>
@@ -46,4 +58,6 @@
             ></TextView>
 
     </LinearLayout>
+
+
 </RelativeLayout>

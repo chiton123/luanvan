@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".ui.admin.JobReviewActivity">
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
@@ -13,39 +12,46 @@
         android:background="#02F1D0"
         app:title="Duyệt tin tuyển dụng"
         ></androidx.appcompat.widget.Toolbar>
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#fff"
+        android:orientation="vertical"
+        android:layout_below="@id/toolbar"
         >
-        <LinearLayout
+        <SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:iconifiedByDefault="false"
+            android:background="@drawable/searchview"
+            android:queryHint="Search...."
+            android:layout_margin="5dp"
+            android:layout_alignParentTop="true" />
+        <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            >
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/recycleview"
-                ></androidx.recyclerview.widget.RecyclerView>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:id="@+id/layout_nothing"
-            android:gravity="center"
-            android:visibility="gone"
-            >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Không có tin tuyển dụng"
-                android:textColor="#151515"
-                android:textSize="20sp"
-                ></TextView>
+            android:id="@+id/recycleview"
+            ></androidx.recyclerview.widget.RecyclerView>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/layout_nothing"
+        android:gravity="center"
+        android:visibility="gone"
+        android:layout_below="@id/toolbar"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Không có tin tuyển dụng"
+            android:textColor="#151515"
+            android:textSize="20sp"
+            ></TextView>
 
-        </LinearLayout>
+    </LinearLayout>
 
-    </RelativeLayout>
-</LinearLayout>
+
+</RelativeLayout>
