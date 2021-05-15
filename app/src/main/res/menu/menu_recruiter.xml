@@ -12,8 +12,6 @@
         android:title="notify"
         app:actionLayout="@layout/custom_action_item_layout"
         app:showAsAction="always"/>
-    <item android:id="@+id/changepassword"
-        android:title="Đổi mật khẩu"
-        ></item>
+
 
 </menu>

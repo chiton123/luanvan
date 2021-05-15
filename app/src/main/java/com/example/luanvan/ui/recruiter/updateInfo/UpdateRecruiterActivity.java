@@ -3,6 +3,7 @@ package com.example.luanvan.ui.recruiter.updateInfo;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -95,6 +96,8 @@ public class UpdateRecruiterActivity extends AppCompatActivity {
                                         MainActivity.recruiter.setPhone(Integer.parseInt(phone));
                                         MainActivity.recruiter.setName(name);
                                         MainActivity.recruiter.setIntroduction(intro);
+                                        Intent intent = new Intent();
+                                        setResult(123);
                                         finish();
                                     }else{
                                         Toast.makeText(getApplicationContext(), "Cập nhật thất bại", Toast.LENGTH_SHORT).show();

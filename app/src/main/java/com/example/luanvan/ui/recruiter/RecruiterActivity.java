@@ -1,6 +1,7 @@
 package com.example.luanvan.ui.recruiter;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -14,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +27,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.admin_a.AdminAdapter;
@@ -58,6 +61,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class RecruiterActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
     NavigationView navigationView;
@@ -77,6 +82,10 @@ public class RecruiterActivity extends AppCompatActivity {
     public static ArrayList<JobList> arrayListOutdatedJobs = new ArrayList<>();
     public static TextView txtUnreadMessageNumber;
     DatabaseReference reference;
+    CircleImageView img;
+    TextView txtUsername;
+    LinearLayout layout_user;
+    int REQUEST_CODE_UPDATRINFO = 123;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,8 +102,15 @@ public class RecruiterActivity extends AppCompatActivity {
             }
         },2000);
         eventListViewNavigation();
+        activateAfterLogin();
 
 
+    }
+    public void activateAfterLogin(){
+        toolbar.setTitle("");
+        layout_user.setVisibility(View.VISIBLE);
+        img.setImageResource(R.drawable.userprofile);
+        txtUsername.setText(MainActivity.recruiter.getName());
 
     }
     private void eventListViewNavigation() {
@@ -110,13 +126,25 @@ public class RecruiterActivity extends AppCompatActivity {
                         break;
                     case 1:
                         Intent intent1 = new Intent(getApplicationContext(), UpdateRecruiterActivity.class);
-                        startActivity(intent1);
+                        startActivityForResult(intent1, REQUEST_CODE_UPDATRINFO);
                         break;
+                    case 2:
+                        Intent intent2 = new Intent(getApplicationContext(), ChangePasswordActivity.class);
+                        startActivity(intent2);
 
                 }
             }
         });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == REQUEST_CODE_UPDATRINFO && resultCode == 123){
+            activateAfterLogin();
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     public void logOut(){
@@ -277,10 +305,6 @@ public class RecruiterActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), RecruiterNotificationActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.changepassword:
-                Intent intent2 = new Intent(getApplicationContext(), ChangePasswordActivity.class);
-                startActivity(intent2);
-                break;
 
         }
         return super.onOptionsItemSelected(item);
@@ -348,6 +372,7 @@ public class RecruiterActivity extends AppCompatActivity {
         arrayListMenu = new ArrayList<>();
         arrayListMenu.add(new Admin(1, "Đăng xuất", R.drawable.draw_signout));
         arrayListMenu.add(new Admin(2, "Hồ sơ", R.drawable.draw_profile));
+        arrayListMenu.add(new Admin(3, "Đổi mật khẩu", R.drawable.draw_password_reset));
         infoAdapter = new InfoAdapter(RecruiterActivity.this, arrayListMenu);
         listView = (ListView) findViewById(R.id.listview);
         listView.setAdapter(infoAdapter);
@@ -363,5 +388,8 @@ public class RecruiterActivity extends AppCompatActivity {
         }catch (NullPointerException e){
             Toast.makeText(getApplicationContext(), "NullPointerException" ,Toast.LENGTH_SHORT).show();
         }
+        img = (CircleImageView) findViewById(R.id.img);
+        txtUsername = (TextView) findViewById(R.id.txtusername);
+        layout_user = (LinearLayout) findViewById(R.id.layout_user);
     }
 }
