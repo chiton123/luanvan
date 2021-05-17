@@ -27,6 +27,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.dashboard.DashboardViewModel;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -69,7 +70,7 @@ public class AdminFragment extends Fragment {
                 final String username = editusername.getText().toString();
                 final String password = editpass.getText().toString();
                 if(username.equals("") || password.equals("")){
-                    Toast.makeText(getActivity(), "Vui lòng nhập đủ thông tin!", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getActivity(), "Vui lòng nhập đủ thông tin", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else {
                     RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
                     StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlLoginAdmin,
@@ -77,19 +78,19 @@ public class AdminFragment extends Fragment {
                                 @Override
                                 public void onResponse(String response) {
                                     if(response.equals("success")){
-                                        Toast.makeText(getActivity(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                                        FancyToast.makeText(getActivity(), "Đăng nhập thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
                                         MainActivity.login_admin = 1;
                                         Intent intent = new Intent(getActivity(), AdminActivity.class);
                                         startActivityForResult(intent, REQUEST_CODE);
                                     }else {
-                                        Toast.makeText(getActivity(), "sai ten hoac mat khau", Toast.LENGTH_SHORT).show();
+                                        FancyToast.makeText(getActivity(),"Sai tên hoặc mật khẩu", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                                     }
                                 }
                             },
                             new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
+                                   FancyToast.makeText(getActivity(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                                 }
                             }){
                         @Override

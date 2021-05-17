@@ -19,6 +19,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -70,17 +71,18 @@ public class UpdateRecruiterActivity extends AppCompatActivity {
                 if(!isEmailValid(email)){
                     Toast.makeText(getApplicationContext(), "Email không đúng định dạng", Toast.LENGTH_SHORT).show();
                 }else if(name.equals("")){
-                    Toast.makeText(getApplicationContext(), "Chưa điền họ tên", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Chưa điền họ tên", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else if(email.equals("")){
                     Toast.makeText(getApplicationContext(), "Chưa điền email", Toast.LENGTH_SHORT).show();
                 }else if(phone.equals("")){
                     Toast.makeText(getApplicationContext(), "Chưa điền số điện thoại", Toast.LENGTH_SHORT).show();
                 }else if(address.equals("")){
-                    Toast.makeText(getApplicationContext(), "Chưa điền địa chỉ", Toast.LENGTH_SHORT).show();
+
+                FancyToast.makeText(getApplicationContext(), "Chưa điền địa chỉ", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else if(intro.equals("")){
-                    Toast.makeText(getApplicationContext(), "Chưa điền giới thiệu", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Chưa điền giới thiệu", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else if(phone.length() > 10){
-                    Toast.makeText(getApplicationContext(), "Số điện thoại phải ít hơn 11 số", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Số điện thoại phải ít hơn 11 số", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }
 
                 else {
@@ -90,7 +92,7 @@ public class UpdateRecruiterActivity extends AppCompatActivity {
                                 @Override
                                 public void onResponse(String response) {
                                     if(response.equals("success")){
-                                        Toast.makeText(getApplicationContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                                        FancyToast.makeText(getApplicationContext(), "Cập nhật thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
                                         MainActivity.recruiter.setEmail(email);
                                         MainActivity.recruiter.setAddress(address);
                                         MainActivity.recruiter.setPhone(Integer.parseInt(phone));
@@ -100,14 +102,14 @@ public class UpdateRecruiterActivity extends AppCompatActivity {
                                         setResult(123);
                                         finish();
                                     }else{
-                                        Toast.makeText(getApplicationContext(), "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+                                        FancyToast.makeText(getApplicationContext(),"Cập nhật thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                                     }
                                 }
                             },
                             new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                                    FancyToast.makeText(getApplicationContext(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                                 }
                             }){
                         @Override

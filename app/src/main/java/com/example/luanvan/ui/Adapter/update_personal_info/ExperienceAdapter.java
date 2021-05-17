@@ -33,6 +33,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -82,7 +83,8 @@ public class ExperienceAdapter extends RecyclerView.Adapter<ExperienceAdapter.It
         try {
             holder.date.setText(fmtOut.format(date1) + " - " + fmtOut.format(date2));
         }catch (NullPointerException e){
-            Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
+
+            FancyToast.makeText(context, e.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
         }
 
         if(visable == 0){
@@ -121,7 +123,8 @@ public class ExperienceAdapter extends RecyclerView.Adapter<ExperienceAdapter.It
                                                 @Override
                                                 public void onResponse(String response) {
                                                     if(response.equals("success")){
-                                                        Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
+
+                                                        FancyToast.makeText(context, "Xóa thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
                                                         int pos = holder.getAdapterPosition();
 
                                                         if(last == 1 || arrayList.size() == 1){
@@ -138,14 +141,15 @@ public class ExperienceAdapter extends RecyclerView.Adapter<ExperienceAdapter.It
                                                         }
                                                         NotificationsFragment.experienceAdapter.notifyDataSetChanged();
                                                     }else {
-                                                        Toast.makeText(context, "Xóa thất bại", Toast.LENGTH_SHORT).show();
+
+                                                        FancyToast.makeText(context, "Xóa thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                                                     }
                                                 }
                                             },
                                             new Response.ErrorListener() {
                                                 @Override
                                                 public void onErrorResponse(VolleyError error) {
-                                                    Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                                                    FancyToast.makeText(context, error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                                                 }
                                             }){
                                         @Override

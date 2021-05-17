@@ -30,6 +30,7 @@ import com.example.luanvan.ui.Model.Skill;
 import com.example.luanvan.ui.UpdateInfo.SkillActivity;
 import com.example.luanvan.ui.UpdateInfo.EditCombineActivity;
 import com.example.luanvan.ui.User.NotificationsFragment;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -98,7 +99,7 @@ public class SkillAdapter extends RecyclerView.Adapter<SkillAdapter.ItemHolder> 
                                                 @Override
                                                 public void onResponse(String response) {
                                                     if(response.equals("success")){
-                                                        Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                                                        FancyToast.makeText(context, "Xóa thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
                                                         int pos = holder.getAdapterPosition();
 
                                                         if(last == 1 || arrayList.size() == 1) {
@@ -115,14 +116,14 @@ public class SkillAdapter extends RecyclerView.Adapter<SkillAdapter.ItemHolder> 
                                                         }
                                                         NotificationsFragment.skillAdapter.notifyDataSetChanged();
                                                     }else {
-                                                        Toast.makeText(context, "Xóa thất bại", Toast.LENGTH_SHORT).show();
+                                                        FancyToast.makeText(context, "Xóa thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                                                     }
                                                 }
                                             },
                                             new Response.ErrorListener() {
                                                 @Override
                                                 public void onErrorResponse(VolleyError error) {
-                                                    Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                                                    FancyToast.makeText(context, error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                                                 }
                                             }){
                                         @Override

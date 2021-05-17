@@ -36,6 +36,7 @@ import com.example.luanvan.ui.recruiter.RecruiterActivity;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -206,7 +207,8 @@ public class CandidateInfoActivity extends AppCompatActivity {
                         if(response.equals("success")){
                            // Toast.makeText(getApplicationContext(), "Đã thông báo", Toast.LENGTH_SHORT).show();
                         }else {
-                           // Toast.makeText(getApplicationContext(), "Thông báo thất bại", Toast.LENGTH_SHORT).show();
+                           //
+                      //  FancyToast.makeText(getApplicationContext(), "Thông báo thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                             postNotification(0, content); // 0: candidate, 1: recruiter
                         }
                     }
@@ -214,7 +216,7 @@ public class CandidateInfoActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(getApplicationContext(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override
@@ -237,14 +239,15 @@ public class CandidateInfoActivity extends AppCompatActivity {
                         if(response.equals("success")){
                          //   Toast.makeText(getApplicationContext(), "Thông báo thành công", Toast.LENGTH_SHORT).show();
                         }else {
-                        //    Toast.makeText(getApplicationContext(), "Thông báo thất bại", Toast.LENGTH_SHORT).show();
+                        //
+                        FancyToast.makeText(getApplicationContext(), "Thông báo thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(getApplicationContext(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override

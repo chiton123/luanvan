@@ -51,6 +51,7 @@ import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexWrap;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -261,7 +262,7 @@ public class AdjustJobActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(getApplicationContext(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override
@@ -290,7 +291,7 @@ public class AdjustJobActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(getApplicationContext(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override
@@ -331,7 +332,7 @@ public class AdjustJobActivity extends AppCompatActivity {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
                 if(calendar.getTime().before(today1) && kind == 1){
-                    Toast.makeText(getApplicationContext(), "Phải lớn hơn ngày hiện tại", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Phải lớn hơn ngày hiện tại", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else {
                     if(kind == 1){
                         editStart.setText(dateFormat.format(calendar.getTime()));
@@ -339,7 +340,7 @@ public class AdjustJobActivity extends AppCompatActivity {
                     }else {
                         date_end = calendar.getTime();
                         if(date_end.before(date_start)){
-                            Toast.makeText(getApplicationContext(), "Ngày kết thúc phải sau ngày bắt đầu", Toast.LENGTH_SHORT).show();
+                             FancyToast.makeText(getApplicationContext(), "Ngày kết thúc phải sau ngày bắt đầu", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                             x = 1;
                         }else {
                             editEnd.setText(dateFormat.format(calendar.getTime()));
@@ -384,7 +385,7 @@ public class AdjustJobActivity extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     if(check_start == 0 && editStart.getText().equals("")){
-                        Toast.makeText(getApplicationContext(), "Bạn chọn ngày bắt đầu trước", Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(getApplicationContext(), "Bạn chọn ngày bắt đầu trước", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                     }else {
                         showDate(2);
                     }
@@ -422,19 +423,19 @@ public class AdjustJobActivity extends AppCompatActivity {
                 if(end.equals("") || start.equals("") || address.equals("") || benefit.equals("")
                     || description.equals("") || requirement.equals("") || number.equals("") || min.equals("")
                     || position.equals("") || max.equals("")){
-                    Toast.makeText(getApplicationContext(), "Vui lòng điền đủ thông tin", Toast.LENGTH_SHORT).show();
+                   FancyToast.makeText(getApplicationContext(), "Vui lòng nhập đủ thông tin", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else if(idExperience == 0){
-                    Toast.makeText(getApplicationContext(), "Vui lòng chọn kinh nghiệm", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Vui lòng chọn kinh nghiệm", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else if(idProfession == 0){
-                    Toast.makeText(getApplicationContext(), "Vui lòng chọn ngành nghề", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Vui lòng chọn ngành nghề", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else if(idArea == 0){
-                    Toast.makeText(getApplicationContext(), "Vui lòng chọn khu vực", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Vui lòng chọn khu vực", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else if(idKindJob == 0){
-                    Toast.makeText(getApplicationContext(), "Vui lòng chọn loại hình công việc", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Vui lòng chọn loại hình công việc", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else if(Integer.parseInt(editSalaryMin.getText().toString()) >= Integer.parseInt(editSalaryMax.getText().toString())){
-                    Toast.makeText(getApplicationContext(), "Mức lương không hợp lệ", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Mức lương không hợp lệ", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else if(date_start.after(date_end)){
-                    Toast.makeText(getApplicationContext(), "Ngày bắt đầu phải trước ngày kết thúc", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Ngày bắt đầu phải trước ngày kết thúc", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }
                 else {
 //                    Toast.makeText(getApplicationContext(), job_id + "", Toast.LENGTH_SHORT).show();
@@ -462,7 +463,7 @@ public class AdjustJobActivity extends AppCompatActivity {
                                 @Override
                                 public void onResponse(String response) {
                                     if(response.equals("success")){
-                                        Toast.makeText(getApplicationContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                                        FancyToast.makeText(getApplicationContext(), "Cập nhật thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
                                         postJobSkill();
                                         if(kind == 0){
                                             updatePreviousJoblist();
@@ -562,7 +563,7 @@ public class AdjustJobActivity extends AppCompatActivity {
 
 
                                     }else {
-                                        Toast.makeText(getApplicationContext(), "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+                                        FancyToast.makeText(getApplicationContext(),"Cập nhật thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                                         progressDialog.dismiss();
                                     }
                                 }
@@ -570,7 +571,7 @@ public class AdjustJobActivity extends AppCompatActivity {
                             new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                                    FancyToast.makeText(getApplicationContext(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                                     progressDialog.dismiss();
                                 }
                             }){
@@ -791,17 +792,17 @@ public class AdjustJobActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         if(response.equals("success")){
-                            Toast.makeText(getApplicationContext(), "Cập nhật thành công qua bên kia", Toast.LENGTH_SHORT).show();
+                           // FancyToast.makeText(getApplicationContext(), "Cập nhật thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
 
                         }else {
-                            Toast.makeText(getApplicationContext(), "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+                            FancyToast.makeText(getApplicationContext(),"Cập nhật thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(getApplicationContext(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override

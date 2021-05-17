@@ -35,6 +35,7 @@ import com.example.luanvan.ui.recruiter.AdjustJobActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CVManagementActivity;
 import com.example.luanvan.ui.recruiter.CVManagement.CandidateDocumentFragment;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.text.Normalizer;
 import java.text.ParseException;
@@ -164,7 +165,7 @@ public class PositionAdapter extends RecyclerView.Adapter<PositionAdapter.ItemHo
                         });
                         alert.show();
                     }else {
-                        Toast.makeText(context, "Ngày hết hạn đã trước ngày hiện tại, không thể tuyển được nữa", Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(context, "Ngày hết hạn đã trước ngày hiện tại, không thể tuyển được nữa", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                     }
 
                 }else {
@@ -180,7 +181,7 @@ public class PositionAdapter extends RecyclerView.Adapter<PositionAdapter.ItemHo
                         });
                         alert.show();
                     }else {
-                        Toast.makeText(context, "Ngày hết hạn đã trước ngày hiện tại, không thể tuyển được nữa", Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(context, "Ngày hết hạn đã trước ngày hiện tại, không thể tuyển được nữa", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                     }
 
                 }
@@ -208,7 +209,7 @@ public class PositionAdapter extends RecyclerView.Adapter<PositionAdapter.ItemHo
                             @Override
                             public void onResponse(String response) {
                                 if(response.equals("success")){
-                                    Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                                    FancyToast.makeText(context, "Xóa thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
                                     for(int i=0; i < CVManageActivity.arrayListAll.size(); i++){
                                         if(CVManageActivity.arrayListAll.get(i).getJob_id() == filterArraylist.get(position).getId()){
                                          //   Toast.makeText(context, "i "+ i, Toast.LENGTH_SHORT).show();
@@ -222,14 +223,14 @@ public class PositionAdapter extends RecyclerView.Adapter<PositionAdapter.ItemHo
                                     infoNothing();
 
                                 }else {
-                                    Toast.makeText(context, "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+                                    FancyToast.makeText(context,"Cập nhật thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                                 }
                             }
                         },
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                                FancyToast.makeText(context, error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                             }
                         }){
                     @Override
@@ -253,18 +254,19 @@ public class PositionAdapter extends RecyclerView.Adapter<PositionAdapter.ItemHo
                     @Override
                     public void onResponse(String response) {
                         if(response.equals("success")){
-                            Toast.makeText(context, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+
+                            FancyToast.makeText(context, "Cập nhật thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
                             filterArraylist.get(position).setStatus(status);
                             notifyDataSetChanged();
                         }else {
-                            Toast.makeText(context, "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+                            FancyToast.makeText(context,"Cập nhật thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(context, error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override

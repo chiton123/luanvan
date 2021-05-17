@@ -22,6 +22,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Recruiter;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 
 import java.util.ArrayList;
@@ -82,18 +83,19 @@ public class RecruiterManageAdapter extends RecyclerView.Adapter<RecruiterManage
                     @Override
                     public void onResponse(String response) {
                         if(response.equals("success")){
-                            Toast.makeText(context, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+
+                            FancyToast.makeText(context, "Cập nhật thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
                             arrayList.get(position).setStatus(status);
                             notifyDataSetChanged();
                         }else {
-                            Toast.makeText(context, "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+                            FancyToast.makeText(context,"Cập nhật thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(context, error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override

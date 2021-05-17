@@ -34,6 +34,7 @@ import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.job.KindOfJobAdapter;
 import com.example.luanvan.ui.Interface.ILoadMore;
 import com.example.luanvan.ui.Model.Job;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -70,6 +71,7 @@ public class SearchActivity extends AppCompatActivity {
             }
         },2000);
         search();
+
 
     }
     private void search() {
@@ -127,8 +129,6 @@ public class SearchActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                    //    Toast.makeText(getApplicationContext(), "page " + page, Toast.LENGTH_SHORT ).show();
-                   //     Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
                         try {
                             JSONArray jsonArray = new JSONArray(response);
                             for(int i=0; i < jsonArray.length(); i++){
@@ -171,7 +171,7 @@ public class SearchActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(getApplicationContext(),error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override

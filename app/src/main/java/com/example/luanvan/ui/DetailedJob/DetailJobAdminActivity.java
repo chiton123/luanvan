@@ -37,6 +37,7 @@ import com.example.luanvan.ui.admin.JobReviewActivity;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -90,7 +91,7 @@ public class DetailJobAdminActivity extends AppCompatActivity {
                         }
                     },2000);
                 }else {
-                    Toast.makeText(getApplicationContext(), "Bạn đã xác nhận rồi", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Bạn đã xác nhận rồi", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }
 
             }
@@ -101,7 +102,7 @@ public class DetailJobAdminActivity extends AppCompatActivity {
                 if(status_post == 1){
                     rejectDialog();
                 }else {
-                    Toast.makeText(getApplicationContext(), "Bạn đã xác nhận rồi", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Bạn đã xác nhận rồi", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }
 
 
@@ -119,14 +120,15 @@ public class DetailJobAdminActivity extends AppCompatActivity {
                         if(response.equals("success")){
                          //   Toast.makeText(getApplicationContext(), "Thông báo thành công", Toast.LENGTH_SHORT).show();
                         }else {
-                            Toast.makeText(getApplicationContext(), "Thông báo thất bại", Toast.LENGTH_SHORT).show();
+
+                    FancyToast.makeText(getApplicationContext(), "Thông báo thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(getApplicationContext(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override
@@ -163,7 +165,7 @@ public class DetailJobAdminActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(editNote.getText().toString().equals("")){
-                    Toast.makeText(getApplicationContext(), "Vui lòng nhập lý do từ chối", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Vui lòng nhập lý do từ chối", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else {
                     loading();
                     note_reject = editNote.getText().toString();
@@ -196,7 +198,7 @@ public class DetailJobAdminActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         if(response.equals("success")){
-                            Toast.makeText(getApplicationContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                            FancyToast.makeText(getApplicationContext(), "Cập nhật thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
                             JobReviewActivity.jobPostArrayList.get(position).setStatus_post(status);
                             JobReviewActivity.jobPostArrayList.get(position).setNote_reject(note_reject);
                             if(status == 0){
@@ -209,14 +211,14 @@ public class DetailJobAdminActivity extends AppCompatActivity {
                             postNotification(1);
 
                         }else {
-                            Toast.makeText(getApplicationContext(), "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+                            FancyToast.makeText(getApplicationContext(),"Cập nhật thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(getApplicationContext(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override

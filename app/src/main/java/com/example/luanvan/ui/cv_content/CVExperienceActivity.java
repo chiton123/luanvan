@@ -47,6 +47,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -170,7 +171,7 @@ public class CVExperienceActivity extends AppCompatActivity {
                 String description = editdescription.getText().toString().replaceAll("\\s\\s+", " ").trim();;
                 if(name.equals("") || position.equals("") || start.equals("")
                         || end.equals("") || description.equals("")){
-                    Toast.makeText(getApplicationContext(), "Vui lòng nhập đủ thông tin", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Vui lòng nhập đủ thông tin", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else {
                     ExperienceCV experienceCV = new ExperienceCV("temp", name, position, start, end, description);
                     experienceCVS.add(experienceCV);
@@ -490,7 +491,7 @@ public class CVExperienceActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(experienceCVS.size() == 0){
-                    Toast.makeText(getApplicationContext(), "Bạn chưa thêm kinh nghiệm nào", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Bạn chưa thêm kinh nghiệm nào", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else {
                     loading();
                     recyclerView.setVisibility(View.INVISIBLE);
@@ -506,7 +507,7 @@ public class CVExperienceActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             progressDialog.dismiss();
-                            Toast.makeText(getApplicationContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                            FancyToast.makeText(getApplicationContext(), "Cập nhật thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
                             Intent intent = new Intent();
                             setResult(103);
                             finish();

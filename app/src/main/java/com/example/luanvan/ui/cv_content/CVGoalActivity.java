@@ -38,6 +38,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -405,7 +406,7 @@ public class CVGoalActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(editContent.getText().equals("")){
-                    Toast.makeText(getApplicationContext(), "Vui lòng nhập đủ thông tin", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Vui lòng nhập đủ thông tin", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else {
                     loading();
                     MainActivity.goal = editContent.getText().toString();

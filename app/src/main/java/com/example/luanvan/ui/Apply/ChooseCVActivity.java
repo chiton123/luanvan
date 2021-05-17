@@ -29,6 +29,7 @@ import com.example.luanvan.ui.DetailedJob.DetailJobActivity;
 import com.example.luanvan.ui.Model.Job;
 import com.example.luanvan.ui.Model.Job_Apply;
 import com.example.luanvan.ui.home.HomeFragment;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -78,14 +79,15 @@ public class ChooseCVActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Thông báo thành công", Toast.LENGTH_SHORT).show();
 
                         }else {
-                            Toast.makeText(getApplicationContext(), "Thông báo thất bại", Toast.LENGTH_SHORT).show();
+
+                        FancyToast.makeText(getApplicationContext(), "Thông báo thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(getApplicationContext(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override
@@ -129,7 +131,8 @@ public class ChooseCVActivity extends AppCompatActivity {
                         applyAgain();
                     }
                 }else {
-                    Toast.makeText(getApplicationContext(), "Nhà tuyển dụng đã dừng tuyển", Toast.LENGTH_SHORT).show();
+
+                    FancyToast.makeText(getApplicationContext(), "Nhà tuyển dụng đã dừng tuyển", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }
 
             }
@@ -143,10 +146,9 @@ public class ChooseCVActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
                         if(!response.equals("fail")){
                             loading();
-                            Toast.makeText(getApplicationContext(), "Ứng tuyển thành công", Toast.LENGTH_SHORT).show();
+                            FancyToast.makeText(getApplicationContext(), "Ứng tuyển thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
                             int k = response.lastIndexOf('s');
                             id_application = Integer.parseInt(response.substring(k+1, response.length()));
                             content = "Ứng viên " + MainActivity.username + " - " + job.getName();
@@ -197,14 +199,15 @@ public class ChooseCVActivity extends AppCompatActivity {
                                 }
                             },1500);
                         }else {
-                            Toast.makeText(getApplicationContext(), "Ứng tuyển thất bại", Toast.LENGTH_SHORT).show();
+
+                    FancyToast.makeText(getApplicationContext(), "Ứng tuyển thất bại", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Lỗi", Toast.LENGTH_SHORT).show();
+                         FancyToast.makeText(getApplicationContext(), "Lỗi", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override
@@ -228,7 +231,7 @@ public class ChooseCVActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         if(!response.equals("fail")){
                             loading();
-                            Toast.makeText(getApplicationContext(), "Ứng tuyển thành công", Toast.LENGTH_SHORT).show();
+                            FancyToast.makeText(getApplicationContext(), "Ứng tuyển thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
                             int k = response.lastIndexOf('s');
                             id_application = Integer.parseInt(response.substring(k+1, response.length()));
                             content = "Ứng viên " + MainActivity.username + " - " + job.getName();
@@ -271,14 +274,15 @@ public class ChooseCVActivity extends AppCompatActivity {
                                 }
                             },1500);
                         }else {
-                            Toast.makeText(getApplicationContext(), "Ứng tuyển thất bại", Toast.LENGTH_SHORT).show();
+
+                        FancyToast.makeText(getApplicationContext(), "Ứng tuyển thất bại", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Lỗi", Toast.LENGTH_SHORT).show();
+                         FancyToast.makeText(getApplicationContext(), "Lỗi", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override
@@ -304,7 +308,7 @@ public class ChooseCVActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(check == 0){
-                    Toast.makeText(getApplicationContext(), "Vui lòng chọn CV", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Vui lòng chọn CV", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else {
                     showAlert();
                 }

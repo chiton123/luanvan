@@ -34,6 +34,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.StorageReference;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -101,14 +102,14 @@ public class CVAdapter extends RecyclerView.Adapter<CVAdapter.ItemHolder> {
                                             deleteMysql(position);
 
                                         }else {
-                                            Toast.makeText(context, "CV đã ứng tuyển nên không được xóa", Toast.LENGTH_SHORT).show();
+                                            FancyToast.makeText(context,"CV đã ứng tuyển nên không được xóa", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                                         }
                                     }
                                 },
                                 new Response.ErrorListener() {
                                     @Override
                                     public void onErrorResponse(VolleyError error) {
-                                        Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                                        FancyToast.makeText(context, error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                                     }
                                 }){
                             @Override
@@ -156,13 +157,13 @@ public class CVAdapter extends RecyclerView.Adapter<CVAdapter.ItemHolder> {
                 reference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        Toast.makeText(context, "Lưu thành công", Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(context, "Cập nhật thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
 
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
-                        Toast.makeText(context, "Lưu thất bại", Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(context,"Cập nhật thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 });
 
@@ -177,19 +178,19 @@ public class CVAdapter extends RecyclerView.Adapter<CVAdapter.ItemHolder> {
                             @Override
                             public void onResponse(String response) {
                                 if(response.equals("success")){
-                                    Toast.makeText(context,"Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                                    FancyToast.makeText(context, "Cập nhật thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
 //                                    holder.btnPutMain.setText("CV chính");
                                     notifyDataSetChanged();
 
                                 }else {
-                                    Toast.makeText(context,"Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+                                    FancyToast.makeText(context,"Cập nhật thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                                 }
                             }
                         },
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                Toast.makeText(context,error.toString(), Toast.LENGTH_SHORT).show();
+                                FancyToast.makeText(context,error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                             }
                         }){
                     @Override
@@ -220,7 +221,7 @@ public class CVAdapter extends RecyclerView.Adapter<CVAdapter.ItemHolder> {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(context, error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override
@@ -249,16 +250,16 @@ public class CVAdapter extends RecyclerView.Adapter<CVAdapter.ItemHolder> {
                             arrayList.remove(position);
                             notifyDataSetChanged();
                             ((CVIntroductionActivity)activity).checkNothing();
-                            Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                            FancyToast.makeText(context, "Xóa thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
                         }else {
-                            Toast.makeText(context, "Xóa lên Mysql thất bại", Toast.LENGTH_SHORT).show();
+                            FancyToast.makeText(context,"Xóa lên Mysql thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(context, error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override

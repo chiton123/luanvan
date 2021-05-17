@@ -26,6 +26,7 @@ import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.assess.AccessmentManagementAdapter;
 import com.example.luanvan.ui.Model.Assessment;
 import com.example.luanvan.ui.company.CompanyActivity;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -128,7 +129,7 @@ public class AssessmentManagementActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(getApplicationContext(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override

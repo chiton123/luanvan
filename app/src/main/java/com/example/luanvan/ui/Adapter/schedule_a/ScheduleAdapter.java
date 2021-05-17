@@ -30,6 +30,7 @@ import com.example.luanvan.ui.Model.Schedule;
 import com.example.luanvan.ui.schedule.CreateScheduleActivity;
 import com.example.luanvan.ui.schedule.ScheduleManagementActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -188,12 +189,12 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ItemHo
                     @Override
                     public void onResponse(String response) {
                         if(response.equals("success")){
-                            Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                            FancyToast.makeText(context, "Xóa thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
                             arrayList.remove(position);
                             notifyDataSetChanged();
                             ((ScheduleManagementActivity)activity).checkNothing();
                         }else {
-                            Toast.makeText(context, "Xóa thất bại", Toast.LENGTH_SHORT).show();
+                            FancyToast.makeText(context, "Xóa thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                         }
 
                     }
@@ -201,7 +202,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ItemHo
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(context, error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override

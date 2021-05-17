@@ -26,6 +26,7 @@ import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.update_personal_info.SpinnerNewAdapter;
 import com.example.luanvan.ui.Model.GeneralObject;
 import com.example.luanvan.ui.Model.Job;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -141,7 +142,7 @@ public class FilterActivity extends AppCompatActivity {
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                                FancyToast.makeText(getApplicationContext(),error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                                 progressDialog.dismiss();
                             }
                         }){

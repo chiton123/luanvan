@@ -30,6 +30,7 @@ import com.example.luanvan.ui.Model.NotificationAdmin;
 import com.example.luanvan.ui.admin.AdminActivity;
 import com.example.luanvan.ui.admin.JobReviewActivity;
 import com.example.luanvan.ui.home.HomeFragment;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -108,16 +109,17 @@ public class AdminNotificationAdapter extends RecyclerView.Adapter<AdminNotifica
                     @Override
                     public void onResponse(String response) {
                         if(response.equals("success")){
-                            Toast.makeText(context, "Bạn đã xem tất cả thông báo", Toast.LENGTH_SHORT).show();
+                            FancyToast.makeText(context, "Bạn đã xem tất cả thông báo", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
                         }else {
-                            Toast.makeText(context, "Xem thông báo thất bại", Toast.LENGTH_SHORT).show();
+                            FancyToast.makeText(context,"Xem thông báo thất bại", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
+
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(context, error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override
@@ -139,16 +141,16 @@ public class AdminNotificationAdapter extends RecyclerView.Adapter<AdminNotifica
                     @Override
                     public void onResponse(String response) {
                         if(response.equals("success")){
-                            Toast.makeText(context, "Đã xem", Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(context, "Đã xem", Toast.LENGTH_SHORT).show();
                         }else {
-                            Toast.makeText(context, "Thất bại", Toast.LENGTH_SHORT).show();
+                          //  Toast.makeText(context, "Thất bại", Toast.LENGTH_SHORT).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(context, error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override

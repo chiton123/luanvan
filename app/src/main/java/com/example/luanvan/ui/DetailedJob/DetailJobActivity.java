@@ -59,6 +59,7 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -209,7 +210,7 @@ public class DetailJobActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(getApplicationContext(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override
@@ -257,7 +258,7 @@ public class DetailJobActivity extends AppCompatActivity {
                         applyAgain();
                     }
                 }else {
-                    Toast.makeText(getApplicationContext(), "Nhà tuyển dụng đã dừng tuyển", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Nhà tuyển dụng đã dừng tuyển", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }
 
             }
@@ -272,7 +273,7 @@ public class DetailJobActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         if(!response.equals("fail")){
-                            Toast.makeText(getApplicationContext(), "Ứng tuyển thành công", Toast.LENGTH_SHORT).show();
+                            FancyToast.makeText(getApplicationContext(), "Ứng tuyển thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
                             checkApplyOrNot();
                             int k = response.lastIndexOf('s');
                             id_application = Integer.parseInt(response.substring(k+1, response.length()));
@@ -280,14 +281,15 @@ public class DetailJobActivity extends AppCompatActivity {
                             // Toast.makeText(getApplicationContext(), id_application + content , Toast.LENGTH_SHORT).show();
                             postNotification(1);
                         }else {
-                            Toast.makeText(getApplicationContext(), "Ứng tuyển thất bại", Toast.LENGTH_SHORT).show();
+                            FancyToast.makeText(getApplicationContext(), "Ứng tuyển thất bại", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Lỗi", Toast.LENGTH_SHORT).show();
+
+                         FancyToast.makeText(getApplicationContext(), "Lỗi", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override
@@ -310,7 +312,7 @@ public class DetailJobActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         if(!response.equals("fail")){
-                            Toast.makeText(getApplicationContext(), "Ứng tuyển thành công", Toast.LENGTH_SHORT).show();
+                            FancyToast.makeText(getApplicationContext(), "Ứng tuyển thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
                             checkApplyOrNot();
                             int k = response.lastIndexOf('s');
                             id_application = Integer.parseInt(response.substring(k+1, response.length()));
@@ -319,14 +321,15 @@ public class DetailJobActivity extends AppCompatActivity {
                             postNotification(1);
 
                         }else {
-                            Toast.makeText(getApplicationContext(), "Ứng tuyển thất bại", Toast.LENGTH_SHORT).show();
+
+                        FancyToast.makeText(getApplicationContext(), "Ứng tuyển thất bại", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Lỗi", Toast.LENGTH_SHORT).show();
+                         FancyToast.makeText(getApplicationContext(), "Lỗi", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override
@@ -353,14 +356,15 @@ public class DetailJobActivity extends AppCompatActivity {
                            // Toast.makeText(getApplicationContext(), "Thông báo thành công", Toast.LENGTH_SHORT).show();
                             phoneNotification();
                         }else {
-                            Toast.makeText(getApplicationContext(), "Thông báo thất bại", Toast.LENGTH_SHORT).show();
+
+FancyToast.makeText(getApplicationContext(), "Thông báo thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(getApplicationContext(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override
@@ -403,7 +407,7 @@ public class DetailJobActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(checkCV == 1){
-                    Toast.makeText(getApplicationContext(), "Vui lòng tạo CV", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Vui lòng tạo CV", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                     dialog.dismiss();
                 }else {
                     showAlert();
@@ -415,7 +419,7 @@ public class DetailJobActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(checkCV == 1){
-                    Toast.makeText(getApplicationContext(), "Vui lòng tạo CV", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Vui lòng tạo CV", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                     dialog.dismiss();
                 }else {
                     Intent intent = new Intent(getApplicationContext(), ChooseCVActivity.class);
@@ -494,7 +498,7 @@ public class DetailJobActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(getApplicationContext(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override
@@ -630,7 +634,7 @@ public class DetailJobActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(getApplicationContext(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override

@@ -35,6 +35,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -74,7 +75,7 @@ public class MessageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(editMessage.getText().toString().equals("")){
-                    Toast.makeText(getApplicationContext(), "Chưa có nội dung", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Chưa có nội dung", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else {
                     String message = editMessage.getText().toString();
                     sendMessage(MainActivity.uid, idrecruiterFirebase, message);
@@ -131,14 +132,14 @@ public class MessageActivity extends AppCompatActivity {
                             idrecruiterFirebase = response.toString();
                             getInfo();
                         }else {
-                            Toast.makeText(getApplicationContext(), "Lấy Id không được", Toast.LENGTH_SHORT).show();
+                            FancyToast.makeText(getApplicationContext(), "Lấy Id không được", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(getApplicationContext(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override

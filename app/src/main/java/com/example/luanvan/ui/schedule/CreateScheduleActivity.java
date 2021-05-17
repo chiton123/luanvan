@@ -46,6 +46,7 @@ import com.example.luanvan.ui.Model.Schedule;
 import com.example.luanvan.ui.Model.User;
 import com.example.luanvan.ui.Model.UserApplicant;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -201,7 +202,7 @@ public class CreateScheduleActivity extends AppCompatActivity {
                        if(!response.equals("fail")){
                            ap_id = Integer.parseInt(response.toString());
                        }else {
-                           Toast.makeText(getApplicationContext(), "Lấy application id fail", Toast.LENGTH_SHORT).show();
+                           FancyToast.makeText(getApplicationContext(), "Lấy application id fail", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                        }
 
                     }
@@ -209,7 +210,7 @@ public class CreateScheduleActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(getApplicationContext(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override
@@ -275,7 +276,7 @@ public class CreateScheduleActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(getApplicationContext(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override
@@ -303,9 +304,9 @@ public class CreateScheduleActivity extends AppCompatActivity {
               //  Toast.makeText(getApplicationContext(), "candidate " + editCandidate.getText().toString(), Toast.LENGTH_SHORT).show();
                 if(editKindSchedule.getText().equals("") || editStart.getText().equals("") || editEnd.getText().equals("") || editDate.getText().equals("")
                 || editCandidate.getText().toString().equals("") || editPosition.getText().equals("")){
-                    Toast.makeText(getApplicationContext(), "Vui lòng điền đủ thông tin", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Vui lòng nhập đủ thông tin", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else if(time_end.before(time_start)){
-                    Toast.makeText(getApplicationContext(), "Giờ phỏng vấn không hợp lệ", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Giờ phỏng vấn không hợp lệ", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }
                 else {
                     final String date = editDate.getText().toString();
@@ -330,7 +331,7 @@ public class CreateScheduleActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         if(response.equals("success")){
-                            Toast.makeText(getApplicationContext(), "Sửa thành công", Toast.LENGTH_SHORT).show();
+                            FancyToast.makeText(getApplicationContext(), "Cập nhật thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
 
                             Schedule schedule = new Schedule( scheduleInfo.getId(), MainActivity.iduser, job_id, job_name, user_id,
                                     username, type_schedule, date_post, start_hour_refresh, end_hour_refresh, note, "",0);
@@ -349,14 +350,14 @@ public class CreateScheduleActivity extends AppCompatActivity {
                             },3000);
 
                         }else {
-                            Toast.makeText(getApplicationContext(), "Tạo thất bại", Toast.LENGTH_SHORT).show();
+                            FancyToast.makeText(getApplicationContext(),"Tạo thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(getApplicationContext(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override
@@ -385,7 +386,7 @@ public class CreateScheduleActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         if(!response.equals("fail")){
-                            Toast.makeText(getApplicationContext(), "Tạo thành công", Toast.LENGTH_SHORT).show();
+                            FancyToast.makeText(getApplicationContext(), "Cập nhật thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
                             int last = response.lastIndexOf('s');
                             int id_schedule = Integer.parseInt(response.substring(last+1, response.length()));
                             Schedule schedule = new Schedule(id_schedule, MainActivity.iduser, job_id, job_name, user_id,
@@ -405,14 +406,14 @@ public class CreateScheduleActivity extends AppCompatActivity {
                             },3000);
 
                         }else {
-                            Toast.makeText(getApplicationContext(), "Tạo thất bại", Toast.LENGTH_SHORT).show();
+                            FancyToast.makeText(getApplicationContext(), "Tạo thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(getApplicationContext(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override
@@ -458,14 +459,14 @@ public class CreateScheduleActivity extends AppCompatActivity {
                           //  Toast.makeText(getApplicationContext(), "Thông báo thành công", Toast.LENGTH_SHORT).show();
                             phoneNotification();
                         }else {
-                            Toast.makeText(getApplicationContext(), "Thông báo thất bại", Toast.LENGTH_SHORT).show();
+                            FancyToast.makeText(getApplicationContext(), "Thông báo thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(getApplicationContext(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override
@@ -520,7 +521,7 @@ public class CreateScheduleActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(getApplicationContext(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override
@@ -648,7 +649,7 @@ public class CreateScheduleActivity extends AppCompatActivity {
                 calendar.set(year, month, dayOfMonth);
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                 if(calendar.getTime().before(today1) ){
-                    Toast.makeText(getApplicationContext(), "Phải lớn hơn ngày hiện tại", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Phải lớn hơn ngày hiện tại", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else {
                     SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
                     Date date = null;

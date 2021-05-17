@@ -34,6 +34,7 @@ import com.example.luanvan.ui.recruiter.CVManagement.CVManageActivity;
 import com.example.luanvan.ui.recruiter.PostNews.RecruitmentNewsActivity;
 import com.example.luanvan.ui.recruiter.RecruiterActivity;
 import com.example.luanvan.ui.schedule.ScheduleManagementActivity;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -138,16 +139,16 @@ public class RecruiterNotificationAdapter extends RecyclerView.Adapter<Recruiter
                     @Override
                     public void onResponse(String response) {
                         if(response.equals("success")){
-                            Toast.makeText(context, "Bạn đã xem tất cả thông báo", Toast.LENGTH_SHORT).show();
+                            FancyToast.makeText(context, "Bạn đã xem tất cả thông báo", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
                         }else {
-                            Toast.makeText(context, "Xem thông báo thất bại", Toast.LENGTH_SHORT).show();
+                             FancyToast.makeText(context,"Xem thông báo thất bại", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(context, error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override
@@ -179,7 +180,7 @@ public class RecruiterNotificationAdapter extends RecyclerView.Adapter<Recruiter
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(context, error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override

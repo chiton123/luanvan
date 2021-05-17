@@ -33,6 +33,7 @@ import com.example.luanvan.ui.Model.Skill;
 import com.example.luanvan.ui.Model.SkillKey;
 import com.example.luanvan.ui.User.NotificationsFragment;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -186,17 +187,17 @@ public class SkillActivity extends AppCompatActivity {
                                     public void onResponse(String response) {
                                         if(response.equals("success")){
                                             final Skill skill = new Skill(id, MainActivity.iduser,idskill, name, star, mota);
-                                            Toast.makeText(getApplicationContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                                            FancyToast.makeText(getApplicationContext(), "Cập nhật thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
                                             MainActivity.skills.set(position, skill);
                                         }else {
-                                            Toast.makeText(getApplicationContext(), "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+                                            FancyToast.makeText(getApplicationContext(),"Cập nhật thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                                         }
                                     }
                                 },
                                 new Response.ErrorListener() {
                                     @Override
                                     public void onErrorResponse(VolleyError error) {
-                                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                                        FancyToast.makeText(getApplicationContext(),error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                                     }
                                 }){
                             @Override
@@ -229,20 +230,20 @@ public class SkillActivity extends AppCompatActivity {
                                     @Override
                                     public void onResponse(String response) {
                                         if(!response.equals("fail")){
-                                            Toast.makeText(getApplicationContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                                            FancyToast.makeText(getApplicationContext(), "Cập nhật thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
                                             id = Integer.parseInt(response.toString());
                                             final Skill skill = new Skill(id, MainActivity.iduser,idskill, name, star, mota);
                                             MainActivity.skills.add(skill);
                                             NotificationsFragment.skillAdapter.notifyDataSetChanged();
                                         }else {
-                                            Toast.makeText(getApplicationContext(), "Kỹ năng đã tồn tại hoặc cập nhật thất bại", Toast.LENGTH_SHORT).show();
+                                            FancyToast.makeText(getApplicationContext(),"Kỹ năng đã tồn tại hoặc cập nhật thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                                         }
                                     }
                                 },
                                 new Response.ErrorListener() {
                                     @Override
                                     public void onErrorResponse(VolleyError error) {
-                                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                                        FancyToast.makeText(getApplicationContext(),error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                                     }
                                 }){
                             @Override

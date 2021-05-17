@@ -52,6 +52,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.StorageReference;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -134,13 +135,13 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
         reference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(context, "Tải về thành công", Toast.LENGTH_SHORT).show();
-
+                FancyToast.makeText(context, "Tải về thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                Toast.makeText(context, "Tải về thất bại", Toast.LENGTH_SHORT).show();
+                FancyToast.makeText(context,"Tải về thất bại", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
+
             }
         });
     }
@@ -174,7 +175,7 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
                // Toast.makeText(context, "status: " + statusApplication, Toast.LENGTH_SHORT).show();
                 if ((statusApplication == 2 || statusApplication == 11)) {
                     if (editNote.getText().toString().equals("")) {
-                        Toast.makeText(context, "Vui lòng điền lý do không đạt vào ghi chú", Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(context, "Vui lòng điền lý do không đạt vào ghi chú", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                     } else {
                         note = editNote.getText().toString();
                         updateStatus(position);
@@ -447,7 +448,7 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
                     @Override
                     public void onResponse(String response) {
                         if(response.equals("success")){
-                            Toast.makeText(context, "Cập nhật thành công ", Toast.LENGTH_SHORT).show();
+                            FancyToast.makeText(context, "Cập nhật thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
                             applicant.setStatus(statusApplication);
                             applicant.setNote(note);
                             updateCandidateDocument();
@@ -488,14 +489,14 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
                          //   activity.finish();
 
                         }else {
-                            Toast.makeText(context, "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+                            FancyToast.makeText(context,"Cập nhật thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(context, error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override
@@ -550,14 +551,14 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
                         if(response.equals("success")){
                           //  Toast.makeText(context, "Thông báo thành công", Toast.LENGTH_SHORT).show();
                         }else {
-                            Toast.makeText(context, "Thông báo thất bại", Toast.LENGTH_SHORT).show();
+                            FancyToast.makeText(context, "Thông báo thất bại", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(context, error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override

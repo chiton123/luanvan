@@ -24,6 +24,7 @@ import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.update_personal_info.SpinnerNewAdapter;
 import com.example.luanvan.ui.Model.GeneralObject;
 import com.example.luanvan.ui.recruiter.LoginRecruiterActivity;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -69,17 +70,17 @@ public class UpdateCompanyActivity extends AppCompatActivity {
                 final String address = editAddress.getText().toString();
                 final String intro = editIntroduction.getText().toString();
                 if(name.equals("")){
-                    Toast.makeText(getApplicationContext(), "Chưa điền họ tên", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Chưa điền họ tên", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else if(size.equals("")){
-                    Toast.makeText(getApplicationContext(), "Chưa điền quy mô công ty", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Chưa điền quy mô công ty", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else if(website.equals("")){
-                    Toast.makeText(getApplicationContext(), "Chưa điền website công ty", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Chưa điền website công ty", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else if(address.equals("")){
-                    Toast.makeText(getApplicationContext(), "Chưa điền địa chỉ", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Chưa điền địa chỉ", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else if(intro.equals("")){
-                    Toast.makeText(getApplicationContext(), "Chưa điền giới thiệu", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Chưa điền giới thiệu", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else if(idArea == 0){
-                    Toast.makeText(getApplicationContext(), "Chưa chọn khu vực", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Chưa chọn khu vực", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }
                 else {
                     RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
@@ -88,7 +89,7 @@ public class UpdateCompanyActivity extends AppCompatActivity {
                                 @Override
                                 public void onResponse(String response) {
                                     if(response.equals("success")){
-                                        Toast.makeText(getApplicationContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                                        FancyToast.makeText(getApplicationContext(), "Cập nhật thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
                                         LoginRecruiterActivity.company.setAddress(address);
                                         LoginRecruiterActivity.company.setWebsite(website);
                                         LoginRecruiterActivity.company.setSize(size);
@@ -98,14 +99,14 @@ public class UpdateCompanyActivity extends AppCompatActivity {
                                         finish();
 
                                     }else{
-                                        Toast.makeText(getApplicationContext(), "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+                                        FancyToast.makeText(getApplicationContext(),"Cập nhật thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                                     }
                                 }
                             },
                             new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                                    FancyToast.makeText(getApplicationContext(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                                 }
                             }){
                         @Override

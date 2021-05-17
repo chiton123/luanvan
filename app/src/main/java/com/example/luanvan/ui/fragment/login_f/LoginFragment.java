@@ -47,6 +47,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.rengwuxian.materialedittext.MaterialEditText;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -123,7 +124,7 @@ public class LoginFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(getActivity(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override
@@ -166,7 +167,7 @@ public class LoginFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(getActivity(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override
@@ -261,7 +262,7 @@ public class LoginFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(getActivity(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override
@@ -307,7 +308,7 @@ public class LoginFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(getActivity(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override
@@ -354,7 +355,7 @@ public class LoginFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(getActivity(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override
@@ -400,7 +401,7 @@ public class LoginFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(getActivity(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override
@@ -417,12 +418,12 @@ public class LoginFragment extends Fragment {
         btnDangnhap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(editPass.getText().equals("") || editEmail.getText().equals("")){
-                    Toast.makeText(getActivity(), "Vui lòng nhập đủ thông tin", Toast.LENGTH_SHORT).show();
+                final String email = editEmail.getText().toString();
+                final String pass = editPass.getText().toString();
+                if(email.equals("") || pass.equals("")){
+                    FancyToast.makeText(getActivity(), "Vui lòng nhập đủ thông tin", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else {
                     loading();
-                    final String email = editEmail.getText().toString();
-                    final String pass = editPass.getText().toString();
                     RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
                     StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urllogin,
                             new Response.Listener<String>() {
@@ -434,7 +435,7 @@ public class LoginFragment extends Fragment {
                                                     @Override
                                                     public void onComplete(@NonNull Task<AuthResult> task) {
                                                         if(task.isSuccessful()){
-                                                            Toast.makeText(getActivity(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                                                            FancyToast.makeText(getActivity(), "Đăng nhập thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
                                                             MainActivity.password = pass;
                                                             FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                                                             MainActivity.mAuth = FirebaseAuth.getInstance();
@@ -463,7 +464,8 @@ public class LoginFragment extends Fragment {
                                                                 }
                                                             },5000);
                                                         }else {
-                                                            Toast.makeText(getActivity(), "Sai tên hoặc mật khẩu", Toast.LENGTH_SHORT).show();
+                                                            FancyToast.makeText(getActivity(), "Sai tên hoặc mật khẩu", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
+
                                                             progressDialog.dismiss();
                                                         }
                                                     }
@@ -471,10 +473,10 @@ public class LoginFragment extends Fragment {
 
 
                                     }else if(response.equals("fail2")){
-                                        Toast.makeText(getActivity(), "Tài khoản đã bị khóa", Toast.LENGTH_SHORT).show();
+                                        FancyToast.makeText(getActivity(), "Tài khoản đã bị khóa", FancyToast.LENGTH_SHORT, FancyToast.CONFUSING, false).show();
                                         progressDialog.dismiss();
                                     }else {
-                                        Toast.makeText(getActivity(), "Sai tên hoặc mật khẩu", Toast.LENGTH_SHORT).show();
+                                        FancyToast.makeText(getActivity(), "Sai tên hoặc mật khẩu", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                                         progressDialog.dismiss();
                                     }
                                 }
@@ -482,7 +484,7 @@ public class LoginFragment extends Fragment {
                             new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
+                                    FancyToast.makeText(getActivity(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                                     progressDialog.dismiss();
                                 }
                             }){

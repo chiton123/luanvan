@@ -33,6 +33,7 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -109,7 +110,7 @@ public class ExperienceActivity extends AppCompatActivity {
                 editstart.setText(fmtOut.format(date1));
                 editend.setText(fmtOut.format(date2));
             }catch (NullPointerException e){
-                Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                FancyToast.makeText(getApplicationContext(), e.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
             }
 
         }
@@ -129,7 +130,7 @@ public class ExperienceActivity extends AppCompatActivity {
                 calendar.set(year, month, dayOfMonth);
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                 if(calendar.getTime().after(today1) && kind == 1){
-                    Toast.makeText(getApplicationContext(), "Phải lớn nhỏ ngày hiện tại", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Phải lớn nhỏ ngày hiện tại", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else {
                     if(kind == 1){
                         editstart.setText(dateFormat.format(calendar.getTime()));
@@ -137,7 +138,7 @@ public class ExperienceActivity extends AppCompatActivity {
                     }else {
                         date_end = calendar.getTime();
                         if(date_end.before(date_start)){
-                            Toast.makeText(getApplicationContext(), "Ngày kết thúc phải sau ngày bắt đầu", Toast.LENGTH_SHORT).show();
+                            FancyToast.makeText(getApplicationContext(), "Ngày kết thúc phải sau ngày bắt đầu", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                             x = 1;
                         }else {
                             editend.setText(dateFormat.format(calendar.getTime()));
@@ -181,7 +182,7 @@ public class ExperienceActivity extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     if(check_start == 0 || editstart.getText().equals("")){
-                        Toast.makeText(getApplicationContext(), "Bạn chọn ngày bắt đầu trước", Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(getApplicationContext(), "Bạn chọn ngày bắt đầu trước", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                     }else {
                         showDate(2);
                     }
@@ -203,11 +204,11 @@ public class ExperienceActivity extends AppCompatActivity {
                 String start = editstart.getText().toString();
                 String end = editend.getText().toString();
                 if(company.equals("") || position1.equals("") || mota.equals("") || start.equals("") || end.equals("")){
-                    Toast.makeText(getApplicationContext(), "Vui lòng nhập đủ thông tin" , Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Vui lòng nhập đủ thông tin", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else if(x == 1){
-                    Toast.makeText(getApplicationContext(), "Ngày kết thúc phải sau ngày bắt đầu" , Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Ngày kết thúc phải sau ngày bắt đầu", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else if(date_start.after(date_end)){
-                    Toast.makeText(getApplicationContext(), "Ngày bắt đầu phải trước ngày kết thúc", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Ngày bắt đầu phải trước ngày kết thúc", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }
                 else {
                     loading();
@@ -219,18 +220,18 @@ public class ExperienceActivity extends AppCompatActivity {
                                     @Override
                                     public void onResponse(String response) {
                                         if(response.equals("success")){
-                                            Toast.makeText(getApplicationContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                                            FancyToast.makeText(getApplicationContext(), "Cập nhật thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
                                             final Experience experience = new Experience(id, MainActivity.iduser, company, position1, date_post_start, date_post_end, mota);
                                             MainActivity.experiences.set(position, experience);
                                         }else {
-                                            Toast.makeText(getApplicationContext(), "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+                                            FancyToast.makeText(getApplicationContext(),"Cập nhật thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                                         }
                                     }
                                 },
                                 new Response.ErrorListener() {
                                     @Override
                                     public void onErrorResponse(VolleyError error) {
-                                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                                        FancyToast.makeText(getApplicationContext(),error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                                     }
                                 }){
                             @Override
@@ -265,20 +266,20 @@ public class ExperienceActivity extends AppCompatActivity {
                                     @Override
                                     public void onResponse(String response) {
                                         if(!response.equals("fail")){
-                                            Toast.makeText(getApplicationContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                                            FancyToast.makeText(getApplicationContext(), "Cập nhật thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
                                             id = Integer.parseInt(response.toString());
                                             final Experience experience = new Experience(id, MainActivity.iduser, company, position1, date_post_start, date_post_end, mota);
                                             MainActivity.experiences.add(experience);
                                             NotificationsFragment.experienceAdapter.notifyDataSetChanged();
                                         }else {
-                                            Toast.makeText(getApplicationContext(), "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+                                            FancyToast.makeText(getApplicationContext(),"Cập nhật thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                                         }
                                     }
                                 },
                                 new Response.ErrorListener() {
                                     @Override
                                     public void onErrorResponse(VolleyError error) {
-                                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                                        FancyToast.makeText(getApplicationContext(),error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                                     }
                                 }){
                             @Override

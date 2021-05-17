@@ -36,6 +36,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -104,7 +105,7 @@ public class LoginRecruiterActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(getApplicationContext(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override
@@ -163,12 +164,13 @@ public class LoginRecruiterActivity extends AppCompatActivity {
         btnDangnhap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(editPass.getText().equals("") || editEmail.getText().equals("")){
-                    Toast.makeText(getApplicationContext(), "Vui lòng nhập đủ thông tin", Toast.LENGTH_SHORT).show();
+                final String email = editEmail.getText().toString();
+                final String pass = editPass.getText().toString();
+                if(pass.equals("") || email.equals("")){
+                    FancyToast.makeText(getApplicationContext(), "Vui lòng nhập đủ thông tin", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else {
                     loading();
-                    final String email = editEmail.getText().toString();
-                    final String pass = editPass.getText().toString();
+
                     RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
                     StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlLoginRecruiter,
                             new Response.Listener<String>() {
@@ -179,8 +181,7 @@ public class LoginRecruiterActivity extends AppCompatActivity {
                                             @Override
                                             public void onComplete(@NonNull Task<AuthResult> task) {
                                                 if(task.isSuccessful()){
-
-                                                    Toast.makeText(getApplicationContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                                                    FancyToast.makeText(getApplicationContext(), "Đăng nhập thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
                                                     MainActivity.email_recruiter = email;
                                                     MainActivity.password = pass;
                                                     FirebaseUser firebaseUser = MainActivity.mAuth.getCurrentUser();
@@ -204,25 +205,26 @@ public class LoginRecruiterActivity extends AppCompatActivity {
                                                     },2000);
                                                 }else {
                                                     progressDialog.dismiss();
-                                                    Toast.makeText(getApplicationContext(), "Sai tên hoặc mật khẩu", Toast.LENGTH_SHORT).show();
+                                                    FancyToast.makeText(getApplicationContext(),"Sai tên hoặc mật khẩu", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
+
                                                 }
                                             }
                                         });
                                     }
                                     else if(response.equals("fail2")){
                                         progressDialog.dismiss();
-                                        Toast.makeText(getApplicationContext(), "Tài khoản đã bị khóa", Toast.LENGTH_SHORT).show();
+                                        FancyToast.makeText(getApplicationContext(),"Tài khoản đã bị khóa", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                                     }
                                     else {
                                         progressDialog.dismiss();
-                                        Toast.makeText(getApplicationContext(), "Sai tên hoặc mật khẩu", Toast.LENGTH_SHORT).show();
+                                        FancyToast.makeText(getApplicationContext(),"Sai tên hoặc mật khẩu", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                                     }
                                 }
                             },
                             new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                                    FancyToast.makeText(getApplicationContext(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                                 }
                             }){
                         @Override
@@ -272,14 +274,14 @@ public class LoginRecruiterActivity extends AppCompatActivity {
                             }
 
                         }else {
-                            Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
+                            FancyToast.makeText(getApplicationContext(),"Fail", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(getApplicationContext(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override

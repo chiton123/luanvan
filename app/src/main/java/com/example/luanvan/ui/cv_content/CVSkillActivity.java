@@ -46,6 +46,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -148,7 +149,7 @@ public class CVSkillActivity extends AppCompatActivity {
                 String name = editName.getText().toString();
                 float sosao = ratingBar.getRating();
                 if(name.equals("") || sosao == 0){
-                    Toast.makeText(getApplicationContext(), "Vui lòng nhập đủ thông tin", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Vui lòng nhập đủ thông tin", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else {
 
                     SkillCV skill = new SkillCV(name, sosao, "temp");
@@ -474,7 +475,7 @@ public class CVSkillActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(MainActivity.skillCVS.size() == 0){
-                    Toast.makeText(getApplicationContext(), "Bạn chưa thêm kỹ năng nào", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Bạn chưa thêm kỹ năng nào", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else {
                     loading();
                     MainActivity.checkFirstSkill = 1;
@@ -490,7 +491,7 @@ public class CVSkillActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             progressDialog.dismiss();
-                            Toast.makeText(getApplicationContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                            FancyToast.makeText(getApplicationContext(), "Cập nhật thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
                             Intent intent = new Intent();
                             setResult(104, intent);
                             finish();

@@ -24,6 +24,7 @@ import com.example.luanvan.ui.Model.Assessment;
 import com.example.luanvan.ui.Model.Company;
 import com.example.luanvan.ui.company.CompanyActivity;
 import com.example.luanvan.ui.fragment.company_f.AssessmentFragment;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -63,7 +64,7 @@ public class CreateAssessmentActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(getApplicationContext(),error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override
@@ -85,9 +86,9 @@ public class CreateAssessmentActivity extends AppCompatActivity {
                 final String remark = editRemark.getText().toString();
                 final float star = ratingBar.getRating();
                 if(remark.equals("") || star == 0){
-                    Toast.makeText(getApplicationContext(), "Vui lòng điền đủ thông tin", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Vui lòng điền đủ thông tin", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else if(checkAssessOrNot == 1){
-                    Toast.makeText(getApplicationContext(), "Bạn đã đánh giá rồi", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Bạn đã đánh giá rồi", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }
                 else {
                     RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
@@ -96,7 +97,7 @@ public class CreateAssessmentActivity extends AppCompatActivity {
                                 @Override
                                 public void onResponse(String response) {
                                     if(!response.equals("fail")){
-                                        Toast.makeText(getApplicationContext(), "Đánh giá thành công", Toast.LENGTH_SHORT).show();
+                                        FancyToast.makeText(getApplicationContext(), "Đánh giá thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
                                         int id = Integer.parseInt(response);
                                         AssessmentFragment.arrayList.add(new Assessment(id, CompanyActivity.company.getId(), MainActivity.iduser,
                                                 MainActivity.user.getName(), remark, star));
@@ -104,14 +105,14 @@ public class CreateAssessmentActivity extends AppCompatActivity {
                                         setResult(111);
                                         finish();
                                     }else {
-                                        Toast.makeText(getApplicationContext(), "Đánh giá thất bại", Toast.LENGTH_SHORT).show();
+                                        FancyToast.makeText(getApplicationContext(),"Đánh giá thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                                     }
                                 }
                             },
                             new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                                    FancyToast.makeText(getApplicationContext(),error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                                 }
                             }){
                         @Override

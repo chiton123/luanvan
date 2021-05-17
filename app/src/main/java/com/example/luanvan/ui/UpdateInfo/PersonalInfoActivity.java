@@ -53,6 +53,7 @@ import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexWrap;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -233,7 +234,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(getApplicationContext(),error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override
@@ -277,7 +278,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(getApplicationContext(),error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override
@@ -374,11 +375,11 @@ public class PersonalInfoActivity extends AppCompatActivity {
                 final String mota = editmota.getText().toString();
                 if(name.equals("") || position.equals("") || editbirthday.getText().toString().equals("") || address.equals("")
                         || email.equals("") || phone.equals("") || mota.equals("")){
-                    Toast.makeText(getApplicationContext(), "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Vui lòng nhập đủ thông tin", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else if(!isEmailValid(editemail.getText().toString())){
-                    Toast.makeText(getApplicationContext(), "Sai định dạng email", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Sai định dạng email", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else if(editphone.getText().length() > 10){
-                    Toast.makeText(getApplicationContext(), "Không đúng định dạng số điện thoại", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Không đúng định dạng số điện thoại", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 } else
                 {
                     loading();
@@ -396,7 +397,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
                                 @Override
                                 public void onResponse(String response) {
                                     if(response.equals("success")){
-                                        Toast.makeText(getApplicationContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                                        FancyToast.makeText(getApplicationContext(), "Cập nhật thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
                                         postAreaCandidate();
                                         postProfessionCandidate();
                                         MainActivity.user.setAddress(address);
@@ -421,7 +422,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
                                         },2000);
 
                                     }else {
-                                        Toast.makeText(getApplicationContext(), "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+                                        FancyToast.makeText(getApplicationContext(),"Cập nhật thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                                         progressDialog.dismiss();
                                     }
                                 }
@@ -430,7 +431,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
                                     progressDialog.dismiss();
-                                    Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                                    FancyToast.makeText(getApplicationContext(),error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                                 }
                             }){
                         @Override
@@ -477,7 +478,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
 
 
                 if(calendar.getTime().after(today1)){
-                    Toast.makeText(getApplicationContext(), "Phải lớn nhỏ ngày hiện tại", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Phải lớn nhỏ ngày hiện tại", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else {
                     editbirthday.setText(dateFormat.format(calendar.getTime()));
                     SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");

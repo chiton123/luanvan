@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.rengwuxian.materialedittext.MaterialEditText;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 public class ResetPasswordActivity extends AppCompatActivity {
     Toolbar toolbar;
@@ -30,7 +31,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(editEmail.getText().toString().equals("")){
-                    Toast.makeText(getApplicationContext(), "Vui lòng điền email", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Vui lòng điền email", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else {
                     String email = editEmail.getText().toString();
                     firebaseAuth = FirebaseAuth.getInstance();
@@ -39,7 +40,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful()){
-                                Toast.makeText(getApplicationContext(), "Vui lòng kiểm tra email", Toast.LENGTH_SHORT).show();
+                                FancyToast.makeText(getApplicationContext(), "Vui lòng kiểm tra email", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                                 finish();
                             }else {
                                 Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();

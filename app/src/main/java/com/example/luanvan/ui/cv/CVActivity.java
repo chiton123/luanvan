@@ -63,6 +63,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -909,7 +910,8 @@ public class CVActivity extends AppCompatActivity {
             case R.id.luu:
                 String cv_name = cvName.getText().toString();
                 if(cv_name.equals("")){
-                    Toast.makeText(getApplicationContext(), "Vui lòng điền tên CV", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Vui lòng điền tên CV", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
+
                 }else {
                     loading();
                     if(kind == 1){
@@ -927,7 +929,7 @@ public class CVActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                     }
-                    Toast.makeText(getApplicationContext(), "Đã lưu", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Cập nhật thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
                     // lưu id CV bằng số tăng dần, có ví dụ rồi, mỗi user thì có nhiều CV
                     handler = new Handler();
                     handler.postDelayed(new Runnable() {
@@ -946,7 +948,7 @@ public class CVActivity extends AppCompatActivity {
             case R.id.huy:
                 if(MainActivity.checkFirstSkill != 0 || MainActivity.checkFirstExperience != 0 || MainActivity.checkFirstStudy != 0
                         || MainActivity.checkFirstGoal != 0 || MainActivity.checkFirstInfo != 0){
-                    Toast.makeText(getApplicationContext(), "Bạn đã thay đổi nội dung của CV, hãy chọn lưu", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Bạn đã thay đổi nội dung của CV, hãy chọn lưu", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else {
                     MainActivity.urlCV = "";
                     finish();
@@ -968,14 +970,14 @@ public class CVActivity extends AppCompatActivity {
                         if(response.equals("success")){
                             pushAddAll(); // làm ngược lại là ID sẽ tăng lên, k đồng bộ
                         }else {
-                            Toast.makeText(getApplicationContext(), "Cập nhật lên Mysql thất bại", Toast.LENGTH_SHORT).show();
+                            FancyToast.makeText(getApplicationContext(), "Cập nhật lên Mysql thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(getApplicationContext(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override

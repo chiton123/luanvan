@@ -74,6 +74,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -276,7 +277,7 @@ public class NotificationsFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getActivity(), error.toString() , Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(getActivity(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override
@@ -323,7 +324,7 @@ public class NotificationsFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getActivity(), error.toString() , Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(getActivity(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override
@@ -389,19 +390,19 @@ public class NotificationsFragment extends Fragment {
 
 
                     }else {
-                        Toast.makeText(getActivity(), "Fail", Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(getActivity(), "Fail", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                         pd.dismiss();
                     }
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getActivity(), e.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     pd.dismiss();
                 }
             });
         }else {
-            Toast.makeText(getActivity(), "No image seleted", Toast.LENGTH_SHORT).show();
+            FancyToast.makeText(getActivity(),"No image seleted", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
         }
 
     }
@@ -418,11 +419,18 @@ public class NotificationsFragment extends Fragment {
                     imgProfile.setImageResource(R.drawable.imgprofile);
                 }else {
                     if(img != null ){
-                        Glide.with(getActivity()).load(img).into(imgProfile);
+                        handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Glide.with(getActivity()).load(img).into(imgProfile);
+                            }
+                        },1500);
+
                         try {
 
                         }catch (NullPointerException e){
-                            Toast.makeText(getActivity(), "Lỗi", Toast.LENGTH_SHORT).show();
+                            FancyToast.makeText(getActivity(),"Lỗi", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                         }
                     }
 
@@ -521,7 +529,7 @@ public class NotificationsFragment extends Fragment {
                     positon.setText(MainActivity.user.getPosition());
                 }
             }catch (NullPointerException e){
-                Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_SHORT).show();
+                FancyToast.makeText(getActivity(),e.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
             }
 
         }
@@ -586,7 +594,7 @@ public class NotificationsFragment extends Fragment {
         if(requestCode == IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null){
             imageUri = data.getData();
             if(uploadTask != null && uploadTask.isInProgress()){
-                Toast.makeText(getActivity(), "Upload is in progress", Toast.LENGTH_LONG).show();
+                FancyToast.makeText(getActivity(), "Upload is in progress", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
             }else {
                 uploadImage();
             }

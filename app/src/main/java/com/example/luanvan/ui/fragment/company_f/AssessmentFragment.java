@@ -33,6 +33,7 @@ import com.example.luanvan.ui.Model.Assessment;
 import com.example.luanvan.ui.User.CreateAssessmentActivity;
 import com.example.luanvan.ui.company.CompanyActivity;
 import com.example.luanvan.ui.login.LoginActivity;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -163,7 +164,7 @@ public class AssessmentFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
+                       FancyToast.makeText(getActivity(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override

@@ -55,6 +55,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -251,14 +252,14 @@ public class HomeFragment extends Fragment {
                             }
                             adapterCompany.notifyDataSetChanged();
                         }else {
-                            Toast.makeText(getActivity(), "Không có công ty nào", Toast.LENGTH_SHORT).show();
+                            FancyToast.makeText(getActivity(), "Không có công ty nào", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
+                       FancyToast.makeText(getActivity(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 });
         requestQueue.add(jsonArrayRequest);
@@ -328,7 +329,7 @@ public class HomeFragment extends Fragment {
                     try {
                         Glide.with(getActivity()).load(avatar).into(img);
                     }catch (NullPointerException e){
-                        Toast.makeText(getActivity(), "Lỗi", Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(getActivity(), "Lỗi", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
 
                 }
@@ -381,7 +382,7 @@ public class HomeFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
+                       FancyToast.makeText(getActivity(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override
@@ -587,7 +588,7 @@ public class HomeFragment extends Fragment {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
+                           FancyToast.makeText(getActivity(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                         }
                     }){
                 @Override

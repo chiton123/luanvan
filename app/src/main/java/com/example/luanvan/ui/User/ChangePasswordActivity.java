@@ -18,6 +18,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 public class ChangePasswordActivity extends AppCompatActivity {
     Toolbar toolbar;
@@ -58,17 +59,17 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 final String newPass1 = editNewPass1.getText().toString();
                 String newPass2 = editNewPass2.getText().toString();
                 if(currentPass.equals("")){
-                    Toast.makeText(getApplicationContext(), "Nhập mật khẩu hiện tại", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Nhập mật khẩu hiện tại", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else if(newPass1.equals("")){
-                    Toast.makeText(getApplicationContext(), "Nhập mật khẩu mới", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Nhập mật khẩu mới", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else if(newPass2.equals("")){
-                    Toast.makeText(getApplicationContext(), "Nhập lại mật khẩu mới", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Nhập lại mật khẩu mới", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else if(!currentPass.equals(MainActivity.password)){
-                    Toast.makeText(getApplicationContext(), "Nhập khẩu mật hiện tại không đúng", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Nhập khẩu mật hiện tại không đúng", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else if(newPass1.length() < 6){
-                    Toast.makeText(getApplicationContext(), "Nhập mật mới phải dài ít nhất 6 ký tự", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Nhập mật mới phải dài ít nhất 6 ký tự", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else if(!newPass1.equals(newPass2)){
-                    Toast.makeText(getApplicationContext(), "Mật khẩu mới không khớp", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getApplicationContext(), "Mật khẩu mới không khớp", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else {
                     if(MainActivity.login == 1){
                         authCredential = EmailAuthProvider.getCredential(MainActivity.user.getEmail(), currentPass);
@@ -85,10 +86,10 @@ public class ChangePasswordActivity extends AppCompatActivity {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if(task.isSuccessful()){
-                                                    Toast.makeText(getApplicationContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                                                    FancyToast.makeText(getApplicationContext(), "Cập nhật thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
                                                     finish();
                                                 }else {
-                                                    Toast.makeText(getApplicationContext(), "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+                                                    FancyToast.makeText(getApplicationContext(),"Cập nhật thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                                                 }
                                             }
                                         });

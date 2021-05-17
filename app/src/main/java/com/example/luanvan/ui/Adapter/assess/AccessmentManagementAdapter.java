@@ -24,6 +24,7 @@ import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Model.Assessment;
 import com.example.luanvan.ui.recruiter.AssessmentManagementActivity;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -76,7 +77,7 @@ public class AccessmentManagementAdapter extends RecyclerView.Adapter<Accessment
                     @Override
                     public void onResponse(String response) {
                         if(response.equals("success")){
-                            Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                            FancyToast.makeText(context, "Xóa thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
                             AssessmentManagementActivity.total -= arrayList.get(position).getStar();
                             arrayList.remove(position);
                             notifyDataSetChanged();
@@ -86,14 +87,14 @@ public class AccessmentManagementAdapter extends RecyclerView.Adapter<Accessment
                                 AssessmentManagementActivity.overallRating.setRating(AssessmentManagementActivity.average);
                             }
                         }else {
-                            Toast.makeText(context, "Xóa thất bại", Toast.LENGTH_SHORT).show();
+                            FancyToast.makeText(context, "Xóa thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(context, error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override

@@ -46,6 +46,7 @@ import com.example.luanvan.ui.Model.Job;
 import com.example.luanvan.ui.Model.JobPost;
 import com.example.luanvan.ui.admin.JobReviewActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.text.DecimalFormat;
 import java.text.Normalizer;
@@ -95,7 +96,7 @@ public class JobReviewAdapter extends RecyclerView.Adapter<JobReviewAdapter.Item
             @Override
             public void onClick(View v) {
                 if(editNote.getText().toString().equals("")){
-                    Toast.makeText(context, "Vui lòng nhập lý do từ chối", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(context,"Vui lòng nhập lý do từ chối", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else {
 //                    loading();
                     note_reject = editNote.getText().toString();
@@ -117,7 +118,8 @@ public class JobReviewAdapter extends RecyclerView.Adapter<JobReviewAdapter.Item
                     @Override
                     public void onResponse(String response) {
                         if(response.equals("success")){
-                            Toast.makeText(context, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+
+                            FancyToast.makeText(context, "Cập nhật thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
                             filterArraylist.get(position).setStatus_post(status);
                             filterArraylist.get(position).setNote_reject(note_reject);
                             if(status == 0){
@@ -131,14 +133,14 @@ public class JobReviewAdapter extends RecyclerView.Adapter<JobReviewAdapter.Item
                             notifyDataSetChanged();
 
                         }else {
-                            Toast.makeText(context, "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+                            FancyToast.makeText(context,"Cập nhật thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(context, error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override
@@ -189,17 +191,17 @@ public class JobReviewAdapter extends RecyclerView.Adapter<JobReviewAdapter.Item
                     @Override
                     public void onResponse(String response) {
                         if(response.equals("success")){
-                            Toast.makeText(context, "Thông báo thành công", Toast.LENGTH_SHORT).show();
+                         //   Toast.makeText(context, "Thông báo thành công", Toast.LENGTH_SHORT).show();
                             phoneNotification();
                         }else {
-                            Toast.makeText(context, "Thông báo thất bại", Toast.LENGTH_SHORT).show();
+                            FancyToast.makeText(context, "Thông báo thất bại", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(context, error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override
@@ -279,13 +281,13 @@ public class JobReviewAdapter extends RecyclerView.Adapter<JobReviewAdapter.Item
             holder.btnConfirm.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, "Bạn đã xác nhận", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(context,"Bạn đã xác nhận", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }
             });
             holder.btnReject.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, "Bạn đã xác nhận", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(context,"Bạn đã xác nhận", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }
             });
         }else {
