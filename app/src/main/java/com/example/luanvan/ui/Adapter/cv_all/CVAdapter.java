@@ -157,13 +157,13 @@ public class CVAdapter extends RecyclerView.Adapter<CVAdapter.ItemHolder> {
                 reference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        FancyToast.makeText(context, "Cập nhật thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
+                        FancyToast.makeText(context, "Tải thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
 
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
-                        FancyToast.makeText(context,"Cập nhật thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
+                        FancyToast.makeText(context,"Tải thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 });
 

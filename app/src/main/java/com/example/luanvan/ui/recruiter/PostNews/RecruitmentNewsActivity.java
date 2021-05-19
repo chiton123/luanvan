@@ -28,7 +28,7 @@ public class RecruitmentNewsActivity extends AppCompatActivity {
     ViewPager viewPager;
     FloatingActionButton btnAdd;
     Handler handler;
-  //  public static ArrayList<JobList> arrayListDisplay = new ArrayList<>();
+    //  public static ArrayList<JobList> arrayListDisplay = new ArrayList<>();
     int REQUEST_CODE_ADD_JOB = 123;
     ProgressDialog progressDialog;
     @Override

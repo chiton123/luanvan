@@ -64,13 +64,13 @@ public class InterviewFragment extends Fragment {
         if(CVManageActivity.arrayListInterView.size() == 0){
             getData();
         }
-        handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-               checkNothing();
-            }
-        },2200);
+//        handler = new Handler();
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//               checkNothing();
+//            }
+//        },2200);
 
         return view;
     }
@@ -123,6 +123,7 @@ public class InterviewFragment extends Fragment {
                                     }
 
                                 }
+                                checkNothing();
                                 adapter.notifyDataSetChanged();
                             } catch (JSONException e) {
                                 e.printStackTrace();

@@ -66,13 +66,13 @@ public class GoToWorkFragment extends Fragment {
         if(CVManageActivity.arrayListGoToWork.size() == 0){
             getData();
         }
-        handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-               checkNothing();
-            }
-        },2200);
+//        handler = new Handler();
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//               checkNothing();
+//            }
+//        },2200);
 
         return view;
     }
@@ -124,6 +124,7 @@ public class GoToWorkFragment extends Fragment {
                                     }
 
                                 }
+                                checkNothing();
                                 adapter.notifyDataSetChanged();
                             } catch (JSONException e) {
                                 e.printStackTrace();

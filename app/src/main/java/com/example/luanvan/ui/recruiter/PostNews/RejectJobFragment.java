@@ -175,7 +175,7 @@ public class RejectJobFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == 123 && resultCode == 345){
-         //   Toast.makeText(getActivity(), "reject ", Toast.LENGTH_SHORT).show();
+            //   Toast.makeText(getActivity(), "reject ", Toast.LENGTH_SHORT).show();
             adapter.notifyDataSetChanged();
             checkNothing();
         }

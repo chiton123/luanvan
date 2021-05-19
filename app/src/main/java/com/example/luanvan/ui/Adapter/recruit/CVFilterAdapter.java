@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +40,7 @@ import com.example.luanvan.ui.recruiter.CVManagement.JobListFragment;
 import com.example.luanvan.ui.recruiter.RecruiterActivity;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
+import java.text.Normalizer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -45,9 +48,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHolder> {
+public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHolder> implements Filterable {
     Context context;
-    ArrayList<Applicant> arrayList;
+    ArrayList<Applicant> filterArraylist;
+    ArrayList<Applicant> nameList;
     Activity activity;
     // để biết vị trí position của danh sách vị trí, để load dữ liệu số hồ sơ, loại,...
     ArrayList<JobList> arrayListJobList;
@@ -60,7 +64,8 @@ public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHo
 
     public CVFilterAdapter(Context context, ArrayList<Applicant> arrayList, Activity activity, int kind, ArrayList<JobList> arrayListJobList) {
         this.context = context;
-        this.arrayList = arrayList;
+        this.filterArraylist = arrayList;
+        this.nameList = arrayList;
         this.activity = activity;
         this.kind = kind;
         this.arrayListJobList = arrayListJobList;
@@ -82,7 +87,7 @@ public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHo
                         if(response.equals("success")){
 
                         FancyToast.makeText(context, "Cập nhật thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
-                            arrayList.get(position).setStatus(statusApplication);
+                            filterArraylist.get(position).setStatus(statusApplication);
                             if(kind == 1){
                                 if(statusApplication == 3 || statusApplication == 4 || statusApplication == 5){
                                     ((CVManagementActivity) activity).reloadInterview();
@@ -133,7 +138,7 @@ public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHo
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> map = new HashMap<>();
-                map.put("ap_id", String.valueOf(arrayList.get(position).getId()));
+                map.put("ap_id", String.valueOf(filterArraylist.get(position).getId()));
                 map.put("status", String.valueOf(statusApplication));
                 map.put("note",  note);
                 return map;
@@ -143,7 +148,7 @@ public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHo
     }
     @Override
     public void onBindViewHolder(@NonNull final ItemHolder holder, final int position) {
-        Applicant applicant = arrayList.get(position);
+        Applicant applicant = filterArraylist.get(position);
         holder.txtName.setText(applicant.getUsername());
         holder.txtEmail.setText("Email : " + applicant.getEmail());
         holder.txtPhone.setText("Số điện thoại: " +  "0"+ applicant.getPhone());
@@ -252,7 +257,7 @@ public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHo
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(activity, CandidateInfoActivity.class);
-                intent.putExtra("applicant", arrayList.get(position));
+                intent.putExtra("applicant", filterArraylist.get(position));
                 intent.putExtra("kind", kind);
                 intent.putExtra("position", position);
                 activity.startActivityForResult(intent, REQUEST_CODE);
@@ -269,7 +274,7 @@ public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHo
                     public void onResponse(String response) {
                         if(response.equals("success")){
                             FancyToast.makeText(context, "Xóa thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
-                            int status = arrayList.get(position).getStatus();
+                            int status = filterArraylist.get(position).getStatus();
 
 
                             if(kind != 0){
@@ -286,7 +291,7 @@ public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHo
                                 // xóa bên kia luôn
                                 int x = 0;
                                 for(int i=0; i < CVManageActivity.arrayListAll.size(); i++){
-                                    if(CVManageActivity.arrayListAll.get(i).getId() == arrayList.get(position).getId()){
+                                    if(CVManageActivity.arrayListAll.get(i).getId() == filterArraylist.get(position).getId()){
                                         x = i;
                                     }
                                 }
@@ -296,7 +301,7 @@ public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHo
 
                             }else {
                                 for(int i=0; i < RecruiterActivity.arrayListJobList.size(); i++){
-                                    if(RecruiterActivity.arrayListJobList.get(i).getId() == arrayList.get(position).getJob_id()){
+                                    if(RecruiterActivity.arrayListJobList.get(i).getId() == filterArraylist.get(position).getJob_id()){
                                         positionJobList = i;
                                     }
                                 }
@@ -316,7 +321,7 @@ public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHo
 
                             JobListFragment.adapter.notifyDataSetChanged();
                             CandidateDocumentFragment.adapter.notifyDataSetChanged();
-                            arrayList.remove(position);
+                            filterArraylist.remove(position);
 
                             notifyDataSetChanged();
                             infoNothing();
@@ -336,7 +341,7 @@ public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHo
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> map = new HashMap<>();
-                map.put("ap_id", String.valueOf(arrayList.get(position).getId()));
+                map.put("ap_id", String.valueOf(filterArraylist.get(position).getId()));
                 return map;
             }
         };
@@ -389,7 +394,38 @@ public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHo
 
     @Override
     public int getItemCount() {
-        return arrayList.size();
+        return filterArraylist.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String charSequenceString = stripAccents(constraint.toString()).trim();
+                if(charSequenceString.isEmpty()){
+                    filterArraylist = nameList;
+                }else {
+                    ArrayList<Applicant> filteredList = new ArrayList<>();
+                    for(Applicant applicant : nameList){
+                        String name1 = stripAccents(applicant.getJob_name()).trim();
+                        if(name1.toLowerCase().contains(charSequenceString.toLowerCase())){
+                            filteredList.add(applicant);
+                        }
+                        filterArraylist = filteredList;
+                    }
+                }
+                FilterResults results = new FilterResults();
+                results.values = filterArraylist;
+                return results;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                filterArraylist = (ArrayList<Applicant>) results.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 
     public class ItemHolder extends RecyclerView.ViewHolder{
@@ -409,5 +445,11 @@ public class CVFilterAdapter extends RecyclerView.Adapter<CVFilterAdapter.ItemHo
             imgDelete = (ImageView) itemView.findViewById(R.id.imgdelete);
 
         }
+    }
+    public static String stripAccents(String s)
+    {
+        s = Normalizer.normalize(s, Normalizer.Form.NFD);
+        s = s.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
+        return s;
     }
 }

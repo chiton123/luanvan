@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Toast;
 
@@ -46,19 +48,34 @@ public class CVManageActivity extends AppCompatActivity {
     public static ArrayList<Applicant> arrayListInterView = new ArrayList<>();
     public static ArrayList<Applicant> arrayListGoToWork = new ArrayList<>();
     int kind = 0;
+    ProgressDialog progressDialog;
+    Handler handler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_c_v_manage);
+        loading();
         anhxa();
         actionBar();
         kind = getIntent().getIntExtra("kind", 0);
         tabLayout.getTabAt(kind).select();
-
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.dismiss();
+            }
+        },2000);
 
     }
 
-
+    void loading(){
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading");
+        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
+    }
 
 
     private void actionBar() {

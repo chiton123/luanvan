@@ -67,13 +67,13 @@ public class CVFilterFragment extends Fragment {
         if (CVManageActivity.arrayListCVFilter.size() == 0) {
             getData();
         }
-        handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                checkNothing();
-            }
-        },3000);
+//        handler = new Handler();
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                checkNothing();
+//            }
+//        },3000);
 
         return view;
     }
@@ -127,6 +127,7 @@ public class CVFilterFragment extends Fragment {
                                     }
 
                                 }
+                                checkNothing();
                                 adapter.notifyDataSetChanged();
                             } catch (JSONException e) {
                                 e.printStackTrace();

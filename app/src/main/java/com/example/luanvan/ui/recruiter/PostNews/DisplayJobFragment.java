@@ -210,7 +210,7 @@ public class DisplayJobFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                       FancyToast.makeText(getActivity(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
+                        FancyToast.makeText(getActivity(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override
@@ -228,7 +228,7 @@ public class DisplayJobFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == 123 && resultCode == 123){
-        //    Toast.makeText(getActivity(), "display ", Toast.LENGTH_SHORT).show();
+            //    Toast.makeText(getActivity(), "display ", Toast.LENGTH_SHORT).show();
             adapter.notifyDataSetChanged();
             checkNothing();
         }

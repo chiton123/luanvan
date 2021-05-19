@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -44,14 +45,14 @@ public class CandidateDocumentFragment extends Fragment {
     public static LinearLayout layout, layout_nothing;
     Handler handler;
     ProgressDialog progressDialog;
+    SearchView searchView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_candidate_document, container, false);
-        loading();
         recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
         recyclerView.setHasFixedSize(true);
-
+        searchView = (SearchView) view.findViewById(R.id.searchView);
         // 0 : all, 1: cvfilterfragment, 2: interviewfragment, 3: gotoworkfragment
         adapter = new CVFilterAdapter(getActivity(), CVManageActivity.arrayListAll, getActivity(), 0, RecruiterActivity.arrayListJobList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
@@ -59,22 +60,35 @@ public class CandidateDocumentFragment extends Fragment {
         layout = (LinearLayout) view.findViewById(R.id.layout);
         layout_nothing = (LinearLayout) view.findViewById(R.id.layout_nothing);
         getData();
-        handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if(CVManageActivity.arrayListAll.size() == 0){
-                    layout_nothing.setVisibility(View.VISIBLE);
-                    layout.setVisibility(View.GONE);
-                }else {
-                    layout_nothing.setVisibility(View.GONE);
-                    layout.setVisibility(View.VISIBLE);
-                }
-                progressDialog.dismiss();
-            }
-        },4000);
+        search();
+
 
         return view;
+    }
+    public void checkNothing(){
+        if(CVManageActivity.arrayListAll.size() == 0){
+            layout_nothing.setVisibility(View.VISIBLE);
+            layout.setVisibility(View.GONE);
+        }else {
+            layout_nothing.setVisibility(View.GONE);
+            layout.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void search() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                adapter.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return false;
+            }
+        });
     }
     void loading(){
         progressDialog = new ProgressDialog(getActivity());
@@ -112,6 +126,7 @@ public class CandidateDocumentFragment extends Fragment {
 
                                 }
                                 adapter.notifyDataSetChanged();
+                                checkNothing();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

@@ -58,7 +58,6 @@ public class JobListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_job_list, container, false);
-        loading();
         adapter = new PositionAdapter(getActivity(), RecruiterActivity.arrayListJobList, getActivity());
         recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
         layout = (LinearLayout) view.findViewById(R.id.layout);
@@ -70,14 +69,7 @@ public class JobListFragment extends Fragment {
         if(RecruiterActivity.arrayListJobList.size() == 0){
             getData(0);
         }
-        handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                checkNothing();
-                progressDialog.dismiss();
-            }
-        },4000);
+
         search();
         return view;
 
@@ -157,7 +149,18 @@ public class JobListFragment extends Fragment {
                                         object.getInt("skip")
                                 ));
                             }
+                            for(int i=0; i < RecruiterActivity.arrayListJobList.size(); i++){
+                                for(int j=i+1; j < RecruiterActivity.arrayListJobList.size(); j++){
+                                    if(RecruiterActivity.arrayListJobList.get(i).getTotalDocument() < RecruiterActivity.arrayListJobList.get(j).getTotalDocument()){
+                                        JobList jobList = RecruiterActivity.arrayListJobList.get(i);
+                                        RecruiterActivity.arrayListJobList.set(i, RecruiterActivity.arrayListJobList.get(j));
+                                        RecruiterActivity.arrayListJobList.set(j, jobList);
+                                    }
+                                }
+                            }
+
                             adapter.notifyDataSetChanged();
+                            checkNothing();
 
                         } catch (JSONException e) {
                             e.printStackTrace();

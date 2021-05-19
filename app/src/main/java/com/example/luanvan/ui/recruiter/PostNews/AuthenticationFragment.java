@@ -46,7 +46,7 @@ public class AuthenticationFragment extends Fragment {
     ProgressDialog progressDialog;
     SearchView searchView;
     // fragment  1: Đang hiển thị, 2 : Chờ xác thực, 3: Hết hạn, 4: Từ chối , khi chuyển qua bên adjustJob thì cập nhật tương ứng với fragment
-   // kind: 0 là của joblistfragment chuyển qua, 1: là của tin tuyển dụng chuyển qua
+    // kind: 0 là của joblistfragment chuyển qua, 1: là của tin tuyển dụng chuyển qua
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -112,7 +112,7 @@ public class AuthenticationFragment extends Fragment {
                     @Override
                     public void onResponse(String response) {
                         try {
-                        //    Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_SHORT).show();
+                            //    Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_SHORT).show();
                             JSONArray jsonArray = new JSONArray(response);
                             for(int i=0; i < jsonArray.length(); i++){
                                 JSONObject object = jsonArray.getJSONObject(i);
@@ -158,7 +158,7 @@ public class AuthenticationFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                       FancyToast.makeText(getActivity(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
+                        FancyToast.makeText(getActivity(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 }){
             @Override
@@ -176,7 +176,7 @@ public class AuthenticationFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == 123 && resultCode == 234){
-         //   Toast.makeText(getActivity(), "auth + size: " + RecruiterActivity.arrayListAuthenticationJobs.size(), Toast.LENGTH_SHORT).show();
+            //   Toast.makeText(getActivity(), "auth + size: " + RecruiterActivity.arrayListAuthenticationJobs.size(), Toast.LENGTH_SHORT).show();
             adapter.notifyDataSetChanged();
             checkNothing();
         }
