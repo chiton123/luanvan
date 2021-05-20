@@ -57,7 +57,7 @@ public class CVGoalActivity extends AppCompatActivity {
     int pageWidth = 1200;
     StorageReference storageReference;
     Handler handler;
-    public static int a0 = 400, a1 = 600, a2 = 1400, a3 = 2200;
+    public static int a0 = 350, a1 = 600, a2 = 1100, a3 = 1700;
     public static int x0 = 0, x1 = 0, x2 = 0, x3 = 0;
     // kiem tra xem x1, x2, x3 có nhảy lên bậc nào hay k khi tạo CV
     public static int checkX1 = 0, checkX2 = 0, checkX3 = 0; // chưa sử dụng
@@ -130,7 +130,7 @@ public class CVGoalActivity extends AppCompatActivity {
         kynangphu.setStrokeWidth(10);
         kynangphu.setColor(Color.YELLOW);
 
-        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(1200,3000,1).create();
+        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(1200,2500,1).create();
         PdfDocument.Page page = pdfDocument.startPage(pageInfo);
         Canvas canvas = page.getCanvas();
         myPaint.setStyle(Paint.Style.FILL);
@@ -180,10 +180,25 @@ public class CVGoalActivity extends AppCompatActivity {
             x0 = a0;
             canvas.drawText("MỤC TIÊU NGHỀ NGHIỆP", 30, x0, titlePaint);
             if(b == 1 || kind == 2){
-                canvas.drawText(MainActivity.goal, 30, x0 + 70, contentPaint);
+                // canvas.drawText(MainActivity.goal, 30, x0 + 70, contentPaint);
+                TextPaint mTextPaint=new TextPaint();
+                mTextPaint.setTextSize(30);
+                mTextPaint.setColor(Color.BLACK);
+                StaticLayout mTextLayout = new StaticLayout(xuongdong(MainActivity.goal), mTextPaint, canvas.getWidth(), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
+
+                canvas.save();
+                // calculate x and y position where your text will be placed
+
+                int textX = 30;
+                int textY = x0 + 20;
+
+                canvas.translate(textX, textY);
+                mTextLayout.draw(canvas);
+                canvas.restore();
             }else {
-                canvas.drawText(MainActivity.goalDefault, 30, x0 + 70, contentPaint);
+                canvas.drawText(MainActivity.goalDefault, 30, x0 + 20, contentPaint);
             }
+
         }
 
         // hoc van
@@ -203,7 +218,7 @@ public class CVGoalActivity extends AppCompatActivity {
             titlePaint2.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
             if(c == 1 || kind == 2){
                 for(int i=0; i < MainActivity.studyCVS.size(); i++){
-                    if(i < 4){
+                    if(i < 2){
                         canvas.drawText(MainActivity.studyCVS.get(i).getSchool(), 30, x1 + i*180, titlePaint2);
                         canvas.drawText(MainActivity.studyCVS.get(i).getStart() + " - " + MainActivity.studyCVS.get(i).getEnd(), 30, x1 + 50 + i*180, contentPaint);
                         canvas.drawText("CHUYÊN NGÀNH: " + MainActivity.studyCVS.get(i).getMajor(), 500, x1 + i*180, titlePaint2 );
@@ -260,7 +275,7 @@ public class CVGoalActivity extends AppCompatActivity {
             canvas.drawText("KINH NGHIỆM", 30, x2, titlePaint);
             if(d == 1 || kind == 2){
                 for(int i=0; i < experienceCVS.size(); i++){
-                    if(i < 4){
+                    if(i < 3){
                         canvas.drawText(experienceCVS.get(i).getStart()+"-"+experienceCVS.get(i).getEnd(), 30, x2 + 50 + i*180, contentPaint);
                         canvas.drawText(experienceCVS.get(i).getCompany(), 500, x2 + 50 + i*180, contentPaint);
                         canvas.drawText(experienceCVS.get(i).getPosition(), 500, x2 + 90 + i*180, contentPaint);
@@ -361,6 +376,7 @@ public class CVGoalActivity extends AppCompatActivity {
 
             }
         }
+
         pdfDocument.finishPage(page);
         File file = new File(Environment.getExternalStorageDirectory(), "/a10.pdf");
         pdfDocument.writeTo(new FileOutputStream(file));

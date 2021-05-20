@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#fff"
+    android:padding="5dp"
+    android:id="@+id/layout"
+    >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Round"
+        android:textColor="#F30101"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:id="@+id/txtround"
+        android:focusable="false"
+        android:layout_marginBottom="15dp"
+        ></TextView>
+    <RadioButton
+        android:layout_marginLeft="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/radioposition"
+        android:text="Abc"
+        android:textColor="#000000"
+        android:textSize="13sp"
+        android:paddingLeft="80dp"
+        ></RadioButton>
+
+
+</LinearLayout>

@@ -40,7 +40,7 @@ public class AssessCandidateAdapter extends RecyclerView.Adapter<AssessCandidate
     @NonNull
     @Override
     public ItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.dong_skill_pick, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.dong_assessment_candidate, parent, false);
         ItemHolder itemHolder = new ItemHolder(view);
         return itemHolder;
     }
@@ -56,6 +56,24 @@ public class AssessCandidateAdapter extends RecyclerView.Adapter<AssessCandidate
             }else {
                 holder.radioButton.setChecked(false);
             }
+            switch (arrayList.get(position).getId()){
+                case 0:
+                    holder.txtRound.setText("Vòng lọc CV");
+                    holder.txtRound.setVisibility(View.VISIBLE);
+                    break;
+                case 3:
+                    holder.txtRound.setText("Vòng phỏng vấn");
+                    holder.txtRound.setVisibility(View.VISIBLE);
+                    break;
+                case 12:
+                    holder.txtRound.setText("Vòng nhận việc");
+                    holder.txtRound.setVisibility(View.VISIBLE);
+                    break;
+                default:
+                    holder.txtRound.setVisibility(View.GONE);
+                    break;
+            }
+
             holder.radioButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -93,23 +111,13 @@ public class AssessCandidateAdapter extends RecyclerView.Adapter<AssessCandidate
 
     public class ItemHolder extends RecyclerView.ViewHolder{
         public RadioButton radioButton;
-        public LinearLayout layout;
+        public TextView txtRound;
         public ItemHolder(@NonNull View itemView) {
             super(itemView);
             radioButton = (RadioButton) itemView.findViewById(R.id.radioposition);
-            layout = (LinearLayout) itemView.findViewById(R.id.layout);
+            txtRound = (TextView) itemView.findViewById(R.id.txtround);
 
-//            View.OnClickListener l = new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    selectItem = getAdapterPosition();
-//                    notifyItemRangeChanged(0, arrayList.size());
-//                }
-//            };
-//
-//            itemView.setOnClickListener(l);
-//            radioButton.setOnClickListener(l);
-//            layout.setOnClickListener(l);
+
 
         }
     }
