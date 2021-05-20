@@ -65,8 +65,6 @@ public class FilterActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences sharedPreferences = getSharedPreferences("FileName", 0);
-                sharedPreferences.edit().clear().commit();
                 finish();
             }
         });

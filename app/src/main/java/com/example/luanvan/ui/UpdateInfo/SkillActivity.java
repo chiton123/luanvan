@@ -151,9 +151,10 @@ public class SkillActivity extends AppCompatActivity {
         int check = getIntent().getIntExtra("confirm", 0);
         if(check == 3){
             update = 1;
-            Skill skill = (Skill) getIntent().getSerializableExtra("com/example/luanvan/ui/Adapter/skill");
+            Skill skill = (Skill) getIntent().getSerializableExtra("skill");
             position = getIntent().getIntExtra("position", 0);
             id = skill.getId();
+            idskill = skill.getIdskill();
             editname.setText(skill.getName());
             editmota.setText(skill.getDescription());
             ratingBar.setRating(skill.getStar());
@@ -170,11 +171,12 @@ public class SkillActivity extends AppCompatActivity {
                 final String name = editname.getText().toString();
                 final String mota = editmota.getText().toString();
                 final float star = ratingBar.getRating();
+
               //  Toast.makeText(getApplicationContext(), "Cập nhật :" + star, Toast.LENGTH_SHORT).show();
                 if(name.equals("") || mota.equals("")){
                     Toast.makeText(getApplicationContext(), "Vui lòng nhập đủ thông tin" , Toast.LENGTH_SHORT).show();
                 }else if(star == 0){
-                    Toast.makeText(getApplicationContext(), "Đánh giá kỹ năng" , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Chọn số sao cho kỹ năng" , Toast.LENGTH_SHORT).show();
                 }else {
                     loading();
 

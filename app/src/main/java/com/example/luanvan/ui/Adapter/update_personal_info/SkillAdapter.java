@@ -71,7 +71,7 @@ public class SkillAdapter extends RecyclerView.Adapter<SkillAdapter.ItemHolder> 
                     Intent intent = new Intent(context, SkillActivity.class);
                     // problem: khi muốn gửi có intent phải gửi 2 lần, xác nhận để không bị lỗi, 10: empty, 3: có đối tượng gửi
                     intent.putExtra("confirm", 3);
-                    intent.putExtra("com/example/luanvan/ui/Adapter/skill", arrayList.get(position));
+                    intent.putExtra("skill", arrayList.get(position));
                     intent.putExtra("position", position);
                     activity.startActivityForResult(intent,3);
                 }
