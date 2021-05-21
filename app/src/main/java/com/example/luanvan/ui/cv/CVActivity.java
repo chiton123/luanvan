@@ -435,22 +435,26 @@ public class CVActivity extends AppCompatActivity {
             paint1.setTextSize(45);
             canvas.drawText(MainActivity.userCV.getUsername(), 30, 80, paint1);
             paint1.setTextSize(30);
-            canvas.drawText(MainActivity.userCV.getPosition(), 30, 140, paint1);
+            canvas.drawText(MainActivity.userCV.getPosition(), 30, 130, paint1);
+            canvas.drawText("Gender: " + MainActivity.userCV.getGender(), 30, 180, paint1);
+            canvas.drawText("Phone: " + MainActivity.userCV.getPhone(), 500, 180, paint1);
+            canvas.drawText("Birthday: " + MainActivity.userCV.getBirthday(), 900, 180, paint1);
+            canvas.drawText( "Email: " +MainActivity.userCV.getEmail(), 30, 230, paint1);
+            canvas.drawText("Address: " + MainActivity.userCV.getAddress(), 30, 280, paint1);
 
-            paint1.setTextSize(30);
-            canvas.drawText(MainActivity.userCV.getAddress(), 30, 230, paint1);
-            canvas.drawText(MainActivity.userCV.getEmail(), 500, 230, paint1);
-            canvas.drawText(MainActivity.userCV.getPhone(), pageWidth-350, 230, paint1);
         }else {
             paint1.setTextSize(45);
             canvas.drawText(MainActivity.userCVDefault.getUsername(), 30, 80, paint1);
             paint1.setTextSize(30);
-            canvas.drawText(MainActivity.userCVDefault.getPosition(), 30, 140, paint1);
+            canvas.drawText(MainActivity.userCVDefault.getPosition(), 30, 130, paint1);
+            canvas.drawText("Gender: " + MainActivity.userCVDefault.getGender(), 30, 180, paint1);
+            canvas.drawText("Phone: " + MainActivity.userCVDefault.getPhone(), 500, 180, paint1);
+            canvas.drawText("Birthday: " + MainActivity.userCVDefault.getBirthday(), 900, 180, paint1);
+            canvas.drawText( "Email: " +MainActivity.userCVDefault.getEmail(), 30, 230, paint1);
+            canvas.drawText("Address: " + MainActivity.userCVDefault.getAddress(), 30, 280, paint1);
 
-            paint1.setTextSize(30);
-            canvas.drawText(MainActivity.userCVDefault.getAddress(), 30, 230, paint1);
-            canvas.drawText(MainActivity.userCVDefault.getEmail(), 500, 230, paint1);
-            canvas.drawText(MainActivity.userCVDefault.getPhone()+"", pageWidth-350, 230, paint1);
+
+
         }
 
         // muc tieu nghe nghiep
@@ -465,21 +469,26 @@ public class CVActivity extends AppCompatActivity {
             x0 = a0;
             canvas.drawText("OBJECTIVES", 30, x0, titlePaint);
             if(b == 1 || kind == 2){
-                // canvas.drawText(MainActivity.goal, 30, x0 + 70, contentPaint);
-                TextPaint mTextPaint=new TextPaint();
-                mTextPaint.setTextSize(30);
-                mTextPaint.setColor(Color.BLACK);
-                StaticLayout mTextLayout = new StaticLayout(xuongdong(MainActivity.goal), mTextPaint, canvas.getWidth(), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
+                if(MainActivity.goal.length() <= 90){
+                    canvas.drawText(MainActivity.goal, 30, x0 + 20, contentPaint);
+                }else {
+                    TextPaint mTextPaint=new TextPaint();
+                    mTextPaint.setTextSize(30);
+                    mTextPaint.setColor(Color.BLACK);
+                    StaticLayout mTextLayout = new StaticLayout(xuongdong(MainActivity.goal), mTextPaint, canvas.getWidth(), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
 
-                canvas.save();
-                // calculate x and y position where your text will be placed
+                    canvas.save();
+                    // calculate x and y position where your text will be placed
 
-                int textX = 30;
-                int textY = x0 + 20;
+                    int textX = 30;
+                    int textY = x0 + 20;
 
-                canvas.translate(textX, textY);
-                mTextLayout.draw(canvas);
-                canvas.restore();
+                    canvas.translate(textX, textY);
+                    mTextLayout.draw(canvas);
+                    canvas.restore();
+                }
+
+
             }else {
                 canvas.drawText(MainActivity.goalDefault, 30, x0 + 20, contentPaint);
             }

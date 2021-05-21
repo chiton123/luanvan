@@ -23,6 +23,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/name"
             android:hint="Tên kỹ năng"
+            android:maxLength="40"
             ></EditText>
     </LinearLayout>
     <LinearLayout

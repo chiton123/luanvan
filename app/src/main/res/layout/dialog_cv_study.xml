@@ -23,6 +23,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/school"
             android:hint="Tên trường"
+            android:maxLength="25"
             ></EditText>
     </LinearLayout>
     <LinearLayout
@@ -43,6 +44,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/major"
             android:hint="Tên ngành"
+            android:maxLength="60"
             ></EditText>
     </LinearLayout>
     <LinearLayout
@@ -63,6 +65,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/start"
             android:hint="Bắt đầu"
+            android:maxLength="15"
             ></EditText>
     </LinearLayout>
     <LinearLayout
@@ -83,6 +86,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/end"
             android:hint="kết thúc"
+            android:maxLength="15"
             ></EditText>
     </LinearLayout>
     <LinearLayout
@@ -108,6 +112,7 @@
             android:padding="5dp"
             android:id="@+id/description"
             android:gravity="top|left"
+            android:maxLength="300"
             android:hint="Mô tả"
             android:background="@drawable/edittext_frame"
             ></EditText>

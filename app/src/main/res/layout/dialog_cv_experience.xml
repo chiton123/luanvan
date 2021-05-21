@@ -23,6 +23,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/name"
             android:hint="Tên công ty"
+            android:maxLength="25"
             ></EditText>
     </LinearLayout>
     <LinearLayout
@@ -43,6 +44,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/position"
             android:hint="Vị trí công việc"
+            android:maxLength="40"
             ></EditText>
     </LinearLayout>
     <LinearLayout
@@ -63,6 +65,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/start"
             android:hint="Bắt đầu"
+            android:maxLength="15"
             ></EditText>
     </LinearLayout>
     <LinearLayout
@@ -82,6 +85,7 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:id="@+id/end"
+            android:maxLength="15"
             android:hint="kết thúc"
             ></EditText>
     </LinearLayout>
@@ -108,6 +112,7 @@
             android:padding="5dp"
             android:id="@+id/description"
             android:gravity="top|left"
+            android:maxLength="250"
             android:hint="Mô tả"
             android:background="@drawable/edittext_frame"
             ></EditText>
