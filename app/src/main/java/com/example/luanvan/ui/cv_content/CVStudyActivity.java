@@ -72,7 +72,7 @@ public class CVStudyActivity extends AppCompatActivity {
     StorageReference storageReference;
     Handler handler;
     ProgressDialog progressDialog;
-    public static int a0 = 350, a1 = 600, a2 = 900, a3 = 1400;
+    public static int a0 = 350, a1 = 600, a2 = 900, a3 = 1600;
     public static int x0 = 0, x1 = 0, x2 = 0, x3 = 0;
     // kiem tra xem x1, x2, x3 có nhảy lên bậc nào hay k khi tạo CV
     public static int checkX1 = 0, checkX2 = 0, checkX3 = 0; // chưa sử dụng
@@ -255,7 +255,7 @@ public class CVStudyActivity extends AppCompatActivity {
         contentPaint.setTextSize(30);
         if(checkGoal == 0){
             x0 = a0;
-            canvas.drawText("MỤC TIÊU NGHỀ NGHIỆP", 30, x0, titlePaint);
+            canvas.drawText("OBJECTIVES", 30, x0, titlePaint);
             if(b == 1 || kind == 2){
                 // canvas.drawText(MainActivity.goal, 30, x0 + 70, contentPaint);
                 TextPaint mTextPaint=new TextPaint();
@@ -290,7 +290,7 @@ public class CVStudyActivity extends AppCompatActivity {
                 x1 = a1;
             }
 
-            canvas.drawText("HỌC VẤN", 30,  x1 - 50, titlePaint);
+            canvas.drawText("STUDY", 30,  x1 - 50, titlePaint);
             titlePaint2.setTextSize(30);
             titlePaint2.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
             if(c == 1 || kind == 2){
@@ -303,7 +303,7 @@ public class CVStudyActivity extends AppCompatActivity {
                         TextPaint mTextPaint=new TextPaint();
                         mTextPaint.setTextSize(30);
                         mTextPaint.setColor(Color.BLACK);
-                        StaticLayout mTextLayout = new StaticLayout(xuongdong(MainActivity.studyCVS.get(i).getDescription()), mTextPaint, canvas.getWidth(), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
+                        StaticLayout mTextLayout = new StaticLayout(xuongdong(MainActivity.studyCVS.get(i).getDescription()), mTextPaint, canvas.getWidth() - 500, Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
 
                         canvas.save();
                         // calculate x and y position where your text will be placed
@@ -349,23 +349,23 @@ public class CVStudyActivity extends AppCompatActivity {
                 }
             }
 
-            canvas.drawText("KINH NGHIỆM", 30, x2, titlePaint);
+            canvas.drawText("WORK EXPERIENCE", 30, x2, titlePaint);
             if(d == 1 || kind == 2){
                 for(int i=0; i < experienceCVS.size(); i++){
-                    if(i < 3){
-                        canvas.drawText(experienceCVS.get(i).getStart()+"-"+experienceCVS.get(i).getEnd(), 30, x2 + 50 + i*180, contentPaint);
-                        canvas.drawText(experienceCVS.get(i).getCompany(), 450, x2 + 50 + i*180, contentPaint);
-                        canvas.drawText(experienceCVS.get(i).getPosition(), 450, x2 + 90 + i*180, contentPaint);
+                    if(i < 2){
+                        canvas.drawText(experienceCVS.get(i).getStart()+"-"+experienceCVS.get(i).getEnd(), 30, x2 + 50 + i*250, contentPaint);
+                        canvas.drawText(experienceCVS.get(i).getCompany(), 450, x2 + 50 + i*250, contentPaint);
+                        canvas.drawText(experienceCVS.get(i).getPosition(), 450, x2 + 90 + i*250, contentPaint);
                         TextPaint mTextPaint=new TextPaint();
                         mTextPaint.setTextSize(30);
                         mTextPaint.setColor(Color.BLACK);
-                        StaticLayout mTextLayout = new StaticLayout(xuongdong(experienceCVS.get(i).getDescription()), mTextPaint, canvas.getWidth(), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
+                        StaticLayout mTextLayout = new StaticLayout(xuongdong(experienceCVS.get(i).getDescription()), mTextPaint, canvas.getWidth() - 500, Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
 
                         canvas.save();
                         // calculate x and y position where your text will be placed
 
                         int textX = 450;
-                        int textY = x2 + 100 + i*180;
+                        int textY = x2 + 100 + i*250;
 
                         canvas.translate(textX, textY);
                         mTextLayout.draw(canvas);
@@ -425,7 +425,7 @@ public class CVStudyActivity extends AppCompatActivity {
             }
 
 
-            canvas.drawText("KỸ NĂNG", 30, x3, titlePaint);
+            canvas.drawText("SKILL", 30, x3, titlePaint);
             int width = 300, height = 50;
             if(e == 1 || kind == 2){
                 for(int i=0; i < MainActivity.skillCVS.size(); i++){
@@ -453,7 +453,6 @@ public class CVStudyActivity extends AppCompatActivity {
 
             }
         }
-
 
         pdfDocument.finishPage(page);
         File file = new File(Environment.getExternalStorageDirectory(), "/a10.pdf");
