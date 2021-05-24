@@ -326,11 +326,14 @@ public class HomeFragment extends Fragment {
                 if(avatar.equals("default")){
                     img.setImageResource(R.drawable.imgprofile);
                 }else {
-                    try {
-                        Glide.with(getActivity()).load(avatar).into(img);
-                    }catch (NullPointerException e){
-                        FancyToast.makeText(getActivity(), "Lỗi", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
+                    if(getActivity() != null){
+                        try {
+                            Glide.with(getActivity()).load(avatar).into(img);
+                        }catch (NullPointerException e){
+                            FancyToast.makeText(getActivity(), "Lỗi", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
+                        }
                     }
+
 
                 }
             }

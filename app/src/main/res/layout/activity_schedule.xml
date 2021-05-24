@@ -189,6 +189,7 @@
                         android:layout_marginRight="10dp"
                         android:layout_marginLeft="10dp"
                         android:layout_height="120dp"
+                        android:maxLength="400"
                         android:id="@+id/editnote"
                         android:maxLines="10"
                         android:lines="8"

@@ -28,6 +28,7 @@ import com.example.luanvan.ui.DetailedJob.DetailJobActivity;
 import com.example.luanvan.ui.Model.Job;
 import com.example.luanvan.ui.Model.Notification;
 import com.example.luanvan.ui.home.HomeFragment;
+import com.example.luanvan.ui.schedule.ScheduleCandidateActivity;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
 import org.json.JSONArray;
@@ -96,13 +97,19 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                         HomeFragment.txtNotification.setVisibility(View.VISIBLE);
                     }
                 }
-                Intent intent = new Intent(activity, DetailJobActivity.class);
-                // 0: từ màn hình chính, tìm kiếm, lọc chuyển qua, 1: từ notification chuyển qua
-                intent.putExtra("kind", 1);
-                intent.putExtra("job_id", arrayList.get(position).getJob_id());
-                intent.putExtra("ap_status", arrayList.get(position).getAp_status());
-                intent.putExtra("ap_note", arrayList.get(position).getAp_note());
-                activity.startActivity(intent);
+                if(notification.getType_notification().equals("Nhà tuyển dụng hẹn bạn phỏng vấn") || notification.getType_notification().equals("Nhà tuyển dụng nhắc bạn đi làm")){
+                    Intent intent = new Intent(activity, ScheduleCandidateActivity.class);
+                    activity.startActivity(intent);
+                }else {
+                    Intent intent = new Intent(activity, DetailJobActivity.class);
+                    // 0: từ màn hình chính, tìm kiếm, lọc chuyển qua, 1: từ notification chuyển qua
+                    intent.putExtra("kind", 1);
+                    intent.putExtra("job_id", arrayList.get(position).getJob_id());
+                    intent.putExtra("ap_status", arrayList.get(position).getAp_status());
+                    intent.putExtra("ap_note", arrayList.get(position).getAp_note());
+                    activity.startActivity(intent);
+                }
+
             }
         });
 

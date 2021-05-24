@@ -9,7 +9,7 @@
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#fff"
+        android:background="#02F1D0"
         app:title="Đánh giá công ty"
         android:id="@+id/toolbar"
         ></androidx.appcompat.widget.Toolbar>
@@ -55,6 +55,7 @@
             android:id="@+id/editremark"
             android:maxLines="10"
             android:lines="8"
+            android:maxLength="1000"
             android:gravity="top|left"
             android:background="@drawable/edittext_frame"
             ></EditText>

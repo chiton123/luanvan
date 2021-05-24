@@ -247,6 +247,7 @@
                         android:layout_width="match_parent"
                         android:layout_marginRight="10dp"
                         android:layout_marginLeft="10dp"
+                        android:maxLength="300"
                         android:layout_height="120dp"
                         android:id="@+id/editnote"
                         android:maxLines="10"

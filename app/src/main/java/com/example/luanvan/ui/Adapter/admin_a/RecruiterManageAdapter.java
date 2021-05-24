@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,22 +23,26 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
+import com.example.luanvan.ui.Model.Company;
 import com.example.luanvan.ui.Model.Recruiter;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
 
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RecruiterManageAdapter extends RecyclerView.Adapter<RecruiterManageAdapter.ItemHolder> {
+public class RecruiterManageAdapter extends RecyclerView.Adapter<RecruiterManageAdapter.ItemHolder> implements Filterable {
     Context context;
-    ArrayList<Recruiter> arrayList;
+    ArrayList<Recruiter> filterArraylist;
+    ArrayList<Recruiter> nameList;
     Activity activity;
 
     public RecruiterManageAdapter(Context context, ArrayList<Recruiter> arrayList, Activity activity) {
         this.context = context;
-        this.arrayList = arrayList;
+        this.filterArraylist = arrayList;
+        this.nameList = arrayList;
         this.activity = activity;
     }
 
@@ -50,14 +56,14 @@ public class RecruiterManageAdapter extends RecyclerView.Adapter<RecruiterManage
 
     @Override
     public void onBindViewHolder(@NonNull ItemHolder holder, final int position) {
-        if(arrayList.size() > 0){
-            Recruiter recruiter = arrayList.get(position);
+        if(filterArraylist.size() > 0){
+            Recruiter recruiter = filterArraylist.get(position);
             holder.txtPhone.setText(recruiter.getPhone() + "");
             holder.txtName.setText(recruiter.getName());
             holder.txtEmail.setText(recruiter.getEmail());
             holder.txtAddress.setText(recruiter.getAddress());
             holder.txtintroduce.setText(recruiter.getIntroduction());
-            if(arrayList.get(position).getStatus() == 1){
+            if(filterArraylist.get(position).getStatus() == 1){
                 holder.btnBlock.setText("Mở khóa");
             }else {
                 holder.btnBlock.setText("Khóa");
@@ -65,7 +71,7 @@ public class RecruiterManageAdapter extends RecyclerView.Adapter<RecruiterManage
             holder.btnBlock.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(arrayList.get(position).getStatus() == 0){
+                    if(filterArraylist.get(position).getStatus() == 0){
                         updateStatus(position, 1);
                     }else {
                         updateStatus(position, 0);
@@ -85,7 +91,7 @@ public class RecruiterManageAdapter extends RecyclerView.Adapter<RecruiterManage
                         if(response.equals("success")){
 
                             FancyToast.makeText(context, "Cập nhật thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
-                            arrayList.get(position).setStatus(status);
+                            filterArraylist.get(position).setStatus(status);
                             notifyDataSetChanged();
                         }else {
                             FancyToast.makeText(context,"Cập nhật thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
@@ -101,7 +107,7 @@ public class RecruiterManageAdapter extends RecyclerView.Adapter<RecruiterManage
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> map = new HashMap<>();
-                map.put("idrecruiter", String.valueOf(arrayList.get(position).getId()));
+                map.put("idrecruiter", String.valueOf(filterArraylist.get(position).getId()));
                 map.put("status", String.valueOf(status));
                 return map;
             }
@@ -111,9 +117,39 @@ public class RecruiterManageAdapter extends RecyclerView.Adapter<RecruiterManage
 
     @Override
     public int getItemCount() {
-        return arrayList.size();
+        return filterArraylist.size();
     }
 
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String charSequenceString = stripAccents(constraint.toString()).trim();
+                if(charSequenceString.isEmpty()){
+                    filterArraylist = nameList;
+                }else {
+                    ArrayList<Recruiter> filteredList = new ArrayList<>();
+                    for(Recruiter recruiter : nameList){
+                        String name1 = stripAccents(recruiter.getName()).trim();
+                        if(name1.toLowerCase().contains(charSequenceString.toLowerCase())){
+                            filteredList.add(recruiter);
+                        }
+                        filterArraylist = filteredList;
+                    }
+                }
+                FilterResults results = new FilterResults();
+                results.values = filterArraylist;
+                return results;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                filterArraylist = (ArrayList<Recruiter>) results.values;
+                notifyDataSetChanged();
+            }
+        };
+    }
     public class ItemHolder extends RecyclerView.ViewHolder{
         TextView txtName, txtEmail, txtPhone, txtAddress, txtintroduce;
         Button btnBlock;
@@ -129,6 +165,12 @@ public class RecruiterManageAdapter extends RecyclerView.Adapter<RecruiterManage
 
 
         }
+    }
+    public static String stripAccents(String s)
+    {
+        s = Normalizer.normalize(s, Normalizer.Form.NFD);
+        s = s.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
+        return s;
     }
 
 

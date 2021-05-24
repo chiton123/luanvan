@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -36,6 +37,7 @@ public class UserManagementActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     ArrayList<User> arrayList;
     UserManageAdapter adapter;
+    SearchView searchView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,8 +45,23 @@ public class UserManagementActivity extends AppCompatActivity {
         anhxa();
         actionBar();
         getData();
+        search();
 
+    }
+    private void search() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                adapter.getFilter().filter(query);
+                return false;
+            }
 
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return false;
+            }
+        });
     }
 
     private void getData() {
@@ -100,6 +117,7 @@ public class UserManagementActivity extends AppCompatActivity {
         arrayList = new ArrayList<>();
         adapter = new UserManageAdapter(UserManagementActivity.this, arrayList, UserManagementActivity.this);
         recyclerView.setAdapter(adapter);
+        searchView = (SearchView) findViewById(R.id.searchView);
 
     }
 

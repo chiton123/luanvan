@@ -68,6 +68,7 @@
                 android:background="@drawable/background_chat"
                 android:hint="Type a message"
                 android:id="@+id/edittextmessage"
+                android:maxLength="200"
                 android:paddingLeft="6dp"
                 ></EditText>
             <ImageButton

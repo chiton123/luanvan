@@ -159,6 +159,7 @@ public class ScheduleCandidateAdapter extends RecyclerView.Adapter<ScheduleCandi
         Button btnTuChoi = (Button) view.findViewById(R.id.buttontuchoi);
         Button btnLuiLich = (Button) view.findViewById(R.id.buttonluilich);
         TextView txtDate = (TextView) view.findViewById(R.id.txtdate);
+        editNote.setText(arrayList.get(position).getNote_candidate());
         if(arrayList.get(position).getType() == 1){
             txtSchedule.setText("Hẹn phỏng vấn");
         }else {

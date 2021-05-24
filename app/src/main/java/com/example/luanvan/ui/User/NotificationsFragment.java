@@ -255,39 +255,42 @@ public class NotificationsFragment extends Fragment {
     }
 
     private void checkSwitch() {
-        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlCheckSwitch,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        if(response != null){
-                            int mode = Integer.parseInt(response.toString());
-                            if(mode == 1){
-                                switchCompat.setText("Đang bậc tìm việc");
-                                switchCompat.setTextColor(Color.GREEN);
-                                switchCompat.setChecked(true);
-                            }else {
-                                switchCompat.setText("Đang tắt tìm việc");
-                                switchCompat.setTextColor(Color.RED);
-                                switchCompat.setChecked(false);
+        if(getActivity() != null){
+            RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlCheckSwitch,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            if(response != null){
+                                int mode = Integer.parseInt(response.toString());
+                                if(mode == 1){
+                                    switchCompat.setText("Đang bậc tìm việc");
+                                    switchCompat.setTextColor(Color.GREEN);
+                                    switchCompat.setChecked(true);
+                                }else {
+                                    switchCompat.setText("Đang tắt tìm việc");
+                                    switchCompat.setTextColor(Color.RED);
+                                    switchCompat.setChecked(false);
+                                }
                             }
                         }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        FancyToast.makeText(getActivity(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
-                    }
-                }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> map = new HashMap<>();
-                map.put("iduser", String.valueOf(MainActivity.iduser));
-                return map;
-            }
-        };
-        requestQueue.add(stringRequest);
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            FancyToast.makeText(getActivity(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
+                        }
+                    }){
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String,String> map = new HashMap<>();
+                    map.put("iduser", String.valueOf(MainActivity.iduser));
+                    return map;
+                }
+            };
+            requestQueue.add(stringRequest);
+        }
+
 
     }
 
@@ -309,33 +312,36 @@ public class NotificationsFragment extends Fragment {
 
     }
     public void switchMode(final int status){
-        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlSwitchMode,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        if(response.equals("success")){
-                          //  Toast.makeText(getActivity(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
-                        }else {
-                         //   Toast.makeText(getActivity(), "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+        if(getActivity() != null){
+            RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlSwitchMode,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            if(response.equals("success")){
+                                //  Toast.makeText(getActivity(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                            }else {
+                                //   Toast.makeText(getActivity(), "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        FancyToast.makeText(getActivity(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
-                    }
-                }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> map = new HashMap<>();
-                map.put("iduser", String.valueOf(MainActivity.iduser));
-                map.put("status", String.valueOf(status));
-                return map;
-            }
-        };
-        requestQueue.add(stringRequest);
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            FancyToast.makeText(getActivity(), error.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
+                        }
+                    }){
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String,String> map = new HashMap<>();
+                    map.put("iduser", String.valueOf(MainActivity.iduser));
+                    map.put("status", String.valueOf(status));
+                    return map;
+                }
+            };
+            requestQueue.add(stringRequest);
+        }
+
     }
 
 
@@ -410,38 +416,44 @@ public class NotificationsFragment extends Fragment {
 
 
     public void getInfoFromFirebase(){
-        reference = FirebaseDatabase.getInstance().getReference("Users").child(MainActivity.uid);
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                final String img = snapshot.child("imageURL").getValue(String.class);
-                if(img.equals("default")){
-                    imgProfile.setImageResource(R.drawable.imgprofile);
-                }else {
-                    if(img != null ){
-                        handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                Glide.with(getActivity()).load(img).into(imgProfile);
+        if(MainActivity.login == 1){
+            reference = FirebaseDatabase.getInstance().getReference("Users").child(MainActivity.uid);
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    final String img = snapshot.child("imageURL").getValue(String.class);
+                    if(img.equals("default")){
+                        imgProfile.setImageResource(R.drawable.imgprofile);
+                    }else {
+                        if(img != null ){
+                            handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if(getActivity() != null){
+                                        Glide.with(getActivity()).load(img).into(imgProfile);
+                                    }
+
+                                }
+                            },2000);
+
+                            try {
+
+                            }catch (NullPointerException e){
+                                FancyToast.makeText(getActivity(),"Lỗi", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                             }
-                        },1500);
-
-                        try {
-
-                        }catch (NullPointerException e){
-                            FancyToast.makeText(getActivity(),"Lỗi", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                         }
+
                     }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
                 }
-            }
+            });
+        }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
     }
 
     public void setDefault(){

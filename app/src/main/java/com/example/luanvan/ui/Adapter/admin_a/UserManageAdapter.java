@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +25,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.luanvan.MainActivity;
 import com.example.luanvan.R;
+import com.example.luanvan.ui.Model.Company;
 import com.example.luanvan.ui.Model.Job;
 import com.example.luanvan.ui.Model.User;
 import com.example.luanvan.ui.Search_Filter.SearchActivity;
@@ -32,18 +35,21 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UserManageAdapter extends RecyclerView.Adapter<UserManageAdapter.ItemHolder> {
+public class UserManageAdapter extends RecyclerView.Adapter<UserManageAdapter.ItemHolder> implements Filterable {
     Context context;
-    ArrayList<User> arrayList;
+    ArrayList<User> filterArraylist;
+    ArrayList<User> nameList;
     Activity activity;
 
     public UserManageAdapter(Context context, ArrayList<User> arrayList, Activity activity) {
         this.context = context;
-        this.arrayList = arrayList;
+        this.filterArraylist = arrayList;
+        this.nameList = arrayList;
         this.activity = activity;
     }
 
@@ -57,14 +63,14 @@ public class UserManageAdapter extends RecyclerView.Adapter<UserManageAdapter.It
 
     @Override
     public void onBindViewHolder(@NonNull ItemHolder holder, final int position) {
-        if(arrayList.size() > 0){
-            User user = arrayList.get(position);
+        if(filterArraylist.size() > 0){
+            User user = filterArraylist.get(position);
             holder.txtPhone.setText(user.getPhone() + "");
             holder.txtName.setText(user.getName());
             holder.txtEmail.setText(user.getEmail());
             holder.txtAddress.setText(user.getAddress());
             holder.txtintroduce.setText(user.getIntroduction());
-            if(arrayList.get(position).getStatus() == 1){
+            if(filterArraylist.get(position).getStatus() == 1){
                 holder.btnBlock.setText("Mở khóa");
             }else {
                 holder.btnBlock.setText("Khóa");
@@ -72,7 +78,7 @@ public class UserManageAdapter extends RecyclerView.Adapter<UserManageAdapter.It
             holder.btnBlock.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(arrayList.get(position).getStatus() == 0){
+                    if(filterArraylist.get(position).getStatus() == 0){
                         updateStatus(position, 1);
                     }else {
                         updateStatus(position, 0);
@@ -91,7 +97,7 @@ public class UserManageAdapter extends RecyclerView.Adapter<UserManageAdapter.It
                     public void onResponse(String response) {
                         if(response.equals("success")){
                             FancyToast.makeText(context, "Cập nhật thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
-                            arrayList.get(position).setStatus(status);
+                            filterArraylist.get(position).setStatus(status);
                             notifyDataSetChanged();
                         }else {
                             FancyToast.makeText(context,"Cập nhật thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
@@ -107,7 +113,7 @@ public class UserManageAdapter extends RecyclerView.Adapter<UserManageAdapter.It
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> map = new HashMap<>();
-                map.put("iduser", String.valueOf(arrayList.get(position).getId()));
+                map.put("iduser", String.valueOf(filterArraylist.get(position).getId()));
                 map.put("status", String.valueOf(status));
                 return map;
             }
@@ -117,7 +123,38 @@ public class UserManageAdapter extends RecyclerView.Adapter<UserManageAdapter.It
 
     @Override
     public int getItemCount() {
-        return arrayList.size();
+        return filterArraylist.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String charSequenceString = stripAccents(constraint.toString()).trim();
+                if(charSequenceString.isEmpty()){
+                    filterArraylist = nameList;
+                }else {
+                    ArrayList<User> filteredList = new ArrayList<>();
+                    for(User user : nameList){
+                        String name1 = stripAccents(user.getName()).trim();
+                        if(name1.toLowerCase().contains(charSequenceString.toLowerCase())){
+                            filteredList.add(user);
+                        }
+                        filterArraylist = filteredList;
+                    }
+                }
+                FilterResults results = new FilterResults();
+                results.values = filterArraylist;
+                return results;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                filterArraylist = (ArrayList<User>) results.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 
     public class ItemHolder extends RecyclerView.ViewHolder{
@@ -135,6 +172,12 @@ public class UserManageAdapter extends RecyclerView.Adapter<UserManageAdapter.It
 
 
         }
+    }
+    public static String stripAccents(String s)
+    {
+        s = Normalizer.normalize(s, Normalizer.Form.NFD);
+        s = s.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
+        return s;
     }
 
 

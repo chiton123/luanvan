@@ -29,6 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:id="@+id/editemail"
+            android:maxLength="80"
             android:hint="Email"
             android:drawableLeft="@drawable/email1"
             android:drawablePadding="20dp"
@@ -41,6 +42,7 @@
             android:hint="Mật khẩu"
             android:drawableLeft="@drawable/search3"
             android:drawablePadding="20dp"
+            android:maxLength="20"
             android:inputType="textPassword"
             ></EditText>
         <Button

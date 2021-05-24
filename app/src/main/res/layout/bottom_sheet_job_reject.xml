@@ -36,6 +36,7 @@
             android:lines="8"
             android:gravity="top|left"
             android:hint="Ghi chú"
+            android:maxLength="500"
             android:padding="5dp"
             android:textColor="#000000"
             android:textSize="14sp"

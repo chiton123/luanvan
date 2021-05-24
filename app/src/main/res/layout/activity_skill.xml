@@ -109,6 +109,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_height="200dp"
+                    android:maxLength="500"
                     android:id="@+id/editmota"
                     android:padding="8dp"
                     android:maxLines="10"

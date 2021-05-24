@@ -51,6 +51,7 @@
             android:hint="Giới thiệu ngắn gọn về công ty, vị trí tuyển dụng và mong muốn ứng viên ứng tuyển. Lưu ý, bạn cần viết mô tả công việc tại đây"
             android:textColor="#000000"
             android:textSize="14sp"
+            android:maxLength="1000"
             android:maxLines="3"
             ></EditText>
 

@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -154,40 +155,6 @@ public class ChooseCVActivity extends AppCompatActivity {
                             content = "Ứng viên " + MainActivity.username + " - " + job.getName();
                             // Toast.makeText(getApplicationContext(), id_application + content , Toast.LENGTH_SHORT).show();
                             postNotification(1);
-//                            if(DetailJobActivity.checkApplyAgain == 1){
-//                                // remove job trong list đã ứng tuyển
-//                                for(int i=0; i < HomeFragment.arrayListDaUngTuyen.size(); i++){
-//                                    if(HomeFragment.arrayListDaUngTuyen.get(i).getId() == job.getId()){
-//                                        HomeFragment.arrayListDaUngTuyen.remove(i);
-//                                    }
-//                                }
-//                            }
-//
-//                            HomeFragment.arrayListDaUngTuyen.add(new Job_Apply(
-//                                    job.getId(),
-//                                    job.getName(),
-//                                    job.getIdcompany(),
-//                                    job.getId_recruiter(),
-//                                    MainActivity.arrayListCV.get(0).getKey(),
-//                                    job.getImg(),
-//                                    job.getAddress(),
-//                                    job.getIdtype(),
-//                                    job.getIdprofession(),
-//                                    job.getStart_date(),
-//                                    job.getEnd_date(),
-//                                    job.getSalary_min(),
-//                                    job.getSalary_max(),
-//                                    job.getIdarea(),
-//                                    job.getExperience(),
-//                                    job.getNumber(),
-//                                    job.getDescription(),
-//                                    job.getRequirement(),
-//                                    job.getBenefit(),
-//                                    job.getStatus(),
-//                                    job.getCompany_name(),
-//                                    job.getType_job()
-//                            ));
-//                            HomeFragment.adapterDaUngTuyen.notifyDataSetChanged();
                             handler = new Handler();
                             handler.postDelayed(new Runnable() {
                                 @Override
@@ -237,32 +204,6 @@ public class ChooseCVActivity extends AppCompatActivity {
                             content = "Ứng viên " + MainActivity.username + " - " + job.getName();
                             // Toast.makeText(getApplicationContext(), id_application + content , Toast.LENGTH_SHORT).show();
                             postNotification(1);
-
-//                            HomeFragment.arrayListDaUngTuyen.add(new Job_Apply(
-//                                    job.getId(),
-//                                    job.getName(),
-//                                    job.getIdcompany(),
-//                                    job.getId_recruiter(),
-//                                    MainActivity.arrayListCV.get(0).getKey(),
-//                                    job.getImg(),
-//                                    job.getAddress(),
-//                                    job.getIdtype(),
-//                                    job.getIdprofession(),
-//                                    job.getStart_date(),
-//                                    job.getEnd_date(),
-//                                    job.getSalary_min(),
-//                                    job.getSalary_max(),
-//                                    job.getIdarea(),
-//                                    job.getExperience(),
-//                                    job.getNumber(),
-//                                    job.getDescription(),
-//                                    job.getRequirement(),
-//                                    job.getBenefit(),
-//                                    job.getStatus(),
-//                                    job.getCompany_name(),
-//                                    job.getType_job()
-//                            ));
-//                            HomeFragment.adapterDaUngTuyen.notifyDataSetChanged();
                             handler = new Handler();
                             handler.postDelayed(new Runnable() {
                                 @Override
@@ -321,8 +262,10 @@ public class ChooseCVActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getApplicationContext(),"p : " + position, Toast.LENGTH_SHORT).show();
                 check = 1;
                 positionCV = position;
+                adapter.setSelection(position);
             }
         });
 

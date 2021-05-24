@@ -22,6 +22,7 @@
             android:hint="Email"
             android:drawableLeft="@drawable/email1"
             android:drawablePadding="20dp"
+            android:maxLength="100"
             ></EditText>
         <EditText
             android:layout_marginTop="20dp"
@@ -31,6 +32,7 @@
             android:hint="Họ tên"
             android:drawableLeft="@drawable/user1"
             android:drawablePadding="20dp"
+            android:maxLength="100"
             ></EditText>
         <EditText
             android:layout_marginTop="20dp"
@@ -41,12 +43,14 @@
             android:drawableLeft="@drawable/search3"
             android:drawablePadding="20dp"
             android:inputType="textPassword"
+            android:maxLength="20"
             ></EditText>
         <EditText
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:id="@+id/editpass2"
+            android:maxLength="20"
             android:hint="Nhập lại mật khẩu"
             android:drawableLeft="@drawable/search3"
             android:drawablePadding="20dp"

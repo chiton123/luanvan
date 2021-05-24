@@ -368,7 +368,6 @@ public class KindOfJobActivity extends AppCompatActivity {
     private void actionBar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        // 0 : all - việc làm tốt nhất, 1: luong cao,2: lam tu xa, 3: thuc tap, 4: moi nhat, 5: job_apply
         switch (kind){
             case 0:
                 getSupportActionBar().setTitle("Việc thực tập");

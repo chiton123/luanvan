@@ -40,6 +40,7 @@
         android:id="@+id/editname"
         android:layout_gravity="center_horizontal"
         android:layout_margin="10dp"
+        android:maxLength="60"
         android:hint="Tên CV"
         android:gravity="center"
         ></EditText>

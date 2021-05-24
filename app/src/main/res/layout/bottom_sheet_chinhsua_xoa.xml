@@ -15,12 +15,7 @@
         android:textColor="#000000"
         android:textSize="14sp"
         ></TextView>
-    <View
-        android:layout_marginTop="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="#000000"
-        ></View>
+
     <Button
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
@@ -32,12 +27,7 @@
         android:id="@+id/buttonadjust"
         android:background="#fff"
         ></Button>
-    <View
-        android:layout_marginTop="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="#000000"
-        ></View>
+
     <Button
         android:layout_marginTop="5dp"
         android:textAllCaps="false"
@@ -50,12 +40,7 @@
         android:textColor="#F4110B"
         android:textSize="15sp"
         ></Button>
-    <View
-        android:layout_marginTop="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="#000000"
-        ></View>
+
     <Button 
         android:background="#fff"
         android:layout_marginTop="5dp"
