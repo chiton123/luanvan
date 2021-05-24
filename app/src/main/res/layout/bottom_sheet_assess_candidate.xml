@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="#fff"
     android:id="@+id/bottom_sheet">
     <TextView
@@ -146,7 +146,7 @@
         android:orientation="horizontal"
         android:gravity="center_horizontal"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="20dp"
 
         >
 
@@ -157,7 +157,6 @@
             android:background="@drawable/button_shape"
             android:text="Cập nhật"
             android:textAllCaps="false"
-            android:layout_marginBottom="20dp"
             android:id="@+id/buttoncapnhat"
             android:textColor="#fff"></Button>
 
@@ -169,7 +168,6 @@
             android:textAllCaps="false"
             android:background="@drawable/button_huy"
             android:id="@+id/buttondong"
-            android:layout_marginBottom="20dp"
             android:textColor="#000000"
             ></Button>
     </LinearLayout>

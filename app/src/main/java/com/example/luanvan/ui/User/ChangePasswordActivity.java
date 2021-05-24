@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -26,6 +27,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
     Button btnCancel, btnUpdate;
     FirebaseUser firebaseUser;
     AuthCredential authCredential;
+    ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +73,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 }else if(!newPass1.equals(newPass2)){
                     FancyToast.makeText(getApplicationContext(), "Mật khẩu mới không khớp", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else {
+                    loading();
                     if(MainActivity.login == 1){
                         authCredential = EmailAuthProvider.getCredential(MainActivity.user.getEmail(), currentPass);
                     }else {
@@ -87,9 +90,12 @@ public class ChangePasswordActivity extends AppCompatActivity {
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if(task.isSuccessful()){
                                                     FancyToast.makeText(getApplicationContext(), "Cập nhật thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
+                                                    MainActivity.password = newPass1;
+                                                    progressDialog.dismiss();
                                                     finish();
                                                 }else {
                                                     FancyToast.makeText(getApplicationContext(),"Cập nhật thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
+                                                    progressDialog.dismiss();
                                                 }
                                             }
                                         });
@@ -97,6 +103,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
                                     }else {
                                         Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                        progressDialog.dismiss();
                                     }
                                 }
                             });
@@ -127,5 +134,12 @@ public class ChangePasswordActivity extends AppCompatActivity {
         btnCancel = (Button) findViewById(R.id.buttonhuy);
         btnUpdate = (Button) findViewById(R.id.buttoncapnhat);
 
+    }
+    void loading(){
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading");
+        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
     }
 }

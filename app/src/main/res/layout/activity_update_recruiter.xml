@@ -172,7 +172,7 @@
                         android:layout_width="match_parent"
                         android:id="@+id/editintroduction"
                         android:layout_marginRight="10dp"
-                        android:maxLength="500"
+                        android:maxLength="800"
                         android:layout_marginLeft="10dp"
                         android:layout_height="?attr/dropdownListPreferredItemHeight"
                         android:background="@drawable/edittext_frame"

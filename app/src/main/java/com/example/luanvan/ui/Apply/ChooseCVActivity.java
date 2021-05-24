@@ -262,7 +262,6 @@ public class ChooseCVActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getApplicationContext(),"p : " + position, Toast.LENGTH_SHORT).show();
                 check = 1;
                 positionCV = position;
                 adapter.setSelection(position);

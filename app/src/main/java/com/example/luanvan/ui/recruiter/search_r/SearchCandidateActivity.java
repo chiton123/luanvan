@@ -203,6 +203,7 @@ public class SearchCandidateActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     checkNothing();
+                    sortByMode();
                     progressDialog.dismiss();
                 }
             },2000);
