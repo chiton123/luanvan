@@ -12,6 +12,7 @@
         app:cardCornerRadius="10dp"
         android:id="@+id/cardview"
         app:cardBackgroundColor="#F6FBFB"
+        app:cardElevation="0dp"
         >
         <FrameLayout
             android:layout_width="match_parent"

@@ -11,6 +11,7 @@
         app:cardCornerRadius="3dp"
         android:layout_margin="3dp"
         app:cardBackgroundColor="#FBFDFD"
+        app:cardElevation="0dp"
 
         >
         <FrameLayout

@@ -50,6 +50,7 @@
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="20dp"
                app:cardBackgroundColor="#F6FBFB"
+                app:cardElevation="0dp"
                 >
                 <FrameLayout
                     android:layout_width="match_parent"
