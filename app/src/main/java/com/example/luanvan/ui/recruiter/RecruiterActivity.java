@@ -7,14 +7,19 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -46,12 +51,20 @@ import com.example.luanvan.ui.recruiter.search_r.SearchCandidateActivity;
 import com.example.luanvan.ui.recruiter.updateInfo.UpdateCompanyActivity;
 import com.example.luanvan.ui.recruiter.updateInfo.UpdateRecruiterActivity;
 import com.example.luanvan.ui.schedule.ScheduleManagementActivity;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
+import com.google.firebase.storage.UploadTask;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
 import org.json.JSONArray;
@@ -83,14 +96,19 @@ public class RecruiterActivity extends AppCompatActivity {
     public static ArrayList<JobList> arrayListOutdatedJobs = new ArrayList<>();
     public static TextView txtUnreadMessageNumber;
     DatabaseReference reference;
-    CircleImageView img;
+    ImageView imgProfile;
     TextView txtUsername;
     LinearLayout layout_user;
     int REQUEST_CODE_UPDATRINFO = 123;
+    int IMAGE_REQUEST = 1;
+    Uri imageUri;
+    StorageTask uploadTask;
+    StorageReference storageReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recruiter);
+        storageReference = FirebaseStorage.getInstance().getReference("photo");
         anhxa();
         actionBar();
         eventGridView();
@@ -104,14 +122,123 @@ public class RecruiterActivity extends AppCompatActivity {
         },2000);
         eventListViewNavigation();
         activateAfterLogin();
+        imgProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openImage();
+            }
+        });
+        getInfoFromFirebase();
 
+    }
+    private void openImage() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, IMAGE_REQUEST);
+
+    }
+    private String getFileExtention(Uri uri){
+        ContentResolver contentResolver = getContentResolver();
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
+    }
+    private void uploadImage(){
+        final ProgressDialog pd = new ProgressDialog(this);
+        pd.setMessage("Uploading");
+        pd.show();
+
+        if(imageUri != null){
+            final StorageReference fileReference = storageReference.child(System.currentTimeMillis() + "." + getFileExtention(imageUri));
+            uploadTask = fileReference.putFile(imageUri);
+            uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if(!task.isSuccessful()){
+                        throw task.getException();
+                    }
+                    return fileReference.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if(task.isSuccessful()){
+                        Uri downloadUri = task.getResult();
+                        String mUri = downloadUri.toString();
+
+                        reference = FirebaseDatabase.getInstance().getReference("Users").child(MainActivity.uid);
+                        HashMap<String,Object> hashMap = new HashMap<>();
+                        hashMap.put("imageURL", mUri);
+                        reference.updateChildren(hashMap);
+                        handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                pd.dismiss();
+                            }
+                        },1500);
+
+
+                    }else {
+                        FancyToast.makeText(getApplicationContext(), "Fail", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
+                        pd.dismiss();
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    FancyToast.makeText(getApplicationContext(), e.toString(), FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
+                    pd.dismiss();
+                }
+            });
+        }else {
+            FancyToast.makeText(getApplicationContext(),"No image seleted", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
+        }
+
+    }
+    public void getInfoFromFirebase(){
+        if(MainActivity.login_recruiter == 1){
+            reference = FirebaseDatabase.getInstance().getReference("Users").child(MainActivity.uid);
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    final String img = snapshot.child("imageURL").getValue(String.class);
+                    if(img.equals("default")){
+                        imgProfile.setImageResource(R.drawable.imgprofile);
+                    }else {
+                        if(img != null ){
+                            handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Glide.with(getApplicationContext()).load(img).into(imgProfile);
+
+                                }
+                            },2000);
+
+                            try {
+
+                            }catch (NullPointerException e){
+                                FancyToast.makeText(getApplicationContext(),"Lỗi", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
+                            }
+                        }
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
 
     }
     public void activateAfterLogin(){
         toolbar.setTitle("");
         layout_user.setVisibility(View.VISIBLE);
-        img.setImageResource(R.drawable.userprofile);
         txtUsername.setText(MainActivity.recruiter.getName());
+
 
     }
     private void eventListViewNavigation() {
@@ -145,6 +272,15 @@ public class RecruiterActivity extends AppCompatActivity {
             activateAfterLogin();
         }
 
+
+        if(requestCode == IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null){
+            imageUri = data.getData();
+            if(uploadTask != null && uploadTask.isInProgress()){
+                FancyToast.makeText(getApplicationContext(), "Upload is in progress", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
+            }else {
+                uploadImage();
+            }
+        }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -389,7 +525,7 @@ public class RecruiterActivity extends AppCompatActivity {
         }catch (NullPointerException e){
             Toast.makeText(getApplicationContext(), "NullPointerException" ,Toast.LENGTH_SHORT).show();
         }
-        img = (CircleImageView) findViewById(R.id.img);
+        imgProfile = (ImageView) findViewById(R.id.img);
         txtUsername = (TextView) findViewById(R.id.txtusername);
         layout_user = (LinearLayout) findViewById(R.id.layout_user);
     }
