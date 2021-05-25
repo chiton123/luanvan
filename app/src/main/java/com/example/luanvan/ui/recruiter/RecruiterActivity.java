@@ -71,7 +71,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -301,7 +304,7 @@ public class RecruiterActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                      //  Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
                         try {
                             JSONArray jsonArray = new JSONArray(response);
                             for(int i=0; i < jsonArray.length(); i++){
@@ -319,9 +322,37 @@ public class RecruiterActivity extends AppCompatActivity {
                                         object.getString("img"),
                                         object.getString("date_read"),
                                         object.getInt("ap_status"),
-                                        object.getString("ap_note")
+                                        object.getString("ap_note"),
+                                        object.getString("date_create")
                                 ));
+                            }
+                            for(int i=0; i < arrayListNotificationRecruiter.size(); i++){
+                                String ngay1 = arrayListNotificationRecruiter.get(i).getDate_create();
+                                SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                                Date date1 = null;
+                                try {
+                                    date1 = fmt.parse(ngay1);
+                                } catch (ParseException e)
+                                {
+                                    e.printStackTrace();
+                                }
 
+                                for(int j=0; j < arrayListNotificationRecruiter.size(); j++){
+                                    String ngay2 = arrayListNotificationRecruiter.get(j).getDate_create();
+                                    Date date2 = null;
+                                    try {
+                                        date2 = fmt.parse(ngay2);
+                                    } catch (ParseException e)
+                                    {
+                                        e.printStackTrace();
+                                    }
+                                    if(date1.after(date2)){
+                                        NotificationRecruiter temp = arrayListNotificationRecruiter.get(i);
+                                        arrayListNotificationRecruiter.set(i, arrayListNotificationRecruiter.get(j));
+                                        arrayListNotificationRecruiter.set(j, temp);
+                                    }
+
+                                }
 
                             }
 

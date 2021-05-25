@@ -3,12 +3,14 @@ package com.example.luanvan.ui.Adapter.chat_a;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,7 +42,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ItemHolder> im
     ArrayList<UserF> nameList;
     Activity activity;
     String theLastMessage;
-
+    boolean isseen;
     public UserAdapter(Context context, ArrayList<UserF> arrayList, Activity activity) {
         this.context = context;
         this.filterArraylist = arrayList;
@@ -66,7 +68,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ItemHolder> im
             }else {
                 Glide.with(context).load(userF.getImageURL()).into(holder.img);
             }
-            lastMessage(userF.getId(), holder.txtLastMessage);
+            lastMessage(userF.getId(), holder.txtLastMessage, holder);
+
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -139,7 +142,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ItemHolder> im
         }
     }
 
-    public void lastMessage(final String userid, final TextView last_msg){
+    public void lastMessage(final String userid, final TextView last_msg, final ItemHolder holder){
         theLastMessage = "default";
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chats");
@@ -151,7 +154,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ItemHolder> im
                     if(chat.getReceiver().equals(MainActivity.uid) && chat.getSender().equals(userid)
                     || chat.getReceiver().equals(userid) && chat.getSender().equals(MainActivity.uid)){
                         theLastMessage = chat.getMessage();
+                        if(chat.getReceiver().equals(MainActivity.uid) && chat.getSender().equals(userid)){
+                            isseen = chat.isIsseen();
+                           // Toast.makeText(context, chat.isIsseen() + "", Toast.LENGTH_SHORT).show();
+                        }
+
                     }
+                }
+                if(!isseen){
+                    holder.itemView.setBackgroundColor(Color.parseColor("#F5F8F8"));
                 }
                 switch (theLastMessage){
                     case "default":

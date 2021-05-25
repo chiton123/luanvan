@@ -14,9 +14,10 @@ public class NotificationRecruiter {
     private String date_read;
     private int ap_status;
     private String ap_note;
+    private String date_create;
     public NotificationRecruiter(int id, Integer ap_id, int job_id, String type_notification, int type_user, int id_user, String content, int status,
                                  int kind, String img, String date_read,
-                                 int ap_status, String ap_note) {
+                                 int ap_status, String ap_note, String date_create) {
         this.id = id;
         this.ap_id = ap_id;
         this.job_id = job_id;
@@ -30,6 +31,19 @@ public class NotificationRecruiter {
         this.date_read = date_read;
         this.ap_status = ap_status;
         this.ap_note = ap_note;
+        this.date_create = date_create;
+    }
+
+    public void setAp_id(Integer ap_id) {
+        this.ap_id = ap_id;
+    }
+
+    public String getDate_create() {
+        return date_create;
+    }
+
+    public void setDate_create(String date_create) {
+        this.date_create = date_create;
     }
 
     public int getKind() {
