@@ -421,8 +421,7 @@
                         android:layout_marginRight="10dp"
                         android:background="@drawable/edittext_frame"
                         android:gravity="top|left"
-                        android:lines="8"
-                        android:maxLines="10"
+                        android:lines="11"
                         android:padding="8dp"
                         android:textColor="#000000"
                         android:textSize="13sp"></EditText>
@@ -452,8 +451,7 @@
                         android:layout_marginRight="10dp"
                         android:background="@drawable/edittext_frame"
                         android:gravity="top|left"
-                        android:lines="8"
-                        android:maxLines="10"
+                        android:lines="11"
                         android:padding="8dp"
                         android:textColor="#000000"
                         android:textSize="13sp"></EditText>
@@ -483,8 +481,7 @@
                         android:maxLength="1000"
                         android:background="@drawable/edittext_frame"
                         android:gravity="top|left"
-                        android:lines="8"
-                        android:maxLines="10"
+                        android:lines="11"
                         android:padding="8dp"
                         android:textColor="#000000"
                         android:textSize="13sp"></EditText>
