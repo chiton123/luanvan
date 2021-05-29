@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -34,6 +36,7 @@ public class CompanyListActivity extends AppCompatActivity {
     ArrayList<Company> arrayList;
     CompanyListAdapter adapter;
     SearchView searchView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,5 +129,6 @@ public class CompanyListActivity extends AppCompatActivity {
         adapter = new CompanyListAdapter(this, arrayList, this);
         recyclerView.setAdapter(adapter);
         searchView = (SearchView) findViewById(R.id.searchView);
+
     }
 }

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#fff"
     tools:context=".ui.DetailedJob.DetailJobActivity">
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -133,6 +134,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/viewpager"
+        android:background="#fff"
         android:layout_marginBottom="50dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         ></androidx.viewpager.widget.ViewPager>

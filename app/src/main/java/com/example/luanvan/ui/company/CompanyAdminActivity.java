@@ -5,8 +5,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -33,6 +35,8 @@ public class CompanyAdminActivity extends AppCompatActivity{
     public static Company company;
     TextView txtIntroduction, txtAddress;
     private GoogleMap mMap;
+    ScrollView mainScrollView;
+    ImageView transparentImageView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,10 +62,41 @@ public class CompanyAdminActivity extends AppCompatActivity{
 
             }
         });
+        scrollAll();
 
         getInfo();
 
     }
+
+    private void scrollAll() {
+        transparentImageView.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getAction();
+                switch (action) {
+                    case MotionEvent.ACTION_DOWN:
+                        // Disallow ScrollView to intercept touch events.
+                        mainScrollView.requestDisallowInterceptTouchEvent(true);
+                        // Disable touch on transparent view
+                        return false;
+
+                    case MotionEvent.ACTION_UP:
+                        // Allow ScrollView to intercept touch events.
+                        mainScrollView.requestDisallowInterceptTouchEvent(false);
+                        return true;
+
+                    case MotionEvent.ACTION_MOVE:
+                        mainScrollView.requestDisallowInterceptTouchEvent(true);
+                        return false;
+
+                    default:
+                        return true;
+                }
+            }
+        });
+    }
+
     private void getInfo() {
 
         company = (Company) getIntent().getSerializableExtra("company");
@@ -88,6 +123,8 @@ public class CompanyAdminActivity extends AppCompatActivity{
         img = (ImageView) findViewById(R.id.img);
         img_background = (ImageView) findViewById(R.id.img_background);
         txtSize = (TextView) findViewById(R.id.txtsize);
+        mainScrollView = (ScrollView) findViewById(R.id.main_scrollview);
+        transparentImageView = (ImageView) findViewById(R.id.transparent_image);
     }
 
 

@@ -227,8 +227,8 @@ public class DisplayJobFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(requestCode == 123 && resultCode == 123){
-            //    Toast.makeText(getActivity(), "display ", Toast.LENGTH_SHORT).show();
+        if(requestCode == 123 && (resultCode == 333 || resultCode == 123)){
+           // Toast.makeText(getActivity(), "display ", Toast.LENGTH_SHORT).show();
             adapter.notifyDataSetChanged();
             checkNothing();
         }

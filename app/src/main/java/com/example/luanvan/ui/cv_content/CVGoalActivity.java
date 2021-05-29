@@ -57,6 +57,7 @@ public class CVGoalActivity extends AppCompatActivity {
     int pageWidth = 1500;
     StorageReference storageReference;
     Handler handler;
+
     public static int a0 = 350, a1 = 600, a2 = 900, a3 = 1600;
     public static int x0 = 0, x1 = 0, x2 = 0, x3 = 0;
     // kiem tra xem x1, x2, x3 có nhảy lên bậc nào hay k khi tạo CV
@@ -184,28 +185,24 @@ public class CVGoalActivity extends AppCompatActivity {
             x0 = a0;
             canvas.drawText("OBJECTIVES", 30, x0, titlePaint);
             if(b == 1 || kind == 2){
-                if(MainActivity.goal.length() <= 90){
-                    canvas.drawText(MainActivity.goal, 30, x0 + 20, contentPaint);
-                }else {
-                    TextPaint mTextPaint=new TextPaint();
-                    mTextPaint.setTextSize(30);
-                    mTextPaint.setColor(Color.BLACK);
-                    StaticLayout mTextLayout = new StaticLayout(xuongdong(MainActivity.goal), mTextPaint, canvas.getWidth(), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
+                TextPaint mTextPaint=new TextPaint();
+                mTextPaint.setTextSize(30);
+                mTextPaint.setColor(Color.BLACK);
+                StaticLayout mTextLayout = new StaticLayout(xuongdong(MainActivity.goal), mTextPaint, canvas.getWidth(), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
 
-                    canvas.save();
-                    // calculate x and y position where your text will be placed
+                canvas.save();
+                // calculate x and y position where your text will be placed
 
-                    int textX = 30;
-                    int textY = x0 + 20;
+                int textX = 30;
+                int textY = x0 + 25;
 
-                    canvas.translate(textX, textY);
-                    mTextLayout.draw(canvas);
-                    canvas.restore();
-                }
+                canvas.translate(textX, textY);
+                mTextLayout.draw(canvas);
+                canvas.restore();
 
 
             }else {
-                canvas.drawText(MainActivity.goalDefault, 30, x0 + 20, contentPaint);
+                canvas.drawText(MainActivity.goalDefault, 30, x0 + 25, contentPaint);
             }
 
         }
@@ -230,7 +227,7 @@ public class CVGoalActivity extends AppCompatActivity {
                     if(i < 1){
                         canvas.drawText(MainActivity.studyCVS.get(i).getSchool(), 30, x1 + i*180, titlePaint2);
                         canvas.drawText(MainActivity.studyCVS.get(i).getStart() + " - " + MainActivity.studyCVS.get(i).getEnd(), 30, x1 + 50 + i*180, contentPaint);
-                        canvas.drawText("CHUYÊN NGÀNH: " + MainActivity.studyCVS.get(i).getMajor(), 450, x1 + i*180, titlePaint2 );
+                        canvas.drawText("Major: " + MainActivity.studyCVS.get(i).getMajor(), 450, x1 + i*180, titlePaint2 );
                         //     canvas.drawText(MainActivity.studyCVS.get(i).getDescription(), 500, x1 + 50 + i*180, contentPaint);
                         TextPaint mTextPaint=new TextPaint();
                         mTextPaint.setTextSize(30);
@@ -255,7 +252,7 @@ public class CVGoalActivity extends AppCompatActivity {
             }else {
                 canvas.drawText(MainActivity.studyCV.getSchool(), 30, x1, titlePaint2);
                 canvas.drawText(MainActivity.studyCV.getStart() + " - " + MainActivity.studyCV.getEnd(), 30, x1 + 50, contentPaint);
-                canvas.drawText("CHUYÊN NGÀNH: " + MainActivity.studyCV.getMajor(), 450, x1 , titlePaint2 );
+                canvas.drawText("Major: " + MainActivity.studyCV.getMajor(), 450, x1 , titlePaint2 );
                 canvas.drawText(MainActivity.studyCV.getDescription(), 450, x1 + 50, contentPaint);
             }
         }
@@ -361,7 +358,7 @@ public class CVGoalActivity extends AppCompatActivity {
             int width = 300, height = 50;
             if(e == 1 || kind == 2){
                 for(int i=0; i < MainActivity.skillCVS.size(); i++){
-                    if(i < 4){
+                    if(i < 7){
                         canvas.drawText(MainActivity.skillCVS.get(i).getName(), 30, x3 + 50 + i*90, contentPaint);
                         float star1 = MainActivity.skillCVS.get(i).getStar()*60;
                         canvas.drawLine(30, x3+100 + i*90, star1+30, x3 + 100 + i*90, kynang_paint);

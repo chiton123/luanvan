@@ -53,6 +53,7 @@ public class AuthenticationFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_authentication, container, false);
         searchView = (SearchView) view.findViewById(R.id.searchView);
+        loading();
         layout = (LinearLayout) view.findViewById(R.id.layout);
         layout_nothing = (LinearLayout) view.findViewById(R.id.layout_nothing);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
@@ -67,9 +68,9 @@ public class AuthenticationFragment extends Fragment {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                checkNothing();
+                progressDialog.dismiss();
             }
-        },2500);
+        },1500);
         search();
         return view;
     }
@@ -146,7 +147,7 @@ public class AuthenticationFragment extends Fragment {
                                         object.getInt("skip")
                                 ));
                             }
-
+                            checkNothing();
                             adapter.notifyDataSetChanged();
 
                         } catch (JSONException e) {

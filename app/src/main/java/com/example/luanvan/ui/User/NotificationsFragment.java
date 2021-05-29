@@ -575,32 +575,19 @@ public class NotificationsFragment extends Fragment {
      //   Toast.makeText(getActivity(), "Result code: " + resultCode + " request: " + requestCode, Toast.LENGTH_SHORT).show();
         // Dang nhap
         if(requestCode == REQUEST_CODE && resultCode == 123){
-            handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    linearLayout1.setVisibility(View.GONE);
-                    linearLayout2.setVisibility(View.VISIBLE);
-                    scrollView.setVisibility(View.VISIBLE);
-                    getInfo();
-                    getInfoFromFirebase();
-                    checkSwitch();
-                    getActivity().invalidateOptionsMenu();
-                }
-            },200);
+            linearLayout1.setVisibility(View.GONE);
+            linearLayout2.setVisibility(View.VISIBLE);
+            scrollView.setVisibility(View.VISIBLE);
+            getInfo();
+            getInfoFromFirebase();
+            checkSwitch();
+            getActivity().invalidateOptionsMenu();
 
 
         }
         if(requestCode == REQUEST_CODE2 && resultCode == 234){
-            handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    getInfo();
-                    getInfoFromFirebase();
-                }
-            },200);
-
+            getInfo();
+            getInfoFromFirebase();
         }
 
         if(requestCode == IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null){

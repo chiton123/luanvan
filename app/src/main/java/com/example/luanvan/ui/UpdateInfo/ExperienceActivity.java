@@ -52,7 +52,6 @@ public class ExperienceActivity extends AppCompatActivity {
     Button btnhuy, btncapnhat;
     String date_post_start = "", date_post_end = "";
     Date date_start = null, date_end = null;
-    int check_start = 0;
     int id = 0; // id study trên csdl
     int position = 0; // trên mảng arraylist, thứ tự
     int update = 0;
@@ -124,48 +123,67 @@ public class ExperienceActivity extends AppCompatActivity {
         int ngay = calendar.get(Calendar.DATE);
         int thang = calendar.get(Calendar.MONTH);
         int nam = calendar.get(Calendar.YEAR);
-        final DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 calendar.set(year, month, dayOfMonth);
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                if(calendar.getTime().after(today1) && kind == 1){
-                    FancyToast.makeText(getApplicationContext(), "Phải lớn nhỏ ngày hiện tại", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
-                }else {
-                    if(kind == 1){
-                        editstart.setText(dateFormat.format(calendar.getTime()));
-                        date_start = calendar.getTime();
-                    }else {
-                        date_end = calendar.getTime();
-                        if(date_end.before(date_start)){
-                            FancyToast.makeText(getApplicationContext(), "Ngày kết thúc phải sau ngày bắt đầu", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
+
+                if(kind == 1){
+                    Date date_temp = calendar.getTime();
+                    if(!editend.getText().toString().equals("")){
+                        if(date_temp.after(date_end)){
+                            FancyToast.makeText(getApplicationContext(), "Ngày bắt đầu phải trước ngày kết thúc", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                             x = 1;
                         }else {
+                            date_start = calendar.getTime();
+                            editstart.setText(dateFormat.format(calendar.getTime()));
+                            x = 0;
+                        }
+                    }else {
+                        date_start = calendar.getTime();
+                        editstart.setText(dateFormat.format(calendar.getTime()));
+                        x = 0;
+                    }
+
+                }else {
+                    Date date_temp = calendar.getTime();
+                    if(!editstart.getText().toString().equals("")){
+                        if(date_temp.before(date_start)){
+                            FancyToast.makeText(getApplicationContext(), "Ngày kết thúc phải sau ngày bắt đầu", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
+                            x = 1;
+                        }else{
+                            date_end = calendar.getTime();
                             editend.setText(dateFormat.format(calendar.getTime()));
                             x = 0;
                         }
-                    }
-
-                    SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-                    Date date = null;
-                    try {
-                        date = fmt.parse(fmt.format(calendar.getTime()));
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    if(kind == 1){
-                        date_post_start = fmt.format(date);
-                        check_start = 1;
                     }else {
-                        date_post_end = fmt.format(date);
+                        date_end = calendar.getTime();
+                        editend.setText(dateFormat.format(calendar.getTime()));
+                        x = 0;
                     }
 
+                }
+
+                SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+                Date date = null;
+                try {
+                    date = fmt.parse(fmt.format(calendar.getTime()));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                if(kind == 1 && x == 0){
+                    date_post_start = fmt.format(date);
+                    //  check_start = 1;
+                }else if(kind == 2 && x == 0){
+                    date_post_end = fmt.format(date);
                 }
 
             }
         }, nam, thang, ngay);
         datePickerDialog.show();
     }
+
     private void eventDate() {
         editstart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -181,11 +199,7 @@ public class ExperienceActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    if(check_start == 0 || editstart.getText().equals("")){
-                        FancyToast.makeText(getApplicationContext(), "Bạn chọn ngày bắt đầu trước", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
-                    }else {
-                        showDate(2);
-                    }
+                    showDate(2);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -205,7 +219,7 @@ public class ExperienceActivity extends AppCompatActivity {
                 String end = editend.getText().toString();
                 if(company.equals("") || position1.equals("") || mota.equals("") || start.equals("") || end.equals("")){
                     FancyToast.makeText(getApplicationContext(), "Vui lòng nhập đủ thông tin", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
-                }else if(x == 1){
+                }else if(date_end.before(date_start)){
                     FancyToast.makeText(getApplicationContext(), "Ngày kết thúc phải sau ngày bắt đầu", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else if(date_start.after(date_end)){
                     FancyToast.makeText(getApplicationContext(), "Ngày bắt đầu phải trước ngày kết thúc", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();

@@ -331,38 +331,54 @@ public class AdjustJobActivity extends AppCompatActivity {
                 calendar.set(year, month, dayOfMonth);
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
-                if(calendar.getTime().before(today1) && kind == 1){
-                    FancyToast.makeText(getApplicationContext(), "Phải lớn hơn ngày hiện tại", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
-                }else {
-                    if(kind == 1){
-                        editStart.setText(dateFormat.format(calendar.getTime()));
-                        date_start = calendar.getTime();
-                    }else {
-                        date_end = calendar.getTime();
-                        if(date_end.before(date_start)){
-                             FancyToast.makeText(getApplicationContext(), "Ngày kết thúc phải sau ngày bắt đầu", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
+                if(kind == 1){
+                    Date date_temp = calendar.getTime();
+                    if(!editEnd.getText().toString().equals("")){
+                        if(date_temp.after(date_end)){
+                            FancyToast.makeText(getApplicationContext(), "Ngày bắt đầu phải trước ngày kết thúc", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                             x = 1;
                         }else {
+                            date_start = calendar.getTime();
+                            editStart.setText(dateFormat.format(calendar.getTime()));
+                            x = 0;
+                        }
+                    }else {
+                        date_start = calendar.getTime();
+                        editStart.setText(dateFormat.format(calendar.getTime()));
+                        x = 0;
+                    }
+
+                }else {
+                    Date date_temp = calendar.getTime();
+                    if(!editStart.getText().toString().equals("")){
+                        if(date_temp.before(date_start)){
+                            FancyToast.makeText(getApplicationContext(), "Ngày kết thúc phải sau ngày bắt đầu", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
+                            x = 1;
+                        }else{
+                            date_end = calendar.getTime();
                             editEnd.setText(dateFormat.format(calendar.getTime()));
                             x = 0;
                         }
-
-                    }
-
-                    SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-                    Date date = null;
-                    try {
-                        date = fmt.parse(fmt.format(calendar.getTime()));
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    if(kind == 1){
-                        date_post_start = fmt.format(date);
-                        check_start = 1;
                     }else {
-                        date_post_end = fmt.format(date);
+                        date_end = calendar.getTime();
+                        editEnd.setText(dateFormat.format(calendar.getTime()));
+                        x = 0;
                     }
 
+                }
+
+                SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+                Date date = null;
+                try {
+                    date = fmt.parse(fmt.format(calendar.getTime()));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                if(kind == 1 && x == 0){
+                    date_post_start = fmt.format(date);
+                    //  check_start = 1;
+                }else if(kind == 2 && x == 0){
+                    date_post_end = fmt.format(date);
                 }
 
             }

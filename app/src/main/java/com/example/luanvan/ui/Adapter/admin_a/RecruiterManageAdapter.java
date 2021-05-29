@@ -58,7 +58,7 @@ public class RecruiterManageAdapter extends RecyclerView.Adapter<RecruiterManage
     public void onBindViewHolder(@NonNull ItemHolder holder, final int position) {
         if(filterArraylist.size() > 0){
             Recruiter recruiter = filterArraylist.get(position);
-            holder.txtPhone.setText(recruiter.getPhone() + "");
+            holder.txtPhone.setText("0"+recruiter.getPhone() + "");
             holder.txtName.setText(recruiter.getName());
             holder.txtEmail.setText(recruiter.getEmail());
             holder.txtAddress.setText(recruiter.getAddress());

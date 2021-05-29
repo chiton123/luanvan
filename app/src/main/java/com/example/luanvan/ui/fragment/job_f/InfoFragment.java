@@ -172,7 +172,7 @@ public class InfoFragment extends Fragment {
         if(text.contains(".")){
             String[] split = text1.split(Pattern.quote("."));
             for(String item : split){
-                ketqua += "-" +  item + "\n";
+                ketqua += "- " +  item + "\n";
             }
             return ketqua;
         }else {

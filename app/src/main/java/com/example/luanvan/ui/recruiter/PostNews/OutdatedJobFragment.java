@@ -34,6 +34,7 @@ public class OutdatedJobFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_outdated_job, container, false);
+        loading();
         searchView = (SearchView) view.findViewById(R.id.searchView);
         layout = (LinearLayout) view.findViewById(R.id.layout);
         layout_nothing = (LinearLayout) view.findViewById(R.id.layout_nothing);
@@ -47,8 +48,9 @@ public class OutdatedJobFragment extends Fragment {
             @Override
             public void run() {
                 checkNothing();
+                progressDialog.dismiss();
             }
-        },2500);
+        },1500);
         search();
         return view;
     }
@@ -95,11 +97,12 @@ public class OutdatedJobFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(requestCode == 123 && resultCode == 333){
-            //  Toast.makeText(getActivity(), "outdated ", Toast.LENGTH_SHORT).show();
+        if(requestCode == 123 && (resultCode == 333 || resultCode == 123)){
+              Toast.makeText(getActivity(), "outdated ", Toast.LENGTH_SHORT).show();
             adapter.notifyDataSetChanged();
             checkNothing();
         }
+
         super.onActivityResult(requestCode, resultCode, data);
     }
 }

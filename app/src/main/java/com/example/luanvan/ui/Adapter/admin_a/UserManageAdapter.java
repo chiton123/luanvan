@@ -65,7 +65,7 @@ public class UserManageAdapter extends RecyclerView.Adapter<UserManageAdapter.It
     public void onBindViewHolder(@NonNull ItemHolder holder, final int position) {
         if(filterArraylist.size() > 0){
             User user = filterArraylist.get(position);
-            holder.txtPhone.setText(user.getPhone() + "");
+            holder.txtPhone.setText("0" + user.getPhone() + "");
             holder.txtName.setText(user.getName());
             holder.txtEmail.setText(user.getEmail());
             holder.txtAddress.setText(user.getAddress());

@@ -357,7 +357,7 @@ public class DetailJobActivity extends AppCompatActivity {
                             phoneNotification();
                         }else {
 
-FancyToast.makeText(getApplicationContext(), "Thông báo thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
+                            FancyToast.makeText(getApplicationContext(), "Thông báo thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                         }
                     }
                 },
