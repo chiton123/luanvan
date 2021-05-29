@@ -121,7 +121,7 @@ public class StudyActivity extends AppCompatActivity {
     }
 
     public void showDate(final int kind) throws ParseException {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String today = dateFormat.format(Calendar.getInstance().getTime());
         final Date today1 = dateFormat.parse(today);
         final Calendar calendar = Calendar.getInstance();
@@ -132,12 +132,16 @@ public class StudyActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 calendar.set(year, month, dayOfMonth);
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-
+                SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+                Date date_temp = null;
+                try {
+                    date_temp = fmt.parse(fmt.format(calendar.getTime()));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 if(kind == 1){
-                    Date date_temp = calendar.getTime();
                     if(!editend.getText().toString().equals("")){
-                        if(date_temp.after(date_end)){
+                        if(date_temp.after(date_end) || date_temp.equals(date_end)){
                             FancyToast.makeText(getApplicationContext(), "Ngày bắt đầu phải trước ngày kết thúc", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                             x = 1;
                         }else {
@@ -152,25 +156,27 @@ public class StudyActivity extends AppCompatActivity {
                     }
 
                 }else {
-                    Date date_temp = calendar.getTime();
                     if(!editstart.getText().toString().equals("")){
-                        if(date_temp.before(date_start)){
+                        if(date_temp.before(date_start) || date_temp.equals(date_start)){
                             FancyToast.makeText(getApplicationContext(), "Ngày kết thúc phải sau ngày bắt đầu", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                             x = 1;
+                           // FancyToast.makeText(getApplicationContext(), "0", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                         }else{
                             date_end = calendar.getTime();
                             editend.setText(dateFormat.format(calendar.getTime()));
                             x = 0;
+                          //  FancyToast.makeText(getApplicationContext(), "1", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                         }
                     }else {
                         date_end = calendar.getTime();
                         editend.setText(dateFormat.format(calendar.getTime()));
                         x = 0;
+                       // FancyToast.makeText(getApplicationContext(), "2", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                     }
 
                 }
 
-                SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+
                 Date date = null;
                 try {
                     date = fmt.parse(fmt.format(calendar.getTime()));

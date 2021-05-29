@@ -318,7 +318,7 @@ public class AdjustJobActivity extends AppCompatActivity {
 
     }
     public void showDate(final int kind) throws ParseException {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String today = dateFormat.format(Calendar.getInstance().getTime());
         final Date today1 = dateFormat.parse(today);
         final Calendar calendar = Calendar.getInstance();
@@ -329,12 +329,16 @@ public class AdjustJobActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 calendar.set(year, month, dayOfMonth);
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-
+                SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+                Date date_temp = null;
+                try {
+                    date_temp = fmt.parse(fmt.format(calendar.getTime()));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 if(kind == 1){
-                    Date date_temp = calendar.getTime();
                     if(!editEnd.getText().toString().equals("")){
-                        if(date_temp.after(date_end)){
+                        if(date_temp.after(date_end) || date_temp.equals(date_end)){
                             FancyToast.makeText(getApplicationContext(), "Ngày bắt đầu phải trước ngày kết thúc", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                             x = 1;
                         }else {
@@ -349,25 +353,27 @@ public class AdjustJobActivity extends AppCompatActivity {
                     }
 
                 }else {
-                    Date date_temp = calendar.getTime();
                     if(!editStart.getText().toString().equals("")){
-                        if(date_temp.before(date_start)){
+                        if(date_temp.before(date_start) || date_temp.equals(date_start)){
                             FancyToast.makeText(getApplicationContext(), "Ngày kết thúc phải sau ngày bắt đầu", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                             x = 1;
+                            // FancyToast.makeText(getApplicationContext(), "0", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                         }else{
                             date_end = calendar.getTime();
                             editEnd.setText(dateFormat.format(calendar.getTime()));
                             x = 0;
+                            //  FancyToast.makeText(getApplicationContext(), "1", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                         }
                     }else {
                         date_end = calendar.getTime();
                         editEnd.setText(dateFormat.format(calendar.getTime()));
                         x = 0;
+                        // FancyToast.makeText(getApplicationContext(), "2", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                     }
 
                 }
 
-                SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+
                 Date date = null;
                 try {
                     date = fmt.parse(fmt.format(calendar.getTime()));
@@ -400,11 +406,7 @@ public class AdjustJobActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    if(check_start == 0 && editStart.getText().equals("")){
-                        FancyToast.makeText(getApplicationContext(), "Bạn chọn ngày bắt đầu trước", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
-                    }else {
-                        showDate(2);
-                    }
+                    showDate(2);
 
                 } catch (ParseException e) {
                     e.printStackTrace();
@@ -453,22 +455,11 @@ public class AdjustJobActivity extends AppCompatActivity {
                 }else if(date_start.after(date_end)){
                     FancyToast.makeText(getApplicationContext(), "Ngày bắt đầu phải trước ngày kết thúc", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }
+                else if (date_end.before(date_start)) {
+                    FancyToast.makeText(getApplicationContext(), "Ngày kết thúc phải sau ngày bắt đầu", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
+                }
+
                 else {
-//                    Toast.makeText(getApplicationContext(), job_id + "", Toast.LENGTH_SHORT).show();
-//                    Toast.makeText(getApplicationContext(), position + "", Toast.LENGTH_SHORT).show();
-//                    Toast.makeText(getApplicationContext(), address + "", Toast.LENGTH_SHORT).show();
-//                    Toast.makeText(getApplicationContext(), benefit + "", Toast.LENGTH_SHORT).show();
-//                    Toast.makeText(getApplicationContext(), description + "", Toast.LENGTH_SHORT).show();
-//                    Toast.makeText(getApplicationContext(), requirement + "", Toast.LENGTH_SHORT).show();
-//                    Toast.makeText(getApplicationContext(), number + "", Toast.LENGTH_SHORT).show();
-//                    Toast.makeText(getApplicationContext(), salary_min + "", Toast.LENGTH_SHORT).show();
-//                    Toast.makeText(getApplicationContext(), salary_max + "", Toast.LENGTH_SHORT).show();
-//                    Toast.makeText(getApplicationContext(), date_post_start + "", Toast.LENGTH_SHORT).show();
-//                    Toast.makeText(getApplicationContext(), date_post_end + "", Toast.LENGTH_SHORT).show();
-//                    Toast.makeText(getApplicationContext(), idArea + "", Toast.LENGTH_SHORT).show();
-//                    Toast.makeText(getApplicationContext(), idProfession + "", Toast.LENGTH_SHORT).show();
-//                    Toast.makeText(getApplicationContext(), idExperience + "", Toast.LENGTH_SHORT).show();
-//                    Toast.makeText(getApplicationContext(), idKindJob + "", Toast.LENGTH_SHORT).show();
 
                     loading();
 
