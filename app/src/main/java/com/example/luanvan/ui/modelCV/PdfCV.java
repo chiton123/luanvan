@@ -5,15 +5,25 @@ public class PdfCV {
     public String name;
     public String url;
     public String key;
+    private int style;
 
     public PdfCV() {
     }
 
-    public PdfCV(String uid, String name, String url, String key) {
+    public PdfCV(String uid, String name, String url, String key, int style) {
         this.uid = uid;
         this.name = name;
         this.url = url;
         this.key = key;
+        this.style = style;
+    }
+
+    public int getStyle() {
+        return style;
+    }
+
+    public void setStyle(int style) {
+        this.style = style;
     }
 
     public String getUid() {

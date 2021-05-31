@@ -424,7 +424,7 @@ public class CVInfoActivity extends AppCompatActivity {
             }
 
             if(MainActivity.user.getPhone() != 0){
-                editphone.setText(MainActivity.user.getPhone() + "");
+                editphone.setText("0" + MainActivity.user.getPhone() + "");
             }
 
             if(!MainActivity.user.getAddress().equals("")){

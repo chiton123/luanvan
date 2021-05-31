@@ -116,6 +116,7 @@ public class CVActivity extends AppCompatActivity {
     String CVNameToPost = "";
     ProgressDialog progressDialog;
     int position = 0; // vị trí của cv bên CVIntroduction
+    int styleCV = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -723,7 +724,7 @@ public class CVActivity extends AppCompatActivity {
 
     public void updateInfoCVAll(){
         MainActivity.mData.child("cv").child(MainActivity.uid).child(key).removeValue();
-        PdfCV pdfCV = new PdfCV(MainActivity.uid,  cvName.getText().toString(), MainActivity.urlCV, key);
+        PdfCV pdfCV = new PdfCV(MainActivity.uid,  cvName.getText().toString(), MainActivity.urlCV, key, MainActivity.color);
         MainActivity.mData.child("cv").child(MainActivity.uid).child(key).push().setValue(pdfCV);
         // khi checkfirst = 1, nghĩa là đã cập nhật, nên cập nhật lại CSDL
         // info
@@ -881,7 +882,7 @@ public class CVActivity extends AppCompatActivity {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    PdfCV pdfCV = new PdfCV(MainActivity.uid,  cvName.getText().toString(), MainActivity.urlCV, key);
+                    PdfCV pdfCV = new PdfCV(MainActivity.uid,  cvName.getText().toString(), MainActivity.urlCV, key, MainActivity.color);
                     MainActivity.mData.child("cv").child(MainActivity.uid).child(String.valueOf(idCV + 1)).push().setValue(pdfCV);
                 }
             },4000);
@@ -964,6 +965,7 @@ public class CVActivity extends AppCompatActivity {
                             Intent intent = new Intent();
                             setResult(123);
                             MainActivity.urlCV = "";
+                            MainActivity.color = 0;
                             finish();
                         }
                     },6000);
@@ -976,6 +978,7 @@ public class CVActivity extends AppCompatActivity {
                     FancyToast.makeText(getApplicationContext(), "Bạn đã thay đổi nội dung của CV, hãy chọn lưu", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                 }else {
                     MainActivity.urlCV = "";
+                    MainActivity.color = 0;
                     finish();
 
                     break;
@@ -1025,6 +1028,7 @@ public class CVActivity extends AppCompatActivity {
                 MainActivity.urlCV = "";
                 Intent intent = new Intent();
                 setResult(5);
+                MainActivity.color = 0;
                 finish();
             }
         });
@@ -1075,6 +1079,8 @@ public class CVActivity extends AppCompatActivity {
             key = getIntent().getStringExtra("key");
             MainActivity.urlCV = urlX;
             position = getIntent().getIntExtra("position", 0);
+            styleCV = getIntent().getIntExtra("style", 0);
+            MainActivity.color = styleCV;
         }
         arrayListRemove = new ArrayList<>();
         arrayListAdd = new ArrayList<>();
@@ -1094,6 +1100,7 @@ public class CVActivity extends AppCompatActivity {
             MainActivity.color = getIntent().getIntExtra("color",0);
 
         }else {
+
             checkChild(key);
             handler = new Handler();
             handler.postDelayed(new Runnable() {

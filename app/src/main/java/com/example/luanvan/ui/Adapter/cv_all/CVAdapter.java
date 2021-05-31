@@ -143,6 +143,7 @@ public class CVAdapter extends RecyclerView.Adapter<CVAdapter.ItemHolder> {
                 intent.putExtra("cvname", arrayList.get(position).getName());
                 intent.putExtra("key", arrayList.get(position).getKey());
                 intent.putExtra("position", position);
+                intent.putExtra("style", arrayList.get(position).getStyle());
                 CVIntroductionActivity.position = position;
                 activity.startActivityForResult(intent, REQUEST_CODE);
             }

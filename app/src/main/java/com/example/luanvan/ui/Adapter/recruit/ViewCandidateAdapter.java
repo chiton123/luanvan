@@ -182,7 +182,7 @@ public class ViewCandidateAdapter extends RecyclerView.Adapter<ViewCandidateAdap
 
     public void downLoadCV_PDF(String url){
         StorageReference reference = MainActivity.storage.getReferenceFromUrl(url);
-        File rootPath = new File(Environment.getExternalStorageDirectory(), "CVdownload");
+        File rootPath = new File(Environment.getExternalStorageDirectory(), "/Documents/CVdownload");
         if(!rootPath.exists()) {
             rootPath.mkdirs();
         }
