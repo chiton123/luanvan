@@ -49,11 +49,18 @@ public class UserListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_list);
-      //  loading();
+        loading();
         anhxa();
         actionBar();
         search();
-
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                checkNothing();
+                progressDialog.dismiss();
+            }
+        },2500);
 
     }
     private void search() {
@@ -164,13 +171,7 @@ public class UserListActivity extends AppCompatActivity {
 
             }
         });
-        handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                checkNothing();
-            }
-        },2000);
+
 
 
     }

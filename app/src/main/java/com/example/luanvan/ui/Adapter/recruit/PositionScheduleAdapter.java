@@ -51,13 +51,9 @@ public class PositionScheduleAdapter extends RecyclerView.Adapter<PositionSchedu
                 if(kind == 1 || kind == 2){
                     CreateScheduleActivity.job_id = arrayList.get(position).getId();
                     CreateScheduleActivity.job_name = arrayList.get(position).getName();
-                    if(kind == 2){
-                        if(CreateScheduleActivity.job_id != CreateScheduleActivity.job_id_update){
-                            CreateScheduleActivity.user_id = 0;
-                            CreateScheduleActivity.username = "";
-                            CreateScheduleActivity.editCandidate.setText("");
-                        }
-                    }
+                    CreateScheduleActivity.user_id = 0;
+                    CreateScheduleActivity.username = "";
+                    CreateScheduleActivity.editCandidate.setText("");
                 }else {
                     FilterCandidateActivity.job_id = arrayList.get(position).getId();
                     FilterCandidateActivity.job_name = arrayList.get(position).getName();

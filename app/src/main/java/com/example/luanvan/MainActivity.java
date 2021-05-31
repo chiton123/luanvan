@@ -85,11 +85,11 @@ public class MainActivity extends AppCompatActivity {
     // default CV info
     // - info connect : user
     // - Experience
-    public static ExperienceCV experienceCV = new ExperienceCV("temp","TMA Solution","Developer", "2015", "2020", "Rất tốt");
+    public static ExperienceCV experienceCV = new ExperienceCV("temp","TMA Solution","Web Developer", "2015", "2020", "Do many projects for Japanese customer");
     public static ArrayList<SkillCV> skillCVArray = new ArrayList<>();
-    public static UserCV userCVDefault = new UserCV("Nguyễn Chí Tôn", "DBA", "batphuongtrinhvoti@gmail.com","0323232","Ký túc xá B, đại học Cần Thơ","Nam","20/10/1999");
-    public static StudyCV studyCV = new StudyCV("temp", "Đại học Cần Thơ", "CÔNG NGHỆ THÔNG TIN", "10/2017", "10/2021", "Tốt nghiệp loại giỏi, điểm trung bình 8.0");
-    public static String goalDefault = "Trở thành DBA làm việc trong 1 ngân hàng lớn lương 1000$/năm";
+    public static UserCV userCVDefault = new UserCV("Ton N.", "Full-stack Developer", "batphuongtrinhvoti@gmail.com","03239232","Can Tho city","Male","20/10/1999");
+    public static StudyCV studyCV = new StudyCV("temp", "Can Tho University", "IT", "10/2017", "10/2021", "GPA: 3.2/4, taking part in many activities");
+    public static String goalDefault = "Working in a professional environment to advance my technical skill";
 
 
 
@@ -119,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
     public static String urljob1 = host + "job1.php?page=";
     public static String urlJobCompany = host + "job_company.php";
     public static String urlJobRelate = host + "job_relate.php";
+
     // job apply
     public static String urlJobApply = host + "job_apply.php";
     public static String urlJobApplyLoad = host + "job_apply_load.php?page=";
@@ -307,8 +308,8 @@ public class MainActivity extends AppCompatActivity {
 //        }catch (NullPointerException e){
 //         //   Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
 //        }
-        skillCVArray.add(new SkillCV("Kỹ năng tiếng anh", 5, "temp"));
-        skillCVArray.add(new SkillCV("Kỹ năng tin học", 3, "temp"));
+        skillCVArray.add(new SkillCV("English skill", 5, "temp"));
+        skillCVArray.add(new SkillCV("Computer skill", 4, "temp"));
 
     }
 

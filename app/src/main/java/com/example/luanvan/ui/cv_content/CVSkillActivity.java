@@ -266,7 +266,8 @@ public class CVSkillActivity extends AppCompatActivity {
 
 
             }else {
-                canvas.drawText(MainActivity.goalDefault, 30, x0 + 25, contentPaint);
+                x0 = a0;
+                canvas.drawText(MainActivity.goalDefault, 30, x0 + 40, contentPaint);
             }
 
         }
@@ -447,7 +448,7 @@ public class CVSkillActivity extends AppCompatActivity {
             }
         }
         pdfDocument.finishPage(page);
-        File file = new File(Environment.getExternalStorageDirectory(), "/a10.pdf");
+        File file = new File(Environment.getExternalStorageDirectory(), "/Documents/a10.pdf");
         pdfDocument.writeTo(new FileOutputStream(file));
         pdfDocument.close();
         storageReference.child("abc.pdf").putFile(Uri.fromFile(file))

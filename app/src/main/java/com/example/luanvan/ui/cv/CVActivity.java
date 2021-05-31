@@ -93,9 +93,9 @@ public class CVActivity extends AppCompatActivity {
 
     // default add
     // url cv theo từng loại
-    String urlKind1 = "https://firebasestorage.googleapis.com/v0/b/project-7807e.appspot.com/o/loai1.pdf?alt=media&token=0851ef5c-dc88-483e-a223-11dcceeeef93";
-    String urlKind2 = "https://firebasestorage.googleapis.com/v0/b/project-7807e.appspot.com/o/loai2.pdf?alt=media&token=8025c631-ae6f-4d6c-85ac-327adab71386";
-    String urlKind3 = "https://firebasestorage.googleapis.com/v0/b/project-7807e.appspot.com/o/loai3.pdf?alt=media&token=988ea675-41df-4298-bfb3-218f7dcedab6";
+    String urlKind1 = "https://firebasestorage.googleapis.com/v0/b/project-7807e.appspot.com/o/loai1.pdf?alt=media&token=d1d10890-f6c9-4f22-a522-ea015b447753";
+    String urlKind2 = "https://firebasestorage.googleapis.com/v0/b/project-7807e.appspot.com/o/loai2.pdf?alt=media&token=aa5d66a5-8955-4c71-878e-907ee7653a9f";
+    String urlKind3 = "https://firebasestorage.googleapis.com/v0/b/project-7807e.appspot.com/o/loai3.pdf?alt=media&token=f3b1d86f-e971-48c8-b473-d448565d361a";
     // update cv
     String urlX = "";
     String nameUpdate = "";
@@ -486,7 +486,8 @@ public class CVActivity extends AppCompatActivity {
 
 
             }else {
-                canvas.drawText(MainActivity.goalDefault, 30, x0 + 25, contentPaint);
+                x0 = a0;
+                canvas.drawText(MainActivity.goalDefault, 30, x0 + 40, contentPaint);
             }
 
         }
@@ -668,7 +669,7 @@ public class CVActivity extends AppCompatActivity {
         }
 
         pdfDocument.finishPage(page);
-        File file = new File(Environment.getExternalStorageDirectory(), "/a10.pdf");
+        File file = new File(Environment.getExternalStorageDirectory(), "/Documents/a10.pdf");
         pdfDocument.writeTo(new FileOutputStream(file));
         pdfDocument.close();
 
@@ -936,11 +937,17 @@ public class CVActivity extends AppCompatActivity {
                         putMysql();
                     }else {
                         try {
+                            if(!nameUpdate.equals(cvName.getText().toString())){
+                                StorageReference pdfDelete = FirebaseStorage.getInstance().getReferenceFromUrl(urlX);
+                                pdfDelete.delete();
+                            }
                             if(MainActivity.checkFirstStudy != 0 || MainActivity.checkFirstSkill != 0 || MainActivity.checkFirstInfo != 0
                             || MainActivity.checkFirstGoal != 0 || MainActivity.checkFirstExperience != 0 || !nameUpdate.equals(cvName.getText().toString())){
                                 updateCVAll();
                                 MainActivity.arrayListCV.remove(position);
                             }
+
+
 
 
                         } catch (IOException e) {

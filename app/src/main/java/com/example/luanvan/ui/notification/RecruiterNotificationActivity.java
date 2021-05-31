@@ -1,5 +1,6 @@
 package com.example.luanvan.ui.notification;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -42,6 +43,7 @@ public class RecruiterNotificationActivity extends AppCompatActivity {
     RecruiterNotificationAdapter adapter;
     LinearLayout layout, layout_nothing;
     Handler handler;
+    ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +54,6 @@ public class RecruiterNotificationActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-           //     Toast.makeText(getApplicationContext(), "size " + RecruiterActivity.arrayListNotificationRecruiter.size(), Toast.LENGTH_SHORT).show();
                checkNothing();
             }
         },2000);
@@ -115,5 +116,12 @@ public class RecruiterNotificationActivity extends AppCompatActivity {
         layout = (LinearLayout) findViewById(R.id.layout);
         layout_nothing = (LinearLayout) findViewById(R.id.layout_nothing);
 
+    }
+    void loading(){
+        progressDialog = new ProgressDialog(getApplicationContext());
+        progressDialog.setMessage("Loading");
+        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
     }
 }

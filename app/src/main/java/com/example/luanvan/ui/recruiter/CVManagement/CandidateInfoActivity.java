@@ -93,6 +93,7 @@ public class CandidateInfoActivity extends AppCompatActivity {
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webView.getSettings().setSupportZoom(true);
+        webView.getSettings().setBuiltInZoomControls(true);
 
         MainActivity.mData.child("cv").child(user_id_f).child(String.valueOf(cv_id)).addChildEventListener(new ChildEventListener() {
             @Override

@@ -30,9 +30,12 @@ import com.example.luanvan.ui.cv.CVActivity;
 import com.example.luanvan.ui.cv.CVIntroductionActivity;
 import com.example.luanvan.ui.cv.CVShowActivity;
 import com.example.luanvan.ui.modelCV.PdfCV;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
@@ -149,7 +152,7 @@ public class CVAdapter extends RecyclerView.Adapter<CVAdapter.ItemHolder> {
             @Override
             public void onClick(View v) {
                 StorageReference reference = MainActivity.storage.getReferenceFromUrl(arrayList.get(position).getUrl());
-                File rootPath = new File(Environment.getExternalStorageDirectory(), "CVdownload");
+                File rootPath = new File(Environment.getExternalStorageDirectory(), "/Documents/CVdownload");
                 if(!rootPath.exists()) {
                     rootPath.mkdirs();
                 }
@@ -244,6 +247,8 @@ public class CVAdapter extends RecyclerView.Adapter<CVAdapter.ItemHolder> {
                     @Override
                     public void onResponse(String response) {
                         if(response.equals("success")){
+                            StorageReference pdfDelete = FirebaseStorage.getInstance().getReferenceFromUrl(arrayList.get(position).getUrl());
+                            pdfDelete.delete();
                           //  Toast.makeText(context, "Xóa lên Mysql thành công", Toast.LENGTH_SHORT).show();
                             MainActivity.mData.child("cv").child(MainActivity.uid).child(arrayList.get(position).getKey()).removeValue();
                             MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(arrayList.get(position).getKey()).removeValue();
@@ -251,6 +256,7 @@ public class CVAdapter extends RecyclerView.Adapter<CVAdapter.ItemHolder> {
                             notifyDataSetChanged();
                             ((CVIntroductionActivity)activity).checkNothing();
                             FancyToast.makeText(context, "Xóa thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
+
                         }else {
                             FancyToast.makeText(context,"Xóa lên Mysql thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                         }

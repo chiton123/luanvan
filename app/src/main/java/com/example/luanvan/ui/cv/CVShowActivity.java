@@ -54,6 +54,7 @@ public class CVShowActivity extends AppCompatActivity {
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webView.getSettings().setSupportZoom(true);
+        webView.getSettings().setBuiltInZoomControls(true);
         if(kind == 1){
             url = getIntent().getStringExtra("url");
             url1 +=  url;
@@ -64,7 +65,7 @@ public class CVShowActivity extends AppCompatActivity {
                     webView.loadUrl(url1);
                     progressDialog.dismiss();
                 }
-            },3000);
+            },4000);
 
         }else {
             cv_id = getIntent().getStringExtra("cv_id");
@@ -103,7 +104,7 @@ public class CVShowActivity extends AppCompatActivity {
                     webView.loadUrl(url1);
                     progressDialog.dismiss();
                 }
-            },3000);
+            },4000);
 
 
         }

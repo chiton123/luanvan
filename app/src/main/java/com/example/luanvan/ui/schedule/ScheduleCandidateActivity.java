@@ -63,7 +63,7 @@ public class ScheduleCandidateActivity extends AppCompatActivity {
                 sort();
                 progressDialog.dismiss();
             }
-        },2000);
+        },3000);
 
 
     }
@@ -106,7 +106,7 @@ public class ScheduleCandidateActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         if(response != null){
                             try {
-                                // Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
+                                 Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
                                 JSONArray jsonArray = new JSONArray(response);
                                 for(int i=0; i < jsonArray.length(); i++){
                                     JSONObject object = jsonArray.getJSONObject(i);

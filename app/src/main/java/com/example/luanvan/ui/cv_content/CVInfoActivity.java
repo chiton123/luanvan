@@ -46,6 +46,7 @@ import com.shashank.sony.fancytoastlib.FancyToast;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.Normalizer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -183,7 +184,7 @@ public class CVInfoActivity extends AppCompatActivity {
 
 
             }else {
-                canvas.drawText(MainActivity.goalDefault, 30, x0 + 25, contentPaint);
+                canvas.drawText(MainActivity.goalDefault, 30, x0 + 40, contentPaint);
             }
 
         }
@@ -364,7 +365,8 @@ public class CVInfoActivity extends AppCompatActivity {
             }
         }
         pdfDocument.finishPage(page);
-        File file = new File(Environment.getExternalStorageDirectory(), "/a10.pdf");
+   //     Toast.makeText(getApplicationContext(), Environment.getExternalStorageDirectory().toString() + "", Toast.LENGTH_SHORT).show();
+        File file = new File(Environment.getExternalStorageDirectory(), "/Documents/a10.pdf");
         pdfDocument.writeTo(new FileOutputStream(file));
         pdfDocument.close();
         storageReference.child("abc.pdf").putFile(Uri.fromFile(file))
@@ -401,12 +403,19 @@ public class CVInfoActivity extends AppCompatActivity {
             return text;
         }
     }
+    // loại bỏ dấu
+    public static String stripAccents(String s)
+    {
+        s = Normalizer.normalize(s, Normalizer.Form.NFD);
+        s = s.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
+        return s;
+    }
     // add function
     public void getInfoAdd(){
         if(MainActivity.checkFirstInfo == 0){
-            editname.setText(MainActivity.username);
+            editname.setText(stripAccents(MainActivity.username));
             if(!MainActivity.user.getPosition().equals("")){
-                editposition.setText(MainActivity.user.getPosition());
+                editposition.setText(stripAccents(MainActivity.user.getPosition()));
             }
 
 
@@ -419,7 +428,7 @@ public class CVInfoActivity extends AppCompatActivity {
             }
 
             if(!MainActivity.user.getAddress().equals("")){
-                editaddress.setText(MainActivity.user.getAddress());
+                editaddress.setText(stripAccents(MainActivity.user.getAddress()));
             }
 
             String ngay = MainActivity.user.getBirthday();
@@ -436,9 +445,9 @@ public class CVInfoActivity extends AppCompatActivity {
             }
 
             if(MainActivity.user.getGender() == 0){
-                editgender.setText("Nam");
+                editgender.setText("Male");
             }else {
-                editgender.setText("Nữ");
+                editgender.setText("Female");
             }
         }else {
             editname.setText(MainActivity.userCV.getUsername());

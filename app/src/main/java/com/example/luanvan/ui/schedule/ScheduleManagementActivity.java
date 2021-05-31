@@ -66,7 +66,7 @@ public class ScheduleManagementActivity extends AppCompatActivity {
                 sort();
                 progressDialog.dismiss();
             }
-        },2000);
+        },3000);
     }
     void sort(){
         for(int i=0; i < arrayList.size(); i++){

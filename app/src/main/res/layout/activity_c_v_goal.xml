@@ -45,7 +45,7 @@
                 android:padding="10dp"
                 android:id="@+id/content"
                 android:gravity="top|left"
-                android:hint="Trở thành DBA làm việc trong một ngân hàng lớn. Lương 1000$"
+                android:hint="Becoming a Full-stack Developer"
                 android:background="@drawable/edittext_frame"
                 ></EditText>
 

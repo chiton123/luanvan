@@ -6,7 +6,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,12 +42,28 @@ public class CandidateNotificationActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     NotificationAdapter adapter;
     LinearLayout layout, layout_nothing;
+    ProgressDialog progressDialog;
+    Handler handler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_candidate_notification);
         anhxa();
         actionBar();
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                checkNothing();
+            }
+        },2000);
+
+
+
+
+
+    }
+    void checkNothing(){
         if(MainActivity.arrayListNotification.size() == 0){
             layout_nothing.setVisibility(View.VISIBLE);
             layout.setVisibility(View.GONE);
@@ -53,8 +71,6 @@ public class CandidateNotificationActivity extends AppCompatActivity {
             layout_nothing.setVisibility(View.GONE);
             layout.setVisibility(View.VISIBLE);
         }
-
-
     }
 
     @Override
@@ -105,5 +121,12 @@ public class CandidateNotificationActivity extends AppCompatActivity {
         layout = (LinearLayout) findViewById(R.id.layout);
         layout_nothing = (LinearLayout) findViewById(R.id.layout_nothing);
 
+    }
+    void loading(){
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading");
+        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
     }
 }

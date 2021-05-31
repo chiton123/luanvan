@@ -105,6 +105,16 @@ public class CreateScheduleActivity extends AppCompatActivity {
         createNotificationChannel();
 
     }
+
+    void setDefault(){
+        job_id = 0;
+        user_id = 0;
+        ap_id = 0;
+        job_name = "";
+        username = "";
+        email = "";
+    }
+
     private void createNotificationChannel() {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             NotificationChannel notificationChannel = new NotificationChannel(getString(R.string.NEWS_CHANNEL_ID), getString(R.string.CHANNEL_NEWS),
@@ -189,6 +199,8 @@ public class CreateScheduleActivity extends AppCompatActivity {
                 editKindSchedule.setText("Nhắc lịch đi làm");
             }
             editNote.setText(scheduleInfo.getNote());
+        }else{
+            setDefault();
         }
 
     }
@@ -295,6 +307,7 @@ public class CreateScheduleActivity extends AppCompatActivity {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                setDefault();
                 finish();
             }
         });
@@ -345,6 +358,7 @@ public class CreateScheduleActivity extends AppCompatActivity {
                                 public void run() {
                                     Intent intent = new Intent();
                                     setResult(345);
+                                    setDefault();
                                     finish();
                                 }
                             },3000);
@@ -401,6 +415,7 @@ public class CreateScheduleActivity extends AppCompatActivity {
                                 public void run() {
                                     Intent intent = new Intent();
                                     setResult(123);
+                                    setDefault();
                                     finish();
                                 }
                             },3000);
@@ -766,6 +781,7 @@ public class CreateScheduleActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                setDefault();
                 finish();
             }
         });
