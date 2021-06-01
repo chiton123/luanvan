@@ -117,7 +117,7 @@ public class CandidateViewActivity extends AppCompatActivity {
             public void run() {
                 webView.loadUrl(url1);
             }
-        },3000);
+        },4000);
 
     }
 
@@ -162,7 +162,7 @@ public class CandidateViewActivity extends AppCompatActivity {
                 setRecyclerView();
                 progressDialog.dismiss();
             }
-        },3000);
+        },4000);
 
 
 

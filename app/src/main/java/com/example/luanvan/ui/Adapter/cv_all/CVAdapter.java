@@ -2,6 +2,7 @@ package com.example.luanvan.ui.Adapter.cv_all;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -49,6 +50,7 @@ public class CVAdapter extends RecyclerView.Adapter<CVAdapter.ItemHolder> {
     ArrayList<PdfCV> arrayList;
     Activity activity;
     int REQUEST_CODE = 123;
+    ProgressDialog progressDialog;
 
     public CVAdapter(Context context, ArrayList<PdfCV> arrayList, Activity activity) {
         this.context = context;
@@ -152,6 +154,7 @@ public class CVAdapter extends RecyclerView.Adapter<CVAdapter.ItemHolder> {
         holder.btnDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loading();
                 StorageReference reference = MainActivity.storage.getReferenceFromUrl(arrayList.get(position).getUrl());
                 File rootPath = new File(Environment.getExternalStorageDirectory(), "/Documents/CVdownload");
                 if(!rootPath.exists()) {
@@ -161,12 +164,14 @@ public class CVAdapter extends RecyclerView.Adapter<CVAdapter.ItemHolder> {
                 reference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        progressDialog.dismiss();
                         FancyToast.makeText(context, "Tải thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
 
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
+                        progressDialog.dismiss();
                         FancyToast.makeText(context,"Tải thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                     }
                 });
@@ -239,7 +244,14 @@ public class CVAdapter extends RecyclerView.Adapter<CVAdapter.ItemHolder> {
         requestQueue.add(stringRequest);
 
     }
-
+    void loading(){
+        progressDialog = new ProgressDialog(activity);
+        progressDialog.setTitle("Vui lòng chờ");
+        progressDialog.setMessage("CV đang được tải về");
+        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
+    }
     private void deleteMysql(final int position) {
        // Toast.makeText(context, "iduser " + MainActivity.iduser + " idcv " + arrayList.get(position).getKey(), Toast.LENGTH_SHORT).show();
         final RequestQueue requestQueue = Volley.newRequestQueue(activity);

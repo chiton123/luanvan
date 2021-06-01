@@ -44,12 +44,11 @@ public class UserListActivity extends AppCompatActivity {
     SearchView searchView;
     LinearLayout layout, layout_nothing;
     Handler handler;
-    ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_list);
-        loading();
         anhxa();
         actionBar();
         search();
@@ -58,9 +57,8 @@ public class UserListActivity extends AppCompatActivity {
             @Override
             public void run() {
                 checkNothing();
-                progressDialog.dismiss();
             }
-        },2500);
+        },2000);
 
     }
     private void search() {
@@ -78,13 +76,7 @@ public class UserListActivity extends AppCompatActivity {
             }
         });
     }
-    void loading(){
-        progressDialog = new ProgressDialog(getApplicationContext());
-        progressDialog.setMessage("Loading");
-        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
-        progressDialog.show();
-        progressDialog.setCancelable(false);
-    }
+
     void checkNothing(){
         if(arrayList.size() == 0){
             layout.setVisibility(View.GONE);

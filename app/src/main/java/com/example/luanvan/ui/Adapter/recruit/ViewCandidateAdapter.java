@@ -2,6 +2,7 @@ package com.example.luanvan.ui.Adapter.recruit;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
@@ -65,7 +66,7 @@ public class ViewCandidateAdapter extends RecyclerView.Adapter<ViewCandidateAdap
     String name_cv = "";
     UserSearch userSearch;
     BottomSheetDialog bottomSheetContactInfo, bottomSheetSendEmail;
-
+    ProgressDialog progressDialog;
     public ViewCandidateAdapter(Context context, ArrayList<Profile> arrayList, Activity activity,
                                 String url_cv, String name_cv,UserSearch userSearch) {
         this.context = context;
@@ -104,6 +105,7 @@ public class ViewCandidateAdapter extends RecyclerView.Adapter<ViewCandidateAdap
                         showSendEmail();
                         break;
                     case 3:
+                        loading();
                         //Toast.makeText(context, url_cv, Toast.LENGTH_SHORT).show();
                         downLoadCV_PDF(url_cv);
                         break;
@@ -190,17 +192,26 @@ public class ViewCandidateAdapter extends RecyclerView.Adapter<ViewCandidateAdap
         reference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                progressDialog.dismiss();
                 FancyToast.makeText(context, "Tải về thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
 
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
+                progressDialog.dismiss();
                 FancyToast.makeText(context,"Tải về thất bại", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
             }
         });
     }
-
+    void loading(){
+        progressDialog = new ProgressDialog(activity);
+        progressDialog.setTitle("Vui lòng chờ");
+        progressDialog.setMessage("CV đang được tải về");
+        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
+    }
 
 
 

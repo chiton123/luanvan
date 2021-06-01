@@ -107,22 +107,18 @@ public class RecruiterActivity extends AppCompatActivity {
     Uri imageUri;
     StorageTask uploadTask;
     StorageReference storageReference;
+    ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recruiter);
+        loading();
         storageReference = FirebaseStorage.getInstance().getReference("photo");
         anhxa();
         actionBar();
         eventGridView();
         getDataNotification();
-        handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                setNotification();
-            }
-        },2000);
+
         eventListViewNavigation();
         activateAfterLogin();
         imgProfile.setOnClickListener(new View.OnClickListener() {
@@ -132,6 +128,14 @@ public class RecruiterActivity extends AppCompatActivity {
             }
         });
         getInfoFromFirebase();
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setNotification();
+                progressDialog.dismiss();
+            }
+        },2500);
 
     }
     private void openImage() {
@@ -559,5 +563,12 @@ public class RecruiterActivity extends AppCompatActivity {
         imgProfile = (ImageView) findViewById(R.id.img);
         txtUsername = (TextView) findViewById(R.id.txtusername);
         layout_user = (LinearLayout) findViewById(R.id.layout_user);
+    }
+    void loading(){
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading");
+        progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
     }
 }
