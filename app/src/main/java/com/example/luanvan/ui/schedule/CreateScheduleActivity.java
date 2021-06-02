@@ -351,7 +351,6 @@ public class CreateScheduleActivity extends AppCompatActivity {
                             ScheduleManagementActivity.arrayList.set(position_update, schedule);
                             loading();
                             postNotification(0, date, start_hour, end_hour);
-                            sendMail();
                             handler = new Handler();
                             handler.postDelayed(new Runnable() {
                                 @Override
@@ -408,7 +407,6 @@ public class CreateScheduleActivity extends AppCompatActivity {
                             ScheduleManagementActivity.arrayList.add(schedule);
                             loading();
                             postNotification(0, date, start_hour, end_hour);
-                            sendMail();
                             handler = new Handler();
                             handler.postDelayed(new Runnable() {
                                 @Override
@@ -449,11 +447,11 @@ public class CreateScheduleActivity extends AppCompatActivity {
 
     }
 
-    private void sendMail() {
-        JavaMailAPI mail = new JavaMailAPI(this, email, type_notification, content);
-        mail.execute();
-      //  Toast.makeText(getApplicationContext(), "Đã gửi mail", Toast.LENGTH_SHORT).show();
-    }
+//    private void sendMail() {
+//        JavaMailAPI mail = new JavaMailAPI(this, email, type_notification, content);
+//        mail.execute();
+//      //  Toast.makeText(getApplicationContext(), "Đã gửi mail", Toast.LENGTH_SHORT).show();
+//    }
     public void postNotification(final int type_user, String date, String start_hour, String end_hour){
         if(type_schedule == 1){
             type_notification = "Nhà tuyển dụng hẹn bạn phỏng vấn";

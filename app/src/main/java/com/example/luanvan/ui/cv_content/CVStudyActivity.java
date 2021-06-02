@@ -73,7 +73,7 @@ public class CVStudyActivity extends AppCompatActivity {
     Handler handler;
     ProgressDialog progressDialog;
 
-    public static int a0 = 350, a1 = 600, a2 = 900, a3 = 1600;
+    public static int a0 = 350, a1 = 600, a2 = 900, a3 = 1800;
     public static int x0 = 0, x1 = 0, x2 = 0, x3 = 0;
     // kiem tra xem x1, x2, x3 có nhảy lên bậc nào hay k khi tạo CV
     public static int checkX1 = 0, checkX2 = 0, checkX3 = 0; // chưa sử dụng
@@ -265,7 +265,7 @@ public class CVStudyActivity extends AppCompatActivity {
                 TextPaint mTextPaint=new TextPaint();
                 mTextPaint.setTextSize(30);
                 mTextPaint.setColor(Color.BLACK);
-                StaticLayout mTextLayout = new StaticLayout(xuongdong(MainActivity.goal), mTextPaint, canvas.getWidth(), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
+                StaticLayout mTextLayout = new StaticLayout(xuongdong(MainActivity.goal), mTextPaint, canvas.getWidth() - 30, Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
 
                 canvas.save();
                 // calculate x and y position where your text will be placed
@@ -359,9 +359,9 @@ public class CVStudyActivity extends AppCompatActivity {
             if(d == 1 || kind == 2){
                 for(int i=0; i < experienceCVS.size(); i++){
                     if(i < 2){
-                        canvas.drawText(experienceCVS.get(i).getStart()+"-"+experienceCVS.get(i).getEnd(), 30, x2 + 50 + i*250, contentPaint);
-                        canvas.drawText(experienceCVS.get(i).getCompany(), 450, x2 + 50 + i*250, contentPaint);
-                        canvas.drawText(experienceCVS.get(i).getPosition(), 450, x2 + 90 + i*250, contentPaint);
+                        canvas.drawText(experienceCVS.get(i).getStart()+"-"+experienceCVS.get(i).getEnd(), 30, x2 + 50 + i*360, contentPaint);
+                        canvas.drawText(experienceCVS.get(i).getCompany(), 450, x2 + 50 + i*360, contentPaint);
+                        canvas.drawText(experienceCVS.get(i).getPosition(), 450, x2 + 90 + i*360, contentPaint);
                         TextPaint mTextPaint=new TextPaint();
                         mTextPaint.setTextSize(30);
                         mTextPaint.setColor(Color.BLACK);
@@ -371,7 +371,7 @@ public class CVStudyActivity extends AppCompatActivity {
                         // calculate x and y position where your text will be placed
 
                         int textX = 450;
-                        int textY = x2 + 100 + i*250;
+                        int textY = x2 + 100 + i*360;
 
                         canvas.translate(textX, textY);
                         mTextLayout.draw(canvas);

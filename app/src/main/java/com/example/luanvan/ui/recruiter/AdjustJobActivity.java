@@ -164,7 +164,7 @@ public class AdjustJobActivity extends AppCompatActivity {
     }
 
     void loading(){
-        progressDialog = new ProgressDialog(this);
+        progressDialog = new ProgressDialog(AdjustJobActivity.this);
         progressDialog.setMessage("Loading");
         progressDialog.setProgressStyle(progressDialog.STYLE_SPINNER);
         progressDialog.show();

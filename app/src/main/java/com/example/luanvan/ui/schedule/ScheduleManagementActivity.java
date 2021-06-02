@@ -34,7 +34,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -68,14 +71,30 @@ public class ScheduleManagementActivity extends AppCompatActivity {
             }
         },3000);
     }
-    void sort(){
+    void sort() {
         for(int i=0; i < arrayList.size(); i++){
             for(int j=i+1; j < arrayList.size(); j++){
-                if(arrayList.get(i).getStatus() == 0 && arrayList.get(j).getStatus() != 0){
+                String ngayI = arrayList.get(i).getDate();
+                String ngayJ = arrayList.get(j).getDate();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Date dateI = null, dateJ = null;
+                try {
+                    dateI = dateFormat.parse(ngayI);
+                    dateJ = dateFormat.parse(ngayJ);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                if(dateJ.before(dateI)) {
+                    Schedule schedule = arrayList.get(i);
+                    arrayList.set(i, arrayList.get(j));
+                    arrayList.set(j, schedule);
+                }else if(dateJ.compareTo(dateI) == 0 && arrayList.get(i).getStatus() == 0 && arrayList.get(j).getStatus() != 0 ){
                     Schedule schedule = arrayList.get(i);
                     arrayList.set(i, arrayList.get(j));
                     arrayList.set(j, schedule);
                 }
+
 
             }
         }

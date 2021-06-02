@@ -361,7 +361,7 @@
                         android:background="@drawable/edittext_frame"
                         android:inputType="number"
                         android:paddingLeft="8dp"
-                        android:maxLength="8"
+                        android:maxLength="9"
                         android:paddingRight="8dp"
                         android:textColor="#000000"
                         android:textSize="13sp"></EditText>
@@ -392,7 +392,7 @@
                         android:inputType="number"
                         android:paddingLeft="8dp"
                         android:paddingRight="8dp"
-                        android:maxLength="8"
+                        android:maxLength="9"
                         android:textColor="#000000"
                         android:textSize="13sp"></EditText>
                 </LinearLayout>

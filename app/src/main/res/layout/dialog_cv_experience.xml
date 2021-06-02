@@ -112,7 +112,7 @@
             android:padding="5dp"
             android:id="@+id/description"
             android:gravity="top|left"
-            android:maxLength="250"
+            android:maxLength="310"
             android:hint="Mô tả"
             android:background="@drawable/edittext_frame"
             ></EditText>

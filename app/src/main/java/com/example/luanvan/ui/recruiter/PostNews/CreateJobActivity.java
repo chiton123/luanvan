@@ -168,7 +168,7 @@ public class CreateJobActivity extends AppCompatActivity {
     }
 
     public void showDate(final int kind) throws ParseException {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String today = dateFormat.format(Calendar.getInstance().getTime());
         final Date today1 = dateFormat.parse(today);
         final Calendar calendar = Calendar.getInstance();
@@ -179,40 +179,62 @@ public class CreateJobActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 calendar.set(year, month, dayOfMonth);
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-
-                if(calendar.getTime().before(today1) && kind == 1){
-                    FancyToast.makeText(getApplicationContext(), "Phải lớn hơn ngày hiện tại", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
-                }else {
-                    if(kind == 1){
-                        editStart.setText(dateFormat.format(calendar.getTime()));
-                        date_start = calendar.getTime();
-                    }else {
-                        date_end = calendar.getTime();
-                        if(date_end.before(date_start)){
-                             FancyToast.makeText(getApplicationContext(), "Ngày kết thúc phải sau ngày bắt đầu", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
+                SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+                Date date_temp = null;
+                try {
+                    date_temp = fmt.parse(fmt.format(calendar.getTime()));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                if(kind == 1){
+                    if(!editEnd.getText().toString().equals("")){
+                        if(date_temp.after(date_end) || date_temp.equals(date_end)){
+                            FancyToast.makeText(getApplicationContext(), "Ngày bắt đầu phải trước ngày kết thúc", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
                             x = 1;
                         }else {
-                            editEnd.setText(dateFormat.format(calendar.getTime()));
+                            date_start = calendar.getTime();
+                            editStart.setText(dateFormat.format(calendar.getTime()));
                             x = 0;
                         }
-
-                    }
-
-                    SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-                    Date date = null;
-                    try {
-                        date = fmt.parse(fmt.format(calendar.getTime()));
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    if(kind == 1){
-                        date_post_start = fmt.format(date);
-                        check_start = 1;
                     }else {
-                        date_post_end = fmt.format(date);
+                        date_start = calendar.getTime();
+                        editStart.setText(dateFormat.format(calendar.getTime()));
+                        x = 0;
                     }
 
+                }else {
+                    if(!editStart.getText().toString().equals("")){
+                        if(date_temp.before(date_start) || date_temp.equals(date_start)){
+                            FancyToast.makeText(getApplicationContext(), "Ngày kết thúc phải sau ngày bắt đầu", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
+                            x = 1;
+                            // FancyToast.makeText(getApplicationContext(), "0", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
+                        }else{
+                            date_end = calendar.getTime();
+                            editEnd.setText(dateFormat.format(calendar.getTime()));
+                            x = 0;
+                            //  FancyToast.makeText(getApplicationContext(), "1", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
+                        }
+                    }else {
+                        date_end = calendar.getTime();
+                        editEnd.setText(dateFormat.format(calendar.getTime()));
+                        x = 0;
+                        // FancyToast.makeText(getApplicationContext(), "2", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
+                    }
+
+                }
+
+
+                Date date = null;
+                try {
+                    date = fmt.parse(fmt.format(calendar.getTime()));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                if(kind == 1 && x == 0){
+                    date_post_start = fmt.format(date);
+                    //  check_start = 1;
+                }else if(kind == 2 && x == 0){
+                    date_post_end = fmt.format(date);
                 }
 
             }
@@ -234,11 +256,7 @@ public class CreateJobActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    if(check_start == 0 || editStart.getText().equals("")){
-                        FancyToast.makeText(getApplicationContext(), "Bạn chọn ngày bắt đầu trước", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
-                    }else {
-                        showDate(2);
-                    }
+                    showDate(2);
 
                 } catch (ParseException e) {
                     e.printStackTrace();

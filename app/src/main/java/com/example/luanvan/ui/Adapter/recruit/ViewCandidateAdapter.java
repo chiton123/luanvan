@@ -149,7 +149,7 @@ public class ViewCandidateAdapter extends RecyclerView.Adapter<ViewCandidateAdap
     private void sendMail(String email, String title, String content) {
         JavaMailAPI mail = new JavaMailAPI(activity, email, title, content);
         mail.execute();
-        Toast.makeText(context, "Đã gửi mail", Toast.LENGTH_SHORT).show();
+        FancyToast.makeText(context, "Đã gửi mail", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
     }
     private void showContactInfo() throws ParseException {
         bottomSheetContactInfo = new BottomSheetDialog(activity, R.style.BottomSheetTheme);

@@ -461,7 +461,7 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
                     @Override
                     public void onResponse(String response) {
                         if(response.equals("success")){
-                            FancyToast.makeText(context, "Cập nhật thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
+                            FancyToast.makeText(context, "Đánh giá thành công", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show();
                             applicant.setStatus(statusApplication);
                             applicant.setNote(note);
                             updateCandidateDocument();
@@ -502,7 +502,7 @@ public class ProfileCadidateAdapter extends RecyclerView.Adapter<ProfileCadidate
                          //   activity.finish();
 
                         }else {
-                            FancyToast.makeText(context,"Cập nhật thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
+                            FancyToast.makeText(context,"Đánh giá thất bại", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show();
                         }
                     }
                 },

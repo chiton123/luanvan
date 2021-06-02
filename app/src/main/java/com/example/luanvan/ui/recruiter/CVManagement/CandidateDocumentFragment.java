@@ -50,6 +50,7 @@ public class CandidateDocumentFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_candidate_document, container, false);
+        loading();
         recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
         recyclerView.setHasFixedSize(true);
         searchView = (SearchView) view.findViewById(R.id.searchView);
@@ -61,6 +62,14 @@ public class CandidateDocumentFragment extends Fragment {
         layout_nothing = (LinearLayout) view.findViewById(R.id.layout_nothing);
         getData();
         search();
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                sort();
+                progressDialog.dismiss();
+            }
+        },2500);
 
 
         return view;
@@ -97,6 +106,22 @@ public class CandidateDocumentFragment extends Fragment {
         progressDialog.show();
         progressDialog.setCancelable(false);
     }
+    void sort(){
+        for(int i=0; i < CVManageActivity.arrayListAll.size(); i++){
+            for(int j=i+1; j < CVManageActivity.arrayListAll.size(); j++){
+                if(CVManageActivity.arrayListAll.get(i).getStatus() > CVManageActivity.arrayListAll.get(j).getStatus()){
+                    Applicant applicant = CVManageActivity.arrayListAll.get(i);
+                    CVManageActivity.arrayListAll.set(i, CVManageActivity.arrayListAll.get(j));
+                    CVManageActivity.arrayListAll.set(j, applicant);
+
+                }
+
+            }
+        }
+        adapter.notifyDataSetChanged();
+
+    }
+
     private void getData() {
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.urlCandidateDocument,

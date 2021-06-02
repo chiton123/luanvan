@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.luanvan.R;
 import com.example.luanvan.ui.Adapter.recruit.NewPostAdapter;
+import com.example.luanvan.ui.Model.JobList;
 import com.example.luanvan.ui.recruiter.RecruiterActivity;
 
 public class OutdatedJobFragment extends Fragment {
@@ -48,11 +49,28 @@ public class OutdatedJobFragment extends Fragment {
             @Override
             public void run() {
                 checkNothing();
+                sort();
                 progressDialog.dismiss();
             }
         },1500);
         search();
         return view;
+    }
+    void sort(){
+        for(int i=0; i < RecruiterActivity.arrayListOutdatedJobs.size(); i++){
+            for(int j=i+1; j < RecruiterActivity.arrayListOutdatedJobs.size(); j++){
+                if(RecruiterActivity.arrayListOutdatedJobs.get(i).getTotalDocument() < RecruiterActivity.arrayListOutdatedJobs.get(j).getTotalDocument()){
+                    JobList jobList = RecruiterActivity.arrayListOutdatedJobs.get(i);
+                    RecruiterActivity.arrayListOutdatedJobs.set(i, RecruiterActivity.arrayListOutdatedJobs.get(j));
+                    RecruiterActivity.arrayListOutdatedJobs.set(j, jobList);
+
+                }
+
+            }
+
+        }
+        adapter.notifyDataSetChanged();
+
     }
     private void search() {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

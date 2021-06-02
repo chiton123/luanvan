@@ -74,11 +74,29 @@ public class DisplayJobFragment extends Fragment {
             @Override
             public void run() {
                 checkNothing();
+                sort();
             }
-        },2500);
+        },2000);
         search();
         return view;
     }
+    void sort(){
+        for(int i=0; i < RecruiterActivity.arrayListJobList.size(); i++){
+            for(int j=i+1; j < RecruiterActivity.arrayListJobList.size(); j++){
+                if(RecruiterActivity.arrayListJobList.get(i).getTotalDocument() < RecruiterActivity.arrayListJobList.get(j).getTotalDocument()){
+                    JobList jobList = RecruiterActivity.arrayListJobList.get(i);
+                    RecruiterActivity.arrayListJobList.set(i, RecruiterActivity.arrayListJobList.get(j));
+                    RecruiterActivity.arrayListJobList.set(j, jobList);
+
+                }
+
+            }
+
+        }
+        adapter.notifyDataSetChanged();
+
+    }
+
     private void search() {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
