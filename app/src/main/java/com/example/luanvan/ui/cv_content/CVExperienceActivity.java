@@ -73,10 +73,10 @@ public class CVExperienceActivity extends AppCompatActivity {
     Handler handler;
     ProgressDialog progressDialog;
 
-    public static int a0 = 350, a1 = 600, a2 = 900, a3 = 1800;
+    public static int a0 = 350, a1 = 600, a2 = 950, a3 = 1900;
     public static int x0 = 0, x1 = 0, x2 = 0, x3 = 0;
     // kiem tra xem x1, x2, x3 có nhảy lên bậc nào hay k khi tạo CV
-    public static int checkX1 = 0, checkX2 = 0, checkX3 = 0; // chưa sử dụng
+    ; // chưa sử dụng
     LinearLayout layout, layout_nothing;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -275,7 +275,7 @@ public class CVExperienceActivity extends AppCompatActivity {
                 // calculate x and y position where your text will be placed
 
                 int textX = 30;
-                int textY = x0 + 30;
+                int textY = x0 + 25;
 
                 canvas.translate(textX, textY);
                 mTextLayout.draw(canvas);
@@ -296,20 +296,19 @@ public class CVExperienceActivity extends AppCompatActivity {
         if(checkStudy == 0){
             if(x0 == 0){
                 x1 = a0;
-                checkX1 = 1; // nhảy 1 bậc
             }else {
-                x1 = a1;
+                x1 = a1 + 50;
             }
 
-            canvas.drawText("STUDY", 30,  x1 - 50, titlePaint);
+            canvas.drawText("STUDY", 30,  x1 , titlePaint);
             titlePaint2.setTextSize(30);
             titlePaint2.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
             if(c == 1 || kind == 2){
                 for(int i=0; i < MainActivity.studyCVS.size(); i++){
                     if(i < 1){
-                        canvas.drawText(MainActivity.studyCVS.get(i).getSchool(), 30, x1 + i*180, titlePaint2);
-                        canvas.drawText(MainActivity.studyCVS.get(i).getStart() + " - " + MainActivity.studyCVS.get(i).getEnd(), 30, x1 + 50 + i*180, contentPaint);
-                        canvas.drawText("Major: " + MainActivity.studyCVS.get(i).getMajor(), 450, x1 + i*180, titlePaint2 );
+                        canvas.drawText(MainActivity.studyCVS.get(i).getSchool(), 30, x1 + i*180 + 50 , titlePaint2);
+                        canvas.drawText(MainActivity.studyCVS.get(i).getStart() + " - " + MainActivity.studyCVS.get(i).getEnd(), 30, x1 + 100 + i*180, contentPaint);
+                        canvas.drawText("Major: " + MainActivity.studyCVS.get(i).getMajor(), 450, x1 + i*180 + 50, titlePaint2 );
                         //     canvas.drawText(MainActivity.studyCVS.get(i).getDescription(), 500, x1 + 50 + i*180, contentPaint);
                         TextPaint mTextPaint=new TextPaint();
                         mTextPaint.setTextSize(30);
@@ -320,7 +319,7 @@ public class CVExperienceActivity extends AppCompatActivity {
                         // calculate x and y position where your text will be placed
 
                         int textX = 450;
-                        int textY = x1 + 20+ i*180;
+                        int textY = x1 + 70+ i*180;
 
                         canvas.translate(textX, textY);
                         mTextLayout.draw(canvas);
@@ -332,10 +331,10 @@ public class CVExperienceActivity extends AppCompatActivity {
 
                 }
             }else {
-                canvas.drawText(MainActivity.studyCV.getSchool(), 30, x1, titlePaint2);
-                canvas.drawText(MainActivity.studyCV.getStart() + " - " + MainActivity.studyCV.getEnd(), 30, x1 + 50, contentPaint);
-                canvas.drawText("Major: " + MainActivity.studyCV.getMajor(), 450, x1 , titlePaint2 );
-                canvas.drawText(MainActivity.studyCV.getDescription(), 450, x1 + 50, contentPaint);
+                canvas.drawText(MainActivity.studyCV.getSchool(), 30, x1 + 50, titlePaint2);
+                canvas.drawText(MainActivity.studyCV.getStart() + " - " + MainActivity.studyCV.getEnd(), 30, x1 + 100, contentPaint);
+                canvas.drawText("Major: " + MainActivity.studyCV.getMajor(), 450, x1 + 50, titlePaint2 );
+                canvas.drawText(MainActivity.studyCV.getDescription(), 450, x1 + 100, contentPaint);
             }
         }
 
@@ -347,16 +346,13 @@ public class CVExperienceActivity extends AppCompatActivity {
                     x2 = a2;
                 }else {
                     x2 = a1;
-                    checkX2 = 1;
                 }
 
             }else {
                 if(x1 == 0){
                     x2 = a0;
-                    checkX2 = 2;
                 }else {
-                    x2 = a1;
-                    checkX2 = 1;
+                    x2 = a1 + 50;
                 }
             }
 
@@ -401,35 +397,27 @@ public class CVExperienceActivity extends AppCompatActivity {
                         x3 = a3;
                     }else {
                         x3 = a2;
-                        checkX3 = 1;
                     }
                 }else {
                     if(x2 == 0){
                         x3 = a1;
-                        checkX3 = 2;
                     }else {
-                        x3 = a2;
-                        checkX3 = 1;
+                        x3 = a2 + 600;
                     }
                 }
-
             }else {
                 if(x1 != 0){
                     if(x2 != 0){
-                        x3 = a2;
-                        checkX3 = 1;
+                        x3 = a2 + 650;
                     }else {
-                        x3 = a1;
-                        checkX3 = 2;
+                        x3 = a1 + 100;
                     }
 
                 }else {
                     if(x2 != 0){
-                        x3 = a1;
-                        checkX3 = 2;
+                        x3 = a1 + 700;
                     }else {
                         x3 = a0;
-                        checkX3 = 3;
                     }
                 }
 
@@ -464,6 +452,7 @@ public class CVExperienceActivity extends AppCompatActivity {
 
             }
         }
+
         pdfDocument.finishPage(page);
         File file = new File(Environment.getExternalStorageDirectory(), "/Documents/a10.pdf");
         pdfDocument.writeTo(new FileOutputStream(file));

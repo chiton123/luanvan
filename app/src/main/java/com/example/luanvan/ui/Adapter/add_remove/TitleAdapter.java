@@ -60,15 +60,19 @@ public class TitleAdapter extends BaseAdapter {
         switch (id){
             case 1:
                 CVActivity.checkGoal = 1;
+                CVActivity.x0 = 0;
                 break;
             case 2:
                 CVActivity.checkStudy = 1;
+                CVActivity.x1 = 0;
                 break;
             case 3:
                 CVActivity.checkExperience = 1;
+                CVActivity.x2 = 0;
                 break;
             case 4:
                 CVActivity.checkSkill = 1;
+                CVActivity.x3 = 0;
                 break;
 
         }

@@ -264,7 +264,7 @@ public class NotificationsFragment extends Fragment {
                             if(response != null){
                                 int mode = Integer.parseInt(response.toString());
                                 if(mode == 1){
-                                    switchCompat.setText("Đang bậc tìm việc");
+                                    switchCompat.setText("Đang bật tìm việc");
                                     switchCompat.setTextColor(Color.GREEN);
                                     switchCompat.setChecked(true);
                                 }else {
@@ -300,7 +300,7 @@ public class NotificationsFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(switchCompat.isChecked()){
                     switchMode(1);
-                    switchCompat.setText("Đang bậc tìm việc");
+                    switchCompat.setText("Đang bật tìm việc");
                     switchCompat.setTextColor(Color.GREEN);
                 }else {
                     switchMode(0);
