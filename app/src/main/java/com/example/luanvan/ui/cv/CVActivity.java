@@ -495,7 +495,7 @@ public class CVActivity extends AppCompatActivity {
         // hoc van
 
 
-
+      //  Toast.makeText(getApplicationContext(), "check study: " + checkStudy + " check ex: "+ checkExperience, Toast.LENGTH_SHORT).show();
         if(checkStudy == 0){
             if(x0 == 0){
                 x1 = a0;
@@ -721,30 +721,32 @@ public class CVActivity extends AppCompatActivity {
 
         // goal
         if(checkGoal == 0){
-            if(MainActivity.checkFirstGoal == 1){
-                MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("goal").setValue(MainActivity.goal);
-            }else {
-                MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(String.valueOf(CVActivity.idCV+1)).child("goal").setValue(MainActivity.goalDefault);
-            }
+            MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("goal").setValue(MainActivity.goal);
+//            if(MainActivity.checkFirstGoal == 1){
+//
+//            }else {
+//                MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(String.valueOf(CVActivity.idCV+1)).child("goal").setValue(MainActivity.goalDefault);
+//            }
 
         }else if(checkGoal == 1) {
             MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("goal").removeValue();
         }
         // study
         if( checkStudy == 0){
-            if(MainActivity.checkFirstStudy == 1){
-                MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("study").removeValue();
+            MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("study").removeValue();
 
-                for(int i=0; i < MainActivity.studyCVS.size(); i++){
-                    String keyx = MainActivity.mData.push().getKey();
-                    MainActivity.studyCVS.get(i).setId(keyx);
-                    MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("study").push().setValue(MainActivity.studyCVS.get(i));
-                }
-            }else {
+            for(int i=0; i < MainActivity.studyCVS.size(); i++){
                 String keyx = MainActivity.mData.push().getKey();
-                MainActivity.studyCV.setId(keyx);
-                MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(String.valueOf(CVActivity.idCV+1)).child("study").push().setValue(MainActivity.studyCV);
+                MainActivity.studyCVS.get(i).setId(keyx);
+                MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("study").push().setValue(MainActivity.studyCVS.get(i));
             }
+//            if(MainActivity.checkFirstStudy == 1){
+//
+//            }else {
+//                String keyx = MainActivity.mData.push().getKey();
+//                MainActivity.studyCV.setId(keyx);
+//                MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(String.valueOf(CVActivity.idCV+1)).child("study").push().setValue(MainActivity.studyCV);
+//            }
 
         }else if(checkStudy == 1) {
             MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("study").removeValue();
@@ -752,18 +754,19 @@ public class CVActivity extends AppCompatActivity {
 
         // experience
         if( checkExperience == 0){
-            if(MainActivity.checkFirstExperience == 1){
-                MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("experience").removeValue();
-                for(int i=0; i < experienceCVS.size(); i++){
-                    String keyx = MainActivity.mData.push().getKey();
-                    experienceCVS.get(i).setId(keyx);
-                    MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("experience").push().setValue(experienceCVS.get(i));
-                }
-            }else {
+            MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("experience").removeValue();
+            for(int i=0; i < experienceCVS.size(); i++){
                 String keyx = MainActivity.mData.push().getKey();
-                MainActivity.experienceCV.setId(keyx);
-                MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(String.valueOf(CVActivity.idCV+1)).child("experience").push().setValue(MainActivity.experienceCV);
+                experienceCVS.get(i).setId(keyx);
+                MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("experience").push().setValue(experienceCVS.get(i));
             }
+//            if(MainActivity.checkFirstExperience == 1){
+//
+//            }else {
+//                String keyx = MainActivity.mData.push().getKey();
+//                MainActivity.experienceCV.setId(keyx);
+//                MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(String.valueOf(CVActivity.idCV+1)).child("experience").push().setValue(MainActivity.experienceCV);
+//            }
 
         }else if(checkExperience == 1){
             MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("experience").removeValue();
@@ -771,20 +774,21 @@ public class CVActivity extends AppCompatActivity {
 
         // skill
         if( checkSkill == 0){
-            if(MainActivity.checkFirstSkill == 1){
-                MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("skill").removeValue();
-                for(int i=0; i < MainActivity.skillCVS.size(); i++){
-                    String keyx = MainActivity.mData.push().getKey();
-                    MainActivity.skillCVS.get(i).setId(keyx);
-                    MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("skill").push().setValue(MainActivity.skillCVS.get(i));
-                }
-            }else {
-                for(int i=0; i < MainActivity.skillCVArray.size(); i++){
-                    String keyx = MainActivity.mData.push().getKey();
-                    MainActivity.skillCVArray.get(i).setId(keyx);
-                    MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(String.valueOf(CVActivity.idCV+1)).child("skill").push().setValue(MainActivity.skillCVArray.get(i));
-                }
+            MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("skill").removeValue();
+            for(int i=0; i < MainActivity.skillCVS.size(); i++){
+                String keyx = MainActivity.mData.push().getKey();
+                MainActivity.skillCVS.get(i).setId(keyx);
+                MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("skill").push().setValue(MainActivity.skillCVS.get(i));
             }
+//            if(MainActivity.checkFirstSkill == 1){
+//
+//            }else {
+//                for(int i=0; i < MainActivity.skillCVArray.size(); i++){
+//                    String keyx = MainActivity.mData.push().getKey();
+//                    MainActivity.skillCVArray.get(i).setId(keyx);
+//                    MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(String.valueOf(CVActivity.idCV+1)).child("skill").push().setValue(MainActivity.skillCVArray.get(i));
+//                }
+//            }
 
         }else if(checkSkill == 1){
             MainActivity.mData.child("cvinfo").child(MainActivity.uid).child(key).child("skill").removeValue();
@@ -931,10 +935,10 @@ public class CVActivity extends AppCompatActivity {
                             }
                             if(MainActivity.checkFirstStudy != 0 || MainActivity.checkFirstSkill != 0 || MainActivity.checkFirstInfo != 0
                             || MainActivity.checkFirstGoal != 0 || MainActivity.checkFirstExperience != 0 || !nameUpdate.equals(cvName.getText().toString())){
-                                updateCVAll();
-                                MainActivity.arrayListCV.remove(position);
-                            }
 
+                            }
+                            updateCVAll();
+                            MainActivity.arrayListCV.remove(position);
 
 
 

@@ -31,6 +31,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -91,13 +92,24 @@ public class ExperienceCVAdapter extends RecyclerView.Adapter<ExperienceCVAdapte
                     btnLuu.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            arrayList.get(position).setCompany(editname.getText().toString());
-                            arrayList.get(position).setPosition(editposition.getText().toString());
-                            arrayList.get(position).setStart(editstart.getText().toString());
-                            arrayList.get(position).setEnd(editend.getText().toString());
-                            arrayList.get(position).setDescription(editdescription.getText().toString());
-                            notifyDataSetChanged();
-                            dialog.dismiss();
+                            String name = editname.getText().toString();
+                            String positionX = editposition.getText().toString();
+                            String start = editstart.getText().toString();
+                            String end = editend.getText().toString();
+                            String description = editdescription.getText().toString();
+                            if(name.equals("") || positionX.equals("") || start.equals("") || end.equals("") || description.equals("")){
+                                FancyToast.makeText(context, "Vui lòng nhập đủ thông tin", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
+                            }else{
+                                arrayList.get(position).setCompany(name);
+                                arrayList.get(position).setPosition(positionX);
+                                arrayList.get(position).setStart(start);
+                                arrayList.get(position).setEnd(end);
+                                arrayList.get(position).setDescription(description);
+                                notifyDataSetChanged();
+                                dialog.dismiss();
+                            }
+
+
                         }
                     });
 

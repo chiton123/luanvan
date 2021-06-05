@@ -28,6 +28,7 @@ import com.example.luanvan.ui.modelCV.SkillCV;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.util.ArrayList;
 
@@ -102,8 +103,8 @@ public class SkillCVAdapter extends RecyclerView.Adapter<SkillCVAdapter.ItemHold
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialog.setContentView(R.layout.dialog_cv_skill);
                     dialog.setCancelable(false);
-                    final EditText name = (EditText) dialog.findViewById(R.id.name);
-                    name.setText(arrayList.get(position).getName());
+                    final EditText editName = (EditText) dialog.findViewById(R.id.name);
+                    editName.setText(arrayList.get(position).getName());
                     final RatingBar ratingBar = (RatingBar) dialog.findViewById(R.id.rating);
                     ratingBar.setRating(arrayList.get(position).getStar());
                     Button btnLuu = (Button) dialog.findViewById(R.id.luu);
@@ -111,10 +112,17 @@ public class SkillCVAdapter extends RecyclerView.Adapter<SkillCVAdapter.ItemHold
                     btnLuu.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            arrayList.get(position).setName(name.getText().toString());
-                            arrayList.get(position).setStar(ratingBar.getRating());
-                            notifyDataSetChanged();
-                            dialog.dismiss();
+                            String name = editName.getText().toString();
+                            float sosao = ratingBar.getRating();
+                            if(name.equals("") || sosao == 0){
+                                FancyToast.makeText(context, "Vui lòng nhập đủ thông tin", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
+                            }else{
+                                arrayList.get(position).setName(name);
+                                arrayList.get(position).setStar(sosao);
+                                notifyDataSetChanged();
+                                dialog.dismiss();
+                            }
+
                         }
                     });
 

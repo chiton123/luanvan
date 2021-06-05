@@ -22,6 +22,7 @@ import com.example.luanvan.R;
 
 import com.example.luanvan.ui.cv_content.CVStudyActivity;
 import com.example.luanvan.ui.modelCV.StudyCV;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.util.ArrayList;
 
@@ -80,13 +81,23 @@ public class StudyCVAdapter extends RecyclerView.Adapter<StudyCVAdapter.ItemHold
                     btnLuu.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            arrayList.get(position).setSchool(editschool.getText().toString());
-                            arrayList.get(position).setMajor(editmajor.getText().toString());
-                            arrayList.get(position).setStart(editstart.getText().toString());
-                            arrayList.get(position).setEnd(editend.getText().toString());
-                            arrayList.get(position).setDescription(editdescription.getText().toString());
-                            notifyDataSetChanged();
-                            dialog.dismiss();
+                            String school = editschool.getText().toString();
+                            String major = editmajor.getText().toString();
+                            String start = editstart.getText().toString();
+                            String end = editend.getText().toString();
+                            String description = editdescription.getText().toString();
+                            if(school.equals("") || major.equals("") || start.equals("") || end.equals("") || description.equals("")){
+                                FancyToast.makeText(context, "Vui lòng nhập đủ thông tin", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show();
+                            }else{
+                                arrayList.get(position).setSchool(school);
+                                arrayList.get(position).setMajor(major);
+                                arrayList.get(position).setStart(start);
+                                arrayList.get(position).setEnd(end);
+                                arrayList.get(position).setDescription(description);
+                                notifyDataSetChanged();
+                                dialog.dismiss();
+                            }
+
                         }
                     });
 
